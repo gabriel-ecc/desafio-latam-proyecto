@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-panel {
+  width: 100%;
+  margin: 1rem auto; /* Espacio entre el panel y los productos */
+  border-radius: 15px; /* Bordes redondeados */
+  overflow: hidden; /* Asegura que la imagen no se salga de los bordes redondeados */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Sombra sutil */
+  line-height: 0; /* Elimina espacio extra debajo de la imagen */
+}
+
+.hero-panel img {
+  width: 100%;
+  height: auto; /* Mantiene la proporción de la imagen */
+  object-fit: cover; /* Asegura que la imagen cubra el espacio sin deformarse */
+  display: block; /* Elimina espacio extra debajo de la imagen */
+}
+
+/* --- Panel deslizable --- */
+.sliding-panel {
+  display: flex;
+  overflow-x: auto; /* Permite el scroll horizontal */
+  scroll-snap-type: x mandatory; /* Activa el "snap" al hacer scroll */
+  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+  gap: 1rem; /* Espacio entre imágenes */
+  padding-bottom: 1rem; /* Espacio para que la barra de scroll no tape nada */
+  margin-bottom: 2rem; /* Espacio antes de los productos */
+}
+
+/* Ocultar la barra de scroll para un look más limpio */
+.sliding-panel::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  flex-shrink: 0; /* Evita que las imágenes se encojan */
+  scroll-snap-align: start; /* Cada slide se alinea al inicio del contenedor */
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.slide img {
+  width: auto; /* El ancho se ajusta para mantener la proporción */
+  height: 18vw;
+  display: block;
+}
