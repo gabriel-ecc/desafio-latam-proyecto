@@ -4,7 +4,8 @@ import 'dotenv/config'
 import pool from './db/schema/config.js'
 
 // importamos las rutas
-// import postsRoutes from './routes/postsRoutes.js'
+import registerUser from './routes/userRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 
 // configuramos el puerto del servidor que va a escuchar
 const PORT = process.env.PORT || 3000
@@ -17,7 +18,8 @@ app.use(cors())
 app.use(express.json())
 
 // cargamos las rutas
-// app.use(postsRoutes)
+app.use('/', registerUser)
+app.use('/', authRoutes)
 
 // Connect to the database and then start the server
 pool.query('SELECT NOW()', (err, res) => {
