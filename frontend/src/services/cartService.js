@@ -1,0 +1,1 @@
+// Funciones para gestionar el carrito de compras: agregar, quitar y actualizar productos.

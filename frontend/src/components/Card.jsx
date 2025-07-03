@@ -1,0 +1,90 @@
+// Tarjeta visual para mostrar información de un producto.
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import PropTypes from "prop-types"
+import "./Card.css" // Se importa el CSS para la tarjeta de producto
+import FavoriteButton from "./FavoriteButton"
+
+const ProductCard = ({ product, onAddToCart, onToggleFavorite, onViewDetails }) => {
+  // Desestructuramos las propiedades del producto para un uso más limpio
+  const { id, name, price, category, img, isFavorite } = product
+  // Estado local para manejar la cantidad del producto
+  const [quantity, setQuantity] = useState(1)
+
+  const handleIncrease = () => {
+    setQuantity((prev) => prev + 1)
+  }
+
+  const handleDecrease = () => {
+    // Evita que la cantidad sea menor que 1
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
+  }
+
+  const handleAddToCart = () => {
+    // Llama a la función pasada por props, añadiendo la cantidad seleccionada
+    onAddToCart({ ...product, quantity })
+  }
+
+  const handleDetailsClick = (e) => {
+    // Evita que el click se propague a elementos padres si es necesario
+    e.stopPropagation()
+    if (onViewDetails) onViewDetails(id)
+  }
+
+  return (
+    <div className="product-card">
+      <div className="image-container">
+        <FavoriteButton
+          isFavorite={isFavorite}
+          onClick={() => onToggleFavorite(id)}
+        />
+        <img
+          src={img}
+          alt={name}
+          className="product-img"
+          onClick={handleDetailsClick}
+          style={{ cursor: onViewDetails ? "pointer" : "default" }}
+        />
+      </div>
+      <div className="product-body">
+        <Link to={`/category/${category}`}>
+          <span className="product-category">{category}</span>
+        </Link>
+        <h2 className="product-title" onClick={handleDetailsClick} style={{ cursor: onViewDetails ? 'pointer' : 'default' }}>
+          {name}
+        </h2>
+        <span className="price">${price.toLocaleString()}</span>
+        <div className="product-actions">
+          <div className="quantity-control">
+            <button className="btn-round btn-qty" aria-label="Restar" onClick={handleDecrease}>
+              <i className="fa-solid fa-minus"></i>
+            </button>
+            <span className="qty-value">{quantity}</span>
+            <button className="btn-round btn-qty" aria-label="Sumar" onClick={handleIncrease}>
+              <i className="fa-solid fa-plus"></i>
+            </button>
+          </div>
+          <button className="btn-round btn-cart" aria-label="Agregar al carrito" onClick={handleAddToCart}>
+            <i className="fa-solid fa-basket-shopping"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+ProductCard.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    category: PropTypes.string.isRequired,
+    img: PropTypes.string.isRequired,
+    isFavorite: PropTypes.bool,
+  }).isRequired,
+  onAddToCart: PropTypes.func.isRequired,
+  onToggleFavorite: PropTypes.func.isRequired,
+  onViewDetails: PropTypes.func,
+}
+
+export default ProductCard

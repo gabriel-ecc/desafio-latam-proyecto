@@ -1,0 +1,1 @@
+// formatear fechas para mostrar en historial de compras. (Para validar datos antes de enviarlos al backend)

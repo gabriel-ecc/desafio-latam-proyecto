@@ -1,0 +1,335 @@
+@import '../assets/variables.css';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main-header {
+  background-color: #fff;
+  box-shadow: var(--box-shadow-md);
+  padding: 0 var(--spacing-lg);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-index-dropdown);
+}
+
+.navbar {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 90px;
+  margin: 0 2vw;
+  padding: 0 var(--spacing-md);
+}
+
+/* Logo */
+.nav-logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo img {
+  width: 73px;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+/* Contenedor del menú desplegable */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 170px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  list-style: none;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  overflow: hidden;
+  margin-top: 10px;
+  padding-left: .5rem; /* Nueva propiedad: sin padding izquierdo */
+}
+
+.dropdown-content a {
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border-bottom: none; /* Quitamos el borde de los links del menú */
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Estilo para botones dentro del dropdown, para que se vean como links */
+.dropdown-content button {
+  width: 100%;
+  padding: 12px 16px;
+  text-align: left;
+  color: #333;
+  background-color: transparent;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.dropdown-content button:hover {
+  background-color: #f1f1f1;
+}
+
+/* Muestra el menú al pasar el cursor o al enfocar el contenedor */
+/* En desktop, el menú de categorías se abre con hover */
+.dropdown:not(.nav-profile-menu):hover .dropdown-content,
+.dropdown:not(.nav-profile-menu):focus-within .dropdown-content {
+  display: block;
+}
+
+/* El menú de perfil se abre con la clase .is-open (controlada por JS) */
+.nav-profile-menu.is-open .dropdown-content {
+  display: block;
+}
+
+/* Modificador para alinear el menú a la derecha */
+.dropdown-right .dropdown-content {
+  right: 0;
+  left: auto;
+}
+
+/* Saludo al usuario en la barra de navegación */
+.nav-greeting {
+  color: #333;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Divisor para separar opciones en el menú */
+.dropdown-divider {
+  height: 1px;
+  margin: 8px 0;
+  background-color: #eee;
+}
+
+/* Lista de categorías en la navbar de PC */
+.nav-categories-list {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem; /* Espacio entre links */
+  list-style: none;
+  margin-bottom: 0; /* Sin margen inferior */
+}
+
+.nav-categories-list a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: color 0.3s, border-bottom-color 0.3s;
+}
+
+.nav-categories-list a:hover {
+  color: #2a9d73;
+  border-bottom-color: #2a9d8f;
+}
+/* Botón para abrir el menú de categorías */
+.categories-btn {
+  background-color: transparent;
+  border: 1px solid #ddd;
+  padding: 10px 16px;
+  border-radius: 50px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Dropdown de categorías para Tablet (oculto en desktop) */
+.nav-tablet-categories {
+  display: none;
+}
+
+/* Contenedor para los elementos de la derecha */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.3rem; /* Aumentamos el espacio para mayor separación */
+}
+
+/* Contenedor para los links que se ocultan en móvil */
+.nav-desktop-links {
+  display: flex;
+  align-items: center;
+}
+/* Iconos de acción (Favoritos, Perfil) */
+.nav-action {
+  font-size: 1.2rem;
+  color: #555;
+  transition: color 0.3s, transform 0.3s;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.nav-action:hover {
+  color: #2a9d8f;
+  transform: scale(1.1);
+}
+
+/* Botón de perfil con imagen */
+.profile-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre la imagen y el futuro chevrón */
+}
+
+.profile-btn img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover; /* Evita que la imagen se deforme */
+  transition: transform 0.3s;
+}
+
+.profile-btn:hover img {
+  transform: scale(1.1);
+}
+
+.nav-cart {
+  display: flex;
+  align-items: center;
+  background-color: #e9f5f3;
+  padding: 8px 16px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.nav-cart:hover {
+  background-color: #d4ebe8;
+}
+
+.nav-cart i {
+  color: #2a9d8f;
+  font-size: 1.2rem;
+  margin-right: 10px;
+}
+
+.cart-total {
+  font-weight: 600;
+  color: #1e796d;
+}
+
+/* Chevrón del perfil (oculto en desktop por defecto) */
+.profile-chevron {
+  /* Ahora visible en todos los tamaños */
+  display: inline-block;
+  color: #555; /* Color por defecto para desktop */
+  font-size: 0.8rem; /* Tamaño por defecto para desktop */
+  transition: transform 0.2s ease-in-out;
+  margin-left: 5px; /* Pequeño espacio a la izquierda de la imagen */
+}
+
+/* Links que solo aparecen en el menú móvil */
+.nav-mobile-link {
+  display: none;
+}
+
+/* --- ESTILOS RESPONSIVE --- */
+
+/* Estilos para Tablet (entre 769px y 992px) */
+@media (max-width: 992px) {
+  /* Ocultamos la lista de PC y mostramos el botón de tablet */
+  .nav-categories-list {
+    display: none;
+  }
+  .nav-tablet-categories {
+    display: block;
+  }
+}
+
+/* Estilos para Tablet y Móvil (pantallas de hasta 768px de ancho) */
+@media (max-width: 767px) {
+  .navbar {
+    padding-right: 0 1rem; /* Menos padding lateral */
+  }
+
+  /* Ocultamos los links de desktop */
+  .nav-desktop-links {
+    display: none;
+  }
+
+  /* Ocultamos el saludo de texto en móvil */
+  .nav-greeting {
+    display: none;
+  }
+
+  /* Mostramos los links de móvil dentro del menú desplegable */
+  .nav-mobile-link {
+    display: block;
+  }
+
+  /* Hacemos que el menú de perfil ocupe más espacio */
+  .nav-profile-menu .dropdown-content {
+    width: 250px; /* Ancho fijo para el menú móvil */
+  }
+
+  /* Mostramos y estilizamos el chevrón en móvil */
+
+  .nav-profile-menu.is-open .profile-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Estilos para el submenú de categorías en móvil */
+  .mobile-submenu {
+    list-style: none;
+    padding-left: 1rem; /* Indenta las sub-opciones */
+    margin-top: 0.5rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+  }
+
+  .nav-mobile-dropdown.is-open .mobile-submenu {
+    max-height: 200px; /* Un valor suficientemente grande para mostrar todos los items */
+  }
+
+  .category-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .category-toggle .fa-chevron-right {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .nav-mobile-dropdown.is-open .category-toggle .fa-chevron-right {
+    transform: rotate(90deg);
+  }
+}

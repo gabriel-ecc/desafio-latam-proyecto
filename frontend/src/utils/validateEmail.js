@@ -1,0 +1,1 @@
+// validar emails en formularios. (Para validar datos antes de enviarlos al backend)

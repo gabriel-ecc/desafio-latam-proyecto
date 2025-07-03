@@ -1,0 +1,160 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.product-card {
+  position: relative;
+  z-index: 0; /* Asegura que la tarjeta se mantenga en un nivel de apilamiento base */
+  max-width: 300px;
+  margin: 1rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 1.5rem;
+}
+
+.image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-img {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0.5rem auto 1rem auto;
+}
+
+.product-body {
+  padding: 0 1.5rem;
+  text-align: left;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-category {
+  color: #2e9a3d;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.product-body a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0.3rem 0 1rem 0;
+}
+
+.price {
+  color: #e49b2e;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.product-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.quantity-control {
+  display: flex;
+  font-size: 1.2rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-round {
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  font-size: 1.2rem;
+}
+
+.heart-btn {
+  background: #efe3e3;
+  color: #da7924;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 2.3rem;
+  height: 2.3rem;
+  z-index: 2;
+}
+.heart-btn:hover {
+  background: #f0cbbd;
+}
+
+.btn-qty {
+  background: #7b9445;
+  color: #fff;
+  width: 1.6rem;
+  height: 1.6rem;
+  font-size: 1.1rem;
+}
+.btn-qty:hover {
+  background: #5e7534;
+}
+
+.btn-cart {
+  background: #1e7c3a;
+  color: #fff;
+  width: 2.3rem;
+  height: 2.3rem;
+  font-size: 1.3rem;
+}
+.btn-cart:hover {
+  background: #155c29;
+}
+
+@media (max-width: 991px) and (min-width: 577px) {
+  .product-card {
+    max-width: 280px;
+  }
+  .product-title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .product-card {
+    max-width: 80%;
+    margin: 1rem auto;
+  }
+  .product-title {
+    font-size: 0.95rem;
+  }
+  .product-img {
+    width: 100%;
+    max-width: 200px;
+  }
+}

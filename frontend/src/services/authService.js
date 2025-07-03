@@ -1,0 +1,1 @@
+// Funciones para autenticación: login, registro, verificación de sesión, etc.
