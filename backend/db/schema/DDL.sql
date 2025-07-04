@@ -21,7 +21,7 @@ CREATE TABLE users (
     phone VARCHAR(20) NOT NULL,
     password VARCHAR(500) NOT NULL,
     user_type INT NOT NULL,
-    status INT NOT NULL,
+    user_status INT NOT NULL,
     profile_photo VARCHAR(1000) NOT NULL DEFAULT '',
     create_date TIMESTAMP NOT NULL DEFAULT NOW(),
     update_date TIMESTAMP NOT NULL DEFAULT NOW(),
