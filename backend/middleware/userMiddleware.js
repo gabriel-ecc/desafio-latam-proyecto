@@ -2,11 +2,11 @@ import { findUserByEmailModel } from '../src/models/usersModel.js'
 
 const createUserMiddleware = async (req, res, next) => {
   try {
-    const { nameLastName, email, password, rol } = req.body
+    const { first_name, last_name, email, phone, password } = req.body
     // validar que todos los campos estén presentes
-    if (!nameLastName || !email || !password || !rol) {
-      console.log(nameLastName, email, password, rol)
-      return res.status(400).json({ message: 'Todos los campos (nombre apellido, email, password, rol) son obligatorios' })
+    if (!first_name || !last_name || !email || !phone || !password) {
+      console.log(first_name, last_name, email, phone, password)
+      return res.status(400).json({ message: 'Todos los campos (nombre, apellido, email, teléfono, password) son obligatorios' })
     }
 
     // Validar formato del correo electrónico

@@ -14,7 +14,7 @@ export default function Register() {
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
-    phoneNumber: "",
+    phone: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -24,9 +24,42 @@ export default function Register() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Aquí estará la lógica para el registro (probando compatibilidad con backend...)
+
+    // Validación de contraseña
+    if (form.password !== form.confirmPassword) {
+      alert("Las contraseñas no coinciden")
+      return
+    }
+
+    // Construir el objeto a enviar
+    const userData = {
+      first_name: form.firstName,
+      last_name: form.lastName,
+      email: form.email,
+      phone: form.phone,
+      password: form.password,
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/usuarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      })
+
+      const data = await response.json()
+      if (response.ok) {
+        alert("Usuario registrado correctamente")
+        // Conversar si redirigirá a otra página automáticamente
+      } else {
+        alert(data.message || "Error al registrar usuario")
+      }
+    } catch (error) {
+      console.error(error)
+      alert("Error de red o servidor")
+    }
   }
 
   return (
@@ -72,14 +105,14 @@ export default function Register() {
           <div className="mb-3">
             <div className="input-group">
               <span className="input-group-text">
-                <FontAwesomeIcon icon={faPhone} />
+                <FontAwesomeIcon icon={faEnvelope} />
               </span>
               <input
-                type="tel"
+                type="email"
                 className="form-control"
-                name="phoneNumber"
-                placeholder="Teléfono"
-                value={form.phoneNumber}
+                name="email"
+                placeholder="Correo electrónico"
+                value={form.email}
                 onChange={handleChange}
                 required
               />
@@ -88,14 +121,14 @@ export default function Register() {
           <div className="mb-3">
             <div className="input-group">
               <span className="input-group-text">
-                <FontAwesomeIcon icon={faEnvelope} />
+                <FontAwesomeIcon icon={faPhone} />
               </span>
               <input
-                type="email"
+                type="tel"
                 className="form-control"
-                name="email"
-                placeholder="Dirección de correo electrónico"
-                value={form.email}
+                name="phone"
+                placeholder="Teléfono"
+                value={form.phone}
                 onChange={handleChange}
                 required
               />
@@ -133,6 +166,21 @@ export default function Register() {
               />
             </div>
           </div>
+           {/* a espera de que se implemente la subida de fotos de perfil en el backend ya que pide instalar multer */}
+          {/* <div className="mb-3">
+            <div className="input-group">
+              <span className="input-group-text">
+                <FontAwesomeIcon icon={faUser} />
+              </span>
+              <input
+                type="file"
+                className="form-control"
+                name="profilePhoto"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </div>
+          </div> */}
           <button type="submit" className="btn btn-success w-100 fw-bold">
             Registrarme
           </button>
