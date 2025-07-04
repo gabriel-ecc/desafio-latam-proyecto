@@ -1,12 +1,19 @@
-import { createUserModel } from '../models/usersModel.js'
+import { createUserModel } from "../models/usersModel.js";
 
 export const registerUser = async (req, res) => {
   try {
-    const { nameLastName, email, password, rol } = req.body
-    const user = await createUserModel(nameLastName, email, password, rol)
-    res.status(201).json({ message: 'Usuario creado correctamente', user })
+    const { firstName, lastName, email, phone, password } = req.body;
+    const user = await createUserModel(
+      firstName,
+      lastName,
+      email,
+      phone,
+      password,
+      1
+    );
+    res.status(201).json({ message: "Usuario creado correctamente", user });
   } catch (error) {
-    console.error(error)
-    return res.status(500).json(error)
+    console.error(error);
+    return res.status(500).json(error);
   }
-}
+};
