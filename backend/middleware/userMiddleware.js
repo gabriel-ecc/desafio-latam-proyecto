@@ -2,11 +2,16 @@ import { findUserByEmailModel } from '../src/models/usersModel.js'
 
 const createUserMiddleware = async (req, res, next) => {
   try {
-    const { first_name, last_name, email, phone, password } = req.body
+    // Asegurarse de que Multer ya ha procesado req.body para los campos de texto
+    const { firstName, lastName, email, phone, password, userType, userStatus } = req.body
+    // el archivo subido estará en req.file, si se subió uno
+    const profilePhotoFile = req.file // Ahora profilePhoto es el objeto de archivo de Multer
+
+    // const { firstName, lastName, email, phone, password, userType, userStatus, profilePhoto } = req.body
     // validar que todos los campos estén presentes
-    if (!first_name || !last_name || !email || !phone || !password) {
-      console.log(first_name, last_name, email, phone, password)
-      return res.status(400).json({ message: 'Todos los campos (nombre, apellido, email, teléfono, password) son obligatorios' })
+    if (!firstName || !lastName || !email || !phone || !password || !userType || !userStatus) {
+      console.log(firstName, lastName, email, phone, password, userType, userStatus, profilePhotoFile)
+      return res.status(400).json({ message: 'Todos los campos (nombre, apellido, email, teléfono, password, usertype, userStatus y profilePhoto) son obligatorios' })
     }
 
     // Validar formato del correo electrónico

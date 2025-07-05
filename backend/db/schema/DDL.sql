@@ -12,9 +12,9 @@ CREATE DATABASE verduleria;
 \c verduleria;
 
 
-/*user_type: 1 = cliente, 2 = empleado, 3 = admin*/
+/* user_type: 1 = cliente, 2 = empleado, 3 = admin */
 CREATE TABLE users (
-    id VARCHAR(100) NOT NULL,
+    id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(200) NOT NULL,
@@ -25,8 +25,9 @@ CREATE TABLE users (
     profile_photo VARCHAR(1000) NOT NULL DEFAULT '',
     create_date TIMESTAMP NOT NULL DEFAULT NOW(),
     update_date TIMESTAMP NOT NULL DEFAULT NOW(),
-    CONSTRAINT users_pkey PRIMARY KEY (id),
     CONSTRAINT users_email_key UNIQUE (email)
 );
+
+
 
 
