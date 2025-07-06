@@ -88,3 +88,45 @@ export const changeUserStatus = async (id, status) => {
   const response = await pool.query(sqlQuery)
   return response.rows[0]
 }
+
+export const updateUserProfileModel = async (email, userData) => {
+  const { firstName, lastName, phone, profilePhoto } = userData
+  const updates = []
+  const values = []
+  let paramIndex = 1
+
+  if (firstName) {
+    updates.push(`first_name = $${paramIndex++}`)
+    values.push(firstName)
+  }
+
+  if (lastName) {
+    updates.push(`last_name = $${paramIndex++}`)
+    values.push(lastName)
+  }
+
+  if (phone) {
+    updates.push(`phone = $${paramIndex++}`)
+    values.push(phone)
+  }
+
+  if (profilePhoto) {
+    updates.push(`profile_photo = $${paramIndex++}`)
+    values.push(profilePhoto)
+  }
+
+  // agregamos el email al 'where'
+  values.push(email)
+
+  if (updates.legth === 0) {
+    return null // no hay campos por actualizar
+  }
+
+  const sqlQuery = {
+    text: `UPDATE users SET ${updates.join(', ')} WHERE email = $${paramIndex} RETURNING id, first_name, last_name, email, phone, user_type, user_status, profile_photo`,
+    values
+  }
+
+  const response = await pool.query(sqlQuery)
+  return response.rows[0]
+}

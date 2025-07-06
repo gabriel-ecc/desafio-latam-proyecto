@@ -7,7 +7,8 @@ import {
   registerUser,
   getUsers,
   lockUser,
-  getUserProfile
+  getUserProfile,
+  updateUserProfile
 } from '../src/controllers/usersControllers.js'
 import { createUserMiddleware } from '../middleware/userMiddleware.js'
 import { verifyToken } from '../middleware/verifyTokenMiddleware.js'
@@ -53,5 +54,11 @@ router.post('/users',
 router.get('/users', getUsers)
 router.put('/lockuser', lockUser)
 router.get('/users/profile', verifyToken, getUserProfile)
+
+router.put('/users/profile',
+  verifyToken,
+  upload.single('profilePhoto'),
+  updateUserProfile
+)
 
 export default router
