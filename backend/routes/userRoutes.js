@@ -1,6 +1,8 @@
+// userRoutes.js
 import { Router } from 'express'
 import multer from 'multer'
 import path from 'path'
+
 import {
   registerUser,
   getUsers,
@@ -10,25 +12,42 @@ import { createUserMiddleware } from '../middleware/userMiddleware.js'
 
 const router = Router()
 
-// configuramos Multer
+// --- Configuración de Multer ---
 const storage = multer.diskStorage({
-  // donde guardaremos los archivos
   destination: function (req, file, cb) {
-    // Asegurarse de que la carpeta exista
-    cb(null, path.resolve(process.cwd(), '/uploads'))
+    const uploadPath = path.resolve(process.cwd(), 'uploads')
+    console.log('Multer: Intentando guardar archivo en:', uploadPath)
+    cb(null, uploadPath)
   },
-
-  // filename
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    const newFileName = file.fieldname + '-' + Date.now() + path.extname(file.originalname)
+    console.log('Multer: Generando nombre de archivo:', newFileName)
+    console.log('Multer: Objeto "file" recibido por Multer:', file)
+    cb(null, newFileName)
   }
 })
 
-// Creamos la instancia de Multer con la configuracion de almacenamiento
-const upload = multer({ storage: storage })
+// --- Creamos la instancia de Multer con la configuracion de almacenamiento ---
+const upload = multer({ storage }) // usamos propiedad 'Property Shorthand'
 
 // Rutas
-router.post('/users', upload.single('profilePhoto'), createUserMiddleware, registerUser)
+// --- Aplicamos el middleware de Multer ANTES de createUserMiddleware ---
+router.post('/users',
+  (req, res, next) => { // Añadimos un middleware de depuración justo antes de Multer
+    console.log('DEBUG: Solicitud entrante a /users. req.body ANTES de Multer:', req.body)
+    console.log('DEBUG: Solicitud entrante a /users. req.file ANTES de Multer:', req.file)
+    next()
+  },
+  upload.single('profilePhoto'),
+  (req, res, next) => { // Añadimos un middleware de depuración justo DESPUÉS de Multer
+    console.log('DEBUG: Solicitud pasó por Multer. req.body DESPUÉS de Multer:', req.body)
+    console.log('DEBUG: Solicitud pasó por Multer. req.file DESPUÉS de Multer (¡ESTO DEBE TENER UN VALOR!):', req.file)
+    next()
+  },
+  createUserMiddleware,
+  registerUser
+)
+
 router.get('/users', getUsers)
 router.put('/lockuser', lockUser)
 

@@ -15,7 +15,7 @@ export const createUserModel = async ({
   const hashedPassword = bcrypt.hashSync(password)
 
   const sqlQuery = {
-    text: 'INSERT INTO users (first_name, last_name, email, phone, password, user_type, user_status, profile_Photo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, first_name, last_name, email, phone, user_type, user_status, profile_photo ',
+    text: 'INSERT INTO users (first_name, last_name, email, phone, password, user_type, user_status, profile_photo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, first_name, last_name, email, phone, user_type, user_status, profile_photo ',
     values: [
       firstName,
       lastName,
