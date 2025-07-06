@@ -3,7 +3,8 @@ import {
   getUsersPaginated,
   getCountUsers,
   findUserByIdModel,
-  changeUserStatus
+  changeUserStatus,
+  findUserByEmailModel
 } from '../models/usersModel.js'
 
 import { UserHATEOAS } from '../helpers/userHateoas.js'
@@ -58,5 +59,36 @@ export const lockUser = async (req, res) => {
   } catch (error) {
     console.error(error)
     return res.status(500).json(error)
+  }
+}
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const userEmail = req.user // El emal viene desde el middleware de verifyToken
+    console.log('User profile request for email: ', userEmail)
+
+    const user = await findUserByEmailModel(userEmail)
+
+    if (!user) {
+      console.log('Usuario no encontrado', userEmail)
+      return res.status(404).json({ message: 'Perfil no encontrado' })
+    }
+
+    // Preparamos los datos a utilizar (sin datos sensibles)
+    const userProfileData = {
+      id: user.id,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+      phone: user.phone,
+      userType: user.user_type,
+      userStatus: user.user_status,
+      profilePhoto: user.profile_photo
+    }
+
+    res.status(200).json(userProfileData)
+  } catch (error) {
+    console.error('Error en getUserProfile', error)
+    console.error(500).json({ message: 'Error al obtener el perfil del usuario' })
   }
 }

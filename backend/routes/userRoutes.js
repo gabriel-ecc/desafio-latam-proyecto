@@ -6,9 +6,11 @@ import path from 'path'
 import {
   registerUser,
   getUsers,
-  lockUser
+  lockUser,
+  getUserProfile
 } from '../src/controllers/usersControllers.js'
 import { createUserMiddleware } from '../middleware/userMiddleware.js'
+import { verifyToken } from '../middleware/verifyTokenMiddleware.js'
 
 const router = Router()
 
@@ -50,5 +52,6 @@ router.post('/users',
 
 router.get('/users', getUsers)
 router.put('/lockuser', lockUser)
+router.get('/users/profile', verifyToken, getUserProfile)
 
 export default router
