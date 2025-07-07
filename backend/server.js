@@ -8,8 +8,6 @@ import registerUser from './routes/userRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import categoriesRoutes from './routes/categoriesRoutes.js'
 
-
-
 // configuramos el puerto del servidor que va a escuchar
 const PORT = process.env.PORT || 3000
 
@@ -33,7 +31,9 @@ pool.query('SELECT NOW()', (err, res) => {
     console.log(res.rows[0].now, 'Base de datos arriba:')
     // Subimos el server SÓLO después de que exista coneccion a la BD
     app.listen(PORT, () => {
-      console.log(`[${new Date().toLocaleString()}] Servidor y Base de Datos corriendo en http://localhost:${PORT}`)
+      console.log(
+        `[${new Date().toLocaleString()}] Servidor y Base de Datos corriendo en http://localhost:${PORT}`
+      )
     })
   }
 })
