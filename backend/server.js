@@ -6,6 +6,9 @@ import pool from './db/schema/config.js'
 // importamos las rutas
 import registerUser from './routes/userRoutes.js'
 import authRoutes from './routes/authRoutes.js'
+import categoriesRoutes from './routes/categoriesRoutes.js'
+
+
 
 // configuramos el puerto del servidor que va a escuchar
 const PORT = process.env.PORT || 3000
@@ -20,6 +23,7 @@ app.use(express.json())
 // cargamos las rutas
 app.use('/', registerUser)
 app.use('/', authRoutes)
+app.use('/', categoriesRoutes)
 
 // Connect to the database and then start the server
 pool.query('SELECT NOW()', (err, res) => {
