@@ -10,14 +10,13 @@ export const getProducts = async (req, res) => {
     const products = await getProductsByPage(req.query)
     const count = await getProductsCount()
     const productsWithHATEOAS = await productsHATEOAS(
-      'product',
+      'products',
       products,
       count
     )
     res.status(200).json(productsWithHATEOAS)
   } catch (error) {
-    console.error(error)
-    return res.status(500).json(error)
+    return res.status(500).json({error: error.message})
   }
 }
 

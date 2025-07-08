@@ -1,6 +1,6 @@
-import getSeasonsModel from '../models/seasonsModel.js'
+import { getSeasonsModel } from '../models/seasonsModel.js'
 
-export const getSeasons = async (res) => {
+export const getSeasons = async (_, res) => {
   try {
     const seasons = await getSeasonsModel()
     res.status(200).json(seasons)

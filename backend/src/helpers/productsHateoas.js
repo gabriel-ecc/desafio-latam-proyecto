@@ -19,7 +19,7 @@ export const productsHATEOAS = async (entity, data, count) => {
   const total = data.length;
   const dataWithHateoas = {
     totalInPage: total,
-    totalUsers: Number(count.cantidad),
+    totalProducts: Number(count.cantidad),
     results,
   };
   return dataWithHateoas;

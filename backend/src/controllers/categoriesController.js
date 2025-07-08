@@ -1,6 +1,6 @@
 import { getCategoriesModel } from '../models/categoriesModel.js'
 
-export const getCategories = async (req, res) => {
+export const getCategories = async (_, res) => {
   try {
     const categories = await getCategoriesModel()
     res.status(200).json(categories)
