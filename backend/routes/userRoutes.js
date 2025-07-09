@@ -4,7 +4,7 @@ import multer from 'multer'
 import path from 'path'
 
 import {
-  registerUser,
+  registerClientUser,
   getUsers,
   lockUser,
   getUserProfile,
@@ -48,7 +48,7 @@ router.post('/users',
     next()
   },
   createUserMiddleware,
-  registerUser
+  registerClientUser
 )
 
 router.get('/users', getUsers)

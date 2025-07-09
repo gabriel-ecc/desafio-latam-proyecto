@@ -9,8 +9,8 @@ export const createUserModel = async ({
   phone,
   password,
   userType,
-  userStatus,
-  profilePhoto
+  userStatus = 1,
+  profilePhoto = ''
 }) => {
   const hashedPassword = bcrypt.hashSync(password)
 
