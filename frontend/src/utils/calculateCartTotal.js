@@ -1,0 +1,1 @@
+// calcular el total del carrito. (Para validar datos antes de enviarlos al backend)

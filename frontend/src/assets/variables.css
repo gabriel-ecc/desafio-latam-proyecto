@@ -1,0 +1,48 @@
+:root {
+  /* Colores */
+  --color-primary: #1e7c3a;
+  --color-secondary: #7b9445;
+  --color-like: #f0cbbd;
+  --color-price: #e49b2e;
+  --color-background: #f9f9f9;
+  --color-text: #2d2d2d;
+
+  /* Tamaños de fuente */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 2rem;
+
+  /* Espaciados */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Sombras */
+  --box-shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --box-shadow-md: 0 4px 8px rgba(0,0,0,0.10);
+  --box-shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  /* Breakpoints para responsive */
+  --breakpoint-mobile: 480px;   /* Celular */
+  --breakpoint-tablet: 768px;   /* Tablet */
+  --breakpoint-desktop: 1024px; /* PC */
+
+  /* Z-index globales */
+  --z-index-dropdown: 1000;
+  --z-index-modal: 1100;
+  --z-index-tooltip: 1200;
+
+  /* Transiciones estándar */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.4s ease;
+  --transition-slow: 0.6s ease;
+}

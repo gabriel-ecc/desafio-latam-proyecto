@@ -1,0 +1,1 @@
+// Lista de compras realizadas por el usuario.

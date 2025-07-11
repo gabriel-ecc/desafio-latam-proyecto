@@ -1,0 +1,1 @@
+// Funciones para gestionar pedidos y compras: crear pedido, ver historial y ver detalles de pedido.

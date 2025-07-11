@@ -1,0 +1,68 @@
+button:focus {
+  box-shadow: none;
+  outline-width: 0;
+}
+
+footer {
+  color: #2d2d2d;
+  overflow-x: hidden;
+  font-size: 1.2rem;
+  background-color: #f9f9f9;
+}
+
+footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+li {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Quita el margen superior del primer elemento de cada lista para alinearlos con la imagen */
+.list-unstyled li:first-child {
+  margin-top: 0;
+}
+
+.logo-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+.enlace-contacto {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 991px) {
+  .logo-image {
+    width: 130px;
+    height: 130px;
+  }
+}
+
+@media (max-width: 767px) {
+  .logo-image {
+    width: 120px;
+    height: 120px;
+  }
+  li {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+}
+
+@media (min-width: 992px) {
+  footer {
+    font-size: 1.4rem;
+  }
+}

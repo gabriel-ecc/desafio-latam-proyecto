@@ -9,17 +9,25 @@ Las sentencias DDL se utilizan para definir o modificar la estructura de la base
 */
 
 CREATE DATABASE verduleria;
+\c verduleria;
 
-/*
-CREATE TABLE usuarios
-(
-    id serial NOT NULL,
-	  nameLastName character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    email character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    password character varying(60) COLLATE pg_catalog."default" NOT NULL,
-    rol character varying(25) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT usuarios_pkey PRIMARY KEY (id),
-    CONSTRAINT usuarios_email_key UNIQUE (email)
-)
-*/
+
+/* user_type: 1 = cliente, 2 = empleado, 3 = admin */
+CREATE TABLE users (
+    id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    password VARCHAR(500) NOT NULL,
+    user_type INT NOT NULL,
+    user_status INT NOT NULL,
+    profile_photo VARCHAR(1000) NOT NULL DEFAULT '',
+    create_date TIMESTAMP NOT NULL DEFAULT NOW(),
+    update_date TIMESTAMP NOT NULL DEFAULT NOW(),
+    CONSTRAINT users_email_key UNIQUE (email)
+);
+
+
+
 

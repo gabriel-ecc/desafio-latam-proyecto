@@ -1,0 +1,1 @@
+// agrupar productos por categoría. (Para validar datos antes de enviarlos al backend)
