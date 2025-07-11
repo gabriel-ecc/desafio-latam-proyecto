@@ -35,15 +35,16 @@ export default function Register() {
 
     // Construir el objeto a enviar
     const userData = {
-      first_name: form.firstName,
-      last_name: form.lastName,
+      firstName: form.firstName,
+      lastName: form.lastName,
       email: form.email,
       phone: form.phone,
       password: form.password,
+      userType: 1
     }
 
     try {
-      const response = await fetch("http://localhost:3000/usuarios", {
+      const response = await fetch("http://localhost:3000/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),

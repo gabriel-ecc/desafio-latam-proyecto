@@ -10,9 +10,10 @@ import {
 
 import { UserHATEOAS } from '../helpers/userHateoas.js'
 
-export const registerUser = async (req, res) => {
+export const registerClientUser = async (req, res) => {
   try {
     const userData = req.body
+    userData.userType = 1
     // req.file contiene la informacion del archivo subido por Multer
     const profilePhotoFile = req.file
 
