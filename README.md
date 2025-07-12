@@ -1,5 +1,14 @@
+# Clase:
+"Proyecto Final Desafío Latam"
+
 # Proyecto:
 "Verduleria Gato de Campo"
+
+# Equipo de proyecto:
+Carla Pacheco
+Andreina Gutierrez
+Gabriel Castillo
+Oscar Garin
 
 # Repo de Github
 https://github.com/gabriel-ecc/desafio-latam-proyecto
@@ -7,11 +16,6 @@ https://github.com/gabriel-ecc/desafio-latam-proyecto
 
 # Proyecto en Github
 https://github.com/users/gabriel-ecc/projects/2
-
-
-
-# Clase:
-"Proyecto Final Desafío Latam"
 
 
 # Descripción
