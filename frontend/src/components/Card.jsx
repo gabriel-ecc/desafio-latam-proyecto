@@ -53,7 +53,7 @@ const ProductCard = ({ product, onAddToCart, onToggleFavorite, onViewDetails }) 
         <h2 className="product-title" onClick={handleDetailsClick} style={{ cursor: onViewDetails ? 'pointer' : 'default' }}>
           {name}
         </h2>
-        <span className="price">${price.toLocaleString()}</span>
+        <span className="price">${price.toLocaleString('es-cl')}</span>
         <div className="product-actions">
           <div className="quantity-control">
             <button className="btn-round btn-qty" aria-label="Restar" onClick={handleDecrease}>
