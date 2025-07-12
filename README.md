@@ -1,39 +1,45 @@
-# Clase:
-"Proyecto Final Desafío Latam"
+# Proyecto final bootcamp Desafío Latam
+Este repositorio contiene el código fuente del "Proyecto Final Desafío Latam", está desarrollado con un backend en express.js y frontend con react.js.
 
-# Proyecto:
-"Verduleria Gato de Campo"
+## Concepto: Verduleria Gato de Campo
+El proyecto es simular un ecomerce de una verduleria. Por lo tanto considera gestión de productos, administrar clientes y carritos de compra. 
 
-# Equipo de proyecto:
-Carla Pacheco
-Andreina Gutierrez
-Gabriel Castillo
-Oscar Garin
+## Equipo de proyecto:
+- Carla Pacheco
+- Andreina Gutierrez
+- Gabriel Castillo
+- Oscar Garin
 
-# Repo de Github
+## Repo de Github
+```
 https://github.com/gabriel-ecc/desafio-latam-proyecto
+```
 
-
-# Proyecto en Github
+## Proyecto en Github
+```
 https://github.com/users/gabriel-ecc/projects/2
+```
+
+## Descripción
 
 
-# Descripción
-
-
-# Requerimientos
+## Requerimientos
 
 
 
-# Tech Stack
+## Tech Stack
 React.js, Bootstrap, Node.js, Javascript, Jest, Babel
 
-# Para ejecutarlo (frontend):
+## Para ejecutarlo (frontend):
+```
 npm run dev
-
-# Para ejecutarlo (backend):
+```
+## Para ejecutarlo (backend):
+```
 npm run dev
-
-# Pruebas
+```
+## Pruebas
+```
 npm run test:coverage
+```
 
