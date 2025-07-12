@@ -3,6 +3,8 @@ import { useState, useContext, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import useCart from '../context/CartContext.jsx'
 import { UserContext } from '../context/UserContext'
+import { ENDPOINT } from '../config/constants.js'
+import axios from 'axios'
 
 import './Navbar.css'
 
@@ -15,6 +17,7 @@ const Navbar = () => {
   const [isProfileMenuOpen, setProfileMenuOpen] = useState(false)
   const [isTabletCategoriesOpen, setTabletCategoriesOpen] = useState(false)
   const [isMobileCategoriesOpen, setMobileCategoriesOpen] = useState(false)
+  const [listSeasons, setListSeasons] = useState([])
 
   // Refs para detectar clics fuera de los menús
   const profileMenuRef = useRef(null)
@@ -36,6 +39,10 @@ const Navbar = () => {
         setTabletCategoriesOpen(false)
       }
     }
+
+    axios.get(ENDPOINT.seasons).then(({ data }) => {
+      setListSeasons(data)
+    })
 
     document.addEventListener('mousedown', handleClickOutside)
     return () => {
@@ -62,20 +69,13 @@ const Navbar = () => {
       <div className="nav-desktop-links">
         <ul className="nav-categories-list">
           <li>
-            <Link to="/products">Productos</Link>
+            <Link to="/products/0">Productos</Link>
           </li>
-          <li>
-            <Link to="/category/primavera">Primavera</Link>
-          </li>
-          <li>
-            <Link to="/category/verano">Verano</Link>
-          </li>
-          <li>
-            <Link to="/category/otono">Otoño</Link>
-          </li>
-          <li>
-            <Link to="/category/invierno">Invierno</Link>
-          </li>
+          {listSeasons.map((season) => (
+            <li key={season.id}>
+              <Link to={`/products/${season.id}`}>{season.name}</Link>
+            </li>
+          ))}
         </ul>
         <div
           className={`dropdown nav-tablet-categories ${
@@ -83,7 +83,6 @@ const Navbar = () => {
           }`}
           ref={tabletCategoriesRef}
         >
-          
           <button
             className="categories-btn"
             onClick={() => setTabletCategoriesOpen(!isTabletCategoriesOpen)}

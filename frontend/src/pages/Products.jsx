@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ProductCard from '../components/Card'
 import './Products.css'
 import useCart from '../context/CartContext.jsx'
@@ -8,10 +8,13 @@ import axios from 'axios'
 
 // Muestra todos los productos disponibles en la tienda sin filtros (para el administrador).
 export default function Products() {
+  const { season } = useParams()
   const [cards, setCards] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
   const [listCategories, setListCategories] = useState([])
-  const [selectedSeason, setSelectedSeason] = useState('')
+  const [selectedSeason, setSelectedSeason] = useState(
+    season === '0' ? '' : season || ''
+  )
   const [listSeasons, setListSeasons] = useState([])
   const [orderBy, setOrderBy] = useState('price_ASC')
   const [page, setPage] = useState(1)
@@ -19,6 +22,11 @@ export default function Products() {
   const { addToCart } = useCart()
   const [cantidadPaginas, setCantidadPaginas] = useState(0)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    // Sincroniza el estado del filtro de temporada con el parámetro de la URL
+    setSelectedSeason(season === '0' ? '' : season || '')
+  }, [season])
 
   const queryParams = {
     limits: limits,
@@ -29,14 +37,11 @@ export default function Products() {
   }
 
   useEffect(() => {
-    console.log('limites', limits)
-    console.log('cantidad paginas', cantidadPaginas)
     axios.get(ENDPOINT.products, { params: queryParams }).then(({ data }) => {
       setCards(data.results)
-      setCantidadPaginas(Math.trunc(data.totalProducts / limits) + 1)
-      console.log(data.totalProducts)
-      console.log(limits)
-      console.log('calculo: ', Math.trunc(data.totalProducts / limits) + 1)
+      data.totalProducts % limits === 0
+        ? setCantidadPaginas(Math.trunc(data.totalProducts / limits))
+        : setCantidadPaginas(Math.trunc(data.totalProducts / limits) + 1)
     })
   }, [selectedCategory, selectedSeason, page, orderBy, limits])
 
