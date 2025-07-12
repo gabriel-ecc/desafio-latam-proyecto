@@ -8,7 +8,7 @@ import {
 export const getProducts = async (req, res) => {
   try {
     const products = await getProductsByPage(req.query)
-    const count = await getProductsCount()
+    const count = await getProductsCount(req.query)
     const productsWithHATEOAS = await productsHATEOAS(
       'products',
       products,

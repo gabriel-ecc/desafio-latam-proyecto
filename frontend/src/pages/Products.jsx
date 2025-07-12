@@ -17,7 +17,7 @@ export default function Products() {
   const [page, setPage] = useState(1)
   const [limits, setLimits] = useState(12)
   const { addToCart } = useCart()
-  const [cantidadPaginas, setCantidadPaginas] = useState(1)
+  const [cantidadPaginas, setCantidadPaginas] = useState(0)
   const navigate = useNavigate()
 
   const queryParams = {
@@ -29,9 +29,14 @@ export default function Products() {
   }
 
   useEffect(() => {
+    console.log('limites', limits)
+    console.log('cantidad paginas', cantidadPaginas)
     axios.get(ENDPOINT.products, { params: queryParams }).then(({ data }) => {
       setCards(data.results)
-      setCantidadPaginas(data.totalPages)
+      setCantidadPaginas(Math.trunc(data.totalProducts / limits) + 1)
+      console.log(data.totalProducts)
+      console.log(limits)
+      console.log('calculo: ', Math.trunc(data.totalProducts / limits) + 1)
     })
   }, [selectedCategory, selectedSeason, page, orderBy, limits])
 
@@ -75,7 +80,10 @@ export default function Products() {
           <select
             id="category-filter"
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={(e) => {
+              setSelectedCategory(e.target.value)
+              setPage(1)
+            }}
           >
             <option value="">Todas</option>
             {listCategories.map((category) => (
@@ -91,7 +99,10 @@ export default function Products() {
           <select
             id="season-filter"
             value={selectedSeason}
-            onChange={(e) => setSelectedSeason(e.target.value)}
+            onChange={(e) => {
+              setSelectedSeason(e.target.value)
+              setPage(1)
+            }}
           >
             <option value="">Todas</option>
             {listSeasons.map((season) => (
@@ -107,7 +118,10 @@ export default function Products() {
           <select
             id="order-filter"
             value={orderBy}
-            onChange={(e) => setOrderBy(e.target.value)}
+            onChange={(e) => {
+              setOrderBy(e.target.value)
+              setPage(1)
+            }}
           >
             <option value="id_ASC">Relevancia</option>
             <option value="price_ASC">Precio: Menor a Mayor</option>
@@ -121,7 +135,10 @@ export default function Products() {
           <select
             id="limit-filter"
             value={limits}
-            onChange={(e) => setLimits(parseInt(e.target.value))}
+            onChange={(e) => {
+              setLimits(parseInt(e.target.value))
+              setPage(1)
+            }}
           >
             <option value="4">4</option>
             <option value="8">8</option>
@@ -131,46 +148,60 @@ export default function Products() {
         </div>
       </div>
       <div className="row card-container">
-        {cards.map((card) => (
-          <div className="col-lg-3 col-md-5 mb-4" key={card.id}>
-            <ProductCard
-              product={card}
-              onAddToCart={handleAddToCart}
-              onToggleFavorite={handleToggleFavorite}
-              onViewDetails={handleViewMore}
-            />
-          </div>
-        ))}
+        {cards.length > 0 ? (
+          cards.map((card) => (
+            <div className="col-lg-3 col-md-5 mb-4" key={card.id}>
+              <ProductCard
+                product={card}
+                onAddToCart={handleAddToCart}
+                onToggleFavorite={handleToggleFavorite}
+                onViewDetails={handleViewMore}
+              />
+            </div>
+          ))
+        ) : (
+          <p>No hay productos disponibles.</p>
+        )}
       </div>
-      <nav aria-label="Page navigation example">
-        <ul className="pagination">
-          <li className="page-item">
-            <a className="page-link" href="#">
-              Previous
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              1
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              2
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              3
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              Next
-            </a>
-          </li>
-        </ul>
-      </nav>
+      {cantidadPaginas > 1 ? (
+        <nav
+          aria-label="Page navigation"
+          className="d-flex justify-content-center mt-4"
+        >
+          <ul className="pagination">
+            <li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setPage(page - 1)}>
+                Anterior
+              </button>
+            </li>
+
+            {Array.from({ length: cantidadPaginas }, (_, i) => i + 1).map(
+              (pageNumber) => (
+                <li
+                  key={pageNumber}
+                  className={`page-item ${page === pageNumber ? 'active' : ''}`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => setPage(pageNumber)}
+                  >
+                    {pageNumber}
+                  </button>
+                </li>
+              )
+            )}
+            <li
+              className={`page-item ${page === cantidadPaginas ? 'disabled' : ''}`}
+            >
+              <button className="page-link" onClick={() => setPage(page + 1)}>
+                Siguiente
+              </button>
+            </li>
+          </ul>
+        </nav>
+      ) : (
+        <></>
+      )}
     </div>
   )
 }
