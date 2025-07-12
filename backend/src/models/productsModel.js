@@ -31,7 +31,7 @@ export const getProductsByPage = async ({
   const [columna, direccion] = orderBy.split('_')
   const offset = Math.abs((page - 1) * limits)
   let sqlQuery =
-    'SELECT a.id,a.name as product_name,a.price,a.product_photo, b.name as category, c.name as season FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN seasonal_category AS c on a.seasonal_category_id = c.id'
+    'SELECT a.id,a.name as productname,a.price,a.product_photo, b.name as category, c.name as season FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN seasonal_category AS c on a.seasonal_category_id = c.id'
   if (filtros.length > 0) {
     const sqlWhere = format(' WHERE ' + filtros.join(' AND '), ...valores)
     sqlQuery += sqlWhere

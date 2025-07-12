@@ -6,7 +6,7 @@ export const productsHATEOAS = async (entity, data, count) => {
   const results = data.map((item) => {
     return {
       id: item.id,
-      name: item.product_name,
+      name: item.productname,
       seasion: item.season,
       category: item.category,
       price: item.price,

@@ -10,7 +10,9 @@ import axios from 'axios'
 export default function Products() {
   const [cards, setCards] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [listCategories, setListCategories] = useState([])
   const [selectedSeason, setSelectedSeason] = useState('')
+  const [listSeasons, setListSeasons] = useState([])
   const [orderBy, setOrderBy] = useState('price_ASC')
   const [page, setPage] = useState(1)
   const [limits, setLimits] = useState(12)
@@ -32,6 +34,15 @@ export default function Products() {
       setCantidadPaginas(data.totalPages)
     })
   }, [selectedCategory, selectedSeason, page, orderBy, limits])
+
+  useEffect(() => {
+    axios.get(ENDPOINT.seasons).then(({ data }) => {
+      setListSeasons(data)
+    })
+    axios.get(ENDPOINT.categories).then(({ data }) => {
+      setListCategories(data)
+    })
+  }, [])
 
   const handleViewMore = (id) => {
     navigate(`/card/${id}`)
@@ -67,9 +78,11 @@ export default function Products() {
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
             <option value="">Todas</option>
-            <option value="1">Frutas</option> {/* Asumiendo ID 1 para Frutas */}
-            <option value="2">Verduras</option>{' '}
-            {/* Asumiendo ID 2 para Verduras */}
+            {listCategories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -81,10 +94,11 @@ export default function Products() {
             onChange={(e) => setSelectedSeason(e.target.value)}
           >
             <option value="">Todas</option>
-            <option value="1">Primavera</option>
-            <option value="2">Verano</option>
-            <option value="3">Otoño</option>
-            <option value="4">Invierno</option>
+            {listSeasons.map((season) => (
+              <option key={season.id} value={season.id}>
+                {season.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -98,8 +112,8 @@ export default function Products() {
             <option value="id_ASC">Relevancia</option>
             <option value="price_ASC">Precio: Menor a Mayor</option>
             <option value="price_DESC">Precio: Mayor a Menor</option>
-            <option value="name_ASC">Nombre: A-Z</option>
-            <option value="name_DESC">Nombre: Z-A</option>
+            <option value="productname_ASC">Nombre: A-Z</option>
+            <option value="productname_DESC">Nombre: Z-A</option>
           </select>
         </div>
         <div className="filter-group">
@@ -129,29 +143,29 @@ export default function Products() {
         ))}
       </div>
       <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <li class="page-item">
-            <a class="page-link" href="#">
+        <ul className="pagination">
+          <li className="page-item">
+            <a className="page-link" href="#">
               Previous
             </a>
           </li>
-          <li class="page-item">
-            <a class="page-link" href="#">
+          <li className="page-item">
+            <a className="page-link" href="#">
               1
             </a>
           </li>
-          <li class="page-item">
-            <a class="page-link" href="#">
+          <li className="page-item">
+            <a className="page-link" href="#">
               2
             </a>
           </li>
-          <li class="page-item">
-            <a class="page-link" href="#">
+          <li className="page-item">
+            <a className="page-link" href="#">
               3
             </a>
           </li>
-          <li class="page-item">
-            <a class="page-link" href="#">
+          <li className="page-item">
+            <a className="page-link" href="#">
               Next
             </a>
           </li>
