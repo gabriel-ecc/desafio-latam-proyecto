@@ -95,18 +95,11 @@ const Navbar = () => {
             <li>
               <Link to="/products">Productos</Link>
             </li>
-            <li>
-              <Link to="/category/verano">Verano</Link>
-            </li>
-            <li>
-              <Link to="/category/otono">Otoño</Link>
-            </li>
-            <li>
-              <Link to="/category/invierno">Invierno</Link>
-            </li>
-            <li>
-              <Link to="/category/primavera">Primavera</Link>
-            </li>
+            {listSeasons.map((season) => (
+              <li key={season.id}>
+                <Link to={`/products/${season.id}`}>{season.name}</Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
