@@ -138,7 +138,7 @@ export const updateUserProfile = async (req, res) => {
       phone: updatedUser.phone,
       userType: updatedUser.user_type,
       userStatus: updatedUser.user_status,
-      profilePhoto: updatedUser.profile_Photo
+      profilePhoto: updatedUser.profile_photo
     }
 
     res.status(200).json({ message: 'Perfil actualizado', user: userProfileData })
