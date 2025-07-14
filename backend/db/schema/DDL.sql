@@ -35,7 +35,7 @@ CREATE TABLE product_category(
     create_date TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE seasonal_category(
+CREATE TABLE season_category(
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(500) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE products(
     price INT NOT NULL,
     stock INT NOT NULL,
     product_category_id INT NOT NULL,
-    seasonal_category_id INT NOT NULL,
+    season_category_id INT NOT NULL,
     product_photo VARCHAR(1000) NOT NULL DEFAULT '',
     status BOOL,
     create_date TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -58,7 +58,7 @@ CREATE TABLE products(
     CONSTRAINT products_price_check CHECK (price > 0),
     CONSTRAINT products_stock_check CHECK (stock >= 0),
     CONSTRAINT products_product_category_fkey FOREIGN KEY (product_category_id) REFERENCES product_category(id),
-    CONSTRAINT products_seasonal_category_fkey FOREIGN KEY (seasonal_category_id) REFERENCES seasonal_category(id)
+    CONSTRAINT products_seasonal_category_fkey FOREIGN KEY (season_category_id) REFERENCES season_category(id)
 
 );
 

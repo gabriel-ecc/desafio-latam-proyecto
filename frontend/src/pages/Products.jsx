@@ -26,6 +26,7 @@ export default function Products() {
   useEffect(() => {
     // Sincroniza el estado del filtro de temporada con el parámetro de la URL
     setSelectedSeason(season === '0' ? '' : season || '')
+    setPage(1)
   }, [season])
 
   const queryParams = {

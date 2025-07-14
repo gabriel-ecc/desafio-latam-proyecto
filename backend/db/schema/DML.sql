@@ -16,12 +16,12 @@ INSERT INTO product_category(name,description)VALUES('Legumbre','Legumbres');
 INSERT INTO product_category(name,description)VALUES('Carne','Carnes');
 INSERT INTO product_category(name,description)VALUES('Otro','Otros');
 
-INSERT INTO seasonal_category(name,description)VALUES('Verano','Verano');
-INSERT INTO seasonal_category(name,description)VALUES('Otoño','Otoño'); 
-INSERT INTO seasonal_category(name,description)VALUES('Invierno','Invierno');
-INSERT INTO seasonal_category(name,description)VALUES('Primavera','Primavera');
+INSERT INTO season_category(name,description)VALUES('Verano','Verano');
+INSERT INTO season_category(name,description)VALUES('Otoño','Otoño'); 
+INSERT INTO season_category(name,description)VALUES('Invierno','Invierno');
+INSERT INTO season_category(name,description)VALUES('Primavera','Primavera');
 
-INSERT INTO products (name, description, price, stock, product_category_id, seasonal_category_id, product_photo, status) VALUES
+INSERT INTO products (name, description, price, stock, product_category_id, season_category_id, product_photo, status) VALUES
 -- Verduras (10)
 ('Tomate Larga Vida', 'Tomate maduro y jugoso, ideal para ensaladas y salsas.', 1500, 120, 1, 1, 'https://example.com/photos/tomate.jpg', true),
 ('Lechuga Costina', 'Lechuga de hojas crujientes y frescas.', 1000, 80, 1, 4, 'https://example.com/photos/lechuga.jpg', true),

@@ -21,7 +21,7 @@ export const getProductsCount = async ({
   }
 
   let sqlQuery =
-    'SELECT count(1) as cantidad FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN seasonal_category AS c on a.seasonal_category_id = c.id'
+    'SELECT count(1) as cantidad FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN season_category AS c on a.season_category_id = c.id'
   if (filtros.length > 0) {
     const sqlWhere = format(' WHERE ' + filtros.join(' AND '), ...valores)
     sqlQuery += sqlWhere
@@ -53,7 +53,7 @@ export const getProductsByPage = async ({
   const [columna, direccion] = orderBy.split('_')
   const offset = Math.abs((page - 1) * limits)
   let sqlQuery =
-    'SELECT a.id, a.name as productname, a.price, a.stock, a.product_photo, b.name as category, c.name as season FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN seasonal_category AS c on a.seasonal_category_id = c.id'
+    'SELECT a.id, a.name as productname, a.price, a.stock, a.product_photo, b.name as category, c.name as season FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN season_category AS c on a.season_category_id = c.id'
   if (filtros.length > 0) {
     const sqlWhere = format(' WHERE ' + filtros.join(' AND '), ...valores)
     sqlQuery += sqlWhere
@@ -74,8 +74,34 @@ export const getProductsByPage = async ({
 
 export const getProductById = async (id) => {
   const sqlQuery = {
-    text: 'SELECT a.id,a.name as product_name,a.description,a.price,a.stock,a.product_photo,b.name as category,c.name as season,a.create_date,a.update_date FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN seasonal_category AS c on a.seasonal_category_id = c.id WHERE a.id = $1',
+    text: 'SELECT a.id,a.name as product_name,a.description,a.price,a.stock,a.product_photo,b.name as category,c.name as season,a.create_date,a.update_date FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN seasonal_category AS c on a.season_category_id = c.id WHERE a.id = $1',
     values: [id],
+  }
+  const response = await pool.query(sqlQuery)
+  return response.rows[0]
+}
+
+export const createProductSQL = async (productData) => {
+  const {
+    name,
+    description,
+    price,
+    stock,
+    productCategory,
+    seasonalCategory,
+    productPhoto,
+  } = productData
+  const sqlQuery = {
+    text: 'INSERT INTO products (name, description, price, stock, product_category_id, season_category_id, product_photo) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+    values: [
+      name,
+      description,
+      price,
+      stock,
+      productCategory,
+      seasonalCategory,
+      productPhoto,
+    ],
   }
   const response = await pool.query(sqlQuery)
   return response.rows[0]
