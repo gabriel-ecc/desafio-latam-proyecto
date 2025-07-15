@@ -23,7 +23,7 @@ INSERT INTO season_category(name,description)VALUES('Primavera','Primavera');
 
 INSERT INTO products (name, description, price, stock, product_category_id, season_category_id, product_photo, status) VALUES
 -- Verduras (10)
-('Tomate Larga Vida', 'Tomate maduro y jugoso, ideal para ensaladas y salsas.', 1500, 120, 1, 1, 'https://example.com/photos/tomate.jpg', true),
+('Tomate Larga Vida', 'Tomate maduro y jugoso, ideal para ensaladas y salsas.', 1500, 120, 1, 1, 'https://jumbocl.vtexassets.com/arquivos/ids/297810-900-900?width=900&height=900&aspect=true', true),
 ('Lechuga Costina', 'Lechuga de hojas crujientes y frescas.', 1000, 80, 1, 4, 'https://example.com/photos/lechuga.jpg', true),
 ('Zapallo Italiano', 'Zapallo tierno, perfecto para guisos y salteados.', 800, 90, 1, 1, 'https://example.com/photos/zapallo_italiano.jpg', true),
 ('Cebolla Morada', 'Cebolla de sabor más suave y dulce, ideal para ensaladas.', 1200, 150, 1, 2, 'https://example.com/photos/cebolla_morada.jpg', true),

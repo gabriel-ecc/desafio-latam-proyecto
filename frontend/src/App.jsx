@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useParams,
+} from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Home from "./pages/Home"
 import Register from "./pages/Register"
@@ -15,7 +21,14 @@ import Favorites from "./pages/Favorites"
 import PurchaseConfirmation from "./pages/PurchaseConfirmation"
 import MyPurchases from "./pages/MyPurchases"
 import OrderDetail from "./pages/OrderDetail"
+import ProductDetail from "./pages/ProductDetail"
 import Footer from "./components/Footer"
+
+// Componente para redireccionar /card/:id a /products/:id
+const CardRedirect = () => {
+  const { id } = useParams()
+  return <Navigate to={`/products/${id}`} replace />
+}
 
 function App() {
   return (
@@ -28,7 +41,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/usuarios" element={<Users />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/products/:season" element={<Products />} />
+        <Route path="/products/season/:season" element={<Products />} />
         <Route path="/catalogo" element={<Catalog />} />
         <Route path="/inventario" element={<Inventory />} />
         <Route path="/editar-producto/:id" element={<EditProduct />} />
@@ -37,6 +50,9 @@ function App() {
         <Route path="/confirmacion" element={<PurchaseConfirmation />} />
         <Route path="/mis-compras" element={<MyPurchases />} />
         <Route path="/detalle-pedido/:id" element={<OrderDetail />} />
+        <Route path="/products/:id" element={<ProductDetail />} />
+        <Route path="/card/:id" element={<CardRedirect />} />{" "}
+        {/* Nueva ruta para redirección */}
       </Routes>
       <Footer />
     </BrowserRouter>

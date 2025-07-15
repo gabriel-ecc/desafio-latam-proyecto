@@ -74,7 +74,7 @@ export const getProductsByPage = async ({
 
 export const getProductById = async (id) => {
   const sqlQuery = {
-    text: 'SELECT a.id,a.name as product_name,a.description,a.price,a.stock,a.product_photo,b.name as category,c.name as season,a.create_date,a.update_date FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN seasonal_category AS c on a.season_category_id = c.id WHERE a.id = $1',
+    text: 'SELECT a.id,a.name as product_name,a.description,a.price,a.stock,a.product_photo,b.name as category,c.name as season,a.create_date,a.update_date FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN season_category AS c on a.season_category_id = c.id WHERE a.id = $1',
     values: [id],
   }
   const response = await pool.query(sqlQuery)
