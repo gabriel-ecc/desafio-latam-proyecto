@@ -1,10 +1,12 @@
 // Barra de navegación.
-import { useState, useContext, useEffect, useRef } from "react"
-import { Link } from "react-router-dom"
-import useCart from "../context/CartContext.jsx"
-import { UserContext } from "../context/UserContext"
+import { useState, useContext, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import useCart from '../context/CartContext.jsx'
+import { UserContext } from '../context/UserContext'
+import { ENDPOINT } from '../config/constants.js'
+import axios from 'axios'
 
-import "./Navbar.css"
+import './Navbar.css'
 
 const Navbar = () => {
   const { calculateTotalPrice } = useCart()
@@ -15,6 +17,7 @@ const Navbar = () => {
   const [isProfileMenuOpen, setProfileMenuOpen] = useState(false)
   const [isTabletCategoriesOpen, setTabletCategoriesOpen] = useState(false)
   const [isMobileCategoriesOpen, setMobileCategoriesOpen] = useState(false)
+  const [listSeasons, setListSeasons] = useState([])
 
   // Refs para detectar clics fuera de los menús
   const profileMenuRef = useRef(null)
@@ -37,9 +40,13 @@ const Navbar = () => {
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside)
+    axios.get(ENDPOINT.seasons).then(({ data }) => {
+      setListSeasons(data)
+    })
+
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
 
@@ -52,28 +59,27 @@ const Navbar = () => {
     <nav className="navbar">
       <Link to="/" className="nav-logo">
         {/* Asegúrate de que la imagen del logo esté en la carpeta `public/img` */}
-        <img src="../../public/imgs/logo-ejemplo.jpeg" alt="Logo Verdulería Fresca" />
+        <img
+          src="../../public/imgs/logo-ejemplo.jpeg"
+          alt="Logo Verdulería Fresca"
+        />
       </Link>
 
       {/* Links de navegación centrales (PC/Tablet) */}
       <div className="nav-desktop-links">
         <ul className="nav-categories-list">
           <li>
-            <Link to="/category/primavera">Primavera</Link>
+            <Link to="/products/0">Productos</Link>
           </li>
-          <li>
-            <Link to="/category/verano">Verano</Link>
-          </li>
-          <li>
-            <Link to="/category/otono">Otoño</Link>
-          </li>
-          <li>
-            <Link to="/category/invierno">Invierno</Link>
-          </li>
+          {listSeasons.map((season) => (
+            <li key={season.id}>
+              <Link to={`/products/${season.id}`}>{season.name}</Link>
+            </li>
+          ))}
         </ul>
         <div
           className={`dropdown nav-tablet-categories ${
-            isTabletCategoriesOpen ? "is-open" : ""
+            isTabletCategoriesOpen ? 'is-open' : ''
           }`}
           ref={tabletCategoriesRef}
         >
@@ -81,23 +87,19 @@ const Navbar = () => {
             className="categories-btn"
             onClick={() => setTabletCategoriesOpen(!isTabletCategoriesOpen)}
           >
-            Categorías <i className="fa-solid fa-chevron-down"></i>
+            Menú <i className="fa-solid fa-chevron-down"></i>
           </button>
           <ul className="dropdown-content">
-            {" "}
+            {' '}
             {/* TODO: Adapta estas categorías a tu verdulería si es necesario */}
             <li>
-              <Link to="/category/verano">Verano</Link>
+              <Link to="/products">Productos</Link>
             </li>
-            <li>
-              <Link to="/category/otono">Otoño</Link>
-            </li>
-            <li>
-              <Link to="/category/invierno">Invierno</Link>
-            </li>
-            <li>
-              <Link to="/category/primavera">Primavera</Link>
-            </li>
+            {listSeasons.map((season) => (
+              <li key={season.id}>
+                <Link to={`/products/${season.id}`}>{season.name}</Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -112,13 +114,13 @@ const Navbar = () => {
         {token && user ? (
           <>
             <span className="nav-greeting">
-              {" "}
+              {' '}
               {/* Aquí se usa user.name*/}
               Hola, <strong>Bodoque</strong>
             </span>
             <div
               className={`dropdown dropdown-right nav-profile-menu ${
-                isProfileMenuOpen ? "is-open" : ""
+                isProfileMenuOpen ? 'is-open' : ''
               }`}
               ref={profileMenuRef}
             >
@@ -128,13 +130,16 @@ const Navbar = () => {
                 onClick={() => setProfileMenuOpen(!isProfileMenuOpen)}
               >
                 {/* Asegúrate de que la imagen de perfil esté en la carpeta `public/img` */}
-                <img src="../../public/imgs/img-perfil.png" alt="Foto de perfil" />
+                <img
+                  src="../../public/imgs/img-perfil.png"
+                  alt="Foto de perfil"
+                />
                 <i className="fa-solid fa-chevron-down profile-chevron"></i>
               </button>
               <ul className="dropdown-content">
                 <li
                   className={`nav-mobile-link nav-mobile-dropdown ${
-                    isMobileCategoriesOpen ? "is-open" : ""
+                    isMobileCategoriesOpen ? 'is-open' : ''
                   }`}
                 >
                   <a
@@ -146,7 +151,7 @@ const Navbar = () => {
                       setMobileCategoriesOpen(!isMobileCategoriesOpen)
                     }}
                   >
-                    Categorías <i className="fa-solid fa-chevron-right"></i>{" "}
+                    Categorías <i className="fa-solid fa-chevron-right"></i>{' '}
                     {/* TODO: Adapta estas categorías a tu verdulería si es necesario */}
                   </a>
                   <ul className="mobile-submenu">
