@@ -17,9 +17,9 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// cargamos las rutas
-app.use('/', registerUser)
-app.use('/', authRoutes)
+// cargamos las rutas (/api para funcionar mejor con el frontend, (modificarlo si se estima conveniente)).
+app.use('/api', registerUser)
+app.use('/api', authRoutes)
 
 // Connect to the database and then start the server
 pool.query('SELECT NOW()', (err, res) => {
