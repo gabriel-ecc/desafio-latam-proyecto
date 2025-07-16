@@ -4,10 +4,9 @@ import {
   getProductsCount,
   getProductById,
   createProductSQL,
+  updateProductSQL,
 } from '../models/productsModel.js'
-import "dotenv/config";
-
-
+import 'dotenv/config'
 
 export const getProducts = async (req, res) => {
   try {
@@ -25,7 +24,7 @@ export const getProducts = async (req, res) => {
 }
 
 export const getProduct = async (req, res) => {
-  const port = process.env.port || 3000;
+  const port = process.env.port || 3000
   try {
     const { id } = req.params
     const product = await getProductById(id)
@@ -58,9 +57,15 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   try {
-    console.log(req.query)
-    console.log(req.body)
-    res.status(200)
+    const { id } = req.params
+    const productData = req.body
+    const productPhotoFile = req.file
+    if (productPhotoFile) {
+      productData.productPhoto = `uploads/${productPhotoFile.filename}`
+    }
+    const product = await updateProductSQL(id, productData)
+
+    res.status(200).json({ id, product })
   } catch (error) {
     return res.status(500).json(error)
   }

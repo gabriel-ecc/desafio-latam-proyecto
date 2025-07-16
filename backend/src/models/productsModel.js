@@ -106,3 +106,34 @@ export const createProductSQL = async (productData) => {
   const response = await pool.query(sqlQuery)
   return response.rows[0]
 }
+
+export const updateProductSQL = async (id, productData) => {
+  const {
+    name,
+    description,
+    price,
+    stock,
+    productCategory,
+    seasonCategory,
+    productPhoto,
+    filename,
+  } = productData
+
+  productData.filename = 'uploads/' + filename
+
+  const sqlQuery = {
+    text: 'UPDATE products SET name = $1, description = $2, price = $3, stock = $4, product_category_id = $5, season_category_id = $6, product_photo = $7 WHERE id = $8 RETURNING *',
+    values: [
+      name,
+      description,
+      price,
+      stock,
+      productCategory,
+      seasonCategory,
+      productPhoto,
+      id,
+    ],
+  }
+  const response = await pool.query(sqlQuery)
+  return response.rows[0]
+}

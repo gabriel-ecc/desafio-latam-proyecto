@@ -25,6 +25,6 @@ const upload = multer({ storage })
 router.get('/products', getProducts)
 router.get('/products/:id', getProduct)
 router.post('/products', upload.single('productPhoto'), createProduct)
-router.put('/products/:id', updateProduct)
+router.put('/products/:id', upload.single('productPhoto'), updateProduct)
 
 export default router
