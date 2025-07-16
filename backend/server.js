@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import 'dotenv/config'
 import pool from './db/schema/config.js'
+import path from 'path'
 
 // importamos las rutas
 import registerUser from './routes/userRoutes.js'
@@ -27,6 +28,10 @@ app.use('/', authRoutes)
 app.use('/', categoriesRoutes)
 app.use('/', seasonRoutes)
 app.use('/', productsRoutes)
+
+// Disponer imagenes para recursos de pagina web
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to the database and then start the server
 pool.query('SELECT NOW()', (err, res) => {

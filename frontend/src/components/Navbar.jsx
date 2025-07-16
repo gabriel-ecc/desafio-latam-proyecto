@@ -69,6 +69,10 @@ const Navbar = () => {
       <div className="nav-desktop-links">
         <ul className="nav-categories-list">
           <li>
+            <Link to="/editar-producto/0">New Product</Link>
+          </li>
+
+          <li>
             <Link to="/products/0">Productos</Link>
           </li>
           {listSeasons.map((season) => (
