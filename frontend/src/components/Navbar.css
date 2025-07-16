@@ -259,6 +259,12 @@ body {
   display: none;
 }
 
+.nav-auth-links{
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 /* --- ESTILOS RESPONSIVE --- */
 
 /* Estilos para Tablet (entre 769px y 992px) */
