@@ -136,12 +136,6 @@ body {
   background: #155c29;
 }
 
-.btn-cart:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-
 @media (max-width: 991px) and (min-width: 577px) {
   .product-card {
     max-width: 280px;
