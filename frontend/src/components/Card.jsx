@@ -12,9 +12,10 @@ const ProductCard = ({
   onViewDetails,
 }) => {
   // Desestructuramos las propiedades del producto para un uso más limpio
-  const { id, name, price, category, img, isFavorite, stock } = product
+  const { id, name, price, category, photo, isFavorite, stock } = product
   // Estado local para manejar la cantidad del producto
   const [quantity, setQuantity] = useState(0)
+  const [imgError, setImgError] = useState(false)
 
   const handleIncrease = () => {
     setQuantity((prev) => (prev + 1 > stock ? stock : prev + 1))
@@ -37,6 +38,10 @@ const ProductCard = ({
     if (onViewDetails) onViewDetails(id)
   }
 
+  const handleImageError = () => {
+    setImgError(true)
+  }
+
   return (
     <div className="product-card">
       <div className="image-container">
@@ -45,10 +50,11 @@ const ProductCard = ({
           onClick={() => onToggleFavorite(id)}
         />
         <img
-          src={img}
+          src={imgError ? '/imgs/placeholder.svg' : photo}
           alt={name}
           className="product-img"
           onClick={handleDetailsClick}
+          onError={handleImageError}
           style={{ cursor: onViewDetails ? 'pointer' : 'default' }}
         />
       </div>
@@ -106,7 +112,7 @@ ProductCard.propTypes = {
     price: PropTypes.number.isRequired,
     stock: PropTypes.number.isRequired,
     category: PropTypes.string.isRequired,
-    img: PropTypes.string.isRequired,
+    photo: PropTypes.string.isRequired,
     isFavorite: PropTypes.bool,
   }).isRequired,
   onAddToCart: PropTypes.func.isRequired,
