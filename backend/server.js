@@ -31,8 +31,8 @@ app.use(cors())
 app.use(express.json())
 
 // cargamos las rutas
-app.use('/', registerUser)
-app.use('/', authRoutes)
+app.use('/api', registerUser)
+app.use('/api', authRoutes)
 app.use('/', categoriesRoutes)
 app.use('/', seasonRoutes)
 app.use('/', productsRoutes)
