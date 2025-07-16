@@ -15,6 +15,7 @@ const mockProducts = [
     seasons: ["verano", "otoño"],
     name: "Zanahoria 1kg",
     price: 5950,
+    stock: 10,
   },
   {
     desc: "Fruta",
@@ -23,6 +24,7 @@ const mockProducts = [
     seasons: ["otoño", "invierno"],
     name: "Manzana 1kg",
     price: 7250,
+    stock: 10,
   },
   {
     desc: "Verdura",
@@ -31,6 +33,7 @@ const mockProducts = [
     seasons: ["invierno", "primavera"],
     name: "Brócoli 1kg",
     price: 5990,
+    stock: 10,
   },
   {
     desc: "Fruta",
@@ -39,6 +42,7 @@ const mockProducts = [
     seasons: ["primavera", "verano"],
     name: "plátano 1kg",
     price: 9590,
+    stock: 10,
   },
   {
     desc: "Fruta",
@@ -47,6 +51,7 @@ const mockProducts = [
     seasons: ["verano", "otoño"],
     name: "Pera 1kg",
     price: 6450,
+    stock: 10,
   },
   {
     desc: "Verdura",
@@ -55,6 +60,7 @@ const mockProducts = [
     seasons: ["otoño", "primavera"],
     name: "Lechuga 1kg",
     price: 8500,
+    stock: 10,
   },
 ]
 
