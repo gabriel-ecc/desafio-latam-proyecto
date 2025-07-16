@@ -6,5 +6,5 @@ export const ENDPOINT = {
   products: `${URLBASE}${apiVersion}/products`,
   seasons: `${URLBASE}${apiVersion}/seasons`,
   categories: `${URLBASE}${apiVersion}/categories`,
-  
+  login: `${URLBASE}${apiVersion}/login`,
 }

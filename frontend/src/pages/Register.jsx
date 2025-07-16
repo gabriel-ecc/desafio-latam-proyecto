@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './AuthForm.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ENDPOINT } from '../config/constants.js'
 import Swal from 'sweetalert2'
 import {
   faUser,
@@ -48,7 +49,7 @@ export default function Register() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/users', {
+      const response = await fetch(ENDPOINT.users, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
