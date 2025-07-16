@@ -1,43 +1,43 @@
-import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
-import { loginUser, getUserData, saveToken } from '../services/authService';
-import Swal from 'sweetalert2';
-import './AuthForm.css';
+import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../context/UserContext'
+import { loginUser, getUserData, saveToken } from '../services/authService'
+import Swal from 'sweetalert2'
+import './AuthForm.css'
 
 export default function Login() {
   const [form, setForm] = useState({
     email: '',
-    password: '',
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+    password: ''
+  })
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const { setUser, setToken } = useContext(UserContext);
-  const navigate = useNavigate();
+  const { setUser, setToken } = useContext(UserContext)
+  const navigate = useNavigate()
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    if (error) setError('');
-  };
+  const handleChange = e => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+    if (error) setError('')
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
+  const handleSubmit = async e => {
+    e.preventDefault()
+    setIsLoading(true)
+    setError('')
 
     try {
       // Llamar al servicio de login
-      const loginResponse = await loginUser(form);
-      const { token } = loginResponse;
+      const loginResponse = await loginUser(form)
+      const { token } = loginResponse
 
       // Guardar token en localStorage
-      saveToken(token);
-      setToken(token);
+      saveToken(token)
+      setToken(token)
 
       // Obtener datos del usuario
-      const userData = await getUserData(token);
-      setUser(userData);
+      const userData = await getUserData(token)
+      setUser(userData)
 
       // Mostrar mensaje de éxito (SweetAlert por mientras para más claridad.)
       await Swal.fire({
@@ -45,29 +45,29 @@ export default function Login() {
         text: `Hola ${userData.nameLastName}, has iniciado sesión correctamente.`,
         icon: 'success',
         confirmButtonText: 'Continuar',
-        confirmButtonColor: '#28a745',
-      });
+        confirmButtonColor: '#28a745'
+      })
 
       // Redirigir según el rol del usuario
       if (userData.rol === 'admin') {
-        navigate('/usuarios');
+        navigate('/usuarios')
       } else {
-        navigate('/catalogo');
+        navigate('/catalogo')
       }
     } catch (error) {
-      setError(error.message || 'Error al iniciar sesión');
+      setError(error.message || 'Error al iniciar sesión')
 
       await Swal.fire({
         title: 'Error',
         text: error.message || 'Error al iniciar sesión',
         icon: 'error',
         confirmButtonText: 'Intentar de nuevo',
-        confirmButtonColor: '#dc3545',
-      });
+        confirmButtonColor: '#dc3545'
+      })
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <div className="auth-bg">
@@ -140,5 +140,5 @@ export default function Login() {
         </form>
       </div>
     </div>
-  );
+  )
 }

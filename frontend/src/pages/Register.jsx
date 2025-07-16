@@ -1,35 +1,39 @@
 // Formulario para que un usuario cree una nueva cuenta.
 // El rol se asigna por el administrador en Users.jsx
-import { useState } from "react"
-import "./AuthForm.css"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import './AuthForm.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Swal from 'sweetalert2'
 import {
   faUser,
   faEnvelope,
   faLock,
-  faPhone,
-} from "@fortawesome/free-solid-svg-icons"
+  faPhone
+} from '@fortawesome/free-solid-svg-icons'
 
 export default function Register() {
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
   })
 
-  const handleChange = (e) => {
+  const navigate = useNavigate()
+
+  const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
 
     // Validación de contraseña
     if (form.password !== form.confirmPassword) {
-      alert("Las contraseñas no coinciden")
+      alert('Las contraseñas no coinciden')
       return
     }
 
@@ -44,22 +48,42 @@ export default function Register() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
+      const response = await fetch('http://localhost:3000/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
       })
 
       const data = await response.json()
+
       if (response.ok) {
-        alert("Usuario registrado correctamente")
-        // Conversar si redirigirá a otra página automáticamente
+        await Swal.fire({
+          title: 'Usuario registrado!',
+          text: `Hola ${userData.firstName}, tu cuenta ha sido creada correctamente.`,
+          icon: 'success',
+          confirmButtonText: 'Continuar',
+          confirmButtonColor: '#28a745'
+        })
+
+        navigate('/Login')
       } else {
-        alert(data.message || "Error al registrar usuario")
+        await Swal.fire({
+          title: 'Error',
+          text: data.message || 'Error al crear usuario',
+          icon: 'error',
+          confirmButtonText: 'Intentar de nuevo',
+          confirmButtonColor: '#dc3545'
+        })
       }
     } catch (error) {
       console.error(error)
-      alert("Error de red o servidor")
+      await Swal.fire({
+        title: 'Error',
+        text: error.message || 'Error al crear usuario',
+        icon: 'error',
+        confirmButtonText: 'Intentar de nuevo',
+        confirmButtonColor: '#dc3545'
+      })
     }
   }
 
@@ -167,7 +191,7 @@ export default function Register() {
               />
             </div>
           </div>
-           {/* a espera de que se implemente la subida de fotos de perfil en el backend ya que pide instalar multer */}
+          {/* a espera de que se implemente la subida de fotos de perfil en el backend ya que pide instalar multer */}
           {/* <div className="mb-3">
             <div className="input-group">
               <span className="input-group-text">
