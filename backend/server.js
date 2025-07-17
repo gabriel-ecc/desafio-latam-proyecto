@@ -31,12 +31,13 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explore
 app.use(cors())
 app.use(express.json())
 
-// cargamos las rutas
-app.use('/', registerUser)
-app.use('/', authRoutes)
-app.use('/', categoriesRoutes)
-app.use('/', seasonRoutes)
-app.use('/', productsRoutes)
+
+// cargamos las rutas (/api para funcionar mejor con el frontend, (modificarlo si se estima conveniente)).
+app.use('/api/v1', registerUser)
+app.use('/api/v1', authRoutes)
+app.use('/api/v1', categoriesRoutes)
+app.use('/api/v1', seasonRoutes)
+app.use('/api/v1', productsRoutes)
 
 // Disponer imagenes para recursos de pagina web
 const __dirname = path.resolve()
