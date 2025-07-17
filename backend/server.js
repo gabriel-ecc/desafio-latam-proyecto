@@ -31,7 +31,7 @@ app.use('/', productsRoutes)
 
 // Disponer imagenes para recursos de pagina web
 const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/api/v1/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to the database and then start the server
 pool.query('SELECT NOW()', (err, res) => {

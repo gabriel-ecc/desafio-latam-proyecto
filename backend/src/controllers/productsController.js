@@ -28,7 +28,7 @@ export const getProduct = async (req, res) => {
   try {
     const { id } = req.params
     const product = await getProductById(id)
-    product.img = `http://localhost:${port}/${product.img}`
+    product.img = `http://localhost:${port}/api/v1/uploads/${product.img}`
     res.status(200).json(product)
   } catch (error) {
     console.error(error)
@@ -43,7 +43,7 @@ export const createProduct = async (req, res) => {
 
     if (productPhotoFile) {
       // 2. Si el archivo existe, construimos su ruta relativa y la añadimos a los datos del producto
-      productData.productPhoto = `uploads/${productPhotoFile.filename}`
+      productData.productPhoto = productPhotoFile.filename
     }
 
     const product = await createProductSQL(productData)
@@ -61,12 +61,13 @@ export const updateProduct = async (req, res) => {
     const productData = req.body
     const productPhotoFile = req.file
     if (productPhotoFile) {
-      productData.productPhoto = `uploads/${productPhotoFile.filename}`
+      productData.productPhoto = productPhotoFile.filename
     }
     const product = await updateProductSQL(id, productData)
 
     res.status(200).json({ id, product })
   } catch (error) {
+    console.log(error)
     return res.status(500).json(error)
   }
 }

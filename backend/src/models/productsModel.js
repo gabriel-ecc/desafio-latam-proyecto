@@ -67,7 +67,6 @@ export const getProductsByPage = async ({
     offset
   )
 
-  console.log(queryWithFormat)
   const { rows: productList } = await pool.query(queryWithFormat)
   return productList
 }
@@ -91,6 +90,10 @@ export const createProductSQL = async (productData) => {
     seasonCategory,
     productPhoto,
   } = productData
+
+  const partes = productPhoto.split('/')
+  const nombreImagen = partes[partes.length - 1]
+
   const sqlQuery = {
     text: 'INSERT INTO products (name, description, price, stock, product_category_id, season_category_id, product_photo, status) VALUES ($1, $2, $3, $4, $5, $6, $7, true) RETURNING *',
     values: [
@@ -100,7 +103,7 @@ export const createProductSQL = async (productData) => {
       stock,
       productCategory,
       seasonCategory,
-      productPhoto,
+      nombreImagen,
     ],
   }
   const response = await pool.query(sqlQuery)
@@ -119,7 +122,8 @@ export const updateProductSQL = async (id, productData) => {
     filename,
   } = productData
 
-  productData.filename = 'uploads/' + filename
+  const partes = productPhoto.split('/')
+  const nombreImagen = partes[partes.length - 1]
 
   const sqlQuery = {
     text: 'UPDATE products SET name = $1, description = $2, price = $3, stock = $4, product_category_id = $5, season_category_id = $6, product_photo = $7 WHERE id = $8 RETURNING *',
@@ -130,7 +134,7 @@ export const updateProductSQL = async (id, productData) => {
       stock,
       productCategory,
       seasonCategory,
-      productPhoto,
+      nombreImagen,
       id,
     ],
   }

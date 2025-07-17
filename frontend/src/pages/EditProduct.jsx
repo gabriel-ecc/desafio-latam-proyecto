@@ -17,7 +17,7 @@ export default function EditProduct() {
     stock: '',
     category_id: '',
     season_id: '',
-    img: null,
+    img: '',
   })
   const [categories, setCategories] = useState([])
   const [seasons, setSeasons] = useState([])
@@ -54,7 +54,7 @@ export default function EditProduct() {
             stock: data.stock,
             category_id: data.category_id,
             season_id: data.season_id,
-            img: data.product_photo, 
+            img: data.img, 
           })
           setImagePreview(data.img) 
         })
