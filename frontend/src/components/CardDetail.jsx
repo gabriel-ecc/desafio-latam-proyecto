@@ -3,16 +3,22 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import './CardDetail.css'
 import FavoriteButton from './FavoriteButton'
+import { URLBASE } from '../config/constants'
 
 const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
   const [quantity, setQuantity] = useState(1)
 
+  // Construir la URL completa de la imagen
+  const imageUrl = product.product_photo
+    ? `${URLBASE}/${product.product_photo}`
+    : '/imgs/placeholder.jpg'
+
   const handleIncrease = () => {
-    setQuantity((prev) => (prev + 1 > product.stock ? product.stock : prev + 1))
+    setQuantity(prev => (prev + 1 > product.stock ? product.stock : prev + 1))
   }
 
   const handleDecrease = () => {
-    setQuantity((prev) => (prev - 1 > 0 ? prev - 1 : 1))
+    setQuantity(prev => (prev - 1 > 0 ? prev - 1 : 1))
   }
 
   const handleAddToCart = () => {
@@ -28,7 +34,7 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
           onClick={() => onToggleFavorite(product.id)}
         />
         <img
-          src={product.product_photo || '/imgs/placeholder.jpg'}
+          src={imageUrl}
           alt={product.product_name}
           className="card-detail-image"
         />
@@ -79,7 +85,7 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
                 min="1"
                 max={product.stock}
                 value={quantity}
-                onChange={(e) =>
+                onChange={e =>
                   setQuantity(
                     Math.max(
                       1,
@@ -123,10 +129,10 @@ CardDetail.propTypes = {
     stock: PropTypes.number.isRequired,
     product_photo: PropTypes.string,
     description: PropTypes.string,
-    isFavorite: PropTypes.bool,
+    isFavorite: PropTypes.bool
   }).isRequired,
   onAddToCart: PropTypes.func.isRequired,
-  onToggleFavorite: PropTypes.func.isRequired,
+  onToggleFavorite: PropTypes.func.isRequired
 }
 
 export default CardDetail

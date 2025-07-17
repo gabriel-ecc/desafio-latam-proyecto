@@ -30,6 +30,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explore
 app.use(cors())
 app.use(express.json())
 
+// Para archivos estáticos (imágenes de los productos) desde la carpeta 'uploads'
+app.use('/uploads', express.static('uploads'))
+
 // cargamos las rutas
 app.use('/api', registerUser)
 app.use('/api', authRoutes)
