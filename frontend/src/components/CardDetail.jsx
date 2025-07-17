@@ -35,7 +35,7 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
         />
         <img
           src={imageUrl}
-          alt={product.product_name}
+          alt={product.name}
           className="card-detail-image"
         />
       </div>
@@ -43,14 +43,14 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
       <div className="card-detail-content">
         <div className="card-detail-header">
           <div className="card-detail-categories">
-            <Link to={`/category/${product.category}`}>
+            <Link to={`/products/category/${product.categoryId}`}>
               <span className="category-tag">{product.category}</span>
             </Link>
-            <Link to={`/season/${product.season}`}>
+            <Link to={`/products/season/${product.seasonId}`}>
               <span className="season-tag">{product.season}</span>
             </Link>
           </div>
-          <h1 className="card-detail-title">{product.product_name}</h1>
+          <h1 className="card-detail-title">{product.name}</h1>
         </div>
 
         <div className="card-detail-pricing">
@@ -124,12 +124,12 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
 CardDetail.propTypes = {
   product: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    product_name: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     category: PropTypes.string.isRequired,
     season: PropTypes.string.isRequired,
     stock: PropTypes.number.isRequired,
-    product_photo: PropTypes.string,
+    img: PropTypes.string,
     description: PropTypes.string,
     isFavorite: PropTypes.bool,
   }).isRequired,

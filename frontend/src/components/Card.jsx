@@ -13,7 +13,7 @@ const ProductCard = ({
   onViewDetails,
 }) => {
   // Desestructuramos las propiedades del producto para un uso más limpio
-  const { id, name, price, category, img, isFavorite, stock } = product
+  const { id, name, price, category, categoryId, img, isFavorite, stock } = product
   // Estado local para manejar la cantidad del producto
   const [quantity, setQuantity] = useState(0)
   const [imgError, setImgError] = useState(false)
@@ -61,7 +61,7 @@ const ProductCard = ({
         />
       </div>
       <div className="product-body">
-        <Link to={`/category/${category}`}>
+        <Link to={`/products/category/${categoryId}`}>
           <span className="product-category">{category}</span>
         </Link>
         <h2

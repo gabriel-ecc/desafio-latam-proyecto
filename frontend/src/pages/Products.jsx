@@ -9,8 +9,11 @@ import axios from 'axios'
 // Muestra todos los productos disponibles en la tienda sin filtros (para el administrador).
 export default function Products() {
   const { season } = useParams()
+  const { category } = useParams()
   const [cards, setCards] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState(
+    category === '0' ? '' : category || ''
+  )
   const [listCategories, setListCategories] = useState([])
   const [selectedSeason, setSelectedSeason] = useState(
     season === '0' ? '' : season || ''
@@ -18,7 +21,7 @@ export default function Products() {
   const [listSeasons, setListSeasons] = useState([])
   const [orderBy, setOrderBy] = useState('price_ASC')
   const [page, setPage] = useState(1)
-  const [limits, setLimits] = useState(12)
+  const [limits, setLimits] = useState(9)
   const { addToCart } = useCart()
   const [cantidadPaginas, setCantidadPaginas] = useState(0)
   const navigate = useNavigate()
@@ -146,10 +149,10 @@ export default function Products() {
               setPage(1)
             }}
           >
-            <option value="4">4</option>
-            <option value="8">8</option>
+            <option value="3">3</option>
+            <option value="6">6</option>
+            <option value="9">9</option>
             <option value="12">12</option>
-            <option value="16">16</option>
           </select>
         </div>
       </div>

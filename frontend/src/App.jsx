@@ -41,7 +41,9 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/usuarios" element={<Users />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/products" element={<Products />} />
         <Route path="/products/season/:season" element={<Products />} />
+        <Route path="/products/category/:category" element={<Products />} />        
         <Route path="/catalogo" element={<Catalog />} />
         <Route path="/inventario" element={<Inventory />} />
         <Route path="/editar-producto/:id" element={<EditProduct />} />

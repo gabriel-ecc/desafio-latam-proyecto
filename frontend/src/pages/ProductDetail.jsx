@@ -17,8 +17,6 @@ const ProductDetail = () => {
   const fetchProduct = async () => {
     try {
       setLoading(true)
-      console.log('Fetching product with ID:', id)
-      console.log('Fetching from URL:', `${ENDPOINT.products}/${id}`)
       const response = await fetch(`${ENDPOINT.products}/${id}`)
 
       if (!response.ok) {
@@ -26,10 +24,9 @@ const ProductDetail = () => {
       }
 
       const productData = await response.json()
-      console.log('Product data received:', productData)
+
       setProduct(productData)
     } catch (err) {
-      console.error('Error fetching product:', err)
       setError(err.message)
     } finally {
       setLoading(false)
@@ -48,16 +45,16 @@ const ProductDetail = () => {
     return favorites ? JSON.parse(favorites) : []
   }
 
-  const isProductFavorite = productId => {
+  const isProductFavorite = (productId) => {
     return getFavorites().includes(productId)
   }
 
-  const handleToggleFavorite = productId => {
+  const handleToggleFavorite = (productId) => {
     const favorites = getFavorites()
     const isFavorite = favorites.includes(productId)
 
     if (isFavorite) {
-      const newFavorites = favorites.filter(id => id !== productId)
+      const newFavorites = favorites.filter((id) => id !== productId)
       localStorage.setItem('favorites', JSON.stringify(newFavorites))
     } else {
       const newFavorites = [...favorites, productId]
@@ -65,9 +62,9 @@ const ProductDetail = () => {
     }
 
     // Actualizar el producto con el nuevo estado de favorito
-    setProduct(prevProduct => ({
+    setProduct((prevProduct) => ({
       ...prevProduct,
-      isFavorite: !isFavorite
+      isFavorite: !isFavorite,
     }))
   }
 
@@ -129,7 +126,7 @@ const ProductDetail = () => {
       <CardDetail
         product={{
           ...product,
-          isFavorite: isProductFavorite(product.id)
+          isFavorite: isProductFavorite(product.id),
         }}
         onAddToCart={handleAddToCart}
         onToggleFavorite={handleToggleFavorite}

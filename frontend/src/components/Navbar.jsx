@@ -69,17 +69,20 @@ const Navbar = () => {
       <div className="nav-desktop-links">
         <ul className="nav-categories-list">
           <li>
-            <Link to="/editar-producto/0">New Product</Link>
+            <Link to="/">Inicio</Link>
           </li>
-
+          
           <li>
-            <Link to="/products/season/0">Productos</Link>
+            <Link to="/products">Productos</Link>
           </li>
           {listSeasons.map((season) => (
             <li key={season.id}>
               <Link to={`/products/season/${season.id}`}>{season.name}</Link>
             </li>
           ))}
+          <li>
+            <Link to="/editar-producto/0">New Product</Link>
+          </li>
         </ul>
         <div
           className={`dropdown nav-tablet-categories ${
