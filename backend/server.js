@@ -10,7 +10,6 @@ import categoriesRoutes from './routes/categoriesRoutes.js'
 import seasonRoutes from './routes/seasonRoutes.js'
 import productsRoutes from './routes/productsRoutes.js'
 
-
 import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
 
@@ -29,7 +28,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explore
 // cargamos el middleware
 app.use(cors())
 app.use(express.json())
-
 
 // cargamos las rutas (/api para funcionar mejor con el frontend, (modificarlo si se estima conveniente)).
 app.use('/api/v1', registerUser)
