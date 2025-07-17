@@ -46,7 +46,9 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
             <Link to={`/category/${product.category}`}>
               <span className="category-tag">{product.category}</span>
             </Link>
-            <span className="season-tag">{product.season}</span>
+            <Link to={`/season/${product.season}`}>
+              <span className="season-tag">{product.season}</span>
+            </Link>
           </div>
           <h1 className="card-detail-title">{product.product_name}</h1>
         </div>

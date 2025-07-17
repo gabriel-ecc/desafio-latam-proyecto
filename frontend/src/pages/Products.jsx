@@ -153,20 +153,21 @@ export default function Products() {
           </select>
         </div>
       </div>
-      <div className="row card-container">
+      <div className="card-container">
         {cards.length > 0 ? (
           cards.map((card) => (
-            <div className="col-lg-3 col-md-5 mb-4" key={card.id}>
-              <ProductCard
-                product={card}
-                onAddToCart={handleAddToCart}
-                onToggleFavorite={handleToggleFavorite}
-                onViewDetails={handleViewMore}
-              />
-            </div>
+            <ProductCard
+              key={card.id}
+              product={card}
+              onAddToCart={handleAddToCart}
+              onToggleFavorite={handleToggleFavorite}
+              onViewDetails={handleViewMore}
+            />
           ))
         ) : (
-          <p>No hay productos disponibles.</p>
+          <div className="no-products">
+            <p>No hay productos disponibles.</p>
+          </div>
         )}
       </div>
       {cantidadPaginas > 1 ? (
