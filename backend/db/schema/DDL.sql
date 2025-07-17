@@ -63,4 +63,20 @@ CREATE TABLE products(
 );
 
 
+<<<<<<< Updated upstream
+=======
+/*
+CREATE TABLE users (
+  userId	UUID PRIMARY KEY NOT NULL,
+  email	VARCHAR(40) NOT NULL,
+  password	VARCHAR(50) NOT NULL,
+  firstName	VARCHAR(50) NOT NULL,
+  lastName	VARCHAR(50) NOT NULL,
+  phoneNumber	VARCHAR(12),
+  userType	VARCHAR(15) NOT NULL,
+  createdAt	TIMESTAMP NOT NULL,
+  updatedAt	TIMESTAMP NOT NULL
+)
+*/
+>>>>>>> Stashed changes
 

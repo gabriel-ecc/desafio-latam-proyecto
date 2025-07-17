@@ -10,7 +10,6 @@ import categoriesRoutes from './routes/categoriesRoutes.js'
 import seasonRoutes from './routes/seasonRoutes.js'
 import productsRoutes from './routes/productsRoutes.js'
 
-
 import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
 
