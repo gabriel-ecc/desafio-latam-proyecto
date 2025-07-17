@@ -43,10 +43,10 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
       <div className="card-detail-content">
         <div className="card-detail-header">
           <div className="card-detail-categories">
-            <Link to={`/products/category/${product.categoryId}`}>
+            <Link to={`/products?category=${product.categoryId}`}>
               <span className="category-tag">{product.category}</span>
             </Link>
-            <Link to={`/products/season/${product.seasonId}`}>
+            <Link to={`/products?season=${product.seasonId}`}>
               <span className="season-tag">{product.season}</span>
             </Link>
           </div>
