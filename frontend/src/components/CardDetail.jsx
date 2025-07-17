@@ -9,8 +9,8 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
   const [quantity, setQuantity] = useState(1)
 
   // Construir la URL completa de la imagen
-  const imageUrl = product.product_photo
-    ? `${URLBASE}/${product.product_photo}`
+  const imageUrl = product.img
+    ? `${URLBASE}/${product.img}`
     : '/imgs/placeholder.jpg'
 
   const handleIncrease = () => {

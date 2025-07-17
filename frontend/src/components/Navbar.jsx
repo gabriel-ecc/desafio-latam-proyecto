@@ -69,11 +69,15 @@ const Navbar = () => {
       <div className="nav-desktop-links">
         <ul className="nav-categories-list">
           <li>
-            <Link to="/products/season/0">Productos</Link>
+            <Link to="/editar-producto/0">New Product</Link>
+          </li>
+
+          <li>
+            <Link to="/products/0">Productos</Link>
           </li>
           {listSeasons.map((season) => (
             <li key={season.id}>
-              <Link to={`/products/season/${season.id}`}>{season.name}</Link>
+              <Link to={`/products/${season.id}`}>{season.name}</Link>
             </li>
           ))}
         </ul>
@@ -93,11 +97,11 @@ const Navbar = () => {
             {' '}
             {/* TODO: Adapta estas categorías a tu verdulería si es necesario */}
             <li>
-              <Link to="/products/season/0">Productos</Link>
+              <Link to="/products">Productos</Link>
             </li>
             {listSeasons.map((season) => (
               <li key={season.id}>
-                <Link to={`/products/season/${season.id}`}>{season.name}</Link>
+                <Link to={`/products/${season.id}`}>{season.name}</Link>
               </li>
             ))}
           </ul>
