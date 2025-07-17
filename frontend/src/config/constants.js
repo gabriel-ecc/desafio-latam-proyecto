@@ -1,9 +1,10 @@
 export const URLBASE = 'http://localhost:3000'
+export const apiVersion = '/api/v1'
 
 export const ENDPOINT = {
-  users: `${URLBASE}/api/v1/users`,
-  products: `${URLBASE}/api/v1/products`,
-  seasons: `${URLBASE}/api/v1/seasons`,
-  categories: `${URLBASE}/api/v1/categories`,
-  login: `${URLBASE}/api/v1/login`
+  users: `${URLBASE}${apiVersion}/users`,
+  products: `${URLBASE}${apiVersion}/products`,
+  seasons: `${URLBASE}${apiVersion}/seasons`,
+  categories: `${URLBASE}${apiVersion}/categories`,
+  login: `${URLBASE}${apiVersion}/login`,
 }

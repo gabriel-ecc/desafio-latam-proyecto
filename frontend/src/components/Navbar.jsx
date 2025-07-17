@@ -73,11 +73,11 @@ const Navbar = () => {
           </li>
 
           <li>
-            <Link to="/products/0">Productos</Link>
+            <Link to="/products/season/0">Productos</Link>
           </li>
           {listSeasons.map((season) => (
             <li key={season.id}>
-              <Link to={`/products/${season.id}`}>{season.name}</Link>
+              <Link to={`/products/season/${season.id}`}>{season.name}</Link>
             </li>
           ))}
         </ul>

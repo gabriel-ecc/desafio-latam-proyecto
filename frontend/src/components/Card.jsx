@@ -10,24 +10,21 @@ const ProductCard = ({
   product,
   onAddToCart,
   onToggleFavorite,
-  onViewDetails
+  onViewDetails,
 }) => {
   // Desestructuramos las propiedades del producto para un uso más limpio
-  const { id, name, price, category, photo, isFavorite, stock } = product
+  const { id, name, price, category, img, isFavorite, stock } = product
   // Estado local para manejar la cantidad del producto
   const [quantity, setQuantity] = useState(0)
   const [imgError, setImgError] = useState(false)
 
-  // Construir la URL completa de la imagen
-  const imageUrl = photo ? `${URLBASE}/${photo}` : '/imgs/placeholder.svg'
-
   const handleIncrease = () => {
-    setQuantity(prev => (prev + 1 > stock ? stock : prev + 1))
+    setQuantity((prev) => (prev + 1 > stock ? stock : prev + 1))
   }
 
   const handleDecrease = () => {
     // Evita que la cantidad sea menor que 1
-    setQuantity(prev => (prev - 1 > 0 ? prev - 1 : 0))
+    setQuantity((prev) => (prev - 1 > 0 ? prev - 1 : 0))
   }
 
   const handleAddToCart = () => {
@@ -36,7 +33,7 @@ const ProductCard = ({
     setQuantity(0)
   }
 
-  const handleDetailsClick = e => {
+  const handleDetailsClick = (e) => {
     // Evita que el click se propague a elementos padres si es necesario
     e.stopPropagation()
     if (onViewDetails) onViewDetails(id)
@@ -54,7 +51,8 @@ const ProductCard = ({
           onClick={() => onToggleFavorite(id)}
         />
         <img
-          src={imgError ? '/imgs/placeholder.svg' : imageUrl}
+          // src={imgError ? '/imgs/placeholder.svg' : img}
+          src={img}
           alt={name}
           className="product-img"
           onClick={handleDetailsClick}
@@ -117,11 +115,11 @@ ProductCard.propTypes = {
     stock: PropTypes.number.isRequired,
     category: PropTypes.string.isRequired,
     photo: PropTypes.string.isRequired,
-    isFavorite: PropTypes.bool
+    isFavorite: PropTypes.bool,
   }).isRequired,
   onAddToCart: PropTypes.func.isRequired,
   onToggleFavorite: PropTypes.func.isRequired,
-  onViewDetails: PropTypes.func
+  onViewDetails: PropTypes.func,
 }
 
 export default ProductCard

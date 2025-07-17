@@ -6,24 +6,24 @@ import FavoriteButton from './FavoriteButton'
 import { URLBASE } from '../config/constants'
 
 const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(0)
 
   // Construir la URL completa de la imagen
   const imageUrl = product.img
-    ? `${URLBASE}/${product.img}`
-    : '/imgs/placeholder.jpg'
+  //   ? `${URLBASE}/${product.img}`
+  //   : '/imgs/placeholder.jpg'
 
   const handleIncrease = () => {
-    setQuantity(prev => (prev + 1 > product.stock ? product.stock : prev + 1))
+    setQuantity((prev) => (prev + 1 > product.stock ? product.stock : prev + 1))
   }
 
   const handleDecrease = () => {
-    setQuantity(prev => (prev - 1 > 0 ? prev - 1 : 1))
+    setQuantity((prev) => (prev - 1 >= 0 ? prev - 1 : 0))
   }
 
   const handleAddToCart = () => {
     onAddToCart(product, quantity)
-    setQuantity(1)
+    setQuantity(0)
   }
 
   return (
@@ -74,7 +74,7 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
             <div className="quantity-control">
               <button
                 onClick={handleDecrease}
-                disabled={quantity <= 1}
+                disabled={quantity <= 0}
                 className="btn-quantity"
               >
                 <i className="fa-solid fa-minus"></i>
@@ -85,7 +85,7 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
                 min="1"
                 max={product.stock}
                 value={quantity}
-                onChange={e =>
+                onChange={(e) =>
                   setQuantity(
                     Math.max(
                       1,
@@ -129,10 +129,10 @@ CardDetail.propTypes = {
     stock: PropTypes.number.isRequired,
     product_photo: PropTypes.string,
     description: PropTypes.string,
-    isFavorite: PropTypes.bool
+    isFavorite: PropTypes.bool,
   }).isRequired,
   onAddToCart: PropTypes.func.isRequired,
-  onToggleFavorite: PropTypes.func.isRequired
+  onToggleFavorite: PropTypes.func.isRequired,
 }
 
 export default CardDetail
