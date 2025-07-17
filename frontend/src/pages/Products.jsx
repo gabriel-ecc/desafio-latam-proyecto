@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/Card'
 import './Products.css'
 import useCart from '../context/CartContext.jsx'
@@ -8,8 +8,9 @@ import axios from 'axios'
 
 // Muestra todos los productos disponibles en la tienda sin filtros (para el administrador).
 export default function Products() {
-  const { season } = useParams()
-  const { category } = useParams()
+  const [searchParams] = useSearchParams()
+  const season = searchParams.get('season')
+  const category = searchParams.get('category')
   const [cards, setCards] = useState([])
   const [selectedCategory, setSelectedCategory] = useState(
     category === '0' ? '' : category || ''
@@ -29,8 +30,9 @@ export default function Products() {
   useEffect(() => {
     // Sincroniza el estado del filtro de temporada con el parámetro de la URL
     setSelectedSeason(season === '0' ? '' : season || '')
+    setSelectedCategory(category === '0' ? '' : category || '')
     setPage(1)
-  }, [season])
+  }, [season, category])
 
   const queryParams = {
     limits: limits,

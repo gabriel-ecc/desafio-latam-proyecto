@@ -61,7 +61,7 @@ const ProductCard = ({
         />
       </div>
       <div className="product-body">
-        <Link to={`/products/category/${categoryId}`}>
+        <Link to={`/products?category=${categoryId}`}>
           <span className="product-category">{category}</span>
         </Link>
         <h2

@@ -71,13 +71,13 @@ const Navbar = () => {
           <li>
             <Link to="/">Inicio</Link>
           </li>
-          
+
           <li>
             <Link to="/products">Productos</Link>
           </li>
           {listSeasons.map((season) => (
             <li key={season.id}>
-              <Link to={`/products/season/${season.id}`}>{season.name}</Link>
+              <Link to={`/products?season=${season.id}`}>{season.name}</Link>
             </li>
           ))}
           <li>
@@ -104,7 +104,7 @@ const Navbar = () => {
             </li>
             {listSeasons.map((season) => (
               <li key={season.id}>
-                <Link to={`/products/${season.id}`}>{season.name}</Link>
+                <Link to={`products?season=${season.id}`}>{season.name}</Link>
               </li>
             ))}
           </ul>
@@ -162,18 +162,13 @@ const Navbar = () => {
                     {/* TODO: Adapta estas categorías a tu verdulería si es necesario */}
                   </a>
                   <ul className="mobile-submenu">
-                    <li>
-                      <Link to="/category/verano">Verano</Link>
-                    </li>
-                    <li>
-                      <Link to="/category/otono">Otoño</Link>
-                    </li>
-                    <li>
-                      <Link to="/category/invierno">Invierno</Link>
-                    </li>
-                    <li>
-                      <Link to="/category/primavera">Primavera</Link>
-                    </li>
+                    {listSeasons.map((season) => (
+                      <li key={season.id}>
+                        <Link to={`products?season=${season.id}`}>
+                          {season.name}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
                 </li>
                 <li>
