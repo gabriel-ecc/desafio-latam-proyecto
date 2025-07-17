@@ -11,8 +11,10 @@ export const productsHATEOAS = async (entity, data, count) => {
       category: item.category,
       price: item.price,
       stock: item.stock,
-      photo: item.product_photo,
-      hfef: `http://localhost:${port}/${entity}/${item.id}`,
+      img: `http://localhost:${port}/api/v1/uploads/${item.img}`,
+      category_id: item.category_id,
+      season_id: item.season_id,
+      hfef: `http://localhost:${port}/api/v1/${entity}/${item.id}`,
     };
   });
 
