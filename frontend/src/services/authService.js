@@ -1,9 +1,10 @@
-const API_URL = 'http://localhost:3000/api'
+import { ENDPOINT } from '../config/constants.js'
 
 // Función para hacer login
 export const loginUser = async (userData) => {
   try {
-    const response = await fetch(`${API_URL}/login`, {
+    console.log(ENDPOINT.login)
+    const response = await fetch(`${ENDPOINT.login}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +40,7 @@ export const loginUser = async (userData) => {
 // Función para obtener datos del usuario
 export const getUserData = async (token) => {
   try {
-    const response = await fetch(`${API_URL}/usuarios`, {
+    const response = await fetch(`${ENDPOINT.users}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
