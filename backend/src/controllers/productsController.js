@@ -27,7 +27,19 @@ export const getProduct = async (req, res) => {
   const port = process.env.port || 3000
   try {
     const { id } = req.params
-    const product = await getProductById(id)
+    const queryResult = await getProductById(id)
+    const product = {
+      id: queryResult.id,
+      name: queryResult.product_name,
+      description: queryResult.description,
+      price: queryResult.price,
+      stock: queryResult.stock,
+      img: queryResult.img,
+      category: queryResult.category,
+      categoryId: queryResult.category_id,
+      season: queryResult.season,
+      seasonId: queryResult.season_id,
+    }
     product.img = `http://localhost:${port}/api/v1/uploads/${product.img}`
     res.status(200).json(product)
   } catch (error) {

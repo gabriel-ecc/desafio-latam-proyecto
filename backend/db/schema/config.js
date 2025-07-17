@@ -18,6 +18,8 @@ const pool = new pg.Pool({
   database: DB_DATABASE,
   port: DB_PORT,
   allowExitOnIdle: true,
+  // Configuración para UTF-8
+  client_encoding: 'UTF8'
 })
 
 pool.query('SELECT NOW()', (err, res) => {
