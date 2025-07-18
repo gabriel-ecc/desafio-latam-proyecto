@@ -42,9 +42,10 @@ const getUserData = async (req, res) => {
       return res.status(404).json({ message: 'Usuario NO encontrado en la bd' })
     }
 
-    // Devolvemos solo los datos permitidos
+    // Devolvemos solo los datos permitidos (por seguridad)
     const userData = {
-      nameLastName: user.nameLastName,
+      firstName: user.first_name,
+      lastName: user.last_name,
       email: user.email,
       rol: user.rol
     }

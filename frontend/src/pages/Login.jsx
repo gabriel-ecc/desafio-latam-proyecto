@@ -36,13 +36,19 @@ export default function Login() {
       setToken(token)
 
       // Obtener datos del usuario
-      const userData = await getUserData(token)
+      const userData = await getUserData(token);
+      console.log('Datos de usuario recibidos en el frontend:', userData); // Agrega esta línea
+      console.log('Tipo de userData:', typeof userData); // Agrega esta línea
+      console.log('Propiedad nameLastName:', userData.nameLastName); // Agrega esta línea
+      // ------------------------------------
       setUser(userData)
+
+      const userName = `${userData.firstName} ${userData.lastName}`
 
       // Mostrar mensaje de éxito (SweetAlert por mientras para más claridad.)
       await Swal.fire({
         title: '¡Bienvenido!',
-        text: `Hola ${userData.nameLastName}, has iniciado sesión correctamente.`,
+        text: `Hola ${userName}, has iniciado sesión correctamente.`,
         icon: 'success',
         confirmButtonText: 'Continuar',
         confirmButtonColor: '#28a745'

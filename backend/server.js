@@ -11,7 +11,6 @@ import categoriesRoutes from './routes/categoriesRoutes.js'
 import seasonRoutes from './routes/seasonRoutes.js'
 import productsRoutes from './routes/productsRoutes.js'
 
-
 import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
 
@@ -31,7 +30,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explore
 app.use(cors())
 app.use(express.json())
 
-
 // cargamos las rutas (/api para funcionar mejor con el frontend, (modificarlo si se estima conveniente)).
 app.use('/api/v1', registerUser)
 app.use('/api/v1', authRoutes)
@@ -41,7 +39,7 @@ app.use('/api/v1', productsRoutes)
 
 // Disponer imagenes para recursos de pagina web
 const __dirname = path.resolve()
-app.use('/api/v1/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/api/v1/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // Connect to the database and then start the server
 pool.query('SELECT NOW()', (err, res) => {
