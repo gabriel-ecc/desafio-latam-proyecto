@@ -54,7 +54,7 @@ export default function Login() {
         confirmButtonColor: '#28a745'
       })
 
-      // Redirigir según el rol del usuario
+      // Redirigimos al usuarios según el rol que tenga
       if (userData.rol === 'admin') {
         navigate('/usuarios')
       } else {
