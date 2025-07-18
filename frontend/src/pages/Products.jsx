@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/Card'
 import './Products.css'
 import useCart from '../context/CartContext.jsx'
@@ -8,9 +8,13 @@ import axios from 'axios'
 
 // Muestra todos los productos disponibles en la tienda sin filtros (para el administrador).
 export default function Products() {
-  const { season } = useParams()
+  const [searchParams] = useSearchParams()
+  const season = searchParams.get('season')
+  const category = searchParams.get('category')
   const [cards, setCards] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState(
+    category === '0' ? '' : category || ''
+  )
   const [listCategories, setListCategories] = useState([])
   const [selectedSeason, setSelectedSeason] = useState(
     season === '0' ? '' : season || ''
@@ -18,7 +22,7 @@ export default function Products() {
   const [listSeasons, setListSeasons] = useState([])
   const [orderBy, setOrderBy] = useState('price_ASC')
   const [page, setPage] = useState(1)
-  const [limits, setLimits] = useState(12)
+  const [limits, setLimits] = useState(9)
   const { addToCart } = useCart()
   const [cantidadPaginas, setCantidadPaginas] = useState(0)
   const navigate = useNavigate()
@@ -26,8 +30,9 @@ export default function Products() {
   useEffect(() => {
     // Sincroniza el estado del filtro de temporada con el parámetro de la URL
     setSelectedSeason(season === '0' ? '' : season || '')
+    setSelectedCategory(category === '0' ? '' : category || '')
     setPage(1)
-  }, [season])
+  }, [season, category])
 
   const queryParams = {
     limits: limits,
@@ -146,27 +151,28 @@ export default function Products() {
               setPage(1)
             }}
           >
-            <option value="4">4</option>
-            <option value="8">8</option>
+            <option value="3">3</option>
+            <option value="6">6</option>
+            <option value="9">9</option>
             <option value="12">12</option>
-            <option value="16">16</option>
           </select>
         </div>
       </div>
-      <div className="row card-container">
+      <div className="card-container">
         {cards.length > 0 ? (
           cards.map((card) => (
-            <div className="col-lg-3 col-md-5 mb-4" key={card.id}>
-              <ProductCard
-                product={card}
-                onAddToCart={handleAddToCart}
-                onToggleFavorite={handleToggleFavorite}
-                onViewDetails={handleViewMore}
-              />
-            </div>
+            <ProductCard
+              key={card.id}
+              product={card}
+              onAddToCart={handleAddToCart}
+              onToggleFavorite={handleToggleFavorite}
+              onViewDetails={handleViewMore}
+            />
           ))
         ) : (
-          <p>No hay productos disponibles.</p>
+          <div className="no-products">
+            <p>No hay productos disponibles.</p>
+          </div>
         )}
       </div>
       {cantidadPaginas > 1 ? (

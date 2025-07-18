@@ -58,7 +58,7 @@ export default function Login() {
       if (userData.rol === 'admin') {
         navigate('/usuarios')
       } else {
-        navigate('/catalogo')
+        navigate('/')
       }
     } catch (error) {
       setError(error.message || 'Error al iniciar sesión')
