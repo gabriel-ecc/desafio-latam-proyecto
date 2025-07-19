@@ -4,7 +4,7 @@ import { getUserProfile } from '../services/userService'
 import { isAuthenticated } from '../services/authService'
 
 export const useProfile = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser, updateUser } = useContext(UserContext)
   const [profile, setProfile] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -39,11 +39,10 @@ export const useProfile = () => {
   const updateProfile = useCallback(
     (updatedData) => {
       setProfile((prev) => ({ ...prev, ...updatedData }))
-      if (user) {
-        setUser((prev) => ({ ...prev, ...updatedData }))
-      }
+      // Usar updateUser en lugar de setUser directamente
+      updateUser(updatedData)
     },
-    [user, setUser]
+    [updateUser]
   )
 
   const clearProfile = useCallback(() => {

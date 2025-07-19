@@ -1,7 +1,8 @@
 // Página donde el usuario puede ver y editar la información de su perfil.
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useProfile } from '../hooks/useProfile'
 import { updateUserProfile } from '../services/userService'
+import { UserContext } from '../context/UserContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faUser,
@@ -15,6 +16,7 @@ import './Profile.css'
 export default function Profile() {
   const { profile, isLoading, loadProfile, updateProfile, isAuthenticated } =
     useProfile()
+  const { updateUser } = useContext(UserContext)
   const [editableProfile, setEditableProfile] = useState({
     firstName: '',
     lastName: '',
@@ -109,6 +111,9 @@ export default function Profile() {
       // Actualizar el perfil local con los datos devueltos
       updateProfile(response.user)
 
+      // Actualizar también el contexto global del usuario
+      updateUser(response.user)
+
       // Limpiar el archivo seleccionado y preview
       setSelectedFile(null)
       setPreviewUrl(null)
@@ -120,6 +125,9 @@ export default function Profile() {
         icon: 'success',
         confirmButtonText: 'Continuar',
         confirmButtonColor: '#28a745',
+      }).then(() => {
+        // Recargar la página para asegurar que todo se actualice
+        window.location.reload()
       })
     } catch (error) {
       console.error('Error al actualizar el perfil:', error)
@@ -151,7 +159,7 @@ export default function Profile() {
       // Si la foto viene del servidor, construir la URL completa
       return editableProfile.profilePhoto.startsWith('http')
         ? editableProfile.profilePhoto
-        : `http://localhost:3000/${editableProfile.profilePhoto}`
+        : `http://localhost:3000/api/v1/${editableProfile.profilePhoto}`
     }
     return null
   }
@@ -218,7 +226,10 @@ export default function Profile() {
                 />
               ) : (
                 <div className="profile-photo-placeholder">
-                  <FontAwesomeIcon icon={faUser} />
+                  <img
+                    src="../../public/imgs/fotoGenerica.png"
+                    alt="Foto de perfil"
+                  />
                 </div>
               )}
             </div>

@@ -11,7 +11,7 @@ import './Navbar.css'
 const Navbar = () => {
   const { calculateTotalPrice } = useCart()
   const total = calculateTotalPrice()
-  const { token, user, logout } = useContext(UserContext)
+  const { token, user, logout, isLoading } = useContext(UserContext)
 
   // Estados para controlar la visibilidad de los menús desplegables
   const [isProfileMenuOpen, setProfileMenuOpen] = useState(false)
@@ -122,8 +122,8 @@ const Navbar = () => {
           <>
             <span className="nav-greeting">
               {' '}
-              {/* Aquí se usa user.name*/}
-              Hola, <strong>Bodoque</strong>
+              {/* Mostrar el nombre real del usuario */}
+              Hola, <strong>{user?.firstName || 'Usuario'}</strong>
             </span>
             <div
               className={`dropdown dropdown-right nav-profile-menu ${
@@ -136,9 +136,15 @@ const Navbar = () => {
                 title="Mi Perfil"
                 onClick={() => setProfileMenuOpen(!isProfileMenuOpen)}
               >
-                {/* Asegúrate de que la imagen de perfil esté en la carpeta `public/img` */}
+                {/* Mostrar la foto de perfil del usuario o una imagen por defecto */}
                 <img
-                  src="../../public/imgs/img-perfil.png"
+                  src={
+                    user?.profilePhoto 
+                      ? user.profilePhoto.startsWith('http')
+                        ? user.profilePhoto
+                        : `http://localhost:3000/api/v1/${user.profilePhoto}`
+                      : "../../public/imgs/fotoGenerica.png"
+                  }
                   alt="Foto de perfil"
                 />
                 <i className="fa-solid fa-chevron-down profile-chevron"></i>
@@ -184,8 +190,10 @@ const Navbar = () => {
           </>
         ) : (
           <div className="nav-auth-links">
-            <Link to="/login">Ingresar</Link>
-            <Link to="/register">Registrar</Link>
+            <Link to="/login" className="auth-button">
+              <i className="fas fa-user"></i>
+              Ingresar / Registrar
+            </Link>
           </div>
         )}
       </div>

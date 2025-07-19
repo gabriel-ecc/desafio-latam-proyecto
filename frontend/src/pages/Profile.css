@@ -71,7 +71,7 @@
   box-shadow: var(--box-shadow-md);
 }
 
-.profile-photo-placeholder {
+.profile-photo-placeholder img{
   width: 150px;
   height: 150px;
   border-radius: 50%;
