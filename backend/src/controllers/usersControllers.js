@@ -21,9 +21,6 @@ export const registerClientUser = async (req, res) => {
     if (profilePhotoFile) {
       // Si se subió el archivo, usa la ruta donde Multer lo guardó
       profilePhotoPath = profilePhotoFile.path
-    } else {
-      // Opcional: Si profile_photo no es obligatorio, le asignamos una cadena vacia
-      profilePhotoPath = ''
     }
 
     // agregamos la ruta de la imagen a userData para pasarla al modelo

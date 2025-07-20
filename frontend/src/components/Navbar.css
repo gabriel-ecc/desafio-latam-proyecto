@@ -24,7 +24,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 90px;
+  height: 100px;
   margin: 0 2vw;
   padding: 0 var(--spacing-md);
 }
@@ -213,6 +213,7 @@ body {
   border-radius: 50%;
   object-fit: cover; /* Evita que la imagen se deforme */
   transition: transform 0.3s;
+  border: 2px solid var(--color-primary); /* Borde sutil gris claro */
 }
 
 .profile-btn:hover img {
@@ -259,6 +260,46 @@ body {
   display: none;
 }
 
+.nav-auth-links{
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Botón de autenticación mejorado */
+.auth-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #2a9d8f, #21897c);
+  color: white;
+  text-decoration: none;
+  padding: 8px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(42, 157, 143, 0.2);
+  border: none;
+  cursor: pointer;
+}
+
+.auth-button:hover {
+  background: linear-gradient(135deg, #21897c, #1e7a6f);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3);
+  color: white;
+}
+
+.auth-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(42, 157, 143, 0.2);
+}
+
+.auth-button i {
+  font-size: 1rem;
+}
+
 /* --- ESTILOS RESPONSIVE --- */
 
 /* Estilos para Tablet (entre 769px y 992px) */
@@ -296,6 +337,17 @@ body {
   /* Hacemos que el menú de perfil ocupe más espacio */
   .nav-profile-menu .dropdown-content {
     width: 250px; /* Ancho fijo para el menú móvil */
+  }
+
+  /* Ajustamos el botón de autenticación para móvil */
+  .auth-button {
+    padding: 7px 16px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+  }
+
+  .auth-button i {
+    font-size: 0.9rem;
   }
 
   /* Mostramos y estilizamos el chevrón en móvil */

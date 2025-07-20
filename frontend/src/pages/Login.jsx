@@ -1,19 +1,73 @@
-import { useState } from "react"
-import "./AuthForm.css"
+import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../context/UserContext'
+import { loginUser, saveToken } from '../services/authService'
+import { getUserProfile } from '../services/userService'
+import Swal from 'sweetalert2'
+import './AuthForm.css'
 
 export default function Login() {
   const [form, setForm] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: ''
   })
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleChange = (e) => {
+  const { setUser, setToken } = useContext(UserContext)
+  const navigate = useNavigate()
+
+  const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value })
+    if (error) setError('')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
-    // Aquí va la lógica de login
+    setIsLoading(true)
+    setError('')
+
+    try {
+      // Llamar al servicio de login
+      const loginResponse = await loginUser(form)
+      const { token } = loginResponse
+
+      // Guardar token en localStorage
+      saveToken(token)
+      setToken(token)
+
+      // Obtener datos del usuario usando el nuevo servicio
+      const userData = await getUserProfile()
+      setUser(userData)
+
+      // Mostrar mensaje de éxito (SweetAlert por mientras para más claridad.)
+      await Swal.fire({
+        title: '¡Bienvenido!',
+        text: `Hola ${userData.firstName || 'Usuario'}, has iniciado sesión correctamente.`,
+        icon: 'success',
+        confirmButtonText: 'Continuar',
+        confirmButtonColor: '#28a745'
+      })
+
+      // Redirigir según el rol del usuario
+      if (userData.userType === 2) {
+        navigate('/usuarios')
+      } else {
+        navigate('/')
+      }
+    } catch (error) {
+      setError(error.message || 'Error al iniciar sesión')
+
+      await Swal.fire({
+        title: 'Error',
+        text: error.message || 'Error al iniciar sesión',
+        icon: 'error',
+        confirmButtonText: 'Intentar de nuevo',
+        confirmButtonColor: '#dc3545'
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -24,6 +78,12 @@ export default function Login() {
           <p className="auth-subtitle">
             ¡Disfruta de las mejores verduras de La Gata de Campo!.
           </p>
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+
           <div className="mb-3">
             <div className="input-group">
               <span className="input-group-text">
@@ -37,6 +97,7 @@ export default function Login() {
                 value={form.email}
                 onChange={handleChange}
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -53,11 +114,26 @@ export default function Login() {
                 value={form.password}
                 onChange={handleChange}
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
-          <button type="submit" className="btn btn-success w-100 fw-bold">
-            Ingresar
+          <button
+            type="submit"
+            className="btn btn-success w-100 fw-bold"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <output
+                  className="spinner-border spinner-border-sm me-2"
+                  aria-hidden="true"
+                ></output>
+                Ingresando...
+              </>
+            ) : (
+              'Ingresar'
+            )}
           </button>
           <p className="auth-login">
             ¿No tienes una cuenta? <a href="/register">Regístrate aquí</a>.

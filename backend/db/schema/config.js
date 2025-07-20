@@ -1,5 +1,5 @@
 import pg from 'pg'
-import 'dotenv/config'
+process.loadEnvFile()
 
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PORT } = process.env
 
@@ -17,7 +17,9 @@ const pool = new pg.Pool({
   password: DB_PASSWORD,
   database: DB_DATABASE,
   port: DB_PORT,
-  allowExitOnIdle: true
+  allowExitOnIdle: true,
+  // Configuración para UTF-8
+  client_encoding: 'UTF8'
 })
 
 pool.query('SELECT NOW()', (err, res) => {

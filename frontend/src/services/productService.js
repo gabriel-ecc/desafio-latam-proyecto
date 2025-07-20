@@ -1,1 +1,0 @@
-// Funciones para obtener, crear, editar o eliminar productos y gestionar el catálogo/inventario.

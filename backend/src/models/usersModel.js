@@ -33,7 +33,7 @@ export const createUserModel = async ({
 }
 
 // Login
-export const findUserByEmailModel = async (email) => {
+export const findUserByEmailModel = async email => {
   const sqlQuery = {
     text: 'SELECT * FROM users WHERE email = $1',
     values: [email]
@@ -43,7 +43,7 @@ export const findUserByEmailModel = async (email) => {
   return response.rows[0]
 }
 
-export const findUserByIdModel = async (id) => {
+export const findUserByIdModel = async id => {
   const sqlQuery = {
     text: 'SELECT * FROM users WHERE id = $1',
     values: [String(id)]
@@ -80,7 +80,8 @@ export const getCountUsers = async () => {
 }
 
 export const changeUserStatus = async (id, status) => {
-  status === 1 ? (status = 0) : (status = 1)
+  // status === 1 ? (status = 0) : (status = 1)
+  status = status === 0 ? 1 : 0
   const sqlQuery = {
     text: 'UPDATE users SET user_status = $1 WHERE id = $2 RETURNING id,user_status',
     values: [status, id]
@@ -118,7 +119,7 @@ export const updateUserProfileModel = async (email, userData) => {
   // agregamos el email al 'where'
   values.push(email)
 
-  if (updates.legth === 0) {
+  if (updates.length === 0) {
     return null // no hay campos por actualizar
   }
 
