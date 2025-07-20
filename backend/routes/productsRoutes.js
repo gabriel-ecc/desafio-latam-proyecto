@@ -5,7 +5,7 @@ import {
   getProduct,
   getProducts,
   createProduct,
-  updateProduct,
+  updateProduct
 } from '../src/controllers/productsController.js'
 
 const storage = multer.diskStorage({
@@ -16,15 +16,15 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     const newFileName = file.originalname
     cb(null, newFileName)
-  },
+  }
 })
 
 const router = Router()
 const upload = multer({ storage })
 
-router.get('/products', getProducts)
-router.get('/products/:id', getProduct)
-router.post('/products', upload.single('productPhoto'), createProduct)
-router.put('/products/:id', upload.single('productPhoto'), updateProduct)
+router.get('/products', getProducts) // obtiene todos los Productos
+router.get('/products/:id', getProduct) // obtiene 1 producto
+router.post('/products', upload.single('productPhoto'), createProduct) // crear 1 producto
+router.put('/products/:id', upload.single('productPhoto'), updateProduct) // actualizar un producto
 
 export default router

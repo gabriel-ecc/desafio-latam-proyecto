@@ -1,94 +1,235 @@
-openapi: 3.1.0 # Cambiado a 3.1.0 (o 3.1.1 es válido también)
+openapi: 3.0.0
 info:
-  title: API de Gestión de Usuarios y Autenticación
+  title: API de E-commerce
+  description: API para gestionar productos, usuarios, categorías y temporadas de un e-commerce.
   version: 1.0.0
-  description: API RESTful para la gestión de usuarios y autenticación, incluyendo registro, login, obtención de perfil y actualización.
-  contact:
-    name: Oscar Garin
-    email: oscargarin@gmail.com
 servers:
-  - url: http://localhost:3000
-    description: Servidor de desarrollo local
-
-security:
-  - bearerAuth: [] # Aplicado globalmente, pero se puede sobrescribir en cada ruta.
-
+  - url: http://localhost:3000/api/v1 # Esta es la URL base
+tags:
+  - name: Productos
+    description: Operaciones relacionadas con los productos
+  - name: Usuarios
+    description: Operaciones relacionadas con los usuarios y autenticación
+  - name: Categorías
+    description: Operaciones relacionadas con las categorías de productos
+  - name: Temporadas
+    description: Operaciones relacionadas con las temporadas de productos
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: 'Token JWT (JSON Web Token) obtenido después de un login exitoso. Debe ser enviado en el encabezado Authorization como: Bearer <token>'
-
   schemas:
-    UserBase:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID único del producto
+          example: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+        productname:
+          type: string
+          description: Nombre del producto
+          example: "Camiseta de Verano"
+        description:
+          type: string
+          description: Descripción detallada del producto
+          example: "Camiseta de algodón 100% ideal para el verano, disponible en varios colores."
+        price:
+          type: number
+          format: float
+          description: Precio del producto
+          example: 25.99
+        stock:
+          type: integer
+          description: Cantidad de stock disponible
+          example: 150
+        img:
+          type: string
+          description: URL o nombre de archivo de la imagen del producto
+          example: "camiseta_verano.jpg"
+        category:
+          type: string
+          description: Nombre de la categoría a la que pertenece el producto
+          example: "Ropa"
+        category_id:
+          type: string
+          format: uuid
+          description: ID de la categoría a la que pertenece el producto
+          example: "c0d1e2f3-g4h5-9012-3456-7890abcdef12"
+        season:
+          type: string
+          description: Nombre de la temporada a la que pertenece el producto
+          example: "Verano"
+        season_id:
+          type: string
+          format: uuid
+          description: ID de la temporada a la que pertenece el producto
+          example: "s0a1b2c3-d4e5-6789-0123-456789abcdef"
+        create_date:
+          type: string
+          format: date-time
+          description: Fecha de creación del producto
+          example: "2023-10-26T10:00:00Z"
+        update_date:
+          type: string
+          format: date-time
+          description: Fecha de última actualización del producto
+          example: "2023-10-26T10:30:00Z"
+    NewProduct:
+      type: object
+      required:
+        - name
+        - description
+        - price
+        - stock
+        - productCategory
+        - seasonCategory
+      properties:
+        name:
+          type: string
+          description: Nombre del producto
+          example: "Pantalón Denim"
+        description:
+          type: string
+          description: Descripción del producto
+          example: "Pantalón de mezclilla clásico"
+        price:
+          type: number
+          format: float
+          example: 49.99
+        stock:
+          type: integer
+          example: 100
+        productCategory:
+          type: string
+          description: ID de la categoría del producto
+          example: "c0d1e2f3-g4h5-9012-3456-7890abcdef12"
+        seasonCategory:
+          type: string
+          description: ID de la temporada del producto
+          example: "s0a1b2c3-d4e5-6789-0123-456789abcdef"
+        productPhoto:
+          type: string
+          format: binary
+          description: Archivo de la foto del producto (se sube como multipart/form-data)
+    UpdateProduct:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nuevo nombre del producto
+          example: "Pantalón Denim Slim Fit"
+        description:
+          type: string
+          description: Nueva descripción del producto
+          example: "Pantalón de mezclilla slim fit de alta calidad."
+        price:
+          type: number
+          format: float
+          example: 59.99
+        stock:
+          type: integer
+          example: 80
+        productCategory:
+          type: string
+          description: Nuevo ID de la categoría del producto
+          example: "c0d1e2f3-g4h5-9012-3456-7890abcdef12"
+        seasonCategory:
+          type: string
+          description: Nuevo ID de la temporada del producto
+          example: "s0a1b2c3-d4e5-6789-0123-456789abcdef"
+        productPhoto:
+          type: string
+          format: binary
+          description: Nuevo archivo de la foto del producto (se sube como multipart/form-data)
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID único del usuario
+          example: "u1v2w3x4-y5z6-7890-1234-567890abcdef"
+        first_name:
+          type: string
+          example: "Juan"
+        last_name:
+          type: string
+          example: "Perez"
+        email:
+          type: string
+          format: email
+          example: "juan.perez@example.com"
+        phone:
+          type: string
+          example: "555-1234"
+        user_type:
+          type: string
+          enum: [admin, client]
+          example: "client"
+        user_status:
+          type: integer
+          description: 0 para bloqueado, 1 para activo
+          example: 1
+        profile_photo:
+          type: string
+          description: URL o nombre de archivo de la foto de perfil
+          example: "juan_perez_profile.jpg"
+    NewUser:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - phone
+        - password
+        - userType
+      properties:
+        firstName:
+          type: string
+          example: "Maria"
+        lastName:
+          type: string
+          example: "Gomez"
+        email:
+          type: string
+          format: email
+          example: "maria.gomez@example.com"
+        phone:
+          type: string
+          example: "555-5678"
+        password:
+          type: string
+          format: password
+          example: "password123"
+        userType:
+          type: string
+          enum: [admin, client]
+          example: "client"
+        profilePhoto:
+          type: string
+          format: binary
+          description: Archivo de la foto de perfil (se sube como multipart/form-data)
+    UserProfileUpdate:
       type: object
       properties:
         firstName:
           type: string
-          description: Nombre del usuario.
-          example: "Juan"
+          example: "Maria Paz"
         lastName:
           type: string
-          description: Apellido del usuario.
-          example: "Pérez"
-        email:
-          type: string
-          format: email
-          description: Correo electrónico único del usuario.
-          example: "juan.perez@example.com"
+          example: "Gomez Soto"
         phone:
           type: string
-          description: Número de teléfono del usuario.
-          example: "56912345678"
-        userType:
-          type: integer
-          format: int32
-          description: Tipo de usuario (ej. 1 para cliente).
-          example: 1
-        userStatus:
-          type: integer
-          format: int32
-          description: Estado del usuario (ej. 1 para activo, 0 para bloqueado).
-          example: 1
+          example: "555-9999"
         profilePhoto:
           type: string
-          description: URL o ruta a la foto de perfil del usuario.
-          example: "uploads/profile-1678901234567.jpg"
-
-    UserRegister:
-      # En OpenAPI 3.1, allOf puede tener propiedades adyacentes si es necesario,
-      # pero para este caso, la estructura actual es buena.
-      allOf:
-        - $ref: '#/components/schemas/UserBase'
-        - type: object
-          required:
-            - firstName
-            - lastName
-            - email
-            - phone
-            - password
-          properties:
-            password:
-              type: string
-              format: password
-              description: Contraseña del usuario (mínimo 6 caracteres).
-              example: "MiContrasenaSegura123"
-
-    UserResponse:
-      allOf:
-        - $ref: '#/components/schemas/UserBase'
-        - type: object
-          properties:
-            id:
-              type: string
-              description: ID único del usuario generado por la base de datos.
-              example: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
-          required:
-            - id
-
-    UserLogin:
+          format: binary
+          description: Nuevo archivo de la foto de perfil (se sube como multipart/form-data)
+    LoginCredentials:
       type: object
       required:
         - email
@@ -97,300 +238,347 @@ components:
         email:
           type: string
           format: email
-          description: Correo electrónico del usuario para iniciar sesión.
-          example: "juan.perez@example.com"
+          example: "test@example.com"
         password:
           type: string
           format: password
-          description: Contraseña del usuario.
-          example: "MiContrasenaSegura123"
-
-    LoginSuccess:
+          example: "password123"
+    LoginResponse:
       type: object
       properties:
         token:
           type: string
-          description: Token JWT para autenticación futura.
-          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW4ucGVyZXpAZXhhbXBsZS5jb20iLCJpYXQiOjE2NzgyOTI0MDAsImV4cCI6MTY3ODI5NjAwMH0.signature"
-
-    GenericMessage:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Mensaje descriptivo de la respuesta.
-          example: "Operación exitosa"
-
-    ErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Mensaje de error.
-          example: "El correo electrónico no es válido."
-      required:
-        - message
-
-    UsersPaginatedResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserResponse'
-        total:
-          type: integer
-          description: Número total de usuarios.
-          example: 100
-        next:
-          type: string
-          description: URL del siguiente conjunto de resultados (HATEOAS).
-          example: "/users?limits=10&page=2"
-        previous:
-          type: string
-          description: URL del conjunto de resultados anterior (HATEOAS).
-          example: "/users?limits=10&page=1"
-
-    UserProfile:
+          description: JWT de autenticación
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        user:
+          $ref: '#/components/schemas/User'
+    Category:
       type: object
       properties:
         id:
           type: string
-          description: ID único del usuario.
-          example: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
-        firstName:
+          format: uuid
+          description: ID único de la categoría
+          example: "cat123-abc-456"
+        name:
           type: string
-          description: Nombre del usuario.
-          example: "Juan"
-        lastName:
+          description: Nombre de la categoría
+          example: "Electrónica"
+    Season:
+      type: object
+      properties:
+        id:
           type: string
-          description: Apellido del usuario.
-          example: "Pérez"
-        email:
+          format: uuid
+          description: ID único de la temporada
+          example: "sea789-def-012"
+        name:
           type: string
-          format: email
-          description: Correo electrónico del usuario.
-          example: "juan.perez@example.com"
-        phone:
+          description: Nombre de la temporada
+          example: "Verano"
+    Error:
+      type: object
+      properties:
+        message:
           type: string
-          description: Número de teléfono del usuario.
-          example: "56912345678"
-        userType:
-          type: integer
-          description: Tipo de usuario.
-          example: 1
-        userStatus:
-          type: integer
-          description: Estado del usuario.
-          example: 1
-        profilePhoto:
-          # Para indicar que profilePhoto podría ser nulo, se usa un array de tipos.
-          type: [string, 'null'] # CAMBIO para 3.1.1
-          description: URL o ruta de la foto de perfil. Puede ser nulo si no se ha subido ninguna.
-          example: "uploads/profile-1678901234567.jpg"
-
-
-  parameters:
-    PaginationLimit:
-      in: query
-      name: limits
-      schema:
-        type: integer
-        default: 10
-      description: Número máximo de usuarios a devolver por página.
-    PaginationPage:
-      in: query
-      name: page
-      schema:
-        type: integer
-        default: 1
-      description: Número de la página de resultados.
-    PaginationOrderBy:
-      in: query
-      name: orderBy
-      schema:
-        type: string
-        default: 'id_ASC'
-        enum:
-          - id_ASC
-          - id_DESC
-          - first_name_ASC
-          - first_name_DESC
-          - last_name_ASC
-          - last_name_DESC
-          - email_ASC
-          - email_DESC
-      description: Campo y dirección para ordenar los resultados (ej. id_ASC, email_DESC).
-
-tags:
-  - name: Authentication
-    description: Operaciones de autenticación de usuarios.
-  - name: Users
-    description: Gestión y administración de usuarios.
-
+          example: "Algo salió mal"
+        error:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "Error"
+            message:
+              type: string
+              example: "Detalle del error"
 paths:
-  /login:
-    post:
-      summary: Iniciar sesión de usuario
-      tags: [Authentication]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserLogin'
-      responses:
-        '200':
-          description: Login exitoso. Devuelve un token JWT.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoginSuccess'
-        '401':
-          description: Email o contraseña incorrecta / No autorizado.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Error interno del servidor.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /usuarios: # Ruta /usuarios protegida por verifyToken
+  /products: # Corregido: eliminado /api/v1
     get:
-      summary: Obtener datos del usuario autenticado (deprecated, usar /users/profile)
-      tags: [Authentication]
-      security:
-        - bearerAuth: []
+      tags:
+        - Productos
+      summary: Obtiene una lista paginada de productos
+      parameters:
+        - in: query
+          name: limits
+          schema:
+            type: integer
+            default: 10
+          description: Número de productos por página
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Número de página
+        - in: query
+          name: orderBy
+          schema:
+            type: string
+            default: id_ASC
+            enum: [id_ASC, id_DESC, name_ASC, name_DESC, price_ASC, price_DESC]
+          description: Orden de los productos (columna_DIRECCION)
+        - in: query
+          name: season
+          schema:
+            type: string
+          description: ID de la temporada para filtrar productos
+        - in: query
+          name: category
+          schema:
+            type: string
+          description: ID de la categoría para filtrar productos
       responses:
-        '200':
-          description: Datos del usuario autenticado.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserProfile' # Asumiendo que devuelve un objeto similar al perfil
-        '400':
-          description: Token no presente o inválido.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Usuario no encontrado en la base de datos.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Error interno del servidor.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /users:
-    post:
-      summary: Registrar un nuevo usuario cliente
-      tags: [Users]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserRegister'
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                  description: Nombre del usuario.
-                lastName:
-                  type: string
-                  description: Apellido del usuario.
-                email:
-                  type: string
-                  format: email
-                  description: Correo electrónico único del usuario.
-                phone:
-                  type: string
-                  description: Número de teléfono del usuario.
-                password:
-                  type: string
-                  format: password
-                  description: Contraseña del usuario (mínimo 6 caracteres).
-                userType:
-                  type: integer
-                  format: int32
-                  description: Tipo de usuario (por defecto 1 para cliente).
-                  default: 1
-                profilePhoto:
-                  type: string
-                  format: binary # Representa un archivo
-                  description: Archivo de imagen de perfil (opcional).
-            encoding: # Define cómo codificar la parte del archivo
-              profilePhoto:
-                contentType: image/png, image/jpeg, image/gif # Tipos MIME aceptados
-      responses:
-        '201':
-          description: Usuario creado correctamente.
+        200:
+          description: Lista de productos exitosamente obtenida
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
-                    type: string
-                    example: "Usuario creado correctamente"
-                  user:
-                    $ref: '#/components/schemas/UserResponse'
-        '400':
-          description: Campos obligatorios faltantes o datos inválidos (ej. email, password).
+                  totalProducts:
+                    type: integer
+                    example: 50
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+        500:
+          description: Error del servidor
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '409':
-          description: El usuario con este correo electrónico ya existe.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Error interno del servidor.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-    get:
-      summary: Obtener lista de usuarios con paginación, filtros y ordenamiento
-      tags: [Users]
-      parameters:
-        - $ref: '#/components/parameters/PaginationLimit'
-        - $ref: '#/components/parameters/PaginationPage'
-        - $ref: '#/components/parameters/PaginationOrderBy'
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Productos
+      summary: Crea un nuevo producto
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NewProduct'
       responses:
-        '200':
-          description: Lista de usuarios paginada con HATEOAS.
+        201:
+          description: Producto creado exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsersPaginatedResponse'
-        '500':
-          description: Error interno del servidor.
+                $ref: '#/components/schemas/Product'
+        400:
+          description: Datos de entrada inválidos
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/Error'
+        401:
+          description: No autorizado (token inválido o no proporcionado)
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
-  /lockuser:
+  /products/{id}: # Corregido: eliminado /api/v1
+    get:
+      tags:
+        - Productos
+      summary: Obtiene un producto por su ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID del producto a obtener
+      responses:
+        200:
+          description: Producto encontrado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        404:
+          description: Producto no encontrado
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
-      summary: Cambiar el estado (bloquear/desbloquear) de un usuario
-      tags: [Users]
+      tags:
+        - Productos
+      summary: Actualiza un producto existente
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID del producto a actualizar
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdateProduct'
+      responses:
+        200:
+          description: Producto actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        400:
+          description: Datos de entrada inválidos
+        401:
+          description: No autorizado (token inválido o no proporcionado)
+        404:
+          description: Producto no encontrado
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /seasons: # Corregido: eliminado /api/v1
+    get:
+      tags:
+        - Temporadas
+      summary: Obtiene una lista de todas las temporadas disponibles
+      responses:
+        200:
+          description: Lista de temporadas exitosamente obtenida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Season'
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /categories: # Corregido: eliminado /api/v1
+    get:
+      tags:
+        - Categorías
+      summary: Obtiene una lista de todas las categorías disponibles
+      responses:
+        200:
+          description: Lista de categorías exitosamente obtenida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users: # Corregido: eliminado /api/v1
+    get:
+      tags:
+        - Usuarios
+      summary: Obtiene una lista paginada de usuarios
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: limits
+          schema:
+            type: integer
+            default: 10
+          description: Número de usuarios por página
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Número de página
+        - in: query
+          name: orderBy
+          schema:
+            type: string
+            default: id_ASC
+            enum: [id_ASC, id_DESC, first_name_ASC, first_name_DESC, email_ASC, email_DESC]
+          description: Orden de los usuarios (columna_DIRECCION)
+      responses:
+        200:
+          description: Lista de usuarios exitosamente obtenida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalUsers:
+                    type: integer
+                    example: 20
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        401:
+          description: No autorizado (token inválido o no proporcionado)
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Usuarios
+      summary: Registra un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+      responses:
+        201:
+          description: Usuario registrado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Datos de entrada inválidos o usuario ya existe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /lockuser: # Corregido: eliminado /api/v1
+    put:
+      tags:
+        - Usuarios
+      summary: Bloquea o desbloquea a un usuario por su email
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -398,148 +586,121 @@ paths:
             schema:
               type: object
               required:
-                - id
+                - email
               properties:
-                id:
+                email:
                   type: string
-                  description: ID del usuario a bloquear/desbloquear.
-                  example: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
-                userStatus: # Se asume que también se podría enviar el nuevo estado
-                  type: integer
-                  description: El nuevo estado del usuario (0 para bloqueado, 1 para activo).
-                  example: 0
+                  format: email
+                  example: "user_to_lock@example.com"
       responses:
-        '200':
-          description: Usuario bloqueado/desbloqueado exitosamente.
+        200:
+          description: Estado del usuario actualizado exitosamente
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
+                  id:
                     type: string
-                    example: "Usuario bloqueado exitosamente"
-                  user: # Aseguramos que la respuesta incluye los datos relevantes del usuario
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        example: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
-                      user_status:
-                        type: integer
-                        example: 0
-        '500':
-          description: Error interno del servidor.
+                    format: uuid
+                    example: "u1v2w3x4-y5z6-7890-1234-567890abcdef"
+                  user_status:
+                    type: integer
+                    example: 0
+        400:
+          description: Email no proporcionado o inválido
+        401:
+          description: No autorizado (token inválido o no proporcionado)
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error del servidor
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/Error'
 
-  /users/profile:
+  /users/profile: # Corregido: eliminado /api/v1
     get:
-      summary: Obtener el perfil del usuario autenticado
-      tags: [Users]
+      tags:
+        - Usuarios
+      summary: Obtiene el perfil del usuario autenticado
       security:
         - bearerAuth: []
       responses:
-        '200':
-          description: Perfil del usuario.
+        200:
+          description: Perfil del usuario obtenido exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserProfile'
-        '400':
-          description: Token no presente o inválido.
+                $ref: '#/components/schemas/User'
+        401:
+          description: No autorizado (token inválido o no proporcionado)
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error del servidor
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Perfil no encontrado (usuario no existe).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Error interno del servidor.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
+                $ref: '#/components/schemas/Error'
     put:
-      summary: Actualizar el perfil del usuario autenticado
-      tags: [Users]
+      tags:
+        - Usuarios
+      summary: Actualiza el perfil del usuario autenticado
       security:
         - bearerAuth: []
       requestBody:
         required: true
         content:
-          application/json:
-            schema:
-              type: object
-              # No se define 'required' aquí porque todos los campos son opcionales para la actualización parcial
-              properties:
-                firstName:
-                  type: string
-                  description: Nuevo nombre del usuario.
-                  example: "Juan Actualizado"
-                lastName:
-                  type: string
-                  description: Nuevo apellido del usuario.
-                  example: "Pérez Actualizado"
-                phone:
-                  type: string
-                  description: Nuevo número de teléfono.
-                  example: "56998765432"
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                  description: Nuevo nombre del usuario.
-                lastName:
-                  type: string
-                  description: Nuevo apellido del usuario.
-                phone:
-                  type: string
-                  description: Nuevo número de teléfono.
-                profilePhoto:
-                  type: string
-                  format: binary
-                  description: Nueva foto de perfil (archivo).
-            encoding:
-              profilePhoto:
-                contentType: image/png, image/jpeg, image/gif
+              $ref: '#/components/schemas/UserProfileUpdate'
       responses:
-        '200':
-          description: Perfil actualizado exitosamente.
+        200:
+          description: Perfil del usuario actualizado exitosamente
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Perfil actualizado"
-                  user:
-                    $ref: '#/components/schemas/UserProfile'
-        '400':
-          description: Token no presente, inválido o no se proporcionaron datos para actualizar.
+                $ref: '#/components/schemas/User'
+        400:
+          description: Datos de entrada inválidos
+        401:
+          description: No autorizado (token inválido o no proporcionado)
+        500:
+          description: Error del servidor
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Usuario no encontrado para actualizar.
+                $ref: '#/components/schemas/Error'
+
+  /login: # Corregido: eliminado /api/v1
+    post:
+      tags:
+        - Usuarios
+      summary: Autentica un usuario y devuelve un token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginCredentials'
+      responses:
+        200:
+          description: Login exitoso
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Error interno del servidor.
+                $ref: '#/components/schemas/LoginResponse'
+        400:
+          description: Credenciales inválidas
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
