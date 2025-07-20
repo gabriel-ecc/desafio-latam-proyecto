@@ -5,7 +5,7 @@ import {
   getProduct,
   getProducts,
   createProduct,
-  updateProduct,
+  updateProduct
 } from '../src/controllers/productsController.js'
 
 const storage = multer.diskStorage({
@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     const newFileName = file.originalname
     cb(null, newFileName)
-  },
+  }
 })
 
 const router = Router()

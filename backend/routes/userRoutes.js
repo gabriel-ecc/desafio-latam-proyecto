@@ -51,7 +51,7 @@ router.post('/users',
   registerClientUser
 )
 
-router.get('/users', getUsers)
+router.get('/users', getUsers) // listar usuarios
 router.put('/lockuser', lockUser)
 router.get('/users/profile', verifyToken, getUserProfile)
 

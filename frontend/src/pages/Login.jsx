@@ -1,7 +1,8 @@
 import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
-import { loginUser, getUserData, saveToken } from '../services/authService'
+import { loginUser, saveToken } from '../services/authService'
+import { getUserProfile } from '../services/userService'
 import Swal from 'sweetalert2'
 import './AuthForm.css'
 
@@ -35,27 +36,21 @@ export default function Login() {
       saveToken(token)
       setToken(token)
 
-      // Obtener datos del usuario
-      const userData = await getUserData(token);
-      console.log('Datos de usuario recibidos en el frontend:', userData); // Agrega esta línea
-      console.log('Tipo de userData:', typeof userData); // Agrega esta línea
-      console.log('Propiedad nameLastName:', userData.nameLastName); // Agrega esta línea
-      // ------------------------------------
+      // Obtener datos del usuario usando el nuevo servicio
+      const userData = await getUserProfile()
       setUser(userData)
-
-      const userName = `${userData.firstName} ${userData.lastName}`
 
       // Mostrar mensaje de éxito (SweetAlert por mientras para más claridad.)
       await Swal.fire({
         title: '¡Bienvenido!',
-        text: `Hola ${userName}, has iniciado sesión correctamente.`,
+        text: `Hola ${userData.firstName || 'Usuario'}, has iniciado sesión correctamente.`,
         icon: 'success',
         confirmButtonText: 'Continuar',
         confirmButtonColor: '#28a745'
       })
 
-      // Redirigimos al usuarios según el rol que tenga
-      if (userData.rol === 'admin') {
+      // Redirigir según el rol del usuario
+      if (userData.userType === 2) {
         navigate('/usuarios')
       } else {
         navigate('/')

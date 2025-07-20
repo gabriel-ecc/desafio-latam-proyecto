@@ -31,10 +31,9 @@ const loginUser = async (req, res) => {
   }
 }
 
-// funcion que envía los datos del usuario que inició sesión
 const getUserData = async (req, res) => {
   try {
-    const email = req.user // email desde el middleware de autenticación
+    const email = req.user //
     console.log('authController getUserData: Email recibido de req.user: ', email)
     const user = await findUserByEmailModel(email)
 
@@ -43,13 +42,11 @@ const getUserData = async (req, res) => {
       return res.status(404).json({ message: 'Usuario NO encontrado en la bd' })
     }
 
-    // Devolvemos solo los datos permitidos (por seguridad)
+    // Devolvemos solo los datos permitidos
     const userData = {
-      firstName: user.first_name,
-      lastName: user.last_name,
+      nameLastName: user.nameLastName,
       email: user.email,
-      id: user.id,
-      rol: user.user_type
+      rol: user.rol
     }
     res.status(200).json(userData)
   } catch (error) {

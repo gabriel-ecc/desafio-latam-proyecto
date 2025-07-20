@@ -24,11 +24,7 @@ const PORT = process.env.PORT || 3000
 const app = express()
 
 // Sirve la documentación de Swagger UI
-app.use(
-  '/api-docs',
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerDocument, { explorer: true })
-)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }))
 
 // cargamos el middleware
 app.use(cors())

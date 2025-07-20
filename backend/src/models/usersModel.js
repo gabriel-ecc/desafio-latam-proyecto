@@ -80,7 +80,8 @@ export const getCountUsers = async () => {
 }
 
 export const changeUserStatus = async (id, status) => {
-  status === 1 ? (status = 0) : (status = 1)
+  // status === 1 ? (status = 0) : (status = 1)
+  status = status === 0 ? 1 : 0
   const sqlQuery = {
     text: 'UPDATE users SET user_status = $1 WHERE id = $2 RETURNING id,user_status',
     values: [status, id]

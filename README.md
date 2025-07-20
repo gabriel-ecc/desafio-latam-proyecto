@@ -1,8 +1,8 @@
 # Proyecto final bootcamp Desafío Latam
 Este repositorio contiene el código fuente del "Proyecto Final Desafío Latam", está desarrollado con un backend en express.js y frontend con react.js.
 
-## Concepto: Verduleria Gato de Campo
-El proyecto es simular un ecomerce de una verduleria. Por lo tanto considera gestión de productos, administrar clientes y carritos de compra. 
+## Concepto: Verduleria Gata de Campo
+El proyecto es simular un ecomerce de una verduleria. Por lo tanto considera gestión de productos, administrar clientes y carritos de compra.
 
 ## Equipo de proyecto:
 - Carla Pacheco
