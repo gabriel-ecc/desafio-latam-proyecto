@@ -8,18 +8,66 @@ Las sentencias DML se utilizan para manipular los datos dentro de los objetos de
   SELECT (consultar/recuperar datos - aunque SELECT a veces se clasifica como DQL - Data Query Language, se considera parte de DML en un sentido amplio de manipulación de datos).
 */
 
-INSERT INTO users (id, first_name, last_name, email, phone, password, user_type, user_status, profile_photo) VALUES ('0c1dd659-5b04-4bb8-b278-2ecf14fde11a', 'Admin', 'Sistema', 'admin@verduleria.cl', '+56912345678', '$2a$10$3Jg9pZ5Q8L5fW1eR3tG7h.u8K3v5Z9B1xW2mY4nO7cI6pS5rE3dG', 3, 1, '');
+INSERT INTO user_type (id,name) VALUES 
+(1,'cliente'),
+(2,'empleado'),
+(3,'administrador');
 
-INSERT INTO product_category(name,description)VALUES('Verdura','Verduras');
-INSERT INTO product_category(name,description)VALUES('Fruta','Frutas');
-INSERT INTO product_category(name,description)VALUES('Legumbre','Legumbres');
-INSERT INTO product_category(name,description)VALUES('Carne','Carnes');
-INSERT INTO product_category(name,description)VALUES('Otro','Otros');
+INSERT INTO security_actions (id,name) VALUES 
+(1,'crear empleado'),
+(2,'crear cliente'),
+(3,'crear producto'),
+(4,'bloquear empleado'),
+(5,'bloquear cliente'),
+(6,'bloquear producto'),
+(7,'modificar empleado'),
+(8,'modificar cliente'),
+(9,'modificar producto'),
+(10,'ver empleados'),
+(11,'ver clientes'),
+(12,'ver productos'),
+(13,'ver dashboards'),
+(14,'actualizar favoritos'),
+(15,'editar mis datos')
 
-INSERT INTO season_category(name,description)VALUES('Verano','Verano');
-INSERT INTO season_category(name,description)VALUES('Otoño','Otoño');
-INSERT INTO season_category(name,description)VALUES('Invierno','Invierno');
-INSERT INTO season_category(name,description)VALUES('Primavera','Primavera');
+INSERT INTO security_actions_roles (security_action_id,user_type_id) VALUES
+(1,3),
+(2,1),
+(3,3),
+(4,3),
+(5,3),
+(5,2),
+(6,3),
+(6,2),
+(7,3),
+(8,3),
+(9,3),
+(9,2),
+(10,3),
+(11,3),
+(11,2),
+(13,3),
+(13,2),
+(14,1),
+(15,3),
+(15,2),
+(15,1)
+
+INSERT INTO users (first_name, last_name, email, phone, password, user_type, user_status, profile_photo) VALUES 
+('Admin', 'Sistema', 'admin@verduleria.cl', '+56912345678', '$2a$10$3Jg9pZ5Q8L5fW1eR3tG7h.u8K3v5Z9B1xW2mY4nO7cI6pS5rE3dG', 3, 1, '');
+
+INSERT INTO product_category(name,description)VALUES
+('Verdura','Verduras'),
+('Fruta','Frutas'),
+('Legumbre','Legumbres'),
+('Carne','Carnes'),
+('Otro','Otros');
+
+INSERT INTO season_category(name,description)VALUES
+('Verano','Verano'),
+('Otoño','Otoño'),
+('Invierno','Invierno'),
+('Primavera','Primavera');
 
 INSERT INTO products (name, description, price, stock, product_category_id, season_category_id, product_photo, status) VALUES
 -- Verduras (10)

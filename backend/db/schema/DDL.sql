@@ -11,6 +11,28 @@ Las sentencias DDL se utilizan para definir o modificar la estructura de la base
 CREATE DATABASE verduleria;
 \c verduleria;
 
+CREATE TABLE user_type(
+    id SERIAL PRIMARY KEY NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    create_date TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE security_actions(
+    id SERIAL PRIMARY KEY NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    create_date TIMESTAMP NOT NULL DEFAULT NOW()
+)
+
+CREATE TABLE security_actions_roles(
+    id SERIAL PRIMARY KEY NOT NULL,
+    user_type_id INT NOT NULL,
+    security_action_id INT NOT NULL,
+    create_date TIMESTAMP NOT NULL DEFAULT NOW(),
+    CONSTRAINT security_actions_roles_user_type_fkey FOREIGN KEY (user_type_id) REFERENCES user_type(id),
+    CONSTRAINT security_actions_roles_security_action_fkey FOREIGN KEY (security_action_id) REFERENCES security_actions(id)
+)
+
+
 
 /* user_type: 1 = cliente, 2 = empleado, 3 = admin */
 CREATE TABLE users (
@@ -25,7 +47,8 @@ CREATE TABLE users (
     profile_photo VARCHAR(1000) NOT NULL DEFAULT '',
     create_date TIMESTAMP NOT NULL DEFAULT NOW(),
     update_date TIMESTAMP NOT NULL DEFAULT NOW(),
-    CONSTRAINT users_email_key UNIQUE (email)
+    CONSTRAINT users_email_key UNIQUE (email),
+    CONSTRAINT users_user_type_fkey FOREIGN KEY (user_type) REFERENCES user_type(id)
 );
 
 CREATE TABLE product_category(
@@ -61,6 +84,5 @@ CREATE TABLE products(
     CONSTRAINT products_seasonal_category_fkey FOREIGN KEY (season_category_id) REFERENCES season_category(id)
 
 );
-
 
 
