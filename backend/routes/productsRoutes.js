@@ -7,6 +7,8 @@ import {
   createProduct,
   updateProduct
 } from '../src/controllers/productsController.js'
+import { verifyToken } from '../middleware/verifyTokenMiddleware.js'
+import { authorizationMiddleware } from '../middleware/authorizationMiddleware.js'
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -24,7 +26,13 @@ const upload = multer({ storage })
 
 router.get('/products', getProducts)
 router.get('/products/:id', getProduct)
-router.post('/products', upload.single('productPhoto'), createProduct)
+router.post(
+  '/products',
+  verifyToken,
+  authorizationMiddleware,
+  upload.single('productPhoto'),
+  createProduct
+)
 router.put('/products/:id', upload.single('productPhoto'), updateProduct)
 
 export default router
