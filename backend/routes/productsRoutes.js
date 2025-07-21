@@ -9,6 +9,7 @@ import {
 } from '../src/controllers/productsController.js'
 import { verifyToken } from '../middleware/verifyTokenMiddleware.js'
 import { authorizationMiddleware } from '../middleware/authorizationMiddleware.js'
+import { verduleriaLog } from '../middleware/logMiddleware.js'
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -24,10 +25,11 @@ const storage = multer.diskStorage({
 const router = Router()
 const upload = multer({ storage })
 
-router.get('/products', getProducts)
-router.get('/products/:id', getProduct)
+router.get('/products', verduleriaLog, getProducts)
+router.get('/products/:id', verduleriaLog, getProduct)
 router.post(
   '/products',
+  verduleriaLog,
   verifyToken,
   authorizationMiddleware,
   upload.single('productPhoto'),
@@ -35,6 +37,7 @@ router.post(
 )
 router.put(
   '/products/:id',
+  verduleriaLog,
   verifyToken,
   authorizationMiddleware,
   upload.single('productPhoto'),
