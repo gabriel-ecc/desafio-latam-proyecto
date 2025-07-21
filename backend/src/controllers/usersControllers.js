@@ -52,14 +52,20 @@ export const getUsers = async (req, res) => {
 
 export const lockUser = async (req, res) => {
   try {
-    const { id } = req.body
+    const { id } = req.params
     const users = await findUserByIdModel(id)
-    const user = await changeUserStatus(id, users.user_status)
-    const outMessage =
-      users.user_status === 1
-        ? 'Usuario bloqueado exitosamente'
-        : 'Usuario desbloqueado exitosamente'
-    res.status(200).json({ message: outMessage, user })
+    if (users.type !== 3) {
+      const user = await changeUserStatus(id, users.user_status)
+      const outMessage =
+        users.user_status === 1
+          ? 'Usuario bloqueado exitosamente'
+          : 'Usuario desbloqueado exitosamente'
+      res.status(200).json({ message: outMessage, user })
+    } else {
+      return res
+        .status(405)
+        .json({ message: 'Acción no permitida sobre usuario administrador' })
+    }
   } catch (error) {
     console.error(error)
     return res.status(500).json(error)

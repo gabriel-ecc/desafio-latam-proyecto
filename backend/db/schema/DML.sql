@@ -17,7 +17,7 @@ INSERT INTO security_actions (id,security_route,security_method,description) VAL
 (1,'/users/employee','post','Crear Empleado'),
 (2,'/users','post','Crear Cliente'),
 (3,'/products','post','Crear Producto'),
-(4,'/users/lockuser','put','Bloquear usuarios'),
+(4,'/users/lockuser/:id','put','Bloquear usuarios'),
 (5,'/users/employee','put','Modificar Empleado'),
 (6,'/users','put','Modificar Cliente'),
 (7,'/products/:id','put','Modificar Producto'),
