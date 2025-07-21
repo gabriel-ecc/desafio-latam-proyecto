@@ -13,45 +13,28 @@ INSERT INTO user_type (id,name) VALUES
 (2,'empleado'),
 (3,'administrador');
 
-INSERT INTO security_actions (id,name) VALUES 
-(1,'crear empleado'),
-(2,'crear cliente'),
-(3,'crear producto'),
-(4,'bloquear empleado'),
-(5,'bloquear cliente'),
-(6,'bloquear producto'),
-(7,'modificar empleado'),
-(8,'modificar cliente'),
-(9,'modificar producto'),
-(10,'ver empleados'),
-(11,'ver clientes'),
-(12,'ver productos'),
-(13,'ver dashboards'),
-(14,'actualizar favoritos'),
-(15,'editar mis datos')
+INSERT INTO security_actions (id,security_route,security_method,description) VALUES 
+(1,'/users/employee','post','Crear Empleado'),
+(2,'/users','post','Crear Cliente'),
+(3,'/products','post','Crear Producto'),
+(4,'/users/lockuser','put','Bloquear usuarios'),
+(5,'/users/employee','put','Modificar Empleado'),
+(6,'/users','put','Modificar Cliente'),
+(7,'/products/:id','put','Modificar Producto'),
+(8,'/users/employee','get','Ver Empleados'),
+(9,'/users','get','Ver Clientes'),
+(10,'/products','get','Ver Productos'),
+(11,'/dashboards','get','Ver Dashboard'),
+(12,'/users/profile','get','Ver mis datos'),
+(13,'/users/profile','put','Modificar mis datos'),
+(14,'/favorites','post','Agregar Favorito'),
+(15,'/favorites','put','Quitar Favorito'),
+(16,'/favorites','get','Ver Favoritos')
 
 INSERT INTO security_actions_roles (security_action_id,user_type_id) VALUES
-(1,3),
-(2,1),
-(3,3),
-(4,3),
-(5,3),
-(5,2),
-(6,3),
-(6,2),
-(7,3),
-(8,3),
-(9,3),
-(9,2),
-(10,3),
-(11,3),
-(11,2),
-(13,3),
-(13,2),
-(14,1),
-(15,3),
-(15,2),
-(15,1)
+(1,3),(2,1),(3,3),(4,3),(4,2),(5,3),(6,3),(7,3),(7,2),(8,3),(9,3),(9,2),
+(10,3),(10,2),(10,1),(11,3),(11,2),(12,3),(12,2),(12,1),(13,3),(13,1),
+(14,1),(15,1),(16,3),(16,2),(16,1)
 
 -- password admin: admin1
 INSERT INTO users (first_name, last_name, email, phone, password, user_type, user_status, profile_photo) VALUES 

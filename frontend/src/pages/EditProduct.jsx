@@ -51,12 +51,12 @@ export default function EditProduct() {
         .get(`${ENDPOINT.products}/${id}`)
         .then(({ data }) => {
           setProduct({
-            name: data.product_name,
+            name: data.name,
             description: data.description,
             price: data.price,
             stock: data.stock,
-            category_id: data.category_id,
-            season_id: data.season_id,
+            category_id: data.categoryId,
+            season_id: data.seasonId,
             img: data.img
           })
           setImagePreview(data.img)

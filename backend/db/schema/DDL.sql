@@ -19,7 +19,9 @@ CREATE TABLE user_type(
 
 CREATE TABLE security_actions(
     id SERIAL PRIMARY KEY NOT NULL,
-    name VARCHAR(200) NOT NULL,
+    security_route VARCHAR(200) NOT NULL,
+    security_method VARCHAR(10) NOT NULL,
+    description VARCHAR(500) NOT NULL DEFAULT '',
     create_date TIMESTAMP NOT NULL DEFAULT NOW()
 )
 

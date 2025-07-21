@@ -33,6 +33,12 @@ router.post(
   upload.single('productPhoto'),
   createProduct
 )
-router.put('/products/:id', upload.single('productPhoto'), updateProduct)
+router.put(
+  '/products/:id',
+  verifyToken,
+  authorizationMiddleware,
+  upload.single('productPhoto'),
+  updateProduct
+)
 
 export default router

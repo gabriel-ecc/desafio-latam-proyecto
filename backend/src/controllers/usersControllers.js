@@ -68,8 +68,8 @@ export const lockUser = async (req, res) => {
 
 export const getUserProfile = async (req, res) => {
   try {
-    const userData = req.user // El emal viene desde el middleware de verifyToken
-    console.log('User profile request for email: ', userData)
+    const userData = req.user // El id viene desde el middleware de verifyToken
+    console.log('User profile request for id: ', userData)
 
     const user = await findUserByIdModel(userData)
 

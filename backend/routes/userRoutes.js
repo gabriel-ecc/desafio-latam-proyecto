@@ -23,7 +23,8 @@ const storage = multer.diskStorage({
     cb(null, uploadPath)
   },
   filename: function (req, file, cb) {
-    const newFileName = file.fieldname + '-' + Date.now() + path.extname(file.originalname)
+    const newFileName =
+      file.fieldname + '-' + Date.now() + path.extname(file.originalname)
     console.log('Multer: Generando nombre de archivo:', newFileName)
     console.log('Multer: Objeto "file" recibido por Multer:', file)
     cb(null, newFileName)
@@ -35,16 +36,31 @@ const upload = multer({ storage }) // usamos propiedad 'Property Shorthand'
 
 // Rutas
 // --- Aplicamos el middleware de Multer ANTES de createUserMiddleware ---
-router.post('/users',
-  (req, res, next) => { // Añadimos un middleware de depuración justo antes de Multer
-    console.log('DEBUG: Solicitud entrante a /users. req.body ANTES de Multer:', req.body)
-    console.log('DEBUG: Solicitud entrante a /users. req.file ANTES de Multer:', req.file)
+router.post(
+  '/users',
+  (req, res, next) => {
+    // Añadimos un middleware de depuración justo antes de Multer
+    console.log(
+      'DEBUG: Solicitud entrante a /users. req.body ANTES de Multer:',
+      req.body
+    )
+    console.log(
+      'DEBUG: Solicitud entrante a /users. req.file ANTES de Multer:',
+      req.file
+    )
     next()
   },
   upload.single('profilePhoto'),
-  (req, res, next) => { // Añadimos un middleware de depuración justo DESPUÉS de Multer
-    console.log('DEBUG: Solicitud pasó por Multer. req.body DESPUÉS de Multer:', req.body)
-    console.log('DEBUG: Solicitud pasó por Multer. req.file DESPUÉS de Multer (¡ESTO DEBE TENER UN VALOR!):', req.file)
+  (req, res, next) => {
+    // Añadimos un middleware de depuración justo DESPUÉS de Multer
+    console.log(
+      'DEBUG: Solicitud pasó por Multer. req.body DESPUÉS de Multer:',
+      req.body
+    )
+    console.log(
+      'DEBUG: Solicitud pasó por Multer. req.file DESPUÉS de Multer (¡ESTO DEBE TENER UN VALOR!):',
+      req.file
+    )
     next()
   },
   createUserMiddleware,
@@ -52,10 +68,11 @@ router.post('/users',
 )
 
 router.get('/users', getUsers) // listar usuarios
-router.put('/lockuser', lockUser)
+router.put('/users/lockuser', lockUser)
 router.get('/users/profile', verifyToken, getUserProfile)
 
-router.put('/users/profile',
+router.put(
+  '/users/profile',
   verifyToken,
   upload.single('profilePhoto'),
   updateUserProfile
