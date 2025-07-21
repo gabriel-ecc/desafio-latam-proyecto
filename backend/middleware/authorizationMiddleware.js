@@ -3,7 +3,7 @@ import { findUserByIdModel } from '../src/models/usersModel.js'
 
 export const authorizationMiddleware = async (req, res, next) => {
   try {
-    const securityRoute = req.route.path.toLowerCase()
+    const securityRoute = req.route.path
     const securityMethod = req.method.toLowerCase()
     const userId = req.user
     const user = await findUserByIdModel(userId)
@@ -13,7 +13,6 @@ export const authorizationMiddleware = async (req, res, next) => {
       securityMethod,
       userType
     )
-    console.log(securityRoute, securityMethod, userId, permission)
     if (permission) {
       next()
     } else {

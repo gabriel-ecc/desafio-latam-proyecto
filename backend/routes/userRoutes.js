@@ -12,7 +12,8 @@ import {
 } from '../src/controllers/usersControllers.js'
 import { createUserMiddleware } from '../middleware/userMiddleware.js'
 import { verifyToken } from '../middleware/verifyTokenMiddleware.js'
-
+import { authorizationMiddleware } from '../middleware/authorizationMiddleware.js'
+import { verduleriaLog } from '../middleware/logMiddleware.js'
 const router = Router()
 
 // --- Configuración de Multer ---
@@ -35,45 +36,44 @@ const storage = multer.diskStorage({
 const upload = multer({ storage }) // usamos propiedad 'Property Shorthand'
 
 // Rutas
-// --- Aplicamos el middleware de Multer ANTES de createUserMiddleware ---
+// Crear usuario
 router.post(
   '/users',
-  (req, res, next) => {
-    // Añadimos un middleware de depuración justo antes de Multer
-    console.log(
-      'DEBUG: Solicitud entrante a /users. req.body ANTES de Multer:',
-      req.body
-    )
-    console.log(
-      'DEBUG: Solicitud entrante a /users. req.file ANTES de Multer:',
-      req.file
-    )
-    next()
-  },
+  verduleriaLog,
   upload.single('profilePhoto'),
-  (req, res, next) => {
-    // Añadimos un middleware de depuración justo DESPUÉS de Multer
-    console.log(
-      'DEBUG: Solicitud pasó por Multer. req.body DESPUÉS de Multer:',
-      req.body
-    )
-    console.log(
-      'DEBUG: Solicitud pasó por Multer. req.file DESPUÉS de Multer (¡ESTO DEBE TENER UN VALOR!):',
-      req.file
-    )
-    next()
-  },
   createUserMiddleware,
   registerClientUser
 )
-
-router.get('/users', getUsers) // listar usuarios
-router.put('/users/lockuser', lockUser)
-router.get('/users/profile', verifyToken, getUserProfile)
-
+// Obtener lista de usuarios
+router.get(
+  '/users',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware,
+  getUsers
+)
+// Bloquear usuario
+router.put(
+  '/users/lockuser',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware,
+  lockUser
+)
+// Obtener datos de perfil
+router.get(
+  '/users/profile',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware,
+  getUserProfile
+)
+// Actualizar perfil
 router.put(
   '/users/profile',
+  verduleriaLog,
   verifyToken,
+  authorizationMiddleware,
   upload.single('profilePhoto'),
   updateUserProfile
 )
