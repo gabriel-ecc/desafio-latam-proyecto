@@ -63,7 +63,7 @@ export const lockUser = async (req, res) => {
       res.status(200).json({ message: outMessage, user })
     } else {
       return res
-        .status(405)
+        .status(403)
         .json({ message: 'Acción no permitida sobre usuario administrador' })
     }
   } catch (error) {
