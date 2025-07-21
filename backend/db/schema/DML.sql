@@ -53,8 +53,9 @@ INSERT INTO security_actions_roles (security_action_id,user_type_id) VALUES
 (15,2),
 (15,1)
 
+-- password admin: admin1
 INSERT INTO users (first_name, last_name, email, phone, password, user_type, user_status, profile_photo) VALUES 
-('Admin', 'Sistema', 'admin@verduleria.cl', '+56912345678', '$2a$10$3Jg9pZ5Q8L5fW1eR3tG7h.u8K3v5Z9B1xW2mY4nO7cI6pS5rE3dG', 3, 1, '');
+('Admin', 'Sistema', 'admin@verduleria.cl', '+56912345678', '$2b$10$Fsl6/HbG3wxZ799ZXQ8Keej5uIjY5zBBj.LM/s/qFqp.5V1f9PB5W', 3, 1, '');
 
 INSERT INTO product_category(name,description)VALUES
 ('Verdura','Verduras'),
