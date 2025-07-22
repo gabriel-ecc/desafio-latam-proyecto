@@ -78,4 +78,28 @@ router.put(
   updateUserProfile
 )
 
+// Obtener empleados
+router.get(
+  '/users/employee',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware
+)
+
+// Crear empleado
+router.post(
+  '/users/employee',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware
+)
+
+// Actualizar empleado
+router.put(
+  '/users/employee/:id',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware
+)
+
 export default router

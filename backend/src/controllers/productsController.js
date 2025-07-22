@@ -5,6 +5,8 @@ import {
   getProductById,
   createProductSQL,
   updateProductSQL,
+  getInventoryByPage,
+  getInventoryCount
 } from '../models/productsModel.js'
 import 'dotenv/config'
 
@@ -12,6 +14,21 @@ export const getProducts = async (req, res) => {
   try {
     const products = await getProductsByPage(req.query)
     const count = await getProductsCount(req.query)
+    const productsWithHATEOAS = await productsHATEOAS(
+      'products',
+      products,
+      count
+    )
+    res.status(200).json(productsWithHATEOAS)
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
+export const getInventory = async (req, res) => {
+  try {
+    const products = await getInventoryByPage(req.query)
+    const count = await getInventoryCount(req.query)
     const productsWithHATEOAS = await productsHATEOAS(
       'products',
       products,
@@ -38,7 +55,7 @@ export const getProduct = async (req, res) => {
       category: queryResult.category,
       categoryId: queryResult.category_id,
       season: queryResult.season,
-      seasonId: queryResult.season_id,
+      seasonId: queryResult.season_id
     }
     product.img = `http://localhost:${port}/api/v1/uploads/${product.img}`
     res.status(200).json(product)

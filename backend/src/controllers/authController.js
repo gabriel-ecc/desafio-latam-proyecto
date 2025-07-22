@@ -7,9 +7,15 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body
     const user = await findUserByEmailModel(email)
+    const status = user.user_status
 
     if (!user) {
       return res.status(401).json({ message: 'Email o contraseña incorrecta' })
+    }
+    if (status === 0) {
+      return res.status(403).json({
+        message: 'Usuario bloqueado'
+      })
     }
 
     const isPasswordValid = bcrypt.compareSync(password, user.password)

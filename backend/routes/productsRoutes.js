@@ -5,7 +5,8 @@ import {
   getProduct,
   getProducts,
   createProduct,
-  updateProduct
+  updateProduct,
+  getInventory
 } from '../src/controllers/productsController.js'
 import { verifyToken } from '../middleware/verifyTokenMiddleware.js'
 import { authorizationMiddleware } from '../middleware/authorizationMiddleware.js'
@@ -42,6 +43,14 @@ router.put(
   authorizationMiddleware,
   upload.single('productPhoto'),
   updateProduct
+)
+
+router.get(
+  '/products/inventory',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware,
+  getInventory
 )
 
 export default router

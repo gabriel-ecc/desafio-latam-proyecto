@@ -61,7 +61,7 @@ export const getUsersPaginated = async ({
   const [columna, direccion] = orderBy.split('_')
   const offset = Math.abs((page - 1) * limits)
   const queryWithFormat = format(
-    'SELECT first_name, last_name, email, user_type, user_status, profile_photo FROM users ORDER BY %I %s LIMIT %s OFFSET %s',
+    'SELECT first_name, last_name, email, user_type, user_status, profile_photo FROM users WHERE user_type = 1 ORDER BY %I %s LIMIT %s OFFSET %s',
     columna,
     direccion,
     limits,

@@ -8,17 +8,24 @@ export const authorizationMiddleware = async (req, res, next) => {
     const userId = req.user
     const user = await findUserByIdModel(userId)
     const userType = user.user_type
-    const permission = await getPermissions(
-      securityRoute,
-      securityMethod,
-      userType
-    )
-    if (permission) {
-      next()
-    } else {
+    const status = user.user_status
+    if (status === 0) {
       return res.status(403).json({
-        message: 'Usuario no tiene permisos para realizar esta acción'
+        message: 'Usuario bloqueado'
       })
+    } else {
+      const permission = await getPermissions(
+        securityRoute,
+        securityMethod,
+        userType
+      )
+      if (permission) {
+        next()
+      } else {
+        return res.status(403).json({
+          message: 'Usuario no tiene permisos para realizar esta acción'
+        })
+      }
     }
   } catch (error) {
     console.error(error)
