@@ -30,7 +30,7 @@ INSERT INTO security_actions (id,security_route,security_method,description) VAL
 (14,'/favorites','post','Agregar Favorito'),
 (15,'/favorites','put','Quitar Favorito'),
 (16,'/favorites','get','Ver Favoritos'),
-(17,'/favorites/my','get','Ver mis favoritos'),
+(17,'/favorites/my/:id','get','Ver mis favoritos'),
 (18,'/products/inventory','get','Ver Inventario')
 
 INSERT INTO security_actions_roles (security_action_id,user_type_id) VALUES
