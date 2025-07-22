@@ -6,9 +6,11 @@ import {
   createProductSQL,
   updateProductSQL,
   getInventoryByPage,
-  getInventoryCount
+  getInventoryCount,
+  getProductsFrontPage
 } from '../models/productsModel.js'
 import 'dotenv/config'
+import { getChileanSeason } from '../helpers/seasonHelper.js'
 
 export const getProducts = async (req, res) => {
   try {
@@ -97,6 +99,24 @@ export const updateProduct = async (req, res) => {
     res.status(200).json({ id, product })
   } catch (error) {
     console.log(error)
+    return res.status(500).json(error)
+  }
+}
+
+export const productListFrontPage = async (req, res) => {
+  const { limits = 6 } = req.query
+  const currentDate = new Date()
+  const currentSeason = getChileanSeason(currentDate)
+  try {
+    const products = await getProductsFrontPage(req.query, currentSeason)
+    const productsWithHATEOAS = await productsHATEOAS(
+      'products',
+      products,
+      limits
+    )
+    res.status(200).json(productsWithHATEOAS)
+  } catch (error) {
+    console.error(error)
     return res.status(500).json(error)
   }
 }

@@ -142,7 +142,6 @@ export const updateProductSQL = async (id, productData) => {
   return response.rows[0]
 }
 
-
 export const getInventoryCount = async ({
   limits = 20,
   page = 1,
@@ -207,6 +206,33 @@ export const getInventoryByPage = async ({
     direccion,
     limits,
     offset
+  )
+
+  const { rows: productList } = await pool.query(queryWithFormat)
+  return productList
+}
+
+export const getProductsFrontPage = async ({ limits = 6 }, season = 1) => {
+  const filtros = []
+  const valores = []
+
+  if (season) {
+    filtros.push('c.id = %L')
+    valores.push(season)
+  }
+
+  let sqlQuery =
+    'SELECT a.id, a.name as productname, a.price, a.stock, a.product_photo as img, b.name as category,b.id as category_id, c.name as season,c.id as season_id FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN season_category AS c on a.season_category_id = c.id'
+  if (filtros.length > 0) {
+    const sqlWhere = format(
+      ' WHERE a.status = true AND a.stock > 0 AND ' + filtros.join(' AND '),
+      ...valores
+    )
+    sqlQuery += sqlWhere
+  }
+  const queryWithFormat = format(
+    sqlQuery + ' ORDER BY RANDOM() LIMIT %s',
+    limits
   )
 
   const { rows: productList } = await pool.query(queryWithFormat)

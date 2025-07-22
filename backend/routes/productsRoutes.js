@@ -6,7 +6,8 @@ import {
   getProducts,
   createProduct,
   updateProduct,
-  getInventory
+  getInventory,
+  productListFrontPage
 } from '../src/controllers/productsController.js'
 import { verifyToken } from '../middleware/verifyTokenMiddleware.js'
 import { authorizationMiddleware } from '../middleware/authorizationMiddleware.js'
@@ -27,6 +28,7 @@ const router = Router()
 const upload = multer({ storage })
 
 router.get('/products', verduleriaLog, getProducts)
+router.get('/products/frontPage', verduleriaLog, productListFrontPage)
 router.get('/products/:id', verduleriaLog, getProduct)
 router.post(
   '/products',
@@ -36,6 +38,7 @@ router.post(
   upload.single('productPhoto'),
   createProduct
 )
+
 router.put(
   '/products/:id',
   verduleriaLog,

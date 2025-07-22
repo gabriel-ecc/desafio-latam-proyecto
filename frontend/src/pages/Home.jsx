@@ -33,8 +33,8 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(ENDPOINT.products, {
-          params: { limits: 8 } // Mostrar solo 8 productos en el home
+        const response = await axios.get(ENDPOINT.productsFrontPage, {
+          params: { limits: 6 } // Mostrar solo X productos en el home
         })
 
         // Transformar los datos para que coincidan con lo que espera ProductCard
