@@ -54,6 +54,11 @@ export const lockUser = async (req, res) => {
   try {
     const { id } = req.params
     const users = await findUserByIdModel(id)
+    if (id === users.id) {
+      return res
+        .status(403)
+        .json({ message: 'Acción no permitida sobre el propio usuario' })
+    }
     if (users.type !== 3) {
       const user = await changeUserStatus(id, users.user_status)
       const outMessage =
