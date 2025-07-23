@@ -61,7 +61,7 @@ export const getUsersPaginated = async ({
   const [columna, direccion] = orderBy.split('_')
   const offset = Math.abs((page - 1) * limits)
   const queryWithFormat = format(
-    'SELECT first_name, last_name, email, user_type, user_status, profile_photo FROM users ORDER BY %I %s LIMIT %s OFFSET %s',
+    'SELECT first_name, last_name, email, user_type, user_status, profile_photo FROM users WHERE user_type = 1 ORDER BY %I %s LIMIT %s OFFSET %s',
     columna,
     direccion,
     limits,
@@ -90,7 +90,7 @@ export const changeUserStatus = async (id, status) => {
   return response.rows[0]
 }
 
-export const updateUserProfileModel = async (email, userData) => {
+export const updateUserProfileModel = async (id, userData) => {
   const { firstName, lastName, phone, profilePhoto } = userData
   const updates = []
   const values = []
@@ -116,15 +116,15 @@ export const updateUserProfileModel = async (email, userData) => {
     values.push(profilePhoto)
   }
 
-  // agregamos el email al 'where'
-  values.push(email)
+  // agregamos el id al 'where'
+  values.push(id)
 
   if (updates.length === 0) {
     return null // no hay campos por actualizar
   }
 
   const sqlQuery = {
-    text: `UPDATE users SET ${updates.join(', ')} WHERE email = $${paramIndex} RETURNING id, first_name, last_name, email, phone, user_type, user_status, profile_photo`,
+    text: `UPDATE users SET ${updates.join(', ')} WHERE id = $${paramIndex} RETURNING id, first_name, last_name, email, phone, user_type, user_status, profile_photo`,
     values
   }
 

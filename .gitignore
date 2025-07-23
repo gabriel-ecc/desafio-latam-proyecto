@@ -137,3 +137,6 @@ dist
 
 # Extension creada por Oscar Garin Echeverria
 .oge
+
+#Mac
+.DS_Store

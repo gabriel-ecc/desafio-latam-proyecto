@@ -8,12 +8,9 @@ const verifyToken = async (req, res, next) => {
     if (!token) {
       return res.status(400).json({ message: 'El token debe estar presente' })
     }
-
     const extractToken = token.split(' ')[1] // de los 2 documentos del arreglo, tomamos el segundo
     const decodedToken = jwt.verify(extractToken, process.env.JWT_SECRET)
-    console.log('Middleware verifyToken: Token decodificado: ', decodedToken)
-    req.user = decodedToken.email
-    console.log('Middleware verifyToken: Email adjuntado a req.user: ', req.user)
+    req.user = decodedToken.userId
     next()
   } catch (error) {
     console.error('Error en verifyTokenMiddleware', error)

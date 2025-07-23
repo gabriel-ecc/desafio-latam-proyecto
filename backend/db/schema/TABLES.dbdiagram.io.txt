@@ -1,0 +1,132 @@
+https://dbdiagram.io/
+
+TABLE users {
+    id UUID PK
+    first_name VARCHAR(100) 
+    last_name VARCHAR(100)
+    email VARCHAR(200) 
+    phone VARCHAR(20)
+    password VARCHAR(500) 
+    user_type INT 
+    user_status INT 
+    profile_photo VARCHAR(1000)
+    create_date TIMESTAMP 
+    update_date TIMESTAMP 
+    
+}
+
+TABLE product_category{
+    id SERIAL PK
+    name VARCHAR(100)
+    description VARCHAR(500)
+    create_date TIMESTAMP 
+}
+
+TABLE season_category{
+    id SERIAL PK
+    name VARCHAR(100)
+    description VARCHAR(500)
+    create_date TIMESTAMP 
+}
+
+TABLE products{
+    id UUID PK
+    name VARCHAR(100)
+    description VARCHAR(500)
+    price INT 
+    stock INT 
+    product_category_id INT 
+    season_category_id INT 
+    product_photo VARCHAR(1000)
+    status BOOL
+    create_date TIMESTAMP 
+    update_date TIMESTAMP 
+}
+
+TABLE orders{
+order_id UUID PK
+client_id UUID 
+order_date TIMESTAMP
+order_status INT
+delivery_type INT
+shippping_address_id UUID
+recipient_name VARCHAR(100)
+}
+
+TABLE order_status{
+  id INT PK
+  descripcion VARCHAR(100)
+  create_date TIMESTAMP 
+}
+
+TABLE order_items{
+order_id UUID PK
+product_id UUID PK
+quantity INT
+unit_price INT
+}
+
+TABLE addresses{
+address_id UUID PK
+client_id UUID PK
+address_line_1 VARCHAR(100)
+address_line_2 VARCHAR(100)
+city VARCHAR(500)
+state_province VARCHAR(100)
+postal_code VARCHAR(20)
+country VARCHAR(100)
+recipient_name VARCHAR(100)
+
+}
+
+TABLE client_favorites{
+client_id UUID PK
+product_id UUID PK
+is_favorite bool
+}
+
+
+TABLE user_type{
+  id INT PK
+  descripcion VARCHAR(100)
+  create_date TIMESTAMP 
+}
+
+TABLE security_actions{
+  id INT PK
+  security_route VARCHAR(200)
+security_method VARCHAR(10)
+  create_date TIMESTAMP 
+}
+
+TABLE security_actions_roles{
+  id INT PK
+  id_security_action INT
+  id_user_type INT
+}
+
+
+
+Ref: "season_category"."id" < "products"."season_category_id"
+
+Ref: "product_category"."id" < "products"."product_category_id"
+
+Ref: "order_items"."order_id" > "orders"."order_id"
+
+Ref: "order_items"."product_id" > "products"."id"
+
+Ref: "users"."id" < "addresses"."client_id"
+
+Ref: "users"."id" < "client_favorites"."client_id"
+
+Ref: "products"."id" < "client_favorites"."product_id"
+
+Ref: "users"."id" < "orders"."order_id"
+
+Ref: "order_status"."id" < "orders"."order_status"
+
+Ref: "user_type"."id" < "users"."user_type"
+
+Ref: "security_actions"."id" < "security_actions_roles"."id_security_action"
+
+Ref: "user_type"."id" < "security_actions_roles"."id_user_type"

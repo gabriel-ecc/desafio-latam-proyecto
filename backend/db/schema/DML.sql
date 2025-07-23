@@ -8,18 +8,53 @@ Las sentencias DML se utilizan para manipular los datos dentro de los objetos de
   SELECT (consultar/recuperar datos - aunque SELECT a veces se clasifica como DQL - Data Query Language, se considera parte de DML en un sentido amplio de manipulación de datos).
 */
 
-INSERT INTO users (id, first_name, last_name, email, phone, password, user_type, user_status, profile_photo) VALUES ('0c1dd659-5b04-4bb8-b278-2ecf14fde11a', 'Admin', 'Sistema', 'admin@verduleria.cl', '+56912345678', '$2a$10$3Jg9pZ5Q8L5fW1eR3tG7h.u8K3v5Z9B1xW2mY4nO7cI6pS5rE3dG', 3, 1, '');
+INSERT INTO user_type (id,name) VALUES 
+(1,'cliente'),
+(2,'empleado'),
+(3,'administrador');
 
-INSERT INTO product_category(name,description)VALUES('Verdura','Verduras');
-INSERT INTO product_category(name,description)VALUES('Fruta','Frutas');
-INSERT INTO product_category(name,description)VALUES('Legumbre','Legumbres');
-INSERT INTO product_category(name,description)VALUES('Carne','Carnes');
-INSERT INTO product_category(name,description)VALUES('Otro','Otros');
+INSERT INTO security_actions (id,security_route,security_method,description) VALUES 
+(1,'/users/employee','post','Crear Empleado'),
+(2,'/users','post','Crear Cliente'),
+(3,'/products','post','Crear Producto'),
+(4,'/users/lock/:id','put','Bloquear usuarios'),
+(5,'/users/employee/:id','put','Modificar Empleado'),
+(6,'/users','put','Modificar Cliente'),
+(7,'/products/:id','put','Modificar Producto'),
+(8,'/users/employee','get','Ver Empleados'),
+(9,'/users','get','Ver Clientes'),
+(10,'/products','get','Ver Productos'),
+(11,'/dashboards','get','Ver Dashboard'),
+(12,'/users/profile','get','Ver mis datos'),
+(13,'/users/profile','put','Modificar mis datos'),
+(14,'/favorites','post','Agregar Favorito'),
+(15,'/favorites','put','Quitar Favorito'),
+(16,'/favorites','get','Ver Favoritos'),
+(17,'/favorites/my/:id','get','Ver mis favoritos'),
+(18,'/products/inventory','get','Ver Inventario'),
+(19,'/products/lock/:id','put','Bloquear Producto')
 
-INSERT INTO season_category(name,description)VALUES('Verano','Verano');
-INSERT INTO season_category(name,description)VALUES('Otoño','Otoño');
-INSERT INTO season_category(name,description)VALUES('Invierno','Invierno');
-INSERT INTO season_category(name,description)VALUES('Primavera','Primavera');
+INSERT INTO security_actions_roles (security_action_id,user_type_id) VALUES
+(1,3),(2,3),(3,3),(4,3),(4,2),(5,3),(6,3),(7,3),(7,2),(8,3),(9,3),(9,2),
+(10,3),(10,2),(10,1),(11,3),(11,2),(12,3),(12,2),(12,1),(13,3),(13,1),
+(14,1),(15,1),(16,3),(16,2),(17,3),(17,2),(17,1),(18,3),(18,2),(19,3)
+
+-- password admin: admin1
+INSERT INTO users (first_name, last_name, email, phone, password, user_type, user_status, profile_photo) VALUES 
+('Admin', 'Sistema', 'admin@verduleria.cl', '+56912345678', '$2b$10$Fsl6/HbG3wxZ799ZXQ8Keej5uIjY5zBBj.LM/s/qFqp.5V1f9PB5W', 3, 1, '');
+
+INSERT INTO product_category(name,description)VALUES
+('Verdura','Verduras'),
+('Fruta','Frutas'),
+('Legumbre','Legumbres'),
+('Carne','Carnes'),
+('Otro','Otros');
+
+INSERT INTO season_category(name,description)VALUES
+('Verano','Verano'),
+('Otoño','Otoño'),
+('Invierno','Invierno'),
+('Primavera','Primavera');
 
 INSERT INTO products (name, description, price, stock, product_category_id, season_category_id, product_photo, status) VALUES
 -- Verduras (10)
