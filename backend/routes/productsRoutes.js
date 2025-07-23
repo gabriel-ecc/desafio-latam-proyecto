@@ -56,4 +56,11 @@ router.get(
   getInventory
 )
 
+router.get(
+  '/products/lock/:id',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware
+)
+
 export default router

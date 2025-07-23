@@ -54,7 +54,7 @@ router.get(
 )
 // Bloquear usuario
 router.put(
-  '/users/lockuser/:id',
+  '/users/lock/:id',
   verduleriaLog,
   verifyToken,
   authorizationMiddleware,
