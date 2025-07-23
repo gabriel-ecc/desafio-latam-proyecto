@@ -58,7 +58,8 @@ jobs:
             -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto
             -Dsonar.organization=gabriel-ecc
             # Comma-separated paths to directories containing main source files.
-            #-Dsonar.sources= # optional, default is project base directory
+            -Dsonar.sources=backend,frontend/src
+            -Dsonar.exclusions=**/node_modules/**,**/__tests__/**,**/*.test.js,**/*.test.jsx
             # Comma-separated paths to directories containing test source files.
             #-Dsonar.tests= # optional. For more info about Code Coverage, please refer to https://docs.sonarcloud.io/enriching/test-coverage/overview/
             # Adds more detail to both client and server-side analysis logs, activating DEBUG mode for the scanner, and adding client-side environment variables and system properties to the server-side log of analysis report processing.
