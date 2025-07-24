@@ -55,11 +55,39 @@ export const getUsers = async (req, res) => {
 // bloquea a un usuario por su email
 export const lockUser = async (req, res) => {
   try {
-    const { id } = req.body
-    const users = await findUserByIdModel(id)
-    const user = await changeUserStatus(id, users.user_status)
-    const outMessage = users.user_status === 1 ? 'Usuario bloqueado exitosamente' : 'Usuario desbloqueado exitosamente'
-    res.status(200).json({ message: outMessage, user })
+    const { id } = req.params // Id del usuario a bloquear/desbloquear. Viene por parametro dede la página
+    const userToModify = await findUserByIdModel(id)
+
+    if (!userToModify) {
+      return res.status(404).json({ message: 'Usuario no encontrado' })
+    }
+
+    // Obtenemos el email del usuario autenticado, desde el token
+    const authenticatedUserEmail = req.user
+    const authenticatedUser = await findUserByEmailModel(authenticatedUserEmail) // es el usuario que está logueado actualmente
+
+    if (!authenticatedUser) {
+      // confirmamos que tenga token valido
+      return res.status(401).json({ message: 'Usuario no autenticado' })
+    }
+
+    if (authenticatedUser.id === userToModify.id) {
+      return res
+        .status(403)
+        .json({ message: 'Acción no permitida sobre el propio usuario' })
+    }
+
+    if (userToModify.user_type === 3) {
+      return res.status(403).json({ message: 'Accion no permitida sobre usuario Administrador' })
+    }
+
+    const updatedUser = await changeUserStatus(id, userToModify.user_tatus)
+    const outMessage =
+      userToModify.user_statu === 1
+        ? 'Usuario bloqueado exitosamente'
+        : 'Usuario desbloqueado exitosamente'
+
+    res.status(200).json({ message: outMessage, user: updatedUser })
   } catch (error) {
     console.error(error)
     return res.status(500).json(error)
