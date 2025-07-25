@@ -40,7 +40,6 @@ export default function Inventory() {
       }).then(() => {
         navigate('/')
       })
-      return
     }
   }, [user, navigate])
 
@@ -231,7 +230,7 @@ export default function Inventory() {
       <div className="inventory-header">
         <h1>Inventario de Productos</h1>
         <button onClick={handleCreateProduct} className="btn btn-success">
-          <i className="fa-solid fa-plus"></i>
+          <i className="fa-solid fa-plus"></i>{' '}
           Crear Producto
         </button>
       </div>
@@ -299,9 +298,11 @@ export default function Inventory() {
         {products.length > 0 ? (
           products.map(product => (
             <div key={product.id} className="product-item">
-              <div
+              <button
                 className="product-summary"
                 onClick={() => toggleProductExpansion(product.id)}
+                aria-expanded={expandedProducts.has(product.id)}
+                aria-label={`${expandedProducts.has(product.id) ? 'Contraer' : 'Expandir'} detalles de ${product.productname}`}
               >
                 <div className="product-basic-info">
                   <div className="product-image">
@@ -343,7 +344,7 @@ export default function Inventory() {
                     className={`fa-solid fa-chevron-${expandedProducts.has(product.id) ? 'up' : 'down'}`}
                   ></i>
                 </div>
-              </div>
+              </button>
 
               {/* Detalles expandidos */}
               {expandedProducts.has(product.id) && (
@@ -361,7 +362,7 @@ export default function Inventory() {
                       }}
                       className="btn btn-primary"
                     >
-                      <i className="fa-solid fa-edit"></i>
+                      <i className="fa-solid fa-edit"></i>{' '}
                       Editar
                     </button>
 
