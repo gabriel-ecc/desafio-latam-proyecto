@@ -52,7 +52,7 @@ router.post('/users',
 )
 
 router.get('/users', getUsers) // devuelve un listado de usuarios separados por paginas
-router.put('/lockuser', lockUser) // bloquea a un usuario por su email
+router.put('/users/lock/:id', verifyToken, lockUser) // bloquea a un usuario por su email
 router.get('/users/profile', verifyToken, getUserProfile) // obtiene el perfil del usuario
 
 // actualiza el perfil del usuario

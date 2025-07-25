@@ -439,7 +439,7 @@ paths:
 
   /users/lock/{id}:
     put:
-      summary: Cambiar el estado (bloquear/desbloquear) de un usuario
+      summary: Cambiar el estado (bloquear/desbloquear) un usuario
       tags: [Users]
       security:
         - bearerAuth: []
@@ -624,7 +624,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /users/employee:
+  /users:
     get:
       summary: Obtener lista de empleados
       tags: [Users]

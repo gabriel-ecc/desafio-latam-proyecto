@@ -81,9 +81,9 @@ export const lockUser = async (req, res) => {
       return res.status(403).json({ message: 'Accion no permitida sobre usuario Administrador' })
     }
 
-    const updatedUser = await changeUserStatus(id, userToModify.user_tatus)
+    const updatedUser = await changeUserStatus(id, userToModify.user_status)
     const outMessage =
-      userToModify.user_statu === 1
+      userToModify.user_status === 1
         ? 'Usuario bloqueado exitosamente'
         : 'Usuario desbloqueado exitosamente'
 

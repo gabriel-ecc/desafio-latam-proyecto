@@ -5,7 +5,7 @@ import pool from './db/schema/config.js'
 import path from 'path'
 
 // importamos las rutas
-import registerUser from './routes/userRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import categoriesRoutes from './routes/categoriesRoutes.js'
 import seasonRoutes from './routes/seasonRoutes.js'
@@ -35,7 +35,7 @@ app.use(cors())
 app.use(express.json())
 
 // disponibilizamos las apis
-app.use('/api/v1', registerUser) // Registrar usuario
+app.use('/api/v1', userRoutes) // RegisterUser, lockUser, etc...
 app.use('/api/v1', authRoutes) // Autenticacion de usuarios
 app.use('/api/v1', categoriesRoutes) // Categorias de Productos
 app.use('/api/v1', seasonRoutes) // Temporadas de Productos
