@@ -1,28 +1,31 @@
-name: Build
+name: SonarCloud analysis
+
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    types: [opened, synchronize, reopened]
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read # allows SonarCloud to decorate PRs with analysis results
+
 jobs:
-  sonarqube:
-    name: SonarQube
+  Analysis:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Analyze with SonarCloud
+
+        # You can pin the exact commit or the version.
+        # uses: SonarSource/sonarcloud-github-action@v2.2.0
+        uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Install SonarScanner
-        run: |
-          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          unzip sonar-scanner.zip
-          export PATH="$PATH:$PWD/sonar-scanner-5.0.1.3006-linux/bin"
-      - name: Run SonarQube Scan
-        run: |
-          sonar-scanner \
-            -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto \
-            -Dsonar.organization=gabriel-ecc \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-            
+          args:
+            -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto
+            -Dsonar.organization=gabriel-ecc
+            -Dsonar.sources=backend,frontend/src
+            -Dsonar.exclusions=**/node_modules/**,**/__tests__/**,**/*.test.js,**/*.test.jsx
+          projectBaseDir: .
