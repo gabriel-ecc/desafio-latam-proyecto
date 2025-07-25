@@ -11,7 +11,7 @@ import './Navbar.css'
 const Navbar = () => {
   const { calculateTotalPrice } = useCart()
   const total = calculateTotalPrice()
-  const { token, user, logout, isLoading } = useContext(UserContext)
+  const { token, user, logout } = useContext(UserContext)
 
   // Estados para controlar la visibilidad de los menús desplegables
   const [isProfileMenuOpen, setProfileMenuOpen] = useState(false)
@@ -25,7 +25,7 @@ const Navbar = () => {
 
   // Hook para cerrar los menús si se hace clic fuera de ellos
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (
         profileMenuRef.current &&
         !profileMenuRef.current.contains(event.target)
@@ -59,10 +59,7 @@ const Navbar = () => {
     <nav className="navbar">
       <Link to="/" className="nav-logo">
         {/* Asegúrate de que la imagen del logo esté en la carpeta `public/img` */}
-        <img
-          src="../../public/imgs/logo-ejemplo.jpeg"
-          alt="Logo Verdulería Fresca"
-        />
+        <img src="/imgs/logo-ejemplo.jpeg" alt="Logo Verdulería Fresca" />
       </Link>
 
       {/* Links de navegación centrales (PC/Tablet) */}
@@ -75,14 +72,23 @@ const Navbar = () => {
           <li>
             <Link to="/products">Productos</Link>
           </li>
-          {listSeasons.map((season) => (
+          {listSeasons.map(season => (
             <li key={season.id}>
               <Link to={`/products?season=${season.id}`}>{season.name}</Link>
             </li>
           ))}
-          <li>
-            <Link to="/editar-producto/0">New Product</Link>
-          </li>
+
+          {/* Mostrar botones solo para empleados y administradores */}
+          {user && (user.userType === 2 || user.userType === 3) && (
+            <>
+              <li>
+                <Link to="/inventario">Inventario</Link>
+              </li>
+              <li>
+                <Link to="/editar-producto/0">Nuevo Producto</Link>
+              </li>
+            </>
+          )}
         </ul>
         <div
           className={`dropdown nav-tablet-categories ${
@@ -97,16 +103,27 @@ const Navbar = () => {
             Menú <i className="fa-solid fa-chevron-down"></i>
           </button>
           <ul className="dropdown-content">
-            {' '}
             {/* TODO: Adapta estas categorías a tu verdulería si es necesario */}
             <li>
               <Link to="/products">Productos</Link>
             </li>
-            {listSeasons.map((season) => (
+            {listSeasons.map(season => (
               <li key={season.id}>
                 <Link to={`products?season=${season.id}`}>{season.name}</Link>
               </li>
             ))}
+
+            {/* Mostrar botones solo para empleados y administradores */}
+            {user && (user.userType === 2 || user.userType === 3) && (
+              <>
+                <li>
+                  <Link to="/inventario">Inventario</Link>
+                </li>
+                <li>
+                  <Link to="/editar-producto/0">Nuevo Producto</Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
@@ -139,11 +156,11 @@ const Navbar = () => {
                 {/* Mostrar la foto de perfil del usuario o una imagen por defecto */}
                 <img
                   src={
-                    user?.profilePhoto 
+                    user?.profilePhoto
                       ? user.profilePhoto.startsWith('http')
                         ? user.profilePhoto
                         : `http://localhost:3000/api/v1/${user.profilePhoto}`
-                      : "../../public/imgs/fotoGenerica.png"
+                      : '/imgs/fotoGenerica.png'
                   }
                   alt="Foto de perfil"
                 />
@@ -158,7 +175,7 @@ const Navbar = () => {
                   <a
                     href="#!"
                     className="category-toggle"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault()
                       e.stopPropagation()
                       setMobileCategoriesOpen(!isMobileCategoriesOpen)
@@ -168,7 +185,7 @@ const Navbar = () => {
                     {/* TODO: Adapta estas categorías a tu verdulería si es necesario */}
                   </a>
                   <ul className="mobile-submenu">
-                    {listSeasons.map((season) => (
+                    {listSeasons.map(season => (
                       <li key={season.id}>
                         <Link to={`products?season=${season.id}`}>
                           {season.name}
@@ -177,6 +194,20 @@ const Navbar = () => {
                     ))}
                   </ul>
                 </li>
+
+                {/* Mostrar opciones solo para empleados y administradores */}
+                {user && (user.userType === 2 || user.userType === 3) && (
+                  <>
+                    <li>
+                      <Link to="/inventario">Inventario</Link>
+                    </li>
+                    <li>
+                      <Link to="/editar-producto/0">Nuevo Producto</Link>
+                    </li>
+                    <li className="dropdown-divider"></li>
+                  </>
+                )}
+
                 <li>
                   <Link to="/profile">Mi Perfil</Link>
                 </li>

@@ -194,7 +194,7 @@ export const getInventoryByPage = async ({
   const [columna, direccion] = orderBy.split('_')
   const offset = Math.abs((page - 1) * limits)
   let sqlQuery =
-    'SELECT a.id, a.name as productname, a.price, a.stock, a.product_photo as img, b.name as category,b.id as category_id, c.name as season,c.id as season_id FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN season_category AS c on a.season_category_id = c.id'
+    'SELECT a.id, a.name as productname, a.description, a.price, a.stock, a.product_photo as img, a.status, b.name as category,b.id as category_id, c.name as season,c.id as season_id FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN season_category AS c on a.season_category_id = c.id'
   if (filtros.length > 0) {
     const sqlWhere = format(' WHERE ' + filtros.join(' AND '), ...valores)
     sqlQuery += sqlWhere
@@ -237,4 +237,18 @@ export const getProductsFrontPage = async ({ limits = 6 }, season = 1) => {
 
   const { rows: productList } = await pool.query(queryWithFormat)
   return productList
+}
+
+export const changeProductStatus = async (id, status) => {
+  console.log('=== CHANGING PRODUCT STATUS ===')
+  console.log(`Product ID: ${id}, New Status: ${status}`)
+
+  const sqlQuery = {
+    text: 'UPDATE products SET status = $1, update_date = NOW() WHERE id = $2 RETURNING *',
+    values: [status, id]
+  }
+  const response = await pool.query(sqlQuery)
+
+  console.log('Updated product from DB:', response.rows[0])
+  return response.rows[0]
 }
