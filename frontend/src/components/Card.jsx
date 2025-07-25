@@ -4,27 +4,27 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import './Card.css' // Se importa el CSS para la tarjeta de producto
 import FavoriteButton from './FavoriteButton'
-import { URLBASE } from '../config/constants'
 
 const ProductCard = ({
   product,
   onAddToCart,
   onToggleFavorite,
-  onViewDetails,
+  onViewDetails
 }) => {
   // Desestructuramos las propiedades del producto para un uso más limpio
-  const { id, name, price, category, categoryId, img, isFavorite, stock } = product
+  const { id, name, price, category, categoryId, img, isFavorite, stock } =
+    product
   // Estado local para manejar la cantidad del producto
   const [quantity, setQuantity] = useState(0)
   const [imgError, setImgError] = useState(false)
 
   const handleIncrease = () => {
-    setQuantity((prev) => (prev + 1 > stock ? stock : prev + 1))
+    setQuantity(prev => (prev + 1 > stock ? stock : prev + 1))
   }
 
   const handleDecrease = () => {
     // Evita que la cantidad sea menor que 1
-    setQuantity((prev) => (prev - 1 > 0 ? prev - 1 : 0))
+    setQuantity(prev => (prev - 1 > 0 ? prev - 1 : 0))
   }
 
   const handleAddToCart = () => {
@@ -33,7 +33,7 @@ const ProductCard = ({
     setQuantity(0)
   }
 
-  const handleDetailsClick = (e) => {
+  const handleDetailsClick = e => {
     // Evita que el click se propague a elementos padres si es necesario
     e.stopPropagation()
     if (onViewDetails) onViewDetails(id)
@@ -114,12 +114,13 @@ ProductCard.propTypes = {
     price: PropTypes.number.isRequired,
     stock: PropTypes.number.isRequired,
     category: PropTypes.string.isRequired,
-    photo: PropTypes.string.isRequired,
-    isFavorite: PropTypes.bool,
+    categoryId: PropTypes.number.isRequired,
+    img: PropTypes.string.isRequired,
+    isFavorite: PropTypes.bool
   }).isRequired,
   onAddToCart: PropTypes.func.isRequired,
   onToggleFavorite: PropTypes.func.isRequired,
-  onViewDetails: PropTypes.func,
+  onViewDetails: PropTypes.func
 }
 
 export default ProductCard

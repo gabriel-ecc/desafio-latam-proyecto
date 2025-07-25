@@ -4,7 +4,6 @@ import {
   getCountUsers,
   findUserByIdModel,
   changeUserStatus,
-  findUserByEmailModel,
   updateUserProfileModel
 } from '../models/usersModel.js'
 

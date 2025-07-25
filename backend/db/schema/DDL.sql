@@ -36,7 +36,7 @@ CREATE TABLE security_actions_roles(
 
 
 
-/* user_type: 1 = cliente, 2 = empleado, 3 = admin */
+--user_type: 1 = cliente, 2 = empleado, 3 = admin
 CREATE TABLE users (
     id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
     first_name VARCHAR(100) NOT NULL,
