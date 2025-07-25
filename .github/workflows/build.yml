@@ -13,6 +13,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Install SonarScanner
+        run: |
+          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          unzip sonar-scanner.zip
+          export PATH="$PATH:$PWD/sonar-scanner-5.0.1.3006-linux/bin"
       - name: Run SonarQube Scan
         run: |
           sonar-scanner \
@@ -20,3 +25,4 @@ jobs:
             -Dsonar.organization=gabriel-ecc \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            
