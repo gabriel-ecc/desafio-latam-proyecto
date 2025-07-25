@@ -333,7 +333,7 @@ export default function Inventory() {
                 </div>
                 <div className="product-price-stock">
                   <div className="price">
-                    ${product.price?.toLocaleString()}
+                    ${product.price?.toLocaleString('es-cl')}
                   </div>
                   <div className={`stock ${product.stock < 10 ? 'low' : ''}`}>
                     Stock: {product.stock}
