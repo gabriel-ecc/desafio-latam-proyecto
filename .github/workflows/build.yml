@@ -26,6 +26,6 @@ jobs:
           args:
             -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto
             -Dsonar.organization=gabriel-ecc
-            -Dsonar.sources=backend,frontend/src
+            -Dsonar.sources=./backend,./frontend/src
             -Dsonar.exclusions=**/node_modules/**,**/__tests__/**,**/*.test.js,**/*.test.jsx
           projectBaseDir: .
