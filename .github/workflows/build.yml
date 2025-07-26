@@ -84,4 +84,6 @@ jobs:
             -Dsonar.organization=gabriel-ecc
             -Dsonar.sources=./frontend/src,./backend
             -Dsonar.exclusions=**/node_modules/**,**/__tests__/**,**/*.test.js,**/*.test.jsx
+            -Dsonar.tests=./backend/test
+            -Dsonar.javascript.lcov.reportPaths=./backend/coverage/lcov.info
           projectBaseDir: .
