@@ -63,7 +63,7 @@ jobs:
           PGDATABASE: verduleria
           PGPORT: 5432
           CI: true
-        run: npm test:coverage
+        run: npm run test:coverage
 
       - name: Analyze with SonarCloud
         # You can pin the exact commit or the version.
