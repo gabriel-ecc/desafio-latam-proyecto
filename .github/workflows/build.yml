@@ -66,6 +66,15 @@ jobs:
           CI: true
         run: npm run test:coverage
 
+      - name: Report Test Results
+        uses: dorny/test-reporter@v1
+        if: success() || failure() # Ejecuta este paso incluso si las pruebas fallan
+        with:
+          name: Backend Test Results
+          path: backend/reports/junit.xml
+          reporter: jest-junit
+          fail-on-error: true
+
       - name: Analyze with SonarCloud
         # You can pin the exact commit or the version.
         # uses: SonarSource/sonarcloud-github-action@v2.2.0
