@@ -43,6 +43,12 @@ jobs:
           echo "DB_PORT=5432" >> ./backend/.env
           echo "DB_NAME=verduleria" >> ./backend/.env
 
+      - name: Load DB Schema
+        env:
+          PGPASSWORD: password
+        run: >
+          psql -v ON_ERROR_STOP=1 --host postgres --username user --dbname verduleria -f ./backend/db/schema/DDL.sql
+
       - name: Analyze with SonarCloud
         # You can pin the exact commit or the version.
         # uses: SonarSource/sonarcloud-github-action@v2.2.0
@@ -54,7 +60,7 @@ jobs:
           PGHOST: postgres
           PGUSER: user
           PGPASSWORD: password
-          PGDATABASE: testdb
+          PGDATABASE: verduleria
           PGPORT: 5432
         with:
           args:
