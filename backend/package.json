@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node --watch server.js",
     "test": "jest",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "jest --coverage --forceExit",
     "start": "node server.js"
   },
   "license": "ISC",
