@@ -68,16 +68,7 @@ jobs:
           PGDATABASE: verduleria
           PGPORT: 5432
           CI: true
-        run: npm run test:github
-
-      - name: Report Test Results
-        uses: dorny/test-reporter@v1
-        if: success() || failure() # Ejecuta este paso incluso si las pruebas fallan
-        with:
-          name: Backend Test Results
-          path: backend/reports/jest-results.json
-          reporter: jest
-          fail-on-error: true
+        run: npm run test:coverage
 
       - name: Analyze with SonarCloud
         # You can pin the exact commit or the version.
