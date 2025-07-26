@@ -32,7 +32,8 @@
   "devDependencies": {
     "@babel/preset-env": "^7.28.0",
     "jest": "^30.0.5",
-    "standard": "^17.1.2"
+    "standard": "^17.1.2",
+    "supertest": "^7.1.4"
   },
   "jest": {
     "transform": {
