@@ -1,9 +1,8 @@
 import { Router } from 'express'
 import { getSeasons } from '../src/controllers/seasonController.js'
-
+import { verduleriaLog } from '../middleware/logMiddleware.js'
 const router = Router()
 
-// obtiene las temporadas de los productos
-router.get('/seasons', getSeasons)
+router.get('/seasons', verduleriaLog, getSeasons)
 
 export default router

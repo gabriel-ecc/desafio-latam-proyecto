@@ -32,7 +32,9 @@ export const registerClientUser = async (req, res) => {
       .json({ message: 'Usuario creado correctamente', user: user[0] })
   } catch (error) {
     console.error(error)
-    return res.status(500).json({ message: 'Error interno del servidor al crear el usuario.' })
+    return res
+      .status(500)
+      .json({ message: 'Error interno del servidor al crear el usuario.' })
   }
 }
 
@@ -93,13 +95,12 @@ export const lockUser = async (req, res) => {
 
 export const getUserProfile = async (req, res) => {
   try {
-    const userEmail = req.user // El emal viene desde el middleware de verifyToken
-    console.log('User profile request for email: ', userEmail)
+    const userData = req.user // El id viene desde el middleware de verifyToken
 
-    const user = await findUserByEmailModel(userEmail)
+    const user = await findUserByIdModel(userData)
 
     if (!user) {
-      console.log('Usuario no encontrado', userEmail)
+      console.log('Usuario no encontrado', userData)
       return res.status(404).json({ message: 'Perfil no encontrado' })
     }
 
@@ -118,13 +119,16 @@ export const getUserProfile = async (req, res) => {
     res.status(200).json(userProfileData)
   } catch (error) {
     console.error('Error en getUserProfile', error)
-    console.error(500).json({ message: 'Error al obtener el perfil del usuario' })
+    console
+      .error(500)
+      .json({ message: 'Error al obtener el perfil del usuario' })
   }
 }
 
 export const updateUserProfile = async (req, res) => {
   try {
-    const userEmail = req.user // correo del usuario desde el verifyToken del middleware
+    console.log(req.user)
+    const userId = req.user // correo del usuario desde el verifyToken del middleware
     const { firstName, lastName, phone } = req.body
     const profilePhotoFile = req.file // viene de Multer
 
@@ -142,7 +146,9 @@ export const updateUserProfile = async (req, res) => {
 
     // Filtramos para actualizar solo los valores modificados
     const filteredUserData = Object.fromEntries(
-      Object.entries(userDataToUpdate).filter(([_, value]) => value !== undefined)
+      Object.entries(userDataToUpdate).filter(
+        ([_, value]) => value !== undefined
+      )
     )
 
     // nos aseguramos de que hay, al menos, 1 campo, además del correo
@@ -150,7 +156,7 @@ export const updateUserProfile = async (req, res) => {
       return res.status(400).json({ message: 'No vienen datos' })
     }
 
-    const updatedUser = await updateUserProfileModel(userEmail, filteredUserData)
+    const updatedUser = await updateUserProfileModel(userId, filteredUserData)
 
     if (!updatedUser) {
       return res.status(404).json({ message: 'Usuario no encontrado' })
@@ -165,10 +171,12 @@ export const updateUserProfile = async (req, res) => {
       phone: updatedUser.phone,
       userType: updatedUser.user_type,
       userStatus: updatedUser.user_status,
-      profilePhoto: updatedUser.profile_Photo
+      profilePhoto: updatedUser.profile_photo
     }
 
-    res.status(200).json({ message: 'Perfil actualizado', user: userProfileData })
+    res
+      .status(200)
+      .json({ message: 'Perfil actualizado', user: userProfileData })
   } catch (error) {
     console.error('Error en updatedUserProfile: ', error)
     return res.status(500).json({ message: 'Error al actualizar' })
