@@ -13,6 +13,20 @@ permissions:
 jobs:
   Analysis:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: verduleria
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -21,12 +35,27 @@ jobs:
           # Disabling shallow clone is recommended for improving the quality of SonarCloud analysis
           fetch-depth: 0
 
+      - name: Create .env file
+        run: |
+          echo "DB_USER=user" > ./backend/.env
+          echo "DB_PASSWORD=password" >> ./backend/.env
+          echo "DB_HOST=postgres" >> ./backend/.env
+          echo "DB_PORT=5432" >> ./backend/.env
+          echo "DB_NAME=verduleria" >> ./backend/.env
+
       - name: Analyze with SonarCloud
         # You can pin the exact commit or the version.
         # uses: SonarSource/sonarcloud-github-action@v2.2.0
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          # Pass postgres environment variables to SonarCloud analysis
+          # This is useful if your backend tests run during analysis
+          PGHOST: postgres
+          PGUSER: user
+          PGPASSWORD: password
+          PGDATABASE: testdb
+          PGPORT: 5432
         with:
           args:
             -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto
