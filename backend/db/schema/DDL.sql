@@ -6,10 +6,11 @@ Las sentencias DDL se utilizan para definir o modificar la estructura de la base
   DROP TABLE (eliminar una tabla)
   CREATE INDEX (crear un índice)
   CREATE DATABASE (crear una base de datos)
-*/
+
 
 CREATE DATABASE verduleria;
 \c verduleria;
+*/
 
 CREATE TABLE user_type(
     id SERIAL PRIMARY KEY NOT NULL,
@@ -23,7 +24,7 @@ CREATE TABLE security_actions(
     security_method VARCHAR(10) NOT NULL,
     description VARCHAR(500) NOT NULL DEFAULT '',
     create_date TIMESTAMP NOT NULL DEFAULT NOW()
-)
+);
 
 CREATE TABLE security_actions_roles(
     id SERIAL PRIMARY KEY NOT NULL,
@@ -32,11 +33,11 @@ CREATE TABLE security_actions_roles(
     create_date TIMESTAMP NOT NULL DEFAULT NOW(),
     CONSTRAINT security_actions_roles_user_type_fkey FOREIGN KEY (user_type_id) REFERENCES user_type(id),
     CONSTRAINT security_actions_roles_security_action_fkey FOREIGN KEY (security_action_id) REFERENCES security_actions(id)
-)
+);
 
 
 
-/* user_type: 1 = cliente, 2 = empleado, 3 = admin */
+--user_type: 1 = cliente, 2 = empleado, 3 = admin
 CREATE TABLE users (
     id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
     first_name VARCHAR(100) NOT NULL,

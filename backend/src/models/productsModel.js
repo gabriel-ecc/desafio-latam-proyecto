@@ -118,8 +118,7 @@ export const updateProductSQL = async (id, productData) => {
     stock,
     productCategory,
     seasonCategory,
-    productPhoto,
-    filename
+    productPhoto
   } = productData
 
   const partes = productPhoto.split('/')
