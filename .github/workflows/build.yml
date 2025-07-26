@@ -55,6 +55,10 @@ jobs:
           psql -v ON_ERROR_STOP=1 --host localhost --username user --dbname verduleria -f ./backend/db/schema/DDL.sql
           psql -v ON_ERROR_STOP=1 --host localhost --username user --dbname verduleria -f ./backend/db/schema/DML.sql
 
+      - name: Make Reports
+        run: mkdir reports
+        working-directory: ./backend
+      
       - name: Run backend tests
         working-directory: ./backend
         env:
