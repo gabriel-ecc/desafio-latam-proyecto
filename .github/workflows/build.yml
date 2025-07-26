@@ -35,6 +35,10 @@ jobs:
           # Disabling shallow clone is recommended for improving the quality of SonarCloud analysis
           fetch-depth: 0
 
+      - name: Install backend dependencies
+        run: npm install
+        working-directory: ./backend
+
       - name: Create .env file
         run: |
           echo "DB_USER=user" > ./backend/.env
@@ -46,9 +50,20 @@ jobs:
       - name: Load DB Schema
         env:
           PGPASSWORD: password
-        run: >
+        run: |
           psql -v ON_ERROR_STOP=1 --host localhost --username user --dbname verduleria -f ./backend/db/schema/DDL.sql
           psql -v ON_ERROR_STOP=1 --host localhost --username user --dbname verduleria -f ./backend/db/schema/DML.sql
+
+      - name: Run backend tests
+        working-directory: ./backend
+        env:
+          PGHOST: localhost
+          PGUSER: user
+          PGPASSWORD: password
+          PGDATABASE: verduleria
+          PGPORT: 5432
+          CI: true
+        run: npm test:coverage
 
       - name: Analyze with SonarCloud
         # You can pin the exact commit or the version.
@@ -58,11 +73,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           # Pass postgres environment variables to SonarCloud analysis
           # This is useful if your backend tests run during analysis
-          PGHOST: postgres
-          PGUSER: user
-          PGPASSWORD: password
-          PGDATABASE: verduleria
-          PGPORT: 5432
         with:
           args:
             -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto
