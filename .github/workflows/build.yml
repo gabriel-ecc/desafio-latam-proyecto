@@ -1,4 +1,4 @@
-name: Build and Test and Analyze
+name: Build + Test + Analyze
 
 
 on:
