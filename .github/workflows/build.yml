@@ -48,6 +48,7 @@ jobs:
           PGPASSWORD: password
         run: >
           psql -v ON_ERROR_STOP=1 --host localhost --username user --dbname verduleria -f ./backend/db/schema/DDL.sql
+          psql -v ON_ERROR_STOP=1 --host localhost --username user --dbname verduleria -f ./backend/db/schema/DML.sql
 
       - name: Analyze with SonarCloud
         # You can pin the exact commit or the version.
