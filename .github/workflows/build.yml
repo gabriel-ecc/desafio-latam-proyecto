@@ -1,4 +1,5 @@
-name: SonarCloud analysis
+name: Build and Test and Analyze
+
 
 on:
   push:
@@ -43,7 +44,7 @@ jobs:
         run: |
           echo "DB_USER=user" > ./backend/.env
           echo "DB_PASSWORD=password" >> ./backend/.env
-          echo "DB_HOST=postgres" >> ./backend/.env
+          echo "DB_HOST=localhost" >> ./backend/.env
           echo "DB_PORT=5432" >> ./backend/.env
           echo "DB_NAME=verduleria" >> ./backend/.env
 
