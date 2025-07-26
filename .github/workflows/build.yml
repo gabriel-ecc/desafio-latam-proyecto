@@ -76,7 +76,7 @@ jobs:
         with:
           name: Backend Test Results
           path: backend/reports/jest-results.json
-          reporter: jest-json
+          reporter: jest
           fail-on-error: true
 
       - name: Analyze with SonarCloud
