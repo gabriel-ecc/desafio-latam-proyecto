@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "main": "server.js",
   "scripts": {
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "start": "node server.js"
   },
   "license": "ISC",
   "type": "module",
@@ -27,6 +30,27 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.28.0",
+    "jest": "^30.0.5",
     "standard": "^17.1.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 80,
+        "branches": 80,
+        "functions": 80,
+        "lines": 80
+      }
+    }
   }
 }
