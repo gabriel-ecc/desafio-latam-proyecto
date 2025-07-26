@@ -6,6 +6,7 @@
     "dev": "node --watch server.js",
     "test": "jest",
     "test:coverage": "jest --coverage --forceExit",
+    "test:github": "npm run test:coverage -- --json --outputFile=reports/jest-results.json",
     "start": "node server.js"
   },
   "license": "ISC",
