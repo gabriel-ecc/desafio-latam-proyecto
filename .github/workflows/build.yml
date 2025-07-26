@@ -47,6 +47,7 @@ jobs:
           echo "DB_HOST=localhost" >> ./backend/.env
           echo "DB_PORT=5432" >> ./backend/.env
           echo "DB_NAME=verduleria" >> ./backend/.env
+          echo "JWT_SECRET=test" >> ./backend/.env
 
       - name: Load DB Schema
         env:

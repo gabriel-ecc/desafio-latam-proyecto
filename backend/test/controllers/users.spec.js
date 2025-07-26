@@ -79,4 +79,15 @@ describe('API /users', () => {
       expect(response.statusCode).toBe(400)
     })
   })
+  describe('Login cliente POST /api/v1/login', () => {
+    it('Deberia retornar status 200', async () => {
+      const userData = {
+        email: 'test1@test.com',
+        password: '123456'
+      }
+
+      const response = await request(app).post('/api/v1/login').send(userData)
+      expect(response.statusCode).toBe(200)
+    })
+  })
 })

@@ -39,9 +39,11 @@ INSERT INTO security_actions_roles (security_action_id,user_type_id) VALUES
 (10,3),(10,2),(10,1),(11,3),(11,2),(12,3),(12,2),(12,1),(13,3),(13,1),
 (14,1),(15,1),(16,3),(16,2),(17,3),(17,2),(17,1),(18,3),(18,2),(19,3);
 
--- password admin: admin1
+-- password admin: admin1 , otros usuarios: 123456
 INSERT INTO users (first_name, last_name, email, phone, password, user_type, user_status, profile_photo) VALUES 
-('Admin', 'Sistema', 'admin@verduleria.cl', '+56912345678', '$2b$10$Fsl6/HbG3wxZ799ZXQ8Keej5uIjY5zBBj.LM/s/qFqp.5V1f9PB5W', 3, 1, '');
+('Admin', 'Sistema', 'admin@verduleria.cl', '+56912345678', '$2b$10$Fsl6/HbG3wxZ799ZXQ8Keej5uIjY5zBBj.LM/s/qFqp.5V1f9PB5W', 3, 1, ''),
+('test1','test1','test1@test.com','123456789','$2b$10$RJxLf17ydbd9V66m0Kx7veVXnqRnKpvcbUel1OJQZuLUQ7l33EuWy',1,1,''),
+('test2','test2','test2@test.com','123456789','$2b$10$RJxLf17ydbd9V66m0Kx7veVXnqRnKpvcbUel1OJQZuLUQ7l33EuWy',2,1,'');
 
 INSERT INTO product_category(name,description)VALUES
 ('Verdura','Verduras'),

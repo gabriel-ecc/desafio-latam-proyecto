@@ -6,13 +6,10 @@ const createUserMiddleware = async (req, res, next) => {
     // el archivo subido estará en req.file (si se subió uno)
 
     if (!firstName || !lastName || !email || !phone || !password) {
-      console.log(firstName, lastName, email, phone, password)
-      return res
-        .status(400)
-        .json({
-          message:
-            'Todos los campos (nombre, apellido, email, teléfono, password) son obligatorios'
-        })
+      return res.status(400).json({
+        message:
+          'Todos los campos (nombre, apellido, email, teléfono, password) son obligatorios'
+      })
     }
 
     // Validar formato del correo electrónico
