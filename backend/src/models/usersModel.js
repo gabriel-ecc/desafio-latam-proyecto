@@ -53,15 +53,15 @@ export const findUserByIdModel = async id => {
 }
 
 // lista todos los usuarios
-export const getUsersPaginated = async ({
-  limits = 10,
-  page = 1,
-  orderBy = 'id_ASC'
-}) => {
+export const getUsersPaginated = async (
+  { limits = 10, page = 1, orderBy = 'id_ASC' },
+  userType = 1
+) => {
   const [columna, direccion] = orderBy.split('_')
   const offset = Math.abs((page - 1) * limits)
   const queryWithFormat = format(
-    'SELECT first_name, last_name, email, user_type, user_status, profile_photo FROM users WHERE user_type = 1 ORDER BY %I %s LIMIT %s OFFSET %s',
+    'SELECT first_name, last_name, email, user_type, user_status, profile_photo FROM users WHERE user_type = %s ORDER BY %I %s LIMIT %s OFFSET %s',
+    userType,
     columna,
     direccion,
     limits,
