@@ -60,7 +60,7 @@ export const getUsersPaginated = async (
   const [columna, direccion] = orderBy.split('_')
   const offset = Math.abs((page - 1) * limits)
   const queryWithFormat = format(
-    'SELECT first_name, last_name, email, user_type, user_status, profile_photo FROM users WHERE user_type = %s ORDER BY %I %s LIMIT %s OFFSET %s',
+    'SELECT id, first_name, last_name, email, user_type, user_status, profile_photo FROM users WHERE user_type = %s ORDER BY %I %s LIMIT %s OFFSET %s',
     userType,
     columna,
     direccion,
@@ -71,9 +71,17 @@ export const getUsersPaginated = async (
   return userList
 }
 
-export const getCountUsers = async () => {
-  const sqlQuery = {
-    text: 'SELECT count(1) as cantidad FROM users'
+export const getCountUsers = async (userType = null) => {
+  let sqlQuery
+  if (userType) {
+    sqlQuery = {
+      text: 'SELECT count(1) as cantidad FROM users WHERE user_type = $1',
+      values: [userType]
+    }
+  } else {
+    sqlQuery = {
+      text: 'SELECT count(1) as cantidad FROM users'
+    }
   }
   const response = await pool.query(sqlQuery)
   return response.rows[0]

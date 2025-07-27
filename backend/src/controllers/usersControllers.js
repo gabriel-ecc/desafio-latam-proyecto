@@ -46,7 +46,7 @@ export const getUsers = async (req, res) => {
       userType = 2
     }
     const users = await getUsersPaginated(req.query, userType)
-    const count = await getCountUsers()
+    const count = await getCountUsers(userType)
     const usersWithHATEOAS = await UserHATEOAS('user', users, count)
     res.status(200).json(usersWithHATEOAS)
   } catch (error) {
