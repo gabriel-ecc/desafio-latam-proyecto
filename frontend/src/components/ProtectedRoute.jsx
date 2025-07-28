@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import Swal from 'sweetalert2'
+import PropTypes from 'prop-types'
 
 /**
  * Componente HOC para proteger rutas basado en permisos de usuario
@@ -15,7 +16,7 @@ export default function ProtectedRoute({
   allowedUserTypes = [],
   redirectTo = '/'
 }) {
-  const { user, isLoading: userLoading } = useContext(UserContext)
+  const { user, isLoading: userLoading, hasLoggedOut } = useContext(UserContext)
   const navigate = useNavigate()
 
   // Verificar permisos del usuario inmediatamente
@@ -24,18 +25,24 @@ export default function ProtectedRoute({
     if (!userLoading) {
       // Si no hay usuario o no tiene permisos
       if (!user || !allowedUserTypes.includes(user.userType)) {
-        Swal.fire({
-          title: 'Acceso denegado',
-          text: 'No tienes permisos para acceder a esta sección.',
-          icon: 'error',
-          confirmButtonColor: '#dc3545'
-        }).then(() => {
+        // Si el usuario cerró sesión intencionalmente, no mostrar mensaje
+        if (hasLoggedOut) {
           navigate(redirectTo)
-        })
+        } else {
+          // Solo mostrar mensaje si no cerró sesión intencionalmente
+          Swal.fire({
+            title: 'Acceso denegado',
+            text: 'No tienes permisos para acceder a esta sección.',
+            icon: 'error',
+            confirmButtonColor: '#dc3545'
+          }).then(() => {
+            navigate(redirectTo)
+          })
+        }
         return
       }
     }
-  }, [user, userLoading, navigate, allowedUserTypes, redirectTo])
+  }, [user, userLoading, navigate, allowedUserTypes, redirectTo, hasLoggedOut])
 
   // Si aún está cargando el contexto del usuario, mostrar loading
   if (userLoading) {
@@ -64,4 +71,10 @@ export default function ProtectedRoute({
 
   // Si tiene permisos, renderizar el componente hijo
   return children
+}
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+  allowedUserTypes: PropTypes.array,
+  redirectTo: PropTypes.string
 }

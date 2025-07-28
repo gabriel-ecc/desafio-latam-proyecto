@@ -4,23 +4,27 @@ import {
   Route,
   Navigate,
   useParams
-} from "react-router-dom"
-import Navbar from "./components/Navbar"
-import { ProtectedUsers, ProtectedInventory, ProtectedEditProduct } from "./components/ProtectedComponents"
-import Home from "./pages/Home"
-import Register from "./pages/Register"
-import Login from "./pages/Login"
-import Profile from "./pages/Profile"
-import Cart from "./pages/Cart"
-import Products from "./pages/Products"
-import Catalog from "./pages/Catalog"
-import SeasonProducts from "./pages/SeasonProducts"
-import Favorites from "./pages/Favorites"
-import PurchaseConfirmation from "./pages/PurchaseConfirmation"
-import MyPurchases from "./pages/MyPurchases"
-import OrderDetail from "./pages/OrderDetail"
-import ProductDetail from "./pages/ProductDetail"
-import Footer from "./components/Footer"
+} from 'react-router-dom'
+import Navbar from './components/Navbar'
+import {
+  ProtectedUsers,
+  ProtectedInventory,
+  ProtectedEditProduct
+} from './components/ProtectedComponents'
+import Home from './pages/Home'
+import Register from './pages/Register'
+import Login from './pages/Login'
+import Profile from './pages/Profile'
+import Cart from './pages/Cart'
+import Products from './pages/Products'
+import Catalog from './pages/Catalog'
+import SeasonProducts from './pages/SeasonProducts'
+import Favorites from './pages/Favorites'
+import PurchaseConfirmation from './pages/PurchaseConfirmation'
+import MyPurchases from './pages/MyPurchases'
+import OrderDetail from './pages/OrderDetail'
+import ProductDetail from './pages/ProductDetail'
+import Footer from './components/Footer'
 
 // Componente para redireccionar /card/:id a /products/:id
 const CardRedirect = () => {
