@@ -1,7 +1,6 @@
-import { createContext, useState, useEffect, useMemo } from 'react'
+import { createContext, useState, useEffect } from 'react'
 import { getToken } from '../services/authService'
 import { getUserProfile } from '../services/userService'
-import PropTypes from 'prop-types'
 
 export const UserContext = createContext(null)
 
@@ -46,39 +45,34 @@ export function UserProvider({ children }) {
     localStorage.removeItem('authToken')
   }
 
-  const updateUser = userData => {
-    setUser(prevUser => ({
+  const updateUser = (userData) => {
+    setUser((prevUser) => ({
       ...prevUser,
-      ...userData
+      ...userData,
     }))
     setHasLoggedOut(false) // Reset logout flag when user is updated
   }
 
-  const login = userData => {
+  const login = (userData) => {
     setUser(userData)
     setHasLoggedOut(false)
   }
 
-  // Memoizar el valor del contexto para evitar re-renders innecesarios
-  const contextValue = useMemo(() => ({
-    user,
-    setUser,
-    token,
-    setToken,
-    login,
-    logout,
-    updateUser,
-    isLoading,
-    hasLoggedOut
-  }), [user, token, isLoading, hasLoggedOut])
-
   return (
-    <UserContext.Provider value={contextValue}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        token,
+        setToken,
+        login,
+        logout,
+        updateUser,
+        isLoading,
+        hasLoggedOut,
+      }}
+    >
       {children}
     </UserContext.Provider>
   )
-}
-
-UserProvider.propTypes = {
-  children: PropTypes.node.isRequired
 }
