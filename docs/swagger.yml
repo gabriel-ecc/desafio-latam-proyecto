@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: API de Gestión de Usuarios y Autenticación
+  title: Documentación API Verdulería
   version: 1.0.0
   description: API RESTful para la gestión de usuarios y autenticación, incluyendo registro, login, obtención de perfil y actualización.
   contact:
