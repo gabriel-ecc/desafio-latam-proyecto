@@ -20,23 +20,9 @@ export default function Users() {
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
 
-  // Verificar permisos del usuario
+  // Verificar permisos del usuario inmediatamente
   useEffect(() => {
-    if (user && user.userType !== 2 && user.userType !== 3) {
-      // Solo empleados (2) y administradores (3) pueden acceder
-      Swal.fire({
-        title: 'Acceso denegado',
-        text: 'No tienes permisos para acceder a la gestión de usuarios.',
-        icon: 'error',
-        confirmButtonColor: '#dc3545'
-      }).then(() => {
-        navigate('/')
-      })
-    }
-  }, [user, navigate])
-
-  // Asegurar que los empleados solo vean clientes
-  useEffect(() => {
+    // Asegurar que los empleados solo vean clientes
     if (user && user.userType === 2 && selectedUserType === 'employees') {
       setSelectedUserType('clients')
     }
@@ -86,6 +72,7 @@ export default function Users() {
 
   // Cargar usuarios cuando cambie el tipo seleccionado, página o límites
   useEffect(() => {
+    // Solo cargar si el usuario tiene permisos
     if (user && (user.userType === 2 || user.userType === 3)) {
       fetchUsers()
     }
@@ -175,18 +162,6 @@ export default function Users() {
   // Función para obtener el label del estado del usuario
   const getUserStatusLabel = userStatus => {
     return userStatus === 1 ? 'Activo' : 'Bloqueado'
-  }
-
-  if (!user) {
-    return (
-      <div className="users-container">
-        <div className="loading-message">Cargando...</div>
-      </div>
-    )
-  }
-
-  if (user.userType !== 2 && user.userType !== 3) {
-    return null // El useEffect ya maneja la redirección
   }
 
   return (
