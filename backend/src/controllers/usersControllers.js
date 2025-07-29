@@ -40,8 +40,14 @@ export const registerClientUser = async (req, res) => {
 // devuelve un listado de usuarios separados por paginas
 export const getUsers = async (req, res) => {
   try {
-    const users = await getUsersPaginated(req.query)
-    const count = await getCountUsers()
+    let userType = 0
+    if (req.route.path === '/users') {
+      userType = 1
+    } else if (req.route.path === '/users/employee') {
+      userType = 2
+    }
+    const users = await getUsersPaginated(req.query, userType)
+    const count = await getCountUsers(userType)
     const usersWithHATEOAS = await UserHATEOAS('user', users, count)
     res.status(200).json(usersWithHATEOAS)
   } catch (error) {
@@ -53,23 +59,10 @@ export const getUsers = async (req, res) => {
 // bloquea a un usuario por su email
 export const lockUser = async (req, res) => {
   try {
-    const { id } = req.params // Id del usuario a bloquear/desbloquear. Viene por parametro dede la página
-    const userToModify = await findUserByIdModel(id)
-
-    if (!userToModify) {
-      return res.status(404).json({ message: 'Usuario no encontrado' })
-    }
-
-    // Obtenemos el email del usuario autenticado, desde el token
-    const authenticatedUserEmail = req.user
-    const authenticatedUser = await findUserByEmailModel(authenticatedUserEmail) // es el usuario que está logueado actualmente
-
-    if (!authenticatedUser) {
-      // confirmamos que tenga token valido
-      return res.status(401).json({ message: 'Usuario no autenticado' })
-    }
-
-    if (authenticatedUser.id === userToModify.id) {
+    const { id } = req.params
+    const loginUserId = req.user
+    const users = await findUserByIdModel(id)
+    if (loginUserId === users.id) {
       return res
         .status(403)
         .json({ message: 'Acción no permitida sobre el propio usuario' })

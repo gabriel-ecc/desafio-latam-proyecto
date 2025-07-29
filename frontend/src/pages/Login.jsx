@@ -14,7 +14,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const { setUser, setToken } = useContext(UserContext)
+  const { login, setToken } = useContext(UserContext)
   const navigate = useNavigate()
 
   const handleChange = e => {
@@ -38,7 +38,7 @@ export default function Login() {
 
       // Obtener datos del usuario usando el nuevo servicio
       const userData = await getUserProfile()
-      setUser(userData)
+      login(userData)
 
       // Mostrar mensaje de éxito (SweetAlert por mientras para más claridad.)
       await Swal.fire({

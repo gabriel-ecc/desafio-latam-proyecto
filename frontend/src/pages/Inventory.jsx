@@ -28,21 +28,6 @@ export default function Inventory() {
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
 
-  // Verificar permisos del usuario
-  useEffect(() => {
-    if (user && user.userType !== 2 && user.userType !== 3) {
-      // Solo empleados (2) y administradores (3) pueden acceder
-      Swal.fire({
-        title: 'Acceso denegado',
-        text: 'No tienes permisos para acceder al inventario.',
-        icon: 'error',
-        confirmButtonColor: '#dc3545'
-      }).then(() => {
-        navigate('/')
-      })
-    }
-  }, [user, navigate])
-
   // Cargar datos iniciales
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -230,8 +215,7 @@ export default function Inventory() {
       <div className="inventory-header">
         <h1>Inventario de Productos</h1>
         <button onClick={handleCreateProduct} className="btn btn-success">
-          <i className="fa-solid fa-plus"></i>{' '}
-          Crear Producto
+          <i className="fa-solid fa-plus"></i> Crear Producto
         </button>
       </div>
 
@@ -362,8 +346,7 @@ export default function Inventory() {
                       }}
                       className="btn btn-primary"
                     >
-                      <i className="fa-solid fa-edit"></i>{' '}
-                      Editar
+                      <i className="fa-solid fa-edit"></i> Editar
                     </button>
 
                     {user?.userType === 3 && (

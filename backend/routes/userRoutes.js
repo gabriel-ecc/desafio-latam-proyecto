@@ -83,7 +83,8 @@ router.get(
   '/users/employee',
   verduleriaLog,
   verifyToken,
-  authorizationMiddleware
+  authorizationMiddleware,
+  getUsers
 )
 
 // Crear empleado

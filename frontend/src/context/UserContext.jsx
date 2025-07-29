@@ -8,12 +8,14 @@ export function UserProvider({ children }) {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [hasLoggedOut, setHasLoggedOut] = useState(false)
 
   // Función para cargar el usuario desde la API
   const loadUserFromToken = async () => {
     try {
       const userData = await getUserProfile()
       setUser(userData)
+      setHasLoggedOut(false) // Reset logout flag when user is loaded
     } catch (error) {
       console.error('Error al cargar usuario:', error)
       // Si hay error, limpiar el token inválido
@@ -39,6 +41,7 @@ export function UserProvider({ children }) {
   const logout = () => {
     setUser(null)
     setToken(null)
+    setHasLoggedOut(true)
     localStorage.removeItem('authToken')
   }
 
@@ -47,6 +50,12 @@ export function UserProvider({ children }) {
       ...prevUser,
       ...userData,
     }))
+    setHasLoggedOut(false) // Reset logout flag when user is updated
+  }
+
+  const login = (userData) => {
+    setUser(userData)
+    setHasLoggedOut(false)
   }
 
   return (
@@ -56,9 +65,11 @@ export function UserProvider({ children }) {
         setUser,
         token,
         setToken,
+        login,
         logout,
         updateUser,
         isLoading,
+        hasLoggedOut,
       }}
     >
       {children}
