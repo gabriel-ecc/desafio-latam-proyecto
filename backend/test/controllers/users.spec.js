@@ -155,7 +155,7 @@ describe('API /users', () => {
       expect(response.statusCode).toBe(200)
     })
   })
-  describe('POST /api/v1/users', () => {
+  describe('PUT /api/v1/users/lock/:id', () => {
     it('Deberia retornar status 200', async () => {
       const userDataTest = {
         firstName: 'test',

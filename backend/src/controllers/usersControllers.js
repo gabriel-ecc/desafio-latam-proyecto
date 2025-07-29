@@ -37,6 +37,7 @@ export const registerClientUser = async (req, res) => {
   }
 }
 
+// devuelve un listado de usuarios separados por paginas
 export const getUsers = async (req, res) => {
   try {
     let userType = 0
@@ -55,6 +56,7 @@ export const getUsers = async (req, res) => {
   }
 }
 
+// bloquea a un usuario por su email
 export const lockUser = async (req, res) => {
   try {
     const { id } = req.params

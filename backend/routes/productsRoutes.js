@@ -27,9 +27,13 @@ const storage = multer.diskStorage({
 
 const router = Router()
 const upload = multer({ storage })
-
+// Obtener productos paginados
 router.get('/products', verduleriaLog, getProducts)
+
+// Obtener productos para frontpage
 router.get('/products/frontPage', verduleriaLog, productListFrontPage)
+
+// Obtener inventario de productos para empleados y admin
 router.get(
   '/products/inventory',
   verduleriaLog,
@@ -37,6 +41,8 @@ router.get(
   authorizationMiddleware,
   getInventory
 )
+
+// Obtener producto por id
 router.get('/products/:id', verduleriaLog, getProduct)
 router.post(
   '/products',
@@ -47,6 +53,7 @@ router.post(
   createProduct
 )
 
+// Actualizar producto
 router.put(
   '/products/:id',
   verduleriaLog,
@@ -56,6 +63,7 @@ router.put(
   updateProduct
 )
 
+// Bloquear producto
 router.put(
   '/products/lock/:id',
   verduleriaLog,

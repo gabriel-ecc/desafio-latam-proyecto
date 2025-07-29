@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
+// Valida el usuario (trae el email y contraseña) y genera el token
 const loginUser = async (req, res) => {
   const errorMessage = 'Email o Contraseña incorrecta'
   try {

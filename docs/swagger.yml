@@ -1,17 +1,17 @@
-openapi: 3.1.0 # Cambiado a 3.1.0 (o 3.1.1 es válido también)
+openapi: 3.1.0
 info:
-  title: API de Gestión de Usuarios y Autenticación
+  title: Documentación API Verdulería
   version: 1.0.0
   description: API RESTful para la gestión de usuarios y autenticación, incluyendo registro, login, obtención de perfil y actualización.
   contact:
     name: Oscar Garin
     email: oscargarin@gmail.com
 servers:
-  - url: http://localhost:3000
+  - url: http://localhost:3000/api/v1 # Añadimos el prefijo /api/v1 aquí
     description: Servidor de desarrollo local
 
 security:
-  - bearerAuth: [] # Aplicado globalmente, pero se puede sobrescribir en cada ruta.
+  - bearerAuth: []
 
 components:
   securitySchemes:
@@ -58,8 +58,6 @@ components:
           example: "uploads/profile-1678901234567.jpg"
 
     UserRegister:
-      # En OpenAPI 3.1, allOf puede tener propiedades adyacentes si es necesario,
-      # pero para este caso, la estructura actual es buena.
       allOf:
         - $ref: '#/components/schemas/UserBase'
         - type: object
@@ -184,11 +182,75 @@ components:
           description: Estado del usuario.
           example: 1
         profilePhoto:
-          # Para indicar que profilePhoto podría ser nulo, se usa un array de tipos.
-          type: [string, 'null'] # CAMBIO para 3.1.1
+          type: [string, 'null']
           description: URL o ruta de la foto de perfil. Puede ser nulo si no se ha subido ninguna.
           example: "uploads/profile-1678901234567.jpg"
 
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID único del producto.
+        product_name:
+          type: string
+          description: Nombre del producto.
+        description:
+          type: string
+          description: Descripción del producto.
+        price:
+          type: number
+          format: float
+          description: Precio del producto.
+        stock:
+          type: integer
+          description: Stock disponible del producto.
+        img:
+          type: string
+          description: Ruta o URL de la imagen del producto.
+        category:
+          type: string
+          description: Nombre de la categoría del producto.
+        category_id:
+          type: string
+          format: uuid
+          description: ID de la categoría del producto.
+        season:
+          type: string
+          description: Nombre de la temporada del producto.
+        season_id:
+          type: string
+          format: uuid
+          description: ID de la temporada del producto.
+        create_date:
+          type: string
+          format: date-time
+          description: Fecha de creación del producto.
+        update_date:
+          type: string
+          format: date-time
+          description: Fecha de última actualización del producto.
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID único de la categoría.
+        name:
+          type: string
+          description: Nombre de la categoría.
+
+    Season:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID único de la temporada.
+        name:
+          type: string
+          description: Nombre de la temporada.
 
   parameters:
     PaginationLimit:
@@ -197,7 +259,7 @@ components:
       schema:
         type: integer
         default: 10
-      description: Número máximo de usuarios a devolver por página.
+      description: Número máximo de elementos a devolver por página.
     PaginationPage:
       in: query
       name: page
@@ -227,6 +289,12 @@ tags:
     description: Operaciones de autenticación de usuarios.
   - name: Users
     description: Gestión y administración de usuarios.
+  - name: Products
+    description: Operaciones relacionadas con productos.
+  - name: Categories
+    description: Operaciones relacionadas con categorías de productos.
+  - name: Seasons
+    description: Operaciones relacionadas con temporadas de productos.
 
 paths:
   /login:
@@ -248,38 +316,6 @@ paths:
                 $ref: '#/components/schemas/LoginSuccess'
         '401':
           description: Email o contraseña incorrecta / No autorizado.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Error interno del servidor.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /usuarios: # Ruta /usuarios protegida por verifyToken
-    get:
-      summary: Obtener datos del usuario autenticado (deprecated, usar /users/profile)
-      tags: [Authentication]
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Datos del usuario autenticado.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserProfile' # Asumiendo que devuelve un objeto similar al perfil
-        '400':
-          description: Token no presente o inválido.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Usuario no encontrado en la base de datos.
           content:
             application/json:
               schema:
@@ -329,11 +365,11 @@ paths:
                   default: 1
                 profilePhoto:
                   type: string
-                  format: binary # Representa un archivo
+                  format: binary
                   description: Archivo de imagen de perfil (opcional).
-            encoding: # Define cómo codificar la parte del archivo
+            encoding:
               profilePhoto:
-                contentType: image/png, image/jpeg, image/gif # Tipos MIME aceptados
+                contentType: image/png, image/jpeg, image/gif
       responses:
         '201':
           description: Usuario creado correctamente.
@@ -369,6 +405,8 @@ paths:
     get:
       summary: Obtener lista de usuarios con paginación, filtros y ordenamiento
       tags: [Users]
+      security:
+        - bearerAuth: [] # Esta ruta requiere autenticación
       parameters:
         - $ref: '#/components/parameters/PaginationLimit'
         - $ref: '#/components/parameters/PaginationPage'
@@ -380,6 +418,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsersPaginatedResponse'
+        '401':
+          description: No autorizado. Token no proporcionado o inválido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Acceso denegado. El usuario no tiene los permisos necesarios.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Error interno del servidor.
           content:
@@ -387,10 +437,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /lockuser:
+  /users/lock/{id}:
     put:
-      summary: Cambiar el estado (bloquear/desbloquear) de un usuario
+      summary: Cambiar el estado (bloquear/desbloquear) un usuario
       tags: [Users]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid # Asumiendo que el ID es un UUID
+          required: true
+          description: ID del usuario a bloquear/desbloquear.
+          example: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
       requestBody:
         required: true
         content:
@@ -398,13 +459,9 @@ paths:
             schema:
               type: object
               required:
-                - id
+                - userStatus # Se espera solo el nuevo estado del usuario
               properties:
-                id:
-                  type: string
-                  description: ID del usuario a bloquear/desbloquear.
-                  example: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
-                userStatus: # Se asume que también se podría enviar el nuevo estado
+                userStatus:
                   type: integer
                   description: El nuevo estado del usuario (0 para bloqueado, 1 para activo).
                   example: 0
@@ -419,7 +476,7 @@ paths:
                   message:
                     type: string
                     example: "Usuario bloqueado exitosamente"
-                  user: # Aseguramos que la respuesta incluye los datos relevantes del usuario
+                  user:
                     type: object
                     properties:
                       id:
@@ -428,6 +485,30 @@ paths:
                       user_status:
                         type: integer
                         example: 0
+        '400':
+          description: Solicitud inválida (ej. ID no proporcionado o estado no válido).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: No autorizado. Token no proporcionado o inválido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Acceso denegado. El usuario no tiene los permisos necesarios.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Usuario no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Error interno del servidor.
           content:
@@ -478,7 +559,6 @@ paths:
           application/json:
             schema:
               type: object
-              # No se define 'required' aquí porque todos los campos son opcionales para la actualización parcial
               properties:
                 firstName:
                   type: string
@@ -537,6 +617,540 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users:
+    get:
+      summary: Obtener lista de empleados
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de empleados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: No autorizado. Token no proporcionado o inválido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Acceso denegado. El usuario no tiene los permisos necesarios.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Crear un nuevo empleado
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+      responses:
+        '201':
+          description: Empleado creado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Empleado creado correctamente"
+                  user:
+                    $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Campos obligatorios faltantes o datos inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: No autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Acceso denegado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: El empleado con este correo electrónico ya existe.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/employee/{id}:
+    put:
+      summary: Actualizar un empleado por ID
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: ID del empleado a actualizar.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                phone:
+                  type: string
+                userType:
+                  type: integer
+                userStatus:
+                  type: integer
+      responses:
+        '200':
+          description: Empleado actualizado exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Empleado actualizado"
+                  user:
+                    $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Solicitud inválida.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: No autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Acceso denegado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Empleado no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /products:
+    get:
+      summary: Obtener lista de productos con paginación y filtros
+      tags: [Products]
+      parameters:
+        - $ref: '#/components/parameters/PaginationLimit'
+        - $ref: '#/components/parameters/PaginationPage'
+        - in: query
+          name: orderBy
+          schema:
+            type: string
+            default: 'id_ASC'
+          description: Campo y dirección para ordenar los resultados (ej. id_ASC, name_DESC).
+        - in: query
+          name: season
+          schema:
+            type: string
+          description: Filtrar por ID de temporada.
+        - in: query
+          name: category
+          schema:
+            type: string
+          description: Filtrar por ID de categoría.
+      responses:
+        '200':
+          description: Lista de productos paginada.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Crear un nuevo producto
+      tags: [Products]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - name
+                - description
+                - price
+                - stock
+                - productCategory
+                - seasonCategory
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                  format: float
+                stock:
+                  type: integer
+                productCategory:
+                  type: string
+                  description: ID de la categoría de producto.
+                seasonCategory:
+                  type: string
+                  description: ID de la categoría de temporada.
+                productPhoto:
+                  type: string
+                  format: binary
+            encoding:
+              productPhoto:
+                contentType: image/png, image/jpeg, image/gif
+      responses:
+        '201':
+          description: Producto creado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Solicitud inválida.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: No autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Acceso denegado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /products/{id}:
+    get:
+      summary: Obtener un producto por ID
+      tags: [Products]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: ID del producto a obtener.
+      responses:
+        '200':
+          description: Datos del producto.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Producto no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Actualizar un producto por ID
+      tags: [Products]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: ID del producto a actualizar.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                  format: float
+                stock:
+                  type: integer
+                productCategory:
+                  type: string
+                  description: ID de la categoría de producto.
+                seasonCategory:
+                  type: string
+                  description: ID de la categoría de temporada.
+                productPhoto:
+                  type: string
+                  format: binary
+            encoding:
+              productPhoto:
+                contentType: image/png, image/jpeg, image/gif
+      responses:
+        '200':
+          description: Producto actualizado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Solicitud inválida.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: No autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Acceso denegado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Producto no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /products/frontPage:
+    get:
+      summary: Obtener lista de productos para la página principal
+      tags: [Products]
+      responses:
+        '200':
+          description: Lista de productos para la página principal.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /products/inventory:
+    get:
+      summary: Obtener inventario de productos
+      tags: [Products]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Inventario de productos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product' # O un esquema más específico si el inventario tiene menos campos.
+        '401':
+          description: No autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Acceso denegado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /products/lock/{id}:
+    get:
+      summary: Obtener el estado de bloqueo de un producto
+      tags: [Products]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: ID del producto cuyo estado de bloqueo se quiere obtener.
+      responses:
+        '200':
+          description: Estado de bloqueo del producto.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+                  status:
+                    type: boolean
+                    description: True si está bloqueado, False si está activo.
+                    example: true
+        '401':
+          description: No autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Acceso denegado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Producto no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /categories:
+    get:
+      summary: Obtener todas las categorías de productos
+      tags: [Categories]
+      responses:
+        '200':
+          description: Lista de categorías.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /seasons:
+    get:
+      summary: Obtener todas las temporadas de productos
+      tags: [Seasons]
+      responses:
+        '200':
+          description: Lista de temporadas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Season'
         '500':
           description: Error interno del servidor.
           content:

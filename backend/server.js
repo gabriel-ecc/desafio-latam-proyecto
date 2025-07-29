@@ -5,7 +5,7 @@ import pool from './db/schema/config.js'
 import path from 'path'
 
 // importamos las rutas
-import registerUser from './routes/userRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import categoriesRoutes from './routes/categoriesRoutes.js'
 import seasonRoutes from './routes/seasonRoutes.js'
@@ -34,12 +34,12 @@ app.use(
 app.use(cors())
 app.use(express.json())
 
-// cargamos las rutas (/api para funcionar mejor con el frontend, (modificarlo si se estima conveniente)).
-app.use('/api/v1', registerUser)
-app.use('/api/v1', authRoutes)
-app.use('/api/v1', categoriesRoutes)
-app.use('/api/v1', seasonRoutes)
-app.use('/api/v1', productsRoutes)
+// disponibilizamos las apis
+app.use('/api/v1', userRoutes) // RegisterUser, lockUser, etc...
+app.use('/api/v1', authRoutes) // Autenticacion de usuarios
+app.use('/api/v1', categoriesRoutes) // Categorias de Productos
+app.use('/api/v1', seasonRoutes) // Temporadas de Productos
+app.use('/api/v1', productsRoutes) // Ruta de Productos
 
 // Disponer imagenes para recursos de pagina web
 const __dirname = path.resolve()
