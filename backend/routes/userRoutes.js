@@ -44,6 +44,7 @@ router.post(
   createUserMiddleware,
   registerClientUser
 )
+
 // Obtener lista de usuarios
 router.get(
   '/users',
@@ -52,6 +53,7 @@ router.get(
   authorizationMiddleware,
   getUsers
 )
+
 // Bloquear usuario
 router.put(
   '/users/lock/:id',
@@ -60,6 +62,7 @@ router.put(
   authorizationMiddleware,
   lockUser
 )
+
 // Obtener datos de perfil
 router.get(
   '/users/profile',
@@ -68,6 +71,7 @@ router.get(
   authorizationMiddleware,
   getUserProfile
 )
+
 // Actualizar perfil
 router.put(
   '/users/profile',
