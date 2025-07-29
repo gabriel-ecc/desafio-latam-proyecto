@@ -1,24 +1,25 @@
-import "dotenv/config";
-const port = process.env.port || 3000;
+import 'dotenv/config'
+const port = process.env.port || 3000
 
 export const UserHATEOAS = async (entity, data, count) => {
-  const results = data.map((item) => {
+  const results = data.map(item => {
     return {
-      firstName: item.first_name,
-      lastName: item.last_name,
+      id: item.id,
+      first_name: item.first_name,
+      last_name: item.last_name,
       email: item.email,
-      status: item.user_status,
-      type: item.user_type,
-      hfef: `http://localhost:${port}/${entity}/${item.id}`,
-    };
-  });
+      user_status: item.user_status,
+      user_type: item.user_type,
+      profile_photo: item.profile_photo,
+      href: `http://localhost:${port}/${entity}/${item.id}`
+    }
+  })
 
-  const total = data.length;
+  const total = data.length
   const dataWithHateoas = {
-    totalInPage: total,
-    totalUsers: Number(count.cantidad),
-    results,
-  };
-  return dataWithHateoas;
-};
-
+    users: results,
+    count: Number(count.cantidad),
+    totalInPage: total
+  }
+  return dataWithHateoas
+}

@@ -39,8 +39,14 @@ export const registerClientUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await getUsersPaginated(req.query)
-    const count = await getCountUsers()
+    let userType = 0
+    if (req.route.path === '/users') {
+      userType = 1
+    } else if (req.route.path === '/users/employee') {
+      userType = 2
+    }
+    const users = await getUsersPaginated(req.query, userType)
+    const count = await getCountUsers(userType)
     const usersWithHATEOAS = await UserHATEOAS('user', users, count)
     res.status(200).json(usersWithHATEOAS)
   } catch (error) {
@@ -52,8 +58,9 @@ export const getUsers = async (req, res) => {
 export const lockUser = async (req, res) => {
   try {
     const { id } = req.params
+    const loginUserId = req.user
     const users = await findUserByIdModel(id)
-    if (id === users.id) {
+    if (loginUserId === users.id) {
       return res
         .status(403)
         .json({ message: 'Acción no permitida sobre el propio usuario' })
