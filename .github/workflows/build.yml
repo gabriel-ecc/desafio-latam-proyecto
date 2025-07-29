@@ -1,4 +1,5 @@
-name: SonarCloud analysis
+name: Build + Test + Analyze
+
 
 on:
   push:
@@ -13,6 +14,20 @@ permissions:
 jobs:
   Analysis:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: verduleria
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -21,16 +36,75 @@ jobs:
           # Disabling shallow clone is recommended for improving the quality of SonarCloud analysis
           fetch-depth: 0
 
-      - name: Analyze with SonarCloud
+      - name: Install backend dependencies
+        run: npm install
+        working-directory: ./backend
+
+      - name: Create .env file
+        run: |
+          echo "DB_USER=user" > ./backend/.env
+          echo "DB_PASSWORD=password" >> ./backend/.env
+          echo "DB_HOST=localhost" >> ./backend/.env
+          echo "DB_PORT=5432" >> ./backend/.env
+          echo "DB_NAME=verduleria" >> ./backend/.env
+          echo "JWT_SECRET=test" >> ./backend/.env
+
+      - name: Load DB Schema
+        env:
+          PGPASSWORD: password
+        run: |
+          psql -v ON_ERROR_STOP=1 --host localhost --username user --dbname verduleria -f ./backend/db/schema/DDL.sql
+          psql -v ON_ERROR_STOP=1 --host localhost --username user --dbname verduleria -f ./backend/db/schema/DML.sql
+
+      - name: Make Reports
+        run: mkdir reports
+        working-directory: ./backend
+      
+      - name: Run backend tests
+        working-directory: ./backend
+        env:
+          PGHOST: localhost
+          PGUSER: user
+          PGPASSWORD: password
+          PGDATABASE: verduleria
+          PGPORT: 5432
+          CI: true
+        run: npm run test:coverage
+
+      - name: Analyze with SonarCloud (backend)
+        if: github.event_name == 'pull_request'
         # You can pin the exact commit or the version.
         # uses: SonarSource/sonarcloud-github-action@v2.2.0
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          # Pass postgres environment variables to SonarCloud analysis
+          # This is useful if your backend tests run during analysis
         with:
           args:
             -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto
             -Dsonar.organization=gabriel-ecc
-            -Dsonar.sources=./frontend/src,./backend
+            -Dsonar.sources=./backend/middleware,./backend/routes,./backend/src
             -Dsonar.exclusions=**/node_modules/**,**/__tests__/**,**/*.test.js,**/*.test.jsx
+            -Dsonar.tests=./backend/test
+            -Dsonar.javascript.lcov.reportPaths=./backend/coverage/lcov.info
+          projectBaseDir: .
+
+      - name: Analyze with SonarCloud (backend + front)
+        if: github.ref_name == 'main'
+        # You can pin the exact commit or the version.
+        # uses: SonarSource/sonarcloud-github-action@v2.2.0
+        uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          # Pass postgres environment variables to SonarCloud analysis
+          # This is useful if your backend tests run during analysis
+        with:
+          args:
+            -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto
+            -Dsonar.organization=gabriel-ecc
+            -Dsonar.sources=./backend/middleware,./backend/routes,./backend/src,./frontend/src
+            -Dsonar.exclusions=**/node_modules/**,**/__tests__/**,**/*.test.js,**/*.test.jsx
+            -Dsonar.tests=./backend/test
+            -Dsonar.javascript.lcov.reportPaths=./backend/coverage/lcov.info
           projectBaseDir: .
