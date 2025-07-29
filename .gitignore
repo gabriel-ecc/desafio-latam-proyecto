@@ -140,3 +140,6 @@ dist
 
 #Mac
 .DS_Store
+
+# Reportes json
+backend/reports
