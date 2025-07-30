@@ -190,6 +190,34 @@ describe('API /users', () => {
     })
   })
 
+  describe('PUT /api/v1/users/employee', () => {
+    it('Deberia retornar status 200', async () => {
+      const userAdminData = {
+        email: 'admin@verduleria.cl',
+        password: 'admin1'
+      }
+      const loginResponse = await request(app)
+        .post('/api/v1/login')
+        .send(userAdminData)
+
+      const loginToken = loginResponse.body.token
+
+      const employeeDataTest = {
+        firstName: 'test',
+        lastName: 'test',
+        email: 'teste@test.com',
+        phone: '123456789',
+        password: '123456'
+      }
+
+      const response = await request(app)
+        .post('/api/v1/users/employee')
+        .set('Authorization', `Bearer ${loginToken}`)
+        .send(employeeDataTest)
+      expect(response.statusCode).toBe(201)
+    })
+  })
+
   // Hook para limpiar la base de datos después de todas las pruebas
   afterAll(async () => {
     try {
