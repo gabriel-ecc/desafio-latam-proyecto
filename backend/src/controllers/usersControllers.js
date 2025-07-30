@@ -67,18 +67,18 @@ export const lockUser = async (req, res) => {
         .status(403)
         .json({ message: 'Acción no permitida sobre el propio usuario' })
     }
-
-    if (userToModify.user_type === 3) {
-      return res.status(403).json({ message: 'Accion no permitida sobre usuario Administrador' })
+    if (users.type !== 3) {
+      const user = await changeUserStatus(id, users.user_status)
+      const outMessage =
+        users.user_status === 1
+          ? 'Usuario bloqueado exitosamente'
+          : 'Usuario desbloqueado exitosamente'
+      res.status(200).json({ message: outMessage, user })
+    } else {
+      return res
+        .status(403)
+        .json({ message: 'Acción no permitida sobre usuario administrador' })
     }
-
-    const updatedUser = await changeUserStatus(id, userToModify.user_status)
-    const outMessage =
-      userToModify.user_status === 1
-        ? 'Usuario bloqueado exitosamente'
-        : 'Usuario desbloqueado exitosamente'
-
-    res.status(200).json({ message: outMessage, user: updatedUser })
   } catch (error) {
     console.error(error)
     return res.status(500).json(error)
