@@ -185,7 +185,54 @@ describe('API /users', () => {
       const response = await request(app)
         .put('/api/v1/users/lock/' + userId)
         .set('Authorization', `Bearer ${loginToken}`)
-      console.log(response.body.message)
+      expect(response.statusCode).toBe(200)
+    })
+  })
+
+  describe('PUT /api/v1/users/employee', () => {
+    it('Deberia retornar status 200', async () => {
+      const userAdminData = {
+        email: 'admin@verduleria.cl',
+        password: 'admin1'
+      }
+      const loginResponse = await request(app)
+        .post('/api/v1/login')
+        .send(userAdminData)
+
+      const loginToken = loginResponse.body.token
+
+      const employeeDataTest = {
+        firstName: 'test',
+        lastName: 'test',
+        email: 'teste@test.com',
+        phone: '123456789',
+        password: '123456'
+      }
+
+      const response = await request(app)
+        .post('/api/v1/users/employee')
+        .set('Authorization', `Bearer ${loginToken}`)
+        .send(employeeDataTest)
+      expect(response.statusCode).toBe(201)
+    })
+  })
+
+  describe('PUT /api/v1/users/profile', () => {
+    it('Deberia retornar status 200', async () => {
+      const userAdminData = {
+        email: 'test1@test.com',
+        password: '123456'
+      }
+      const loginResponse = await request(app)
+        .post('/api/v1/login')
+        .send(userAdminData)
+      expect(loginResponse.statusCode).toBe(200)
+
+      const loginToken = loginResponse.body.token
+
+      const response = await request(app)
+        .get('/api/v1/users/profile')
+        .set('Authorization', `Bearer ${loginToken}`)
       expect(response.statusCode).toBe(200)
     })
   })
