@@ -37,6 +37,34 @@ export const registerClientUser = async (req, res) => {
   }
 }
 
+export const registerEmployeeUser = async (req, res) => {
+  try {
+    const userData = req.body
+    userData.userType = 2 // Asegurar que es empleado
+    // req.file contiene la informacion del archivo subido por Multer
+    const profilePhotoFile = req.file
+
+    let profilePhotoPath = ''
+    if (profilePhotoFile) {
+      // Si se subió el archivo, usa la ruta donde Multer lo guardó
+      profilePhotoPath = profilePhotoFile.path
+    }
+
+    // agregamos la ruta de la imagen a userData para pasarla al modelo
+    userData.profilePhoto = profilePhotoPath
+
+    const user = await createUserModel(userData)
+    res
+      .status(201)
+      .json({ message: 'Empleado creado correctamente', user: user[0] })
+  } catch (error) {
+    console.error(error)
+    return res
+      .status(500)
+      .json({ message: 'Error interno del servidor al crear el empleado.' })
+  }
+}
+
 // devuelve un listado de usuarios separados por paginas
 export const getUsers = async (req, res) => {
   try {

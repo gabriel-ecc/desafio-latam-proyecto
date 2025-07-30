@@ -184,13 +184,23 @@ export default function Users() {
         </button>
         {/* Solo mostrar el botón de empleados si el usuario es administrador */}
         {user.userType === 3 && (
-          <button
-            className={`selector-btn ${selectedUserType === 'employees' ? 'active' : ''}`}
-            onClick={() => handleUserTypeChange('employees')}
-          >
-            <i className="fas fa-user-tie"></i>
-            Empleados
-          </button>
+          <>
+            <button
+              className={`selector-btn ${selectedUserType === 'employees' ? 'active' : ''}`}
+              onClick={() => handleUserTypeChange('employees')}
+            >
+              <i className="fas fa-user-tie"></i>
+              Empleados
+            </button>
+            <button
+              className="selector-btn create-employee-btn"
+              onClick={() => navigate('/create-employee')}
+              title="Crear nuevo empleado"
+            >
+              <i className="fas fa-user-plus"></i>
+              Crear Empleado
+            </button>
+          </>
         )}
       </div>
 

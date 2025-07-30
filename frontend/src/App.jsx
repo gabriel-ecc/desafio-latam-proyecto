@@ -9,7 +9,8 @@ import Navbar from './components/Navbar'
 import {
   ProtectedUsers,
   ProtectedInventory,
-  ProtectedEditProduct
+  ProtectedEditProduct,
+  ProtectedCreateEmployee
 } from './components/ProtectedComponents'
 import Home from './pages/Home'
 import Register from './pages/Register'
@@ -42,6 +43,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/usuarios" element={<ProtectedUsers />} />
+        <Route path="/users" element={<ProtectedUsers />} />
+        <Route path="/create-employee" element={<ProtectedCreateEmployee />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/products" element={<Products />} />
         <Route path="/catalogo" element={<Catalog />} />
