@@ -48,6 +48,3 @@ export const getFavoritesSQL = async (
   const { rows: productList } = await pool.query(queryWithFormat)
   return productList
 }
-
-
-    
