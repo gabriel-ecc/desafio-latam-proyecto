@@ -185,7 +185,6 @@ describe('API /users', () => {
       const response = await request(app)
         .put('/api/v1/users/lock/' + userId)
         .set('Authorization', `Bearer ${loginToken}`)
-      console.log(response.body.message)
       expect(response.statusCode).toBe(200)
     })
   })

@@ -3,7 +3,7 @@ import format from 'pg-format'
 
 export const addFavoriteSQL = async (userId, productId) => {
   const sqlQuery = {
-    text: 'INSERT INTO favorites (user_id, product_id, is_favorite) VALUES ($1, $2, true) RETURNING *',
+    text: 'INSERT INTO client_favorites (user_id, product_id, is_favorite) VALUES ($1, $2, true) RETURNING *',
     values: [userId, productId]
   }
   const response = await pool.query(sqlQuery)
@@ -12,7 +12,7 @@ export const addFavoriteSQL = async (userId, productId) => {
 
 export const updateFavoriteSQL = async id => {
   const sqlQuery = {
-    text: 'UPDATE favorites SET is_favorite = NOT is_favorite WHERE id = $1 REUTNING *',
+    text: 'UPDATE client_favorites SET is_favorite = NOT is_favorite WHERE id = $1',
     values: [id]
   }
   const response = await pool.query(sqlQuery)
@@ -21,7 +21,7 @@ export const updateFavoriteSQL = async id => {
 
 export const searchFavoriteSQL = async (userId, productId) => {
   const sqlQuery = {
-    text: 'SELECT * FROM favorites WHERE user_id = $1 AND product_id = $2',
+    text: 'SELECT * FROM client_favorites WHERE user_id = $1 AND product_id = $2',
     values: [userId, productId]
   }
   const response = await pool.query(sqlQuery)
@@ -35,7 +35,7 @@ export const getFavoritesSQL = async (
   const [columna, direccion] = orderBy.split('_')
   const offset = Math.abs((page - 1) * limits)
   const sqlQuery = {
-    text: 'SELECT a.id as productId, a.name as productName, a.price, a.stock, a.product_photo as img, b.name as category,b.id as categoryId, c.name as season,c.id as seasonId, f.id as favoriteId FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN season_category AS c on a.season_category_id = c.id INNER JOIN favorites AS f ON a.id = f.product_id WHERE f.user_id = $1 AND f.is_favorite = true',
+    text: 'SELECT a.id as productId, a.name as productName, a.price, a.stock, a.product_photo as img, b.name as category,b.id as categoryId, c.name as season,c.id as seasonId, f.id as favoriteId FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN season_category AS c on a.season_category_id = c.id INNER JOIN client_favorites AS f ON a.id = f.product_id WHERE f.user_id = $1 AND f.is_favorite = true',
     values: [userId]
   }
   const queryWithFormat = format(

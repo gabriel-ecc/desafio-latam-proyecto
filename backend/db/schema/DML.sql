@@ -30,7 +30,7 @@ INSERT INTO security_actions (id,security_route,security_method,description) VAL
 (14,'/favorites','post','Agregar Favorito'),
 (15,'/favorites','put','Quitar Favorito'),
 (16,'/favorites/:id','get','Ver Favoritos'),
-(17,'/favorites/my/:id','get','Ver mis favoritos'),
+(17,'/favorites/my','get','Ver mis favoritos'),
 (18,'/products/inventory','get','Ver Inventario'),
 (19,'/products/lock/:id','put','Bloquear Producto');
 
@@ -58,9 +58,12 @@ INSERT INTO season_category(name,description)VALUES
 ('Invierno','Invierno'),
 ('Primavera','Primavera');
 
+-- Verduras (1) test
+INSERT INTO products (id, name, description, price, stock, product_category_id, season_category_id, product_photo, status) VALUES
+('7819805b-6b5d-48f8-a141-8442f1878b52','Tomate Larga Vida', 'Tomate maduro y jugoso, ideal para ensaladas y salsas.', 1500, 120, 1, 1, 'tomatesLargaVida.jpeg', true);
 INSERT INTO products (name, description, price, stock, product_category_id, season_category_id, product_photo, status) VALUES
--- Verduras (10)
-('Tomate Larga Vida', 'Tomate maduro y jugoso, ideal para ensaladas y salsas.', 1500, 120, 1, 1, 'tomatesLargaVida.jpeg', true),
+
+-- Verduras (9)
 ('Lechuga Costina', 'Lechuga de hojas crujientes y frescas.', 1000, 80, 1, 4, 'LechugaCostina.webp', true),
 ('Zapallo Italiano', 'Zapallo tierno, perfecto para guisos y salteados.', 800, 90, 1, 1, 'zapalloItaliano.webp', true),
 ('Cebolla Morada', 'Cebolla de sabor más suave y dulce, ideal para ensaladas.', 1200, 150, 1, 2, 'cebollaMorada.jpeg', true),

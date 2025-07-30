@@ -22,11 +22,7 @@ export const actionFavorite = async (req, res) => {
 }
 
 export const getFavoritesPaginated = async (req, res) => {
-  const userId = req.params.id
-  const validationUserId = req.user
-  if (userId !== validationUserId) {
-    return res.status(403).json({ message: 'Acción no permitida' })
-  }
+  const userId = req.user
   try {
     const favorites = await getFavoritesSQL(userId, req.query)
     res.status(200).json(favorites)

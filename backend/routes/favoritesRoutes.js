@@ -12,7 +12,7 @@ const router = Router()
 
 // Agregar o quitar favorito
 router.put(
-  '/favorites',
+  '/favorites/action',
   verduleriaLog,
   verifyToken,
   authorizationMiddleware,
@@ -22,7 +22,7 @@ router.put(
 // Obtener marca favorito para cliente
 // id del producto
 router.get(
-  '/favorites/:id',
+  '/favorites/product/:id',
   verduleriaLog,
   verifyToken,
   authorizationMiddleware,
@@ -30,9 +30,8 @@ router.get(
 )
 
 // Obtener mis favoritos
-// id del cliente
 router.get(
-  '/favorites/my/:id',
+  '/favorites/my',
   verduleriaLog,
   verifyToken,
   authorizationMiddleware,
