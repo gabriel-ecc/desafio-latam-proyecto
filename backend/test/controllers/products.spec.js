@@ -26,20 +26,24 @@ describe('API /products', () => {
       expect(response.statusCode).toBe(200)
     })
   })
-  describe('Admin intenta acceder a GET /api/v1/products/inventory', () => {
+  describe('Empleado intenta acceder a GET /api/v1/products/inventory', () => {
     it('Deberia retornar status 200', async () => {
       const userData = {
         email: 'test2@test.com',
         password: '123456'
       }
 
-      const loginResponse = await request(app).post('/api/v1/login').send(userData)
+      const loginResponse = await request(app)
+        .post('/api/v1/login')
+        .send(userData)
       // Nos aseguramos que el login fue exitoso y obtenemos el token
       expect(loginResponse.statusCode).toBe(200)
       const loginToken = loginResponse.body.token
 
       // Usamos el token del login para la petición a la ruta protegida
-      const response = await request(app).get('/api/v1/products/inventory').set('Authorization', `Bearer ${loginToken}`)
+      const response = await request(app)
+        .get('/api/v1/products/inventory')
+        .set('Authorization', `Bearer ${loginToken}`)
       expect(response.statusCode).toBe(200)
     })
   })
@@ -50,13 +54,17 @@ describe('API /products', () => {
         password: '123456'
       }
 
-      const loginResponse = await request(app).post('/api/v1/login').send(userData)
+      const loginResponse = await request(app)
+        .post('/api/v1/login')
+        .send(userData)
       // Nos aseguramos que el login fue exitoso y obtenemos el token
       expect(loginResponse.statusCode).toBe(200)
       const loginToken = loginResponse.body.token
 
       // Usamos el token del login para la petición a la ruta protegida
-      const response = await request(app).get('/api/v1/products/inventory').set('Authorization', `Bearer ${loginToken}`)
+      const response = await request(app)
+        .get('/api/v1/products/inventory')
+        .set('Authorization', `Bearer ${loginToken}`)
       expect(response.statusCode).toBe(403)
     })
   })
