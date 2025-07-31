@@ -12,7 +12,7 @@ export const addFavoriteSQL = async (userId, productId) => {
 
 export const updateFavoriteSQL = async id => {
   const sqlQuery = {
-    text: 'UPDATE client_favorites SET is_favorite = NOT is_favorite WHERE id = $1',
+    text: 'UPDATE client_favorites SET is_favorite = NOT is_favorite WHERE id = $1 RETURNING *',
     values: [id]
   }
   const response = await pool.query(sqlQuery)
