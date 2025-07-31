@@ -67,6 +67,31 @@
   font-size: 1.2rem;
 }
 
+/* Botón específico para crear empleado */
+.selector-btn.create-employee-btn {
+  background: #1b712f;
+  border-color: #1b712f;
+  color: white;
+  padding: 0.1rem 0.8rem;
+  margin: auto 0;
+  font-size: 0.7rem;
+  min-width: 100px;
+  min-height: 2.5vw;
+  line-height: 1.2;
+}
+
+.selector-btn.create-employee-btn:hover {
+  background: #1e7e34;
+  border-color: #1e7e34;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 126, 52, 0.3);
+}
+
+.selector-btn.create-employee-btn i {
+  font-size: 0.8rem;
+}
+
 /* Controles de la página */
 .users-controls {
   display: flex;

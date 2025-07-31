@@ -179,18 +179,25 @@ export default function Users() {
           className={`selector-btn ${selectedUserType === 'clients' ? 'active' : ''}`}
           onClick={() => handleUserTypeChange('clients')}
         >
-          <i className="fas fa-users"></i>
-          Clientes
+          <i className="fas fa-users"></i> Clientes
         </button>
         {/* Solo mostrar el botón de empleados si el usuario es administrador */}
         {user.userType === 3 && (
-          <button
-            className={`selector-btn ${selectedUserType === 'employees' ? 'active' : ''}`}
-            onClick={() => handleUserTypeChange('employees')}
-          >
-            <i className="fas fa-user-tie"></i>
-            Empleados
-          </button>
+          <>
+            <button
+              className={`selector-btn ${selectedUserType === 'employees' ? 'active' : ''}`}
+              onClick={() => handleUserTypeChange('employees')}
+            >
+              <i className="fas fa-user-tie"></i> Empleados
+            </button>
+            <button
+              className="selector-btn create-employee-btn"
+              onClick={() => navigate('/create-employee')}
+              title="Crear nuevo empleado"
+            >
+              <i className="fas fa-user-plus"></i> Crear Empleado
+            </button>
+          </>
         )}
       </div>
 
@@ -230,8 +237,7 @@ export default function Users() {
           <h3>Error al cargar usuarios</h3>
           <p>{error}</p>
           <button className="retry-btn" onClick={fetchUsers}>
-            <i className="fas fa-redo"></i>
-            Reintentar
+            <i className="fas fa-redo"></i> Reintentar
           </button>
         </div>
       ) : users.length === 0 ? (
@@ -272,14 +278,13 @@ export default function Users() {
                       {userData.first_name} {userData.last_name}
                     </h3>
                     <p className="user-email">
-                      <i className="fas fa-envelope"></i>
-                      {userData.email}
+                      <i className="fas fa-envelope"></i> {userData.email}
                     </p>
                     <div className="user-meta">
                       <span
                         className={`user-type ${getUserTypeLabel(userData.user_type).toLowerCase()}`}
                       >
-                        <i className="fas fa-tag"></i>
+                        <i className="fas fa-tag"></i>{' '}
                         {getUserTypeLabel(userData.user_type)}
                       </span>
                       <span
@@ -287,7 +292,7 @@ export default function Users() {
                       >
                         <i
                           className={`fas ${userData.user_status === 1 ? 'fa-check-circle' : 'fa-ban'}`}
-                        ></i>
+                        ></i>{' '}
                         {getUserStatusLabel(userData.user_status)}
                       </span>
                     </div>
@@ -314,7 +319,7 @@ export default function Users() {
                     >
                       <i
                         className={`fas ${userData.user_status === 1 ? 'fa-ban' : 'fa-unlock'}`}
-                      ></i>
+                      ></i>{' '}
                       {userData.user_status === 1 ? 'Bloquear' : 'Desbloquear'}
                     </button>
                   </div>
@@ -331,8 +336,7 @@ export default function Users() {
                 onClick={() => setPage(page - 1)}
                 disabled={page === 1}
               >
-                <i className="fas fa-chevron-left"></i>
-                Anterior
+                <i className="fas fa-chevron-left"></i> Anterior
               </button>
 
               <div className="pagination-info">
@@ -346,8 +350,7 @@ export default function Users() {
                 onClick={() => setPage(page + 1)}
                 disabled={page === totalPages}
               >
-                Siguiente
-                <i className="fas fa-chevron-right"></i>
+                Siguiente <i className="fas fa-chevron-right"></i>
               </button>
             </div>
           )}

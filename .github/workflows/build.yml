@@ -71,27 +71,7 @@ jobs:
           CI: true
         run: npm run test:coverage
 
-      - name: Analyze with SonarCloud (backend)
-        if: github.event_name == 'pull_request'
-        # You can pin the exact commit or the version.
-        # uses: SonarSource/sonarcloud-github-action@v2.2.0
-        uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          # Pass postgres environment variables to SonarCloud analysis
-          # This is useful if your backend tests run during analysis
-        with:
-          args:
-            -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto
-            -Dsonar.organization=gabriel-ecc
-            -Dsonar.sources=./backend/middleware,./backend/routes,./backend/src
-            -Dsonar.exclusions=**/node_modules/**,**/__tests__/**,**/*.test.js,**/*.test.jsx
-            -Dsonar.tests=./backend/test
-            -Dsonar.javascript.lcov.reportPaths=./backend/coverage/lcov.info
-          projectBaseDir: .
-
-      - name: Analyze with SonarCloud (backend + front)
-        if: github.ref_name == 'main'
+      - name: Analyze with SonarCloud
         # You can pin the exact commit or the version.
         # uses: SonarSource/sonarcloud-github-action@v2.2.0
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
