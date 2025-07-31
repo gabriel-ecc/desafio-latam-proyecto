@@ -28,8 +28,8 @@ INSERT INTO security_actions (id,security_route,security_method,description) VAL
 (12,'/users/profile','get','Ver mis datos'),
 (13,'/users/profile','put','Modificar mis datos'),
 (14,'/favorites','post','Agregar Favorito'),
-(15,'/favorites','put','Quitar Favorito'),
-(16,'/favorites/:id','get','Ver Favoritos'),
+(15,'/favorites/action','put','Agregar/Quitar Favorito'),
+(16,'/favorites/product/:id','get','Ver Favoritos'),
 (17,'/favorites/my','get','Ver mis favoritos'),
 (18,'/products/inventory','get','Ver Inventario'),
 (19,'/products/lock/:id','put','Bloquear Producto');

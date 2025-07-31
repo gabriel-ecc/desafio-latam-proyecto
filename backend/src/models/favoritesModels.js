@@ -30,16 +30,15 @@ export const searchFavoriteSQL = async (userId, productId) => {
 
 export const getFavoritesSQL = async (
   userId,
-  { limits = 10, page = 1, orderBy = 'id_ASC' }
+  { limits = 10, page = 1, orderBy = 'productId_ASC' }
 ) => {
   const [columna, direccion] = orderBy.split('_')
   const offset = Math.abs((page - 1) * limits)
-  const sqlQuery = {
-    text: 'SELECT a.id as productId, a.name as productName, a.price, a.stock, a.product_photo as img, b.name as category,b.id as categoryId, c.name as season,c.id as seasonId, f.id as favoriteId FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN season_category AS c on a.season_category_id = c.id INNER JOIN client_favorites AS f ON a.id = f.product_id WHERE f.user_id = $1 AND f.is_favorite = true',
-    values: [userId]
-  }
+  const sqlQuery =
+    'SELECT a.id as productId, a.name as productName, a.price, a.stock, a.product_photo as img, b.name as category,b.id as categoryId, c.name as season,c.id as seasonId, f.id as favoriteId FROM products AS a INNER JOIN product_category as b ON a.product_category_id = b.id INNER JOIN season_category AS c on a.season_category_id = c.id INNER JOIN client_favorites AS f ON a.id = f.product_id WHERE f.user_id = %L AND f.is_favorite = true'
   const queryWithFormat = format(
-    sqlQuery + ' ORDER BY %I %s LIMIT %s OFFSET %s',
+    sqlQuery + ' ORDER BY %s %s LIMIT %s OFFSET %s',
+    userId,
     columna,
     direccion,
     limits,
