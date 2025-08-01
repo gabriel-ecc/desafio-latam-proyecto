@@ -22,13 +22,17 @@ export const FavoriteProvider = ({ children }) => {
   const handleActionFavorite = async productId => {
     try {
       await actionFavorite(productId)
-      fetchFavorites() // Re-fetch para actualizar la lista
+      await fetchFavorites() // Re-fetch para actualizar la lista
     } catch (error) {
       console.error('Error adding favorite:', error)
     }
   }
 
   useEffect(() => {
+    if (!user) {
+      setFavorites([])
+      return
+    }
     fetchFavorites()
   }, [user])
 

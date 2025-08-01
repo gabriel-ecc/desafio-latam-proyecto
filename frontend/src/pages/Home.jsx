@@ -1,5 +1,5 @@
 // Página de inicio. Muestra la bienvenida, productos destacados e información general.
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import '../pages/Home.css'
@@ -7,11 +7,14 @@ import '../components/Card.css'
 import ProductCard from '../components/Card'
 import useCart from '../context/CartContext.jsx'
 import { ENDPOINT } from '../config/constants.js'
+import { FavoriteContext } from '../context/FavoriteContext.jsx'
 
 export default function Home() {
   const [cards, setCards] = useState([])
   const { addToCart } = useCart()
   const navigate = useNavigate()
+  const { favorites, handleActionFavorite, fetchFavorites } =
+    useContext(FavoriteContext)
 
   // Imágenes del panel deslizable (ajusta las rutas si es necesario)
   const sliderImages = [
@@ -36,15 +39,17 @@ export default function Home() {
         const response = await axios.get(ENDPOINT.productsFrontPage, {
           params: { limits: 6 } // Mostrar solo X productos en el home
         })
-
-        // Transformar los datos para que coincidan con lo que espera ProductCard
         const transformedProducts = response.data.results.map(product => ({
           ...product,
           category: product.category || 'General',
           isFavorite: false
         }))
-
         setCards(transformedProducts)
+        if (favorites.length > 0) {
+          favorites.map(favorite => {
+            printFavorite(favorite.productid, true)
+          })
+        }
       } catch (error) {
         console.error('Error fetching products for home:', error)
         // En caso de error, usar productos vacíos
@@ -55,14 +60,29 @@ export default function Home() {
     fetchProducts()
   }, [])
 
+  useEffect(() => {
+    favorites.map(favorite => {
+      printFavorite(favorite.productid, true)
+    })
+  }, [favorites])
+
   const handleViewMore = id => {
     navigate(`/card/${id}`)
   }
 
   const handleToggleFavorite = id => {
+    handleActionFavorite(id)
     setCards(prevCards =>
       prevCards.map(card =>
         card.id === id ? { ...card, isFavorite: !card.isFavorite } : card
+      )
+    )
+  }
+
+  const printFavorite = (id, isFav) => {
+    setCards(prevCards =>
+      prevCards.map(card =>
+        card.id === id ? { ...card, isFavorite: isFav } : card
       )
     )
   }
