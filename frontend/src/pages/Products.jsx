@@ -16,8 +16,7 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState(
     category === '0' ? '' : category || ''
   )
-  const { favorites, actionFavorite, fetchFavorites } =
-    useContext(FavoriteContext)
+  const { favorites, handleActionFavorite } = useContext(FavoriteContext)
   const [listCategories, setListCategories] = useState([])
   const [selectedSeason, setSelectedSeason] = useState(
     season === '0' ? '' : season || ''
@@ -77,6 +76,7 @@ export default function Products() {
   }
 
   const handleToggleFavorite = id => {
+    handleActionFavorite(id)
     setCards(prevCards =>
       prevCards.map(card =>
         card.id === id ? { ...card, isFavorite: !card.isFavorite } : card

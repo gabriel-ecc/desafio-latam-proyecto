@@ -1,4 +1,4 @@
-
+import { data } from 'react-router-dom'
 import { ENDPOINT } from '../config/constants.js'
 import { getToken } from './authService.js'
 
@@ -27,16 +27,22 @@ export const getFavorites = async () => {
 }
 
 // Función para agregar un producto a favoritos
-export const actionFavorite = async (productId) => {
+export const actionFavorite = async productId => {
+  const product = {
+    productId: productId
+  }
+
   try {
     const token = getToken()
     if (!token) throw new Error('No hay token de autenticación')
 
-    const response = await fetch(`${ENDPOINT.favoritesAction}/${productId}`, {
-      method: 'POST',
+    const response = await fetch(`${ENDPOINT.favoritesAction}`, {
+      method: 'PUT',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
-      }
+      },
+      body: JSON.stringify(product)
     })
 
     if (!response.ok) {
