@@ -47,7 +47,7 @@ export default function Home() {
         setCards(transformedProducts)
         if (favorites.length > 0) {
           favorites.map(favorite => {
-            printFavorite(favorite.productid, true)
+            printFavorite(favorite.id, true)
           })
         }
       } catch (error) {
@@ -63,7 +63,7 @@ export default function Home() {
   useEffect(() => {
     if (favorites.length > 0) {
       favorites.map(favorite => {
-        printFavorite(favorite.productid, true)
+        printFavorite(favorite.id, true)
       })
     } else {
       setCards(prevCards =>

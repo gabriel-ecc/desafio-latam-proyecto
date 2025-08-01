@@ -8,7 +8,7 @@ export const getFavorites = async () => {
     const token = getToken()
     if (!token) throw new Error('No hay token de autenticación')
 
-    const response = await fetch(`${ENDPOINT.favoritesMy}`, {
+    const response = await fetch(`${ENDPOINT.favoritesMy}?limit=100`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

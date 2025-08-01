@@ -49,7 +49,7 @@ export default function Products() {
       if (favorites.length > 0) {
         const productWithFavorites = data.results.map(a => ({
           ...a,
-          isFavorite: favorites.some(q => q.productid === a.id) || false
+          isFavorite: favorites.some(q => q.id === a.id) || false
         }))
         setCards(productWithFavorites)
       } else {
