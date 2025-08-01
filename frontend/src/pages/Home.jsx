@@ -61,9 +61,15 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    favorites.map(favorite => {
-      printFavorite(favorite.productid, true)
-    })
+    if (favorites.length > 0) {
+      favorites.map(favorite => {
+        printFavorite(favorite.productid, true)
+      })
+    } else {
+      setCards(prevCards =>
+        prevCards.map(card => ({ ...card, isFavorite: false }))
+      )
+    }
   }, [favorites])
 
   const handleViewMore = id => {
