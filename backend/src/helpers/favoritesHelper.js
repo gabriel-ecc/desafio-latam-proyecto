@@ -5,7 +5,7 @@ export const favortiesHelper = async favList => {
   const resultado = favList.map(item => {
     return {
       id: item.productid,
-      name: item.productName,
+      name: item.productname,
       price: item.price,
       category: item.category,
       categoryId: item.categoryId,
