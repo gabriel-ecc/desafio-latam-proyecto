@@ -235,6 +235,9 @@ const Navbar = () => {
                   <li>
                     <Link to="/profile">Mi Perfil</Link>
                   </li>
+                  <li>
+                    <Link to="/favoritos">Mis Favoritos</Link>
+                  </li>
                   <li className="dropdown-divider"></li>
                   <li>
                     {/* Usamos un botón para la acción de cerrar sesión */}

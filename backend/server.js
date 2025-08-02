@@ -10,6 +10,7 @@ import authRoutes from './routes/authRoutes.js'
 import categoriesRoutes from './routes/categoriesRoutes.js'
 import seasonRoutes from './routes/seasonRoutes.js'
 import productsRoutes from './routes/productsRoutes.js'
+import favoritesRoutes from './routes/favoritesRoutes.js'
 
 import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
@@ -40,6 +41,7 @@ app.use('/api/v1', authRoutes) // Autenticacion de usuarios
 app.use('/api/v1', categoriesRoutes) // Categorias de Productos
 app.use('/api/v1', seasonRoutes) // Temporadas de Productos
 app.use('/api/v1', productsRoutes) // Ruta de Productos
+app.use('/api/v1', favoritesRoutes) // Ruta de Favoritos
 
 // Disponer imagenes para recursos de pagina web
 const __dirname = path.resolve()

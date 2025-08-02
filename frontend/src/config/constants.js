@@ -9,5 +9,8 @@ export const ENDPOINT = {
   inventory: `${URLBASE}${apiVersion}/products/inventory`,
   seasons: `${URLBASE}${apiVersion}/seasons`,
   categories: `${URLBASE}${apiVersion}/categories`,
-  login: `${URLBASE}${apiVersion}/login`
+  login: `${URLBASE}${apiVersion}/login`,
+  favoritesAction: `${URLBASE}${apiVersion}/favorites/action`,
+  favoritesMy: `${URLBASE}${apiVersion}/favorites/my`,
+  favoritesProduct: `${URLBASE}${apiVersion}/favorites/product`
 }

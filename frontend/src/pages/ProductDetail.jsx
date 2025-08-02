@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ENDPOINT } from '../config/constants'
+import { FavoriteContext } from '../context/FavoriteContext.jsx'
 import CardDetail from '../components/CardDetail'
 import useCart from '../context/CartContext'
 import './ProductDetail.css'
@@ -12,6 +13,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const { favorites, handleActionFavorite } = useContext(FavoriteContext)
 
   // Función para obtener el producto
   const fetchProduct = async () => {
@@ -39,32 +41,16 @@ const ProductDetail = () => {
     }
   }, [id])
 
-  // Gestión simple de favoritos con localStorage
-  const getFavorites = () => {
-    const favorites = localStorage.getItem('favorites')
-    return favorites ? JSON.parse(favorites) : []
+  const isProductFavorite = productId => {
+    return favorites.find(favorite => favorite.id === productId)
   }
 
-  const isProductFavorite = (productId) => {
-    return getFavorites().includes(productId)
-  }
-
-  const handleToggleFavorite = (productId) => {
-    const favorites = getFavorites()
-    const isFavorite = favorites.includes(productId)
-
-    if (isFavorite) {
-      const newFavorites = favorites.filter((id) => id !== productId)
-      localStorage.setItem('favorites', JSON.stringify(newFavorites))
-    } else {
-      const newFavorites = [...favorites, productId]
-      localStorage.setItem('favorites', JSON.stringify(newFavorites))
-    }
-
-    // Actualizar el producto con el nuevo estado de favorito
-    setProduct((prevProduct) => ({
+  const handleToggleFavorite = async productId => {
+    await handleActionFavorite(productId)
+    const isFavorite = favorites.find(favorite => favorite.id === productId)
+    setProduct(prevProduct => ({
       ...prevProduct,
-      isFavorite: !isFavorite,
+      isFavorite: !isFavorite
     }))
   }
 
@@ -126,7 +112,7 @@ const ProductDetail = () => {
       <CardDetail
         product={{
           ...product,
-          isFavorite: isProductFavorite(product.id),
+          isFavorite: isProductFavorite(product.id)
         }}
         onAddToCart={handleAddToCart}
         onToggleFavorite={handleToggleFavorite}

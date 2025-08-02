@@ -28,16 +28,16 @@ INSERT INTO security_actions (id,security_route,security_method,description) VAL
 (12,'/users/profile','get','Ver mis datos'),
 (13,'/users/profile','put','Modificar mis datos'),
 (14,'/favorites','post','Agregar Favorito'),
-(15,'/favorites','put','Quitar Favorito'),
-(16,'/favorites','get','Ver Favoritos'),
-(17,'/favorites/my/:id','get','Ver mis favoritos'),
+(15,'/favorites/action','put','Agregar/Quitar Favorito'),
+(16,'/favorites/product/:id','get','Ver Favoritos'),
+(17,'/favorites/my','get','Ver mis favoritos'),
 (18,'/products/inventory','get','Ver Inventario'),
 (19,'/products/lock/:id','put','Bloquear Producto');
 
 INSERT INTO security_actions_roles (security_action_id,user_type_id) VALUES
 (1,3),(2,3),(3,3),(4,3),(4,2),(5,3),(6,3),(7,3),(7,2),(8,3),(9,3),(9,2),
 (10,3),(10,2),(10,1),(11,3),(11,2),(12,3),(12,2),(12,1),(13,3),(13,1),
-(14,1),(15,1),(16,3),(16,2),(17,3),(17,2),(17,1),(18,3),(18,2),(19,3);
+(15,1),(16,3),(16,2),(16,1),(17,3),(17,2),(17,1),(18,3),(18,2),(19,3);
 
 -- password admin: admin1 , otros usuarios: 123456
 INSERT INTO users (first_name, last_name, email, phone, password, user_type, user_status, profile_photo) VALUES 
@@ -58,9 +58,12 @@ INSERT INTO season_category(name,description)VALUES
 ('Invierno','Invierno'),
 ('Primavera','Primavera');
 
+-- Verduras (1) test
+INSERT INTO products (id, name, description, price, stock, product_category_id, season_category_id, product_photo, status) VALUES
+('7819805b-6b5d-48f8-a141-8442f1878b52','Tomate Larga Vida', 'Tomate maduro y jugoso, ideal para ensaladas y salsas.', 1500, 120, 1, 1, 'tomatesLargaVida.jpeg', true);
 INSERT INTO products (name, description, price, stock, product_category_id, season_category_id, product_photo, status) VALUES
--- Verduras (10)
-('Tomate Larga Vida', 'Tomate maduro y jugoso, ideal para ensaladas y salsas.', 1500, 120, 1, 1, 'tomatesLargaVida.jpeg', true),
+
+-- Verduras (9)
 ('Lechuga Costina', 'Lechuga de hojas crujientes y frescas.', 1000, 80, 1, 4, 'LechugaCostina.webp', true),
 ('Zapallo Italiano', 'Zapallo tierno, perfecto para guisos y salteados.', 800, 90, 1, 1, 'zapalloItaliano.webp', true),
 ('Cebolla Morada', 'Cebolla de sabor más suave y dulce, ideal para ensaladas.', 1200, 150, 1, 2, 'cebollaMorada.jpeg', true),
