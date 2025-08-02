@@ -30,7 +30,7 @@ export const searchFavoriteSQL = async (userId, productId) => {
 
 export const getFavoritesSQL = async (
   userId,
-  { limits = 10, page = 1, orderBy = 'productId_ASC' }
+  { limits = 500, page = 1, orderBy = 'productId_ASC' }
 ) => {
   const [columna, direccion] = orderBy.split('_')
   const offset = Math.abs((page - 1) * limits)
