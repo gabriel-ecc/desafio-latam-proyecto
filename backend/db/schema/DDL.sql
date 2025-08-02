@@ -88,4 +88,36 @@ CREATE TABLE products(
 
 );
 
+//Carrito de Compras
+
+CREATE TABLE cart_items (
+    id SERIAL PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    product_id UUID NOT NULL REFERENCES products(id),
+    quantity INT NOT NULL CHECK (quantity > 0),
+    added_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    UNIQUE(user_id, product_id) 
+);
+
+//Ordenes
+
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  user_id UUID NOT NULL REFERENCES users(id), -- relación directa con users
+  buyer_email VARCHAR(200) NOT NULL,
+  buyer_first_name VARCHAR(100) NOT NULL,
+  buyer_last_name VARCHAR(100) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  total_price INT NOT NULL,
+  status VARCHAR(50) NOT NULL DEFAULT 'pendiente'
+);
+
+CREATE TABLE order_items (
+  id SERIAL PRIMARY KEY,
+  order_id INT NOT NULL REFERENCES orders(id),
+  product_id UUID NOT NULL REFERENCES products(id),
+  quantity INT NOT NULL CHECK (quantity > 0),
+  unit_price INT NOT NULL
+);
 
