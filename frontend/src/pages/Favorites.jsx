@@ -53,10 +53,17 @@ export default function Favorites() {
   }, [])
 
   useEffect(() => {
-    setCards(favorites)
+    // Calcular el número total de páginas
     favorites.length % limits === 0
       ? setCantidadPaginas(Math.trunc(favorites.length / limits))
       : setCantidadPaginas(Math.trunc(favorites.length / limits) + 1)
+
+    // Aplicar paginación: calcular el índice de inicio y fin
+    const startIndex = (page - 1) * limits
+    const endIndex = startIndex + limits
+    const paginatedFavorites = favorites.slice(startIndex, endIndex)
+
+    setCards(paginatedFavorites)
   }, [selectedCategory, selectedSeason, page, orderBy, limits, favorites])
 
   const handleViewMore = id => {
