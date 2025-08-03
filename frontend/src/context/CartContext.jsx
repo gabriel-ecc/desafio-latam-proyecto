@@ -7,7 +7,7 @@ export function CartProvider({ children }) {
 
   //Primera función es para agregar al carrito y descartar duplicados
 
-  const addtoCart = (item, quantity = 1) => {
+  const addToCart = (item, quantity = 1) => {
     setCart(prevCart => {
       const productExist = prevCart.find(p => p.id === item.id)
       if(productExist){
@@ -40,22 +40,22 @@ export function CartProvider({ children }) {
     const product = cart.find(item => item.id === id)
     if (product.quantity > 1) {
       updateQuantity(id, product.quantity - 1)
-    } else if (quantity && product.quantity === 1) {
+    } else if (product.quantity === 1) {
       updateQuantity(id, 0)
     }
   }
 
   // Precio Total
 
-  const totalePrice = () => {
+  const totalPrice = () => {
     return cart.reduce((total, item) => {
-      return total + item.price * item.count
+      return total + item.price * item.quantity
     }, 0)
   }
-  const total = totalePrice()
+  const total = totalPrice()
 
   return (
-    <CartContext.Provider value={{ cart, setCart, updateQuantity, subtraction, totalePrice, addtoCart }}>
+    <CartContext.Provider value={{ cart, setCart, updateQuantity, subtraction, totalPrice, addToCart }}>
       {children}
     </CartContext.Provider>
   )

@@ -9,8 +9,8 @@ import axios from 'axios'
 import './Navbar.css'
 
 const Navbar = () => {
-  const { calculateTotalPrice } = useCart()
-  const total = calculateTotalPrice()
+  const { totalPrice } = useCart()
+  const total = totalPrice()
   const { token, user, logout } = useContext(UserContext)
   const navigate = useNavigate()
 
