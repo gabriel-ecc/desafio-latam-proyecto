@@ -3,6 +3,8 @@ import Users from '../pages/Users'
 import Inventory from '../pages/Inventory'
 import EditProduct from '../pages/EditProduct'
 import CreateEmployee from '../pages/CreateEmployee'
+import AdminPurchases from '../pages/AdminPurchases'
+import Dashboard from '../pages/Dashboard'
 
 // Permisos comunes
 const EMPLOYEE_ADMIN = [2, 3]
@@ -25,3 +27,5 @@ export const ProtectedCreateEmployee = withProtection(
   CreateEmployee,
   ADMIN_ONLY
 )
+export const ProtectedAdminPurchases = withProtection(AdminPurchases)
+export const ProtectedDashboard = withProtection(Dashboard)

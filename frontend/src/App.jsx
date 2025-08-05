@@ -10,7 +10,9 @@ import {
   ProtectedUsers,
   ProtectedInventory,
   ProtectedEditProduct,
-  ProtectedCreateEmployee
+  ProtectedCreateEmployee,
+  ProtectedAdminPurchases,
+  ProtectedDashboard
 } from './components/ProtectedComponents'
 import Home from './pages/Home'
 import Register from './pages/Register'
@@ -45,6 +47,8 @@ function App() {
         <Route path="/usuarios" element={<ProtectedUsers />} />
         <Route path="/users" element={<ProtectedUsers />} />
         <Route path="/create-employee" element={<ProtectedCreateEmployee />} />
+        <Route path="/admin-compras" element={<ProtectedAdminPurchases />} />
+        <Route path="/dashboard" element={<ProtectedDashboard />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/products" element={<Products />} />
         <Route path="/catalogo" element={<Catalog />} />

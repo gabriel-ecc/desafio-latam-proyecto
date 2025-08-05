@@ -98,6 +98,12 @@ const Navbar = () => {
                 <li>
                   <Link to="/usuarios">Gestión de Usuarios</Link>
                 </li>
+                <li>
+                  <Link to="/admin-compras">Gestión de Compras</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
               </>
             )}
           </ul>
@@ -140,6 +146,12 @@ const Navbar = () => {
                   </li>
                   <li>
                     <Link to="/usuarios">Gestión de Usuarios</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin-compras">Gestión de Compras</Link>
+                  </li>
+                  <li>
+                    <Link to="/dashboard">Dashboard</Link>
                   </li>
                 </>
               )}
@@ -228,6 +240,12 @@ const Navbar = () => {
                       <li>
                         <Link to="/usuarios">Gestión de Usuarios</Link>
                       </li>
+                      <li>
+                        <Link to="/admin-compras">Gestión de Compras</Link>
+                      </li>
+                      <li>
+                        <Link to="/dashboard">Dashboard</Link>
+                      </li>
                       <li className="dropdown-divider"></li>
                     </>
                   )}
@@ -235,6 +253,12 @@ const Navbar = () => {
                   <li>
                     <Link to="/profile">Mi Perfil</Link>
                   </li>
+                  {/* Mostrar "Mis Compras" solo para clientes */}
+                  {user && user.userType === 1 && (
+                    <li>
+                      <Link to="/mis-compras">Mis Compras</Link>
+                    </li>
+                  )}
                   <li>
                     <Link to="/favoritos">Mis Favoritos</Link>
                   </li>
