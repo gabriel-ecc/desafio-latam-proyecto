@@ -5,6 +5,7 @@ import path from 'path'
 
 import {
   registerClientUser,
+  registerEmployeeUser,
   getUsers,
   lockUser,
   getUserProfile,
@@ -96,7 +97,10 @@ router.post(
   '/users/employee',
   verduleriaLog,
   verifyToken,
-  authorizationMiddleware
+  authorizationMiddleware,
+  upload.single('profilePhoto'),
+  createUserMiddleware,
+  registerEmployeeUser
 )
 
 // Actualizar empleado

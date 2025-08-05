@@ -1,7 +1,8 @@
-// Formulario para que un usuario cree una nueva cuenta.
-// El rol se asigna por el administrador en Users.jsx
-import { useState } from 'react'
+// Formulario para que un administrador cree un nuevo empleado.
+import { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../context/UserContext'
+import { getToken } from '../services/authService'
 import './AuthForm.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ENDPOINT } from '../config/constants.js'
@@ -13,7 +14,7 @@ import {
   faPhone
 } from '@fortawesome/free-solid-svg-icons'
 
-export default function Register() {
+export default function CreateEmployee() {
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -23,7 +24,23 @@ export default function Register() {
     confirmPassword: ''
   })
 
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { user } = useContext(UserContext)
+
+  // Verificar que solo administradores puedan acceder
+  useEffect(() => {
+    if (!user || user.userType !== 3) {
+      Swal.fire({
+        title: 'Acceso denegado',
+        text: 'Solo los administradores pueden crear empleados.',
+        icon: 'error',
+        confirmButtonColor: '#dc3545'
+      }).then(() => {
+        navigate('/usuarios')
+      })
+    }
+  }, [user, navigate])
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -31,46 +48,62 @@ export default function Register() {
 
   const handleSubmit = async e => {
     e.preventDefault()
+    setLoading(true)
 
     // Validación de contraseña
     if (form.password !== form.confirmPassword) {
-      alert('Las contraseñas no coinciden')
+      Swal.fire({
+        title: 'Error',
+        text: 'Las contraseñas no coinciden',
+        icon: 'error',
+        confirmButtonColor: '#dc3545'
+      })
+      setLoading(false)
       return
     }
 
     // Construir el objeto a enviar
-    const userData = {
+    const employeeData = {
       firstName: form.firstName,
       lastName: form.lastName,
       email: form.email,
       phone: form.phone,
       password: form.password,
-      userType: 1
+      userType: 2 // Tipo empleado
     }
 
     try {
-      const response = await fetch(ENDPOINT.users, {
+      const token = getToken()
+
+      if (!token) {
+        throw new Error('No hay token de autenticación')
+      }
+
+      const response = await fetch(ENDPOINT.employees, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData)
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(employeeData)
       })
 
       const data = await response.json()
 
       if (response.ok) {
         await Swal.fire({
-          title: 'Usuario registrado!',
-          text: `Hola ${userData.firstName}, tu cuenta ha sido creada correctamente.`,
+          title: 'Empleado creado!',
+          text: `El empleado ${employeeData.firstName} ${employeeData.lastName} ha sido creado correctamente.`,
           icon: 'success',
           confirmButtonText: 'Continuar',
           confirmButtonColor: '#28a745'
         })
 
-        navigate('/Login')
+        navigate('/usuarios')
       } else {
         await Swal.fire({
           title: 'Error',
-          text: data.message || 'Error al crear usuario',
+          text: data.message || 'Error al crear empleado',
           icon: 'error',
           confirmButtonText: 'Intentar de nuevo',
           confirmButtonColor: '#dc3545'
@@ -80,22 +113,35 @@ export default function Register() {
       console.error(error)
       await Swal.fire({
         title: 'Error',
-        text: error.message || 'Error al crear usuario',
+        text: error.message || 'Error al crear empleado',
         icon: 'error',
         confirmButtonText: 'Intentar de nuevo',
         confirmButtonColor: '#dc3545'
       })
+    } finally {
+      setLoading(false)
     }
+  }
+
+  const handleGoBack = () => {
+    navigate('/usuarios')
+  }
+
+  // No renderizar si no es administrador
+  if (!user || user.userType !== 3) {
+    return null
   }
 
   return (
     <div className="auth-bg">
       <div className="auth-card shadow">
-        <form className="register-form" onSubmit={handleSubmit}>
-          <h2 className="auth-title">Crear una cuenta</h2>
-          <p className="auth-subtitle">
-            ¡Los mejores productos orgánicos te esperan!.
-          </p>
+        <form className="register-form employee-form" onSubmit={handleSubmit}>
+          <div className="text-center mb-4">
+            <h2 className="auth-title mb-1">Crear Empleado</h2>
+            <p className="auth-subtitle">
+              Registra un nuevo empleado en el sistema
+            </p>
+          </div>
 
           <div className="form-row">
             <div className="form-group mb-3">
@@ -110,6 +156,7 @@ export default function Register() {
                   placeholder="Nombre"
                   value={form.firstName}
                   onChange={handleChange}
+                  disabled={loading}
                   required
                 />
               </div>
@@ -126,6 +173,7 @@ export default function Register() {
                   placeholder="Apellido"
                   value={form.lastName}
                   onChange={handleChange}
+                  disabled={loading}
                   required
                 />
               </div>
@@ -145,6 +193,7 @@ export default function Register() {
                   placeholder="Correo electrónico"
                   value={form.email}
                   onChange={handleChange}
+                  disabled={loading}
                   required
                 />
               </div>
@@ -161,6 +210,7 @@ export default function Register() {
                   placeholder="Teléfono"
                   value={form.phone}
                   onChange={handleChange}
+                  disabled={loading}
                   required
                 />
               </div>
@@ -180,6 +230,7 @@ export default function Register() {
                   placeholder="Contraseña"
                   value={form.password}
                   onChange={handleChange}
+                  disabled={loading}
                   required
                 />
               </div>
@@ -196,33 +247,41 @@ export default function Register() {
                   placeholder="Confirmar Contraseña"
                   value={form.confirmPassword}
                   onChange={handleChange}
+                  disabled={loading}
                   required
                 />
               </div>
             </div>
           </div>
 
-          {/* a espera de que se implemente la subida de fotos de perfil en el backend ya que pide instalar multer */}
-          {/* <div className="mb-3">
-            <div className="input-group">
-              <span className="input-group-text">
-                <FontAwesomeIcon icon={faUser} />
-              </span>
-              <input
-                type="file"
-                className="form-control"
-                name="profilePhoto"
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-            </div>
-          </div> */}
-          <button type="submit" className="btn btn-success w-100 fw-bold">
-            Registrarme
+          <button
+            type="submit"
+            className="btn btn-success w-100 fw-bold"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <output
+                  className="spinner-border spinner-border-sm me-2"
+                  aria-hidden="true"
+                ></output>{' '}
+                Creando empleado...
+              </>
+            ) : (
+              'Crear Empleado'
+            )}
           </button>
-          <p className="auth-login">
-            ¿Ya tienes una cuenta? <a href="/login">Inicia sesión aquí</a>.
-          </p>
+
+          <div className="text-center mt-3">
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={handleGoBack}
+              disabled={loading}
+            >
+              Cancelar
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/Card'
 import './Products.css'
 import useCart from '../context/CartContext.jsx'
+import { FavoriteContext } from '../context/FavoriteContext.jsx'
 import { ENDPOINT } from '../config/constants.js'
 import axios from 'axios'
 
@@ -15,6 +16,7 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState(
     category === '0' ? '' : category || ''
   )
+  const { favorites, handleActionFavorite } = useContext(FavoriteContext)
   const [listCategories, setListCategories] = useState([])
   const [selectedSeason, setSelectedSeason] = useState(
     season === '0' ? '' : season || ''
@@ -39,12 +41,21 @@ export default function Products() {
     category: selectedCategory,
     season: selectedSeason,
     page: page,
-    orderBy: orderBy,
+    orderBy: orderBy
   }
 
   useEffect(() => {
     axios.get(ENDPOINT.products, { params: queryParams }).then(({ data }) => {
-      setCards(data.results)
+      if (favorites.length > 0) {
+        const productWithFavorites = data.results.map(a => ({
+          ...a,
+          isFavorite: favorites.some(q => q.id === a.id) || false
+        }))
+        setCards(productWithFavorites)
+      } else {
+        setCards(data.results)
+      }
+
       data.totalProducts % limits === 0
         ? setCantidadPaginas(Math.trunc(data.totalProducts / limits))
         : setCantidadPaginas(Math.trunc(data.totalProducts / limits) + 1)
@@ -60,19 +71,20 @@ export default function Products() {
     })
   }, [])
 
-  const handleViewMore = (id) => {
+  const handleViewMore = id => {
     navigate(`/card/${id}`)
   }
 
-  const handleToggleFavorite = (id) => {
-    setCards((prevCards) =>
-      prevCards.map((card) =>
+  const handleToggleFavorite = id => {
+    handleActionFavorite(id)
+    setCards(prevCards =>
+      prevCards.map(card =>
         card.id === id ? { ...card, isFavorite: !card.isFavorite } : card
       )
     )
   }
 
-  const handleAddToCart = (productWithQuantity) => {
+  const handleAddToCart = productWithQuantity => {
     const { quantity, ...product } = productWithQuantity
     for (let i = 0; i < quantity; i++) {
       addToCart(product)
@@ -91,13 +103,13 @@ export default function Products() {
           <select
             id="category-filter"
             value={selectedCategory}
-            onChange={(e) => {
+            onChange={e => {
               setSelectedCategory(e.target.value)
               setPage(1)
             }}
           >
             <option value="">Todas</option>
-            {listCategories.map((category) => (
+            {listCategories.map(category => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>
@@ -110,13 +122,13 @@ export default function Products() {
           <select
             id="season-filter"
             value={selectedSeason}
-            onChange={(e) => {
+            onChange={e => {
               setSelectedSeason(e.target.value)
               setPage(1)
             }}
           >
             <option value="">Todas</option>
-            {listSeasons.map((season) => (
+            {listSeasons.map(season => (
               <option key={season.id} value={season.id}>
                 {season.name}
               </option>
@@ -129,7 +141,7 @@ export default function Products() {
           <select
             id="order-filter"
             value={orderBy}
-            onChange={(e) => {
+            onChange={e => {
               setOrderBy(e.target.value)
               setPage(1)
             }}
@@ -146,7 +158,7 @@ export default function Products() {
           <select
             id="limit-filter"
             value={limits}
-            onChange={(e) => {
+            onChange={e => {
               setLimits(parseInt(e.target.value))
               setPage(1)
             }}
@@ -160,7 +172,7 @@ export default function Products() {
       </div>
       <div className="card-container">
         {cards.length > 0 ? (
-          cards.map((card) => (
+          cards.map(card => (
             <ProductCard
               key={card.id}
               product={card}
@@ -188,7 +200,7 @@ export default function Products() {
             </li>
 
             {Array.from({ length: cantidadPaginas }, (_, i) => i + 1).map(
-              (pageNumber) => (
+              pageNumber => (
                 <li
                   key={pageNumber}
                   className={`page-item ${page === pageNumber ? 'active' : ''}`}

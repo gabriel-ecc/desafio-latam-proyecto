@@ -88,6 +88,15 @@ CREATE TABLE products(
 
 );
 
+CREATE TABLE client_favorites(
+    id SERIAL PRIMARY KEY NOT NULL,
+    user_id UUID NOT NULL,
+    product_id UUID NOT NULL,
+    is_favorite BOOL NOT NULL DEFAULT FALSE,
+    create_date TIMESTAMP NOT NULL DEFAULT NOW(),
+    CONSTRAINT client_favorites_user_fkey FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT client_favorites_product_fkey FOREIGN KEY (product_id) REFERENCES products(id)
+);
 //Carrito de Compras
 
 CREATE TABLE cart_items (
