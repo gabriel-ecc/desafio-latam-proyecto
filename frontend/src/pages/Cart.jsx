@@ -26,38 +26,44 @@ const Cart = () => {
   }, [])
 
   return (
-    <main className="container">
-    <div className="container_1">
-      <h4>Detalles del Pedido:</h4>
+    <main className='container_cart'>
+      <div className='content_cart'>
+        <div className='sections_cart'>
+          <div className="container_1">
+            <h2>Detalles del Pedido:</h2>
+              {cart.length === 0 ? (
+              <p>Tu carrito está vacío.</p>
+              ) : (
+              cart.map((item) => (
+            <div key={item.id} className='min_container'>
+              <div className='min_box1'>
+              <img className='img_cart'
+                src={item.img}
+                alt={item.name}
+              />
+              <h5>{item.name}</h5>
+              <p>Precio: ${item.price}</p>
+            </div>
+            <div className='min_box2'>
+            <p>Cantidad: {item.quantity}</p>
+            <div className='button_items'>
+              <button className='one_button' onClick={() => subtraction(item.id)}>-</button>
+              <button className='one_button' onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+              <button className='one_button_delete' onClick={() => updateQuantity(item.id, 0)}>Eliminar</button>
+            </div>          
+            </div>
+        </div>
+       ))
+      )}
       <div>
-        {cart.length === 0 ? (
-       <p>Tu carrito está vacío.</p>
-        ) : (
-        cart.map((item) => (
-      <div key={item.id}>
-        <img
-        src={item.img}
-        alt={item.name}
-        />
-        <h5>{item.name}</h5>
-        <p>Precio: ${item.price}</p>
-        <p>Cantidad: {item.quantity}</p>
-        <button onClick={() => subtraction(item.id)}>-</button>
-        <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
-        <button onClick={() => updateQuantity(item.id, 0)}>Eliminar</button>
-      </div>
-      ))
-    )}
-      </div>
-      <div>
-        <h5>Total: ${totalPrice()} </h5>
+        <h5>Total: ${totalPrice().toLocaleString('es-CL')} </h5>
       </div>
     </div>
     <div className="container_2">
-      <h4>Verificación y Pago:</h4>
+      <h2>Verificación y Pago:</h2>
       <div>
         <p>Total de artículos: {cart.reduce((sum, item) => sum + item.quantity, 0)}</p>
-        <p>Total a pagar: ${totalPrice()}</p>
+        <p>Total a pagar: ${totalPrice().toLocaleString('es-CL')}</p>
       </div>
       <div>
         {paymentMethods.map(method => (
@@ -70,6 +76,8 @@ const Cart = () => {
         />
        ))}
       </div>
+    </div>    
+    </div>
     </div>
     </main>
   )
