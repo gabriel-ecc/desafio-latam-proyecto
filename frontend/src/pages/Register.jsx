@@ -91,107 +91,117 @@ export default function Register() {
   return (
     <div className="auth-bg">
       <div className="auth-card shadow">
-        <form onSubmit={handleSubmit}>
+        <form className="register-form" onSubmit={handleSubmit}>
           <h2 className="auth-title">Crear una cuenta</h2>
           <p className="auth-subtitle">
             ¡Los mejores productos orgánicos te esperan!.
           </p>
-          <div className="mb-3">
-            <div className="input-group">
-              <span className="input-group-text">
-                <FontAwesomeIcon icon={faUser} />
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                name="firstName"
-                placeholder="Nombre"
-                value={form.firstName}
-                onChange={handleChange}
-                required
-              />
+
+          <div className="form-row">
+            <div className="form-group mb-3">
+              <div className="input-group">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faUser} />
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="firstName"
+                  placeholder="Nombre"
+                  value={form.firstName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-group mb-3">
+              <div className="input-group">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faUser} />
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="lastName"
+                  placeholder="Apellido"
+                  value={form.lastName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
             </div>
           </div>
-          <div className="mb-3">
-            <div className="input-group">
-              <span className="input-group-text">
-                <FontAwesomeIcon icon={faUser} />
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                name="lastName"
-                placeholder="Apellido"
-                value={form.lastName}
-                onChange={handleChange}
-                required
-              />
+
+          <div className="form-row">
+            <div className="form-group mb-3">
+              <div className="input-group">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faEnvelope} />
+                </span>
+                <input
+                  type="email"
+                  className="form-control"
+                  name="email"
+                  placeholder="Correo electrónico"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-group mb-3">
+              <div className="input-group">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faPhone} />
+                </span>
+                <input
+                  type="tel"
+                  className="form-control"
+                  name="phone"
+                  placeholder="Teléfono"
+                  value={form.phone}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
             </div>
           </div>
-          <div className="mb-3">
-            <div className="input-group">
-              <span className="input-group-text">
-                <FontAwesomeIcon icon={faEnvelope} />
-              </span>
-              <input
-                type="email"
-                className="form-control"
-                name="email"
-                placeholder="Correo electrónico"
-                value={form.email}
-                onChange={handleChange}
-                required
-              />
+
+          <div className="form-row">
+            <div className="form-group mb-3">
+              <div className="input-group">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faLock} />
+                </span>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  placeholder="Contraseña"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-group mb-3">
+              <div className="input-group">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faLock} />
+                </span>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="confirmPassword"
+                  placeholder="Confirmar Contraseña"
+                  value={form.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
             </div>
           </div>
-          <div className="mb-3">
-            <div className="input-group">
-              <span className="input-group-text">
-                <FontAwesomeIcon icon={faPhone} />
-              </span>
-              <input
-                type="tel"
-                className="form-control"
-                name="phone"
-                placeholder="Teléfono"
-                value={form.phone}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="mb-3">
-            <div className="input-group">
-              <span className="input-group-text">
-                <FontAwesomeIcon icon={faLock} />
-              </span>
-              <input
-                type="password"
-                className="form-control"
-                name="password"
-                placeholder="Contraseña"
-                value={form.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="mb-3">
-            <div className="input-group">
-              <span className="input-group-text">
-                <FontAwesomeIcon icon={faLock} />
-              </span>
-              <input
-                type="password"
-                className="form-control"
-                name="confirmPassword"
-                placeholder="Confirmar Contraseña"
-                value={form.confirmPassword}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
+
           {/* a espera de que se implemente la subida de fotos de perfil en el backend ya que pide instalar multer */}
           {/* <div className="mb-3">
             <div className="input-group">

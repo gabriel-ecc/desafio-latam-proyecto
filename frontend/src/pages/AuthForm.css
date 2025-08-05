@@ -2,11 +2,28 @@
 
 /* Celular: por defecto */
 .auth-bg {
-  min-height: 100vh;
+  min-height: calc(100vh - var(--footer-height));
   background: var(--color-background);
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.auth-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/imgs/formulario-gata.png');
+  background-repeat: no-repeat;
+  background-position: 60% center;
+  background-size: 130%;
+  opacity: 0.3;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .auth-card {
@@ -17,6 +34,8 @@
   width: 100%;
   max-width: 90vw;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
 .auth-title {
@@ -67,26 +86,281 @@
   font-weight: bold;
 }
 
+/* Botón de cancelar con hover rojo */
+.btn-outline-secondary:hover {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: white !important;
+}
+
 /* Tablet */
-@media (min-width: var(--breakpoint-mobile)) and (max-width: var(--breakpoint-tablet)) {
+@media (min-width: 768px) and (max-width: 1023px) {
+  .auth-bg {
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0;
+    min-height: 50vh;
+  }
+
+  .auth-bg::before {
+    display: none;
+  }
+
+  .auth-bg::after {
+    display: none;
+  }
+
   .auth-card {
-    padding: var(--spacing-lg);
-    max-width: 70vw;
-    border-radius: var(--radius-md);
+    padding: var(--spacing-xxl);
+    width: 95%;
+    max-width: none;
+    border-radius: var(--radius-xl);
+    margin: 70px auto;
+    z-index: 2;
+    align-self: stretch;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+  }
+
+  .auth-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 1vh;
+    width: 32%;
+    height: 100%;
+    background-image: url('/imgs/formulario-gata.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: contain;
+    opacity: 1;
+    z-index: 1;
+    pointer-events: none;
+    border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  }
+
+  .auth-card form {
+    width: 60%;
+    position: relative;
+    z-index: 2;
   }
   .auth-title {
     font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-xxs);
   }
   .auth-subtitle {
     font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  /* Layout de dos columnas para registro en tablet */
+  .auth-card form.register-form .form-row {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xxs);
+  }
+
+  .auth-card form.register-form .form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .auth-card form.register-form .form-group:not(.form-row .form-group) {
+    margin-bottom: var(--spacing-xxs);
+  }
+
+  /* Campos más compactos en tablet para registro */
+  .auth-card form.register-form .form-control {
+    font-size: var(--font-size-md) !important;
+    padding: var(--spacing-xs) !important;
+    height: auto !important;
+  }
+
+  .auth-card form.register-form .input-group-text {
+    font-size: var(--font-size-md) !important;
+    padding: var(--spacing-xs) !important;
+  }
+
+  .auth-card form.register-form .btn-success {
+    font-size: var(--font-size-md) !important;
+    padding: var(--spacing-xs) var(--spacing-sm) !important;
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  /* Estilos específicos para el formulario de crear empleados - más compacto */
+  .auth-card form.register-form.employee-form .form-row {
+    margin-bottom: var(--spacing-xxs);
+  }
+
+  .auth-card form.register-form.employee-form .form-group {
+    margin-bottom: var(--spacing-xxs);
+  }
+
+  .auth-card form.register-form.employee-form .auth-title {
+    margin-bottom: var(--spacing-xxs);
+    font-size: var(--font-size-lg);
+  }
+
+  .auth-card form.register-form.employee-form .auth-subtitle {
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-xs);
+  }
+
+  /* Botón de cancelar con hover rojo */
+  .btn-outline-secondary:hover {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    color: white !important;
   }
 }
 
 /* PC */
-@media (min-width: var(--breakpoint-tablet)) {
+@media (min-width: 1024px) {
+  .auth-bg {
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0;
+    margin: 0;
+    max-height: 95vh;
+  }
+
+  .auth-bg::before {
+    display: none;
+  }
+
+  .auth-bg::after {
+    display: none;
+  }
+
   .auth-card {
-    padding: var(--spacing-xl);
-    max-width: 400px;
-    border-radius: var(--radius-lg);
+    padding: var(--spacing-xxl);
+    width: 95%;
+    max-width: none;
+    border-radius: var(--radius-xl);
+    margin: 20px auto 70px auto;
+    z-index: 2;
+    align-self: stretch;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+  }
+
+  .auth-card::after {
+    content: '';
+    position: absolute;
+    right: 2vh;
+    width: 35%;
+    height: 95%;
+    background-image: url('/imgs/formulario-gata.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: contain;
+    opacity: 1;
+    z-index: 1;
+    pointer-events: none;
+    border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  }
+
+  .auth-card form {
+    width: 65%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .auth-title {
+    font-size: 2.3vw;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .auth-subtitle {
+    font-size: 1.5vw;
+    margin-bottom: var(--spacing-xxl);
+  }
+
+  .form-group {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .auth-card .form-control {
+    font-size: var(--font-size-lg) !important;
+    padding: var(--spacing-sm) !important;
+    height: auto !important;
+  }
+
+  .auth-card .input-group-text {
+    font-size: var(--font-size-lg) !important;
+    padding: var(--spacing-lg) !important;
+  }
+
+  .auth-card .btn-success {
+    font-size: var(--font-size-lg) !important;
+    padding: var(--spacing-sm) var(--spacing-sm) !important;
+    margin-top: var(--spacing-xxl);
+    margin-bottom: var(--spacing-lg);
+    width: 60% !important;
+    max-width: 220px !important;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .auth-terms {
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .auth-login {
+    font-size: var(--font-size-xl);
+    margin-top: var(--spacing-md);
+  }
+
+  /* Layout de dos columnas para registro en desktop */
+  .auth-card form.register-form .form-row {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .auth-card form.register-form .form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .auth-card form.register-form .form-group:not(.form-row .form-group) {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  /* Estilos específicos para el formulario de crear empleados - más compacto */
+  .auth-card form.register-form.employee-form .form-row {
+    margin-bottom: var(--spacing-xxs);
+  }
+
+  .auth-card form.register-form.employee-form .form-group {
+    margin-bottom: var(--spacing-xxs);
+  }
+
+  .auth-card form.register-form.employee-form .auth-title {
+    margin-bottom: var(--spacing-xxs);
+    font-size: 2vw;
+  }
+
+  .auth-card form.register-form.employee-form .auth-subtitle {
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.2vw;
+  }
+
+  /* Botón de cancelar con hover rojo */
+  .btn-outline-secondary:hover {
+    background-color: #b14752 !important;
+    border-color: #dc3545 !important;
+    color: white !important;
   }
 }
