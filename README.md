@@ -1,5 +1,5 @@
 
-# Proyecto final booctcamp Desafío Latam
+# Proyecto final bootcamp Desafío Latam
 Este repositorio contiene el código fuente del "Proyecto Final Desafío Latam", está desarrollado con un backend en express.js y frontend con react.js.
 
 ## Nombre de Proyecto:
@@ -32,15 +32,44 @@ https://github.com/gabriel-ecc/desafio-latam-proyecto
 ## Gestión del proyecto:
 https://github.com/users/gabriel-ecc/projects/2
 
-# Ejecución y Testing
-## Para ejecutarlo en el Backend
+# Implementación
+## 1. Base de datos
+- Ejecutar archivo de queries "/backend/db/schema/ddl.sql"
+- Ejecutar archivo de queries "/backend/db/schema/dml.sql"
+
+# 2. Instalacion de dependencias
+npm install
+
+# 3. Ejecución (servidores)
+## Para levantar el Backend
 npm run dev
 
-## Para ejecutarlo en el Frontend
+## 4. Para levantar el Frontend
 npm run dev
 
+# USUARIOS DE PRUEBA (3)
+## Cliente
+Usuario: test1@test.com
+Clave: 123456
+
+## Empleado:
+Usuario: test2@test.com
+Clave: 123456
+
+## Administrador/dueño
+usuario: admin@verduleria.cl
+Clave: admin1
+
+# Testing con Jest/supertest
 ## Para realizar los test:
 npm run test:coverage
+
+# Documentacion API
+## Swagger
+### Proxy (Frontend)
+http://localhost:5173/api-docs/
+### Server (Backend)
+http://localhost:3000/api-docs/
 
 # Tech Stack
 Node.js, React.js, Javascript, Jest, Babel
