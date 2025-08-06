@@ -215,7 +215,7 @@ body {
   display: flex;
   align-items: center;
   background-color: #e9f5f3;
-  padding: 8px 16px;
+  padding: 14px 32px;
   border-radius: 50px;
   text-decoration: none;
   transition: background-color 0.3s;
@@ -228,12 +228,17 @@ body {
 .nav-cart i {
   color: #2a9d8f;
   font-size: 1.2rem;
-  margin-right: 10px;
 }
 
 .cart-total {
+  display: none;
+  align-items: center;
   font-weight: 600;
   color: #1e796d;
+}
+.cart-total p {
+  display: none;
+  margin: 0;
 }
 
 /* Chevrón del perfil (oculto en desktop por defecto) */
@@ -261,8 +266,8 @@ body {
   gap: 8px;
   background: linear-gradient(135deg, #2a9d8f, #21897c);
   color: white;
-  padding: 14px 32px;
-  border-radius: 20px;
+  padding: 18px 32px;
+  border-radius: 50px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(42, 157, 143, 0.2);
   border: none;
@@ -331,7 +336,7 @@ body {
 }
 
 .nav-mobile-dropdown.is-open .mobile-submenu {
-  max-height: 200px; /* Un valor suficientemente grande para mostrar todos los items */
+  max-height: 800px; /* Un valor suficientemente grande para mostrar todos los items */
 }
 
 .category-toggle {
@@ -358,9 +363,24 @@ body {
   .nav-logo {
     display: flex;
   }
+  .nav-cart i {
+    margin-right: 10px;
+  }
+  .cart-total {
+    display: flex;
+  }
+  .cart-total p {
+    display: block;
+  }
+  .link-inicio{
+    display: none;
+  }
 }
 
 @media (min-width: 768px) {
+  .auth-button i {
+    font-size: 1rem;
+  }
 }
 
 @media (min-width: 992px) {
@@ -380,9 +400,6 @@ body {
   .nav-desktop-links {
     display: block;
   }
-  .auth-button i {
-    font-size: 1rem;
-  }
 
   /* Saludo al usuario en la barra de navegación */
   .nav-greeting {
@@ -401,13 +418,7 @@ body {
   .container {
     width: 1170px;
   }
-  .auth-button {
-    padding: 8px 20px;
-    font-size: 0.95rem;
-    border-radius: 25px;
-  }
   .auth-button p {
     display: inline;
-    padding: 7px 16px;
   }
 }
