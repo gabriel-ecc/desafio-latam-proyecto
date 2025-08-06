@@ -29,7 +29,7 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/">
+                  <Link to="/nosotros">
                     <strong>
                       <i className="fa-solid fa-sm fa-arrow-right"></i> Sobre
                       nosotros

@@ -27,6 +27,7 @@ import PurchaseConfirmation from './pages/PurchaseConfirmation'
 import MyPurchases from './pages/MyPurchases'
 import OrderDetail from './pages/OrderDetail'
 import ProductDetail from './pages/ProductDetail'
+import About from './pages/About'
 import Footer from './components/Footer'
 
 // Componente para redireccionar /card/:id a /products/:id
@@ -41,6 +42,7 @@ function App() {
       <Navbar /> {/* <-- Aquí va el Navbar, fuera de <Routes> */}
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/nosotros" element={<About />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />

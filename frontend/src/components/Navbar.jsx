@@ -76,6 +76,10 @@ const Navbar = () => {
               <Link to="/products">Productos</Link>
             </li>
 
+            <li>
+              <Link to="/nosotros">Nosotros</Link>
+            </li>
+
             {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
             {(!user || user.userType === 1) &&
               listSeasons.map(season => (
@@ -123,6 +127,10 @@ const Navbar = () => {
               {/* TODO: Adapta estas categorías a tu verdulería si es necesario */}
               <li>
                 <Link to="/products">Productos</Link>
+              </li>
+
+              <li>
+                <Link to="/nosotros">Nosotros</Link>
               </li>
 
               {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
