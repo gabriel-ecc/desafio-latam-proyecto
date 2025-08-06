@@ -93,7 +93,7 @@ Se requiere un servidor de postgres y seguir los siguientes pasos:
 Dentro de los directorios **./backend/** y **./frontend/**, se deben instalar las dependencias con el comando:
 
 ```
-## 3.2 Instalacion de dependencias
+## npm install
 ```
 
 ## 3.3 Variables de entorno
@@ -128,7 +128,7 @@ Dentro del directorio ./frontend/ ejecutar el comando:
 npm run dev
 ```
 
-El servidor web de acceso usuarios seestá levantando en el puerto **5173**
+El servidor web de acceso usuarios se está levantando en el puerto **5173**
 
 ```
 http://localhost:5173/
