@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 
 export const CartContext = createContext()
 
@@ -8,6 +8,9 @@ export function CartProvider({ children }) {
     return storedCart ? JSON.parse(storedCart) : []
   })
   //Primera función es para agregar al carrito y descartar duplicados
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart))
+  }, [cart])
 
   const addToCart = (item, quantity = 1) => {
     setCart(prevCart => {
