@@ -168,60 +168,77 @@ const Navbar = () => {
                 <Link to="/products">Productos</Link>
               </li>
 
+              {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
+              {(!user || user.userType === 1) && (
+                <li
+                  className={`nav-mobile-link nav-mobile-dropdown ${
+                    isMobileCategoriesOpen ? 'is-open' : ''
+                  }`}
+                >
+                  <a
+                    href="#!"
+                    className="category-toggle"
+                    onClick={e => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setMobileCategoriesOpen(!isMobileCategoriesOpen)
+                    }}
+                  >
+                    Temporadas{' '}
+                    <i className="fa-solid fa-chevron-right"></i>{' '}
+                  </a>
+                  <ul className="mobile-submenu">
+                    {listSeasons.map(season => (
+                      <li key={season.id}>
+                        <Link to={`products?season=${season.id}`}>
+                          {season.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              )}
+              {/* Mostrar botones solo para empleados y administradores */}
+              {user && (user.userType === 2 || user.userType === 3) && (
+                <li
+                  className={`nav-mobile-link nav-mobile-dropdown ${
+                    isMobileCategoriesOpen ? 'is-open' : ''
+                  }`}
+                >
+                  <a
+                    href="#!"
+                    className="category-toggle"
+                    onClick={e => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setMobileCategoriesOpen(!isMobileCategoriesOpen)
+                    }}
+                  >
+                    Administración{' '}
+                    <i className="fa-solid fa-chevron-right"></i>{' '}
+                  </a>
+                  <ul className="mobile-submenu">
+                    <li>
+                      <Link to="/inventario">Inventario</Link>
+                    </li>
+                    <li>
+                      <Link to="/editar-producto/0">Nuevo Producto</Link>
+                    </li>
+                    <li>
+                      <Link to="/usuarios">Gestión de Usuarios</Link>
+                    </li>
+                    <li>
+                      <Link to="/admin-compras">Gestión de Compras</Link>
+                    </li>
+                    <li>
+                      <Link to="/dashboard">Dashboard</Link>
+                    </li>
+                  </ul>
+                </li>
+              )}
               <li>
                 <Link to="/nosotros">Nosotros</Link>
               </li>
-
-              {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
-              <li
-                className={`nav-mobile-link nav-mobile-dropdown ${
-                  isMobileCategoriesOpen ? 'is-open' : ''
-                }`}
-              >
-                <a
-                  href="#!"
-                  className="category-toggle"
-                  onClick={e => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    setMobileCategoriesOpen(!isMobileCategoriesOpen)
-                  }}
-                >
-                  Temporadas <i className="fa-solid fa-chevron-right"></i>{' '}
-                  {/* TODO: Adapta estas categorías a tu verdulería si es necesario */}
-                </a>
-                <ul className="mobile-submenu">
-                  {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
-                  {listSeasons.map(season => (
-                    <li key={season.id}>
-                      <Link to={`products?season=${season.id}`}>
-                        {season.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-
-              {/* Mostrar botones solo para empleados y administradores */}
-              {user && (user.userType === 2 || user.userType === 3) && (
-                <>
-                  <li>
-                    <Link to="/inventario">Inventario</Link>
-                  </li>
-                  <li>
-                    <Link to="/editar-producto/0">Nuevo Producto</Link>
-                  </li>
-                  <li>
-                    <Link to="/usuarios">Gestión de Usuarios</Link>
-                  </li>
-                  <li>
-                    <Link to="/admin-compras">Gestión de Compras</Link>
-                  </li>
-                  <li>
-                    <Link to="/dashboard">Dashboard</Link>
-                  </li>
-                </>
-              )}
             </ul>
           </div>
         </div>
