@@ -167,7 +167,13 @@ const Navbar = () => {
               <li>
                 <Link to="/products">Productos</Link>
               </li>
-
+              {user && user.userType === 1 ? (
+                <li>
+                  <Link to="/favoritos">Mis Favoritos</Link>
+                </li>
+              ) : (
+                <></>
+              )}
               {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
               {(!user || user.userType === 1) && (
                 <li
@@ -312,17 +318,15 @@ const Navbar = () => {
                   </li>
                   {/* Mostrar "Mis Compras" solo para clientes */}
                   {user && user.userType === 1 && (
-                    <li>
-                      <Link to="/mis-compras">Mis Compras</Link>
-                    </li>
+                    <>
+                      <li>
+                        <Link to="/mis-compras">Mis Compras</Link>
+                      </li>
+                      <li>
+                        <Link to="/favoritos">Mis Favoritos</Link>
+                      </li>
+                    </>
                   )}
-
-                  {user && user.userType === 1 && (
-                    <li>
-                      <Link to="/favoritos">Mis Favoritos</Link>
-                    </li>
-                  )}
-
                   <li className="dropdown-divider"></li>
                   <li>
                     {/* Usamos un botón para la acción de cerrar sesión */}
