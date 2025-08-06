@@ -30,11 +30,11 @@ El proximo año, queremos entregarte a domicilio!
 
 # 2. Github
 
-## 2.2 Página del proyecto en Github:
+## 2.1 Página del proyecto en Github:
 
 https://github.com/gabriel-ecc/desafio-latam-proyecto
 
-## 2.3 Gestión del proyecto:
+## 2.2 Gestión del proyecto:
 
 https://github.com/users/gabriel-ecc/projects/2
 
@@ -96,7 +96,7 @@ El servidor web de acceso usuarios seestá levantando en el puerto **5173**
 ```
 http://localhost:5173/
 ```
-## 3.5 LOGIN USUARIOS DE PRUEBA (3)
+## 3.5 Login Usuarios de prueba (3)
 
 ### Cliente:
 
