@@ -6,6 +6,7 @@ import { ENDPOINT } from '../config/constants'
 import { getToken } from '../services/authService'
 import { UserContext } from '../context/UserContext'
 import Swal from 'sweetalert2'
+import BackButton from '../components/BackButton'
 import './Users.css'
 
 export default function Users() {
@@ -166,6 +167,7 @@ export default function Users() {
 
   return (
     <div className="users-container">
+      <BackButton />
       <div className="users-header">
         <h1 className="users-title">Gestión de Usuarios</h1>
         <p className="users-subtitle">

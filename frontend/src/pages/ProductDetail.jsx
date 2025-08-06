@@ -4,6 +4,7 @@ import { ENDPOINT } from '../config/constants'
 import { FavoriteContext } from '../context/FavoriteContext.jsx'
 import CardDetail from '../components/CardDetail'
 import useCart from '../context/CartContext'
+import BackButton from '../components/BackButton'
 import './ProductDetail.css'
 
 const ProductDetail = () => {
@@ -100,14 +101,7 @@ const ProductDetail = () => {
 
   return (
     <div className="product-detail-container">
-      <button
-        onClick={() => navigate(-1)}
-        className="btn-back"
-        aria-label="Volver"
-      >
-        <i className="fa-solid fa-arrow-left"></i>
-        Volver
-      </button>
+      <BackButton />
 
       <CardDetail
         product={{

@@ -5,6 +5,7 @@ import axios from 'axios'
 import { ENDPOINT } from '../config/constants'
 import { getToken } from '../services/authService'
 import Swal from 'sweetalert2'
+import BackButton from '../components/BackButton'
 import './EditProduct.css'
 
 // Formulario para editar la información de un producto existente.
@@ -170,6 +171,7 @@ export default function EditProduct() {
 
   return (
     <div className="edit-product-container">
+      <BackButton />
       <h2>{isEditing ? 'Editar Producto' : 'Crear Producto'}</h2>
       <form onSubmit={handleSubmit} noValidate>
         <div className="form-group">

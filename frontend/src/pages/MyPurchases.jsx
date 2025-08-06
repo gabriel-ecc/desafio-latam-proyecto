@@ -2,9 +2,12 @@
 import React from 'react'
 import './MyPurchases.css'
 
+import BackButton from '../components/BackButton'
+
 export default function MyPurchases() {
   return (
     <div className="my-purchases-container">
+      <BackButton />
       <div className="my-purchases-header">
         <h1>Mis Compras</h1>
         <p>Historial de todas tus compras realizadas</p>

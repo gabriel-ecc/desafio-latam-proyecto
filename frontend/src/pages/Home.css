@@ -5,18 +5,18 @@
 }
 
 .card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .hero-panel {
   width: 100%;
   margin: 1rem auto; /* Espacio entre el panel y los productos */
-  border-radius: 15px; /* Bordes redondeados */
+  border-radius: var(--radius-xl); /* Bordes redondeados */
   overflow: hidden; /* Asegura que la imagen no se salga de los bordes redondeados */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Sombra sutil */
+  box-shadow: var(--box-shadow-sm); /* Sombra sutil */
   line-height: 0; /* Elimina espacio extra debajo de la imagen */
 }
 
@@ -27,31 +27,175 @@
   display: block; /* Elimina espacio extra debajo de la imagen */
 }
 
-/* --- Panel deslizable --- */
-.sliding-panel {
-  display: flex;
-  overflow-x: auto; /* Permite el scroll horizontal */
-  scroll-snap-type: x mandatory; /* Activa el "snap" al hacer scroll */
-  gap: 1rem; /* Espacio entre imágenes */
-  padding-bottom: 1rem; /* Espacio para que la barra de scroll no tape nada */
-  margin-bottom: 2rem; /* Espacio antes de los productos */
-}
-
-/* Ocultar la barra de scroll para un look más limpio */
-.sliding-panel::-webkit-scrollbar {
-  display: none;
-}
-
-.slide {
-  flex-shrink: 0; /* Evita que las imágenes se encojan */
-  scroll-snap-align: start; /* Cada slide se alinea al inicio del contenedor */
-  border-radius: 10px;
+/* --- Carrusel de categorías --- */
+.carousel-container {
+  width: 100%;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: linear-gradient(
+    135deg,
+    var(--color-light) 0%,
+    var(--color-border-light) 100%
+  );
+  border-radius: 20px;
+  box-shadow: var(--box-shadow-lg);
   overflow: hidden;
-  position: relative;
 }
 
-.slide img {
-  width: auto; /* El ancho se ajusta para mantener la proporción */
-  height: 18vw;
+.carousel-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 15px;
+  padding-bottom: 60px; /* Espacio para los indicadores */
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  width: 400%; /* 4 slides * 100% */
+}
+
+.carousel-slide {
+  flex: 0 0 25%; /* Cada slide ocupa 25% del ancho total */
+  padding: 0 0.5rem;
+}
+
+.category-card {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: var(--box-shadow-md);
+  transition:
+    transform var(--transition-normal),
+    box-shadow var(--transition-normal);
+  background: var(--color-surface);
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-xl);
+}
+
+.category-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
   display: block;
+}
+
+.category-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, var(--color-overlay-dark));
+  padding: 2rem 1.5rem 1.5rem;
+  color: var(--color-text-inverse);
+  z-index: 1; /* Aseguramos que el título esté por encima de la imagen pero por debajo de otros elementos */
+}
+
+.category-title h3 {
+  font-size: 2.4rem;
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+  text-align: center;
+  text-shadow: 2px 2px 4px var(--color-overlay);
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 !important;
+  padding: 0;
+  background: none;
+  z-index: 10;
+}
+
+.carousel-indicators-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--color-white-translucent);
+  padding: 0.8rem 1.2rem;
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.indicator {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border-translucent);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.indicator.active {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  transform: scale(1.3);
+  box-shadow: 0 4px 15px var(--color-success-shadow);
+}
+
+.indicator:hover {
+  background: var(--color-success-translucent);
+  border-color: var(--color-success);
+  transform: scale(1.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .carousel-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .category-card img {
+    height: 150px; /* Reducido de 200px a 150px */
+  }
+
+  .category-title {
+    padding: 1rem 1rem 0.8rem; /* Reducido el padding vertical */
+  }
+
+  .category-title h3 {
+    font-size: 1rem; /* Reducido ligeramente el tamaño de fuente */
+  }
+
+  .carousel-container {
+    padding: 1rem;
+    margin: 1rem auto; /* Reducido el margen vertical */
+  }
+
+  .carousel-header {
+    margin-bottom: 1rem; /* Reducido de 2rem a 1rem */
+  }
+
+  .carousel-wrapper {
+    padding-bottom: 50px; /* Menos espacio en móviles */
+  }
+
+  .carousel-indicators {
+    bottom: 10px;
+  }
+
+  .carousel-indicators-wrapper {
+    gap: 0.6rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .indicator {
+    width: 12px; /* Reducido de 14px a 12px */
+    height: 12px;
+  }
 }

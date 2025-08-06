@@ -62,7 +62,7 @@ const Navbar = () => {
       <div className="order">
         <Link to="/" className="nav-logo">
           {/* Asegúrate de que la imagen del logo esté en la carpeta `public/img` */}
-          <img src="/imgs/logo-ejemplo.jpeg" alt="Logo Verdulería Fresca" />
+          <img src="/imgs/gata-logo.png" alt="Logo Verdulería Fresca" />
         </Link>
 
         {/* Links de navegación centrales (PC/Tablet) */}
