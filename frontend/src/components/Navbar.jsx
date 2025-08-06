@@ -79,34 +79,40 @@ const Navbar = () => {
             <li>
               <Link to="/products">Productos</Link>
             </li>
-            <NavDropdown title="Temporadas" id="temporadas-nav-dropdown">
-              {listSeasons.map(season => (
-                <li key={season.id}>
-                  {
-                    <Link
-                      className="dropdown-item"
-                      to={`/products?season=${season.id}`}
-                    >
-                      {season.name}
-                    </Link>
-                  }
-                </li>
-              ))}
-            </NavDropdown>
-            <NavDropdown title="Categorias" id="temporadas-nav-dropdown">
-              {listCategories.map(category => (
-                <li key={category.id}>
-                  {
-                    <Link
-                      className="dropdown-item"
-                      to={`/products?category=${category.id}`}
-                    >
-                      {category.name}
-                    </Link>
-                  }
-                </li>
-              ))}
-            </NavDropdown>
+            {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
+            {(!user || user.userType === 1) && (
+              <NavDropdown title="Temporadas" id="temporadas-nav-dropdown">
+                {listSeasons.map(season => (
+                  <li key={season.id}>
+                    {
+                      <Link
+                        className="dropdown-item"
+                        to={`/products?season=${season.id}`}
+                      >
+                        {season.name}
+                      </Link>
+                    }
+                  </li>
+                ))}
+              </NavDropdown>
+            )}
+            {(!user || user.userType === 1) && (
+              <NavDropdown title="Categorias" id="temporadas-nav-dropdown">
+                {listCategories.map(category => (
+                  <li key={category.id}>
+                    {
+                      <Link
+                        className="dropdown-item"
+                        to={`/products?category=${category.id}`}
+                      >
+                        {category.name}
+                      </Link>
+                    }
+                  </li>
+                ))}
+              </NavDropdown>
+            )}
+
             {/* Mostrar botones solo para empleados y administradores */}
             {user && (user.userType === 2 || user.userType === 3) && (
               <NavDropdown title="Administración" id="temporadas-nav-dropdown">
@@ -125,8 +131,21 @@ const Navbar = () => {
                     Gestión de Usuarios
                   </Link>
                 </li>
+                <li>
+                  <Link className="dropdown-item" to="/admin-compras">
+                    Gestión de Compras
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/dashboard">
+                    Dashboard
+                  </Link>
+                </li>
               </NavDropdown>
             )}
+            <li>
+              <Link to="/nosotros">Nosotros</Link>
+            </li>
           </ul>
           <div
             className={`dropdown nav-tablet-categories ${
@@ -147,6 +166,10 @@ const Navbar = () => {
               </li>
               <li>
                 <Link to="/products">Productos</Link>
+              </li>
+
+              <li>
+                <Link to="/nosotros">Nosotros</Link>
               </li>
 
               {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
@@ -190,6 +213,12 @@ const Navbar = () => {
                   </li>
                   <li>
                     <Link to="/usuarios">Gestión de Usuarios</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin-compras">Gestión de Compras</Link>
+                  </li>
+                  <li>
+                    <Link to="/dashboard">Dashboard</Link>
                   </li>
                 </>
               )}
@@ -251,6 +280,12 @@ const Navbar = () => {
                       <li>
                         <Link to="/usuarios">Gestión de Usuarios</Link>
                       </li>
+                      <li>
+                        <Link to="/admin-compras">Gestión de Compras</Link>
+                      </li>
+                      <li>
+                        <Link to="/dashboard">Dashboard</Link>
+                      </li>
                       <li className="dropdown-divider"></li>
                     </>
                   )}
@@ -258,6 +293,13 @@ const Navbar = () => {
                   <li>
                     <Link to="/profile">Mi Perfil</Link>
                   </li>
+                  {/* Mostrar "Mis Compras" solo para clientes */}
+                  {user && user.userType === 1 && (
+                    <li>
+                      <Link to="/mis-compras">Mis Compras</Link>
+                    </li>
+                  )}
+
                   {user && user.userType === 1 && (
                     <li>
                       <Link to="/favoritos">Mis Favoritos</Link>
