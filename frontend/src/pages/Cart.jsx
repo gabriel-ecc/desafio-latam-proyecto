@@ -3,6 +3,7 @@ import { ENDPOINT } from '../config/constants.js'
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useProfile } from '../hooks/useProfile.js' 
+import ProductCard from '../components/Card'
 import axios from 'axios'
 import '../pages/Cart.css'
 
@@ -35,9 +36,9 @@ const Cart = () => {
               <p>Tu carrito está vacío.</p>
               ) : (
               cart.map((item) => (
-            <div key={item.id} className='min_container'>
+            <div key={item.id} className='card-container'>
               <div className='min_box1'>
-              <img className='img_cart'
+              <img className='product-img'
                 src={item.img}
                 alt={item.name}
               />
