@@ -2,27 +2,14 @@
 # Proyecto final booctcamp Desafío Latam
 Este repositorio contiene el código fuente del "Proyecto Final Desafío Latam", está desarrollado con un backend en express.js y frontend con react.js.
 
-# Nombre de Proyecto:
+## Nombre de Proyecto:
 "Verdulería La Gata de Campo"
 
 ## Concepto
-El proyecto es similar un ecommerce de una verduleria. Por lo tanto considera gestión de productos, administrar clientes y carritos de compra.
+Este es un ecommerce de una verduleria.
+Considera gestión de productos, administración de usuarios, favoritos y carrito de compra.
 
-## Equipo de proyecto:
-- Carla Pacheco
-- Andreina Gutierrez
-- Gabriel Castillo
-- Oscar Garin
-
-# Página del proyecto en Github:
-https://github.com/gabriel-ecc/desafio-latam-proyecto
-
-
-# Gestión del proyecto:
-https://github.com/users/gabriel-ecc/projects/2
-
-
-# Descripción
+## Descripción
 La gata de campo es una verdulería online de confianza, donde la frescura del campo llega directamente a tu hogar.  Ofrecemos una amplia variedad de frutas y verduras frescas y de la más alta calidad, seleccionadas cuidadosamente para ti.
 
 En nuestra tienda virtual, encontrarás una experiencia de compra sencilla y segura. Puedes navegar por nuestro catálogo, agregar tus productos favoritos al carrito y pagar de forma rápida con tu tarjeta de crédito o débito. Además, para que no pierdas de vista esos productos que te encantan, puedes guardarlos en tu lista de favoritos y acceder a ellos fácilmente en cualquier momento.
@@ -31,16 +18,31 @@ En nuestra tienda virtual, encontrarás una experiencia de compra sencilla y seg
 
 El proximo año, queremos entregarte a domicilio!
 
-# Para ejecutarlo en el Backend
+## Equipo de proyecto:
+- Carla Pacheco
+- Andreina Gutierrez
+- Gabriel Castillo
+- Oscar Garin
+
+# Github
+## Página del proyecto en Github:
+https://github.com/gabriel-ecc/desafio-latam-proyecto
+
+
+## Gestión del proyecto:
+https://github.com/users/gabriel-ecc/projects/2
+
+# Ejecución y Testing
+## Para ejecutarlo en el Backend
 npm run dev
 
-# Para ejecutarlo en el Frontend
+## Para ejecutarlo en el Frontend
 npm run dev
 
-# Para realizar los test:
+## Para realizar los test:
 npm run test:coverage
 
-## Tech Stack
+# Tech Stack
 Node.js, React.js, Javascript, Jest, Babel
 
 # Dependencias
@@ -93,5 +95,4 @@ eslint-plugin-react-hooks	^5.2.0	Reglas de ESLint para los hooks de React
 eslint-plugin-react-refresh	^0.4.19	Recarga en caliente (HMR) para React con Vite
 globals	        ^16.0.0	    Lista de variables globales conocidas para linters
 vite	        ^6.3.5	      Empaquetador y servidor de desarrollo ultrarrápido
-
 
