@@ -250,7 +250,7 @@ const Navbar = () => {
             <div className="nav-auth-links">
               <Link to="/login" className="auth-button">
                 <i className="fas fa-user"></i>
-                Ingresar / Registrar
+                <p>Ingresar / Registrar</p>
               </Link>
             </div>
           )}
