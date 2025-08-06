@@ -354,6 +354,10 @@ body {
   transform: rotate(90deg);
 }
 
+.dropdown-item{
+  text-align: center;
+}
+
 /* --- ESTILOS RESPONSIVE --- */
 @media (min-width: 576px) {
   /* Estilos para tabletas en adelante */

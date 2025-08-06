@@ -5,6 +5,7 @@ import useCart from '../context/CartContext.jsx'
 import { UserContext } from '../context/UserContext'
 import { ENDPOINT } from '../config/constants.js'
 import axios from 'axios'
+import { Nav, NavDropdown, Container } from 'react-bootstrap'
 
 import './Navbar.css'
 
@@ -19,6 +20,7 @@ const Navbar = () => {
   const [isTabletCategoriesOpen, setTabletCategoriesOpen] = useState(false)
   const [isMobileCategoriesOpen, setMobileCategoriesOpen] = useState(false)
   const [listSeasons, setListSeasons] = useState([])
+  const [listCategories, setCategories] = useState([])
 
   // Refs para detectar clics fuera de los menús
   const profileMenuRef = useRef(null)
@@ -43,6 +45,9 @@ const Navbar = () => {
 
     axios.get(ENDPOINT.seasons).then(({ data }) => {
       setListSeasons(data)
+    })
+    axios.get(ENDPOINT.categories).then(({ data }) => {
+      setCategories(data)
     })
 
     document.addEventListener('mousedown', handleClickOutside)
@@ -75,16 +80,30 @@ const Navbar = () => {
             <li>
               <Link to="/products">Productos</Link>
             </li>
-
-            {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
-            {(!user || user.userType === 1) &&
-              listSeasons.map(season => (
-                <li key={season.id}>
-                  <Link to={`/products?season=${season.id}`}>
-                    {season.name}
-                  </Link>
-                </li>
-              ))}
+            <NavDropdown title="Temporadas" id="temporadas-nav-dropdown">
+              {(!user || user.userType === 1) &&
+                listSeasons.map(season => (
+                  <li key={season.id}>
+                    {
+                      <Link className="dropdown-item" to={`/products?season=${season.id}`}>
+                        {season.name}
+                      </Link>
+                    }
+                  </li>
+                ))}
+            </NavDropdown>
+            <NavDropdown title="Categorias" id="temporadas-nav-dropdown">
+              {(!user || user.userType === 1) &&
+                listCategories.map(category => (
+                  <li key={category.id}>
+                    {
+                      <Link className="dropdown-item" to={`/products?category=${category.id}`}>
+                        {category.name}
+                      </Link>
+                    }
+                  </li>
+                ))}
+            </NavDropdown>
 
             {/* Mostrar botones solo para empleados y administradores */}
             {user && (user.userType === 2 || user.userType === 3) && (
@@ -231,7 +250,7 @@ const Navbar = () => {
                   <li>
                     <Link to="/profile">Mi Perfil</Link>
                   </li>
-                  {user && (user.userType === 1) && (
+                  {user && user.userType === 1 && (
                     <li>
                       <Link to="/favoritos">Mis Favoritos</Link>
                     </li>
