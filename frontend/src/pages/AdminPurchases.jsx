@@ -1,0 +1,24 @@
+// Vista para que los administradores vean todas las compras de clientes
+import React from 'react'
+import './AdminPurchases.css'
+
+const AdminPurchases = () => {
+  return (
+    <div className="admin-purchases-container">
+      <div className="admin-purchases-header">
+        <h1>Gestión de Compras</h1>
+        <p>Historial completo de compras realizadas por todos los clientes</p>
+      </div>
+
+      <div className="work-in-progress">
+        <img
+          src="/imgs/gata-in-progress.png"
+          alt="Trabajo en Progreso"
+          className="wip"
+        />
+      </div>
+    </div>
+  )
+}
+
+export default AdminPurchases

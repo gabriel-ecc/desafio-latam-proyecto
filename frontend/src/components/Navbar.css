@@ -126,7 +126,7 @@ body {
 /* Divisor para separar opciones en el menú */
 .dropdown-divider {
   height: 1px;
-  margin: 8px 0;
+  margin: 1vw 0;
   background-color: #eee;
 }
 
@@ -134,7 +134,9 @@ body {
 .nav-categories-list {
   display: flex;
   align-items: center;
-  gap: 2.5rem; /* Espacio entre links */
+  margin: auto 0;
+  padding: 0;
+  gap: 1.4rem; /* Espacio entre links */
   list-style: none;
   margin-bottom: 0; /* Sin margen inferior */
 }
