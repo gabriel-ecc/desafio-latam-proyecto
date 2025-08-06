@@ -76,48 +76,56 @@ const Navbar = () => {
             <li>
               <Link to="/">Inicio</Link>
             </li>
-
             <li>
               <Link to="/products">Productos</Link>
             </li>
             <NavDropdown title="Temporadas" id="temporadas-nav-dropdown">
-              {(!user || user.userType === 1) &&
-                listSeasons.map(season => (
-                  <li key={season.id}>
-                    {
-                      <Link className="dropdown-item" to={`/products?season=${season.id}`}>
-                        {season.name}
-                      </Link>
-                    }
-                  </li>
-                ))}
+              {listSeasons.map(season => (
+                <li key={season.id}>
+                  {
+                    <Link
+                      className="dropdown-item"
+                      to={`/products?season=${season.id}`}
+                    >
+                      {season.name}
+                    </Link>
+                  }
+                </li>
+              ))}
             </NavDropdown>
             <NavDropdown title="Categorias" id="temporadas-nav-dropdown">
-              {(!user || user.userType === 1) &&
-                listCategories.map(category => (
-                  <li key={category.id}>
-                    {
-                      <Link className="dropdown-item" to={`/products?category=${category.id}`}>
-                        {category.name}
-                      </Link>
-                    }
-                  </li>
-                ))}
+              {listCategories.map(category => (
+                <li key={category.id}>
+                  {
+                    <Link
+                      className="dropdown-item"
+                      to={`/products?category=${category.id}`}
+                    >
+                      {category.name}
+                    </Link>
+                  }
+                </li>
+              ))}
             </NavDropdown>
-
             {/* Mostrar botones solo para empleados y administradores */}
             {user && (user.userType === 2 || user.userType === 3) && (
-              <>
+              <NavDropdown title="Administración" id="temporadas-nav-dropdown">
                 <li>
-                  <Link to="/inventario">Inventario</Link>
+                  <Link className="dropdown-item" to="/inventario">
+                    Inventario
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/editar-producto/0">Nuevo Producto</Link>
+                  <Link className="dropdown-item" to="/editar-producto/0">
+                    Nuevo Producto
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/usuarios">Gestión de Usuarios</Link>
+                  <Link className="dropdown-item" to="/usuarios">
+                    Gestión de Usuarios
+                  </Link>
                 </li>
-              </>
+              </NavDropdown>
             )}
           </ul>
           <div
