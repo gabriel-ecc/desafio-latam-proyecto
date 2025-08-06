@@ -76,52 +76,54 @@ Node.js, React.js, Javascript, Jest, Babel
 
 # Dependencias
 ## Dependencias del Backend
-
-Paquete	      Versión	    Descripción breve
-bcryptjs	    ^3.0.2	    Encriptación de contraseñas (hashing)
-cors	        ^2.8.5	    Middleware para habilitar CORS
-dotenv	      ^16.5.0	    Cargas variables de entorno desde un archivo. env
-express	      ^5.1.0	    Framework de servidor web para Node.js
-jsonwebtoken	^9.0.2	    Generación y verificación de tokens JWT
-multer	      ^2.0.1	    Middleware para manejo de archivos multipart/form-data
-pg	          ^8.16.2	    Cliente de PostgreSQL para Node.js
-pg-format	    ^1.0.4	    Formatea consultas SQL para PostgreSQL
-swagger-jsdoc	^6.2.8	    Generación de documentación Swagger desde JSDoc
-swagger-ui-express	^5.0.1	Servidor Swagger UI para Express
-yamljs	      ^0.3.0	    Carga archivos YAML como objetos JavaScript
+| --------------------------------- | -------- | --------------------------------------------------------------- |
+| Paquete                           | Versión  | Descripción breve                                               |
+| bcryptjs                          | ^3.0.2   | Encriptación de contraseñas (hashing)                           |
+| cors                              | ^2.8.5   | Middleware para habilitar CORS                                  |
+| dotenv                            | ^16.5.0  | Cargas variables de entorno desde un archivo. env               |
+| express                           | ^5.1.0   | Framework de servidor web para Node.js                          |
+| jsonwebtoken                      | ^9.0.2   | Generación y verificación de tokens JWT                         |
+| multer                            | ^2.0.1   | Middleware para manejo de archivos multipart/form-data          |
+| pg                                | ^8.16.2  | Cliente de PostgreSQL para Node.js                              |
+| pg-format                         | ^1.0.4   | Formatea consultas SQL para PostgreSQL                          |
+| swagger-jsdoc                     | ^6.2.8   | Generación de documentación Swagger desde JSDoc                 |
+| swagger-ui-express                | ^5.0.1   | Servidor Swagger UI para Express                                |
+| yamljs                            | ^0.3.0   | Carga archivos YAML como objetos JavaScript                     |
+| --------------------------------- | -------- | --------------------------------------------------------------- |
 
 ## Dependencias de Desarrollo del Backend
-
-Paquete	    Versión	  Descripción breve
-standard	  ^17.1.2	  Estilo de código JavaScript (linting) basado en reglas estándar
-________________________________________________________________________________
+| --------------------------------- | -------- | --------------------------------------------------------------- |
+| Paquete                           | Versión  | Descripción breve                                               |
+| standard                          | ^17.1.2  | Estilo de código JavaScript (linting) basado en reglas estándar |
+| --------------------------------- | -------- | --------------------------------------------------------------- |
 
 ## Dependencias del Frontend
-
-Paquete	        Versión	        Descripción breve
-@fortawesome/fontawesome-svg-core	^6.7.2	Núcleo de Font Awesome para usar íconos SVG
-@fortawesome/free-solid-svg-icons	^6.7.2	Íconos sólidos gratuitos de Font Awesome
-@fortawesome/react-fontawesome	^0.2.2	Integración de Font Awesome con React
-axios	        ^1.10.0	          Cliente HTTP basado en promesas
-bootstrap	    ^5.3.7	          Framework CSS responsive
-prop-types	  ^15.8.1	          Validación de props en componentes React
-react	        ^19.1.0	          Biblioteca de interfaces de usuario
-react-bootstrap	^2.10.10	      Componentes Bootstrap adaptados para React
-react-dom	    ^19.1.0	          Renderizado de componentes React en el DOM
-react-router-dom	^7.6.2	      Enrutamiento para aplicaciones React
-sweetalert2	   ^11.22.0	        Ventanas modales modernas y personalizables
-sweetalert2-react-content	^5.1.0	Integración de SweetAlert2 con React
+| --------------------------------- | -------- | --------------------------------------------------------------- |
+| Paquete                           | Versión  | Descripción breve                                               |
+| @fortawesome/fontawesome-svg-core | ^6.7.2   | Núcleo de Font Awesome para usar íconos SVG                     |
+| @fortawesome/free-solid-svg-icons | ^6.7.2   | Íconos sólidos gratuitos de Font Awesome                        |
+| @fortawesome/react-fontawesome    | ^0.2.2   | Integración de Font Awesome con React                           |
+| axios                             | ^1.10.0  | Cliente HTTP basado en promesas                                 |
+| bootstrap                         | ^5.3.7   | Framework CSS responsive                                        |
+| prop-types                        | ^15.8.1  | Validación de props en componentes React                        |
+| react                             | ^19.1.0  | Biblioteca de interfaces de usuario                             |
+| react-bootstrap                   | ^2.10.10 | Componentes Bootstrap adaptados para React                      |
+| react-dom                         | ^19.1.0  | Renderizado de componentes React en el DOM                      |
+| react-router-dom                  | ^7.6.2   | Enrutamiento para aplicaciones React                            |
+| sweetalert2                       | ^11.22.0 | Ventanas modales modernas y personalizables                     |
+| sweetalert2-react-content         | ^5.1.0   | Integración de SweetAlert2 con React                            |
+| --------------------------------- | -------- | --------------------------------------------------------------- |
 
 ## Dependencias de Desarrollo del Frontend
-
-Paquete	        Versión	    Descripción breve
-@eslint/js	    ^9.25.0	    Configuración de ESLint en módulos JS
-@types/react	^19.1.2	      Tipos TypeScript para React
-@types/react-dom	^19.1.2	  Tipos TypeScript para React DOM
-@vitejs/plugin-react	^4.6.0	Plugin de Vite para soportar React
-eslint	        ^9.25.0	    Linter para JavaScript y JSX
-eslint-plugin-react-hooks	^5.2.0	Reglas de ESLint para los hooks de React
-eslint-plugin-react-refresh	^0.4.19	Recarga en caliente (HMR) para React con Vite
-globals	        ^16.0.0	    Lista de variables globales conocidas para linters
-vite	        ^6.3.5	      Empaquetador y servidor de desarrollo ultrarrápido
-
+| --------------------------------- | -------- | --------------------------------------------------------------- |
+| Paquete                           | Versión  | Descripción breve                                               |
+| @eslint/js                        | ^9.25.0  | Configuración de ESLint en módulos JS                           |
+| @types/react                      | ^19.1.2  | Tipos TypeScript para React                                     |
+| @types/react-dom                  | ^19.1.2  | Tipos TypeScript para React DOM                                 |
+| @vitejs/plugin-react              | ^4.6.0   | Plugin de Vite para soportar React                              |
+| eslint                            | ^9.25.0  | Linter para JavaScript y JSX                                    |
+| eslint-plugin-react-hooks         | ^5.2.0   | Reglas de ESLint para los hooks de React                        |
+| eslint-plugin-react-refresh       | ^0.4.19  | Recarga en caliente (HMR) para React con Vite                   |
+| globals                           | ^16.0.0  | Lista de variables globales conocidas para linters              |
+| vite                              | ^6.3.5   | Empaquetador y servidor de desarrollo ultrarrápido              |
+| --------------------------------- | -------- | --------------------------------------------------------------- |
