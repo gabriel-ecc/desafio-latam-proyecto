@@ -30,11 +30,13 @@ li {
 }
 
 .logo-image {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 600px;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
   margin: 0 auto;
+  display: block;
+  transform: translateX(-20px);
 }
 
 .enlace-contacto {
@@ -45,8 +47,15 @@ li {
 
 @media (max-width: 991px) {
   .logo-image {
-    width: 130px;
-    height: 130px;
+    width: 300px;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 576px) {
+  .logo-image {
+    width: 250px;
+    transform: translateX(0);
   }
 }
 
