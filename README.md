@@ -2,6 +2,34 @@
 
 Este repositorio contiene el código fuente del "Proyecto Final Desafío Latam", está desarrollado con un backend en express.js y frontend con react.js.
 
+### Tabla de Contenidos
+
+- [1. Proyecto final bootcamp Desafío Latam](#1-proyecto-final-bootcamp-desafío-latam)
+  - [1.1 Nombre de Proyecto](#11-nombre-de-proyecto)
+  - [1.2 Concepto](#12-concepto)
+  - [1.3 Descripción](#13-descripción)
+  - [1.4 Equipo de proyecto](#14-equipo-de-proyecto)
+- [2. Github](#2-github)
+  - [2.1 Página del proyecto en Github](#21-página-del-proyecto-en-github)
+  - [2.2 Gestión del proyecto](#22-gestión-del-proyecto)
+- [3. Implementación](#3-implementación)
+  - [3.1 Crear Base de datos](#31-crear-base-de-datos)
+  - [3.2 Instalacion de dependencias](#32-instalacion-de-dependencias)
+  - [3.3 Variables de entorno](#33-variables-de-entorno)
+  - [3.4 Ejecución (servidores)](#34-ejecución-servidores)
+  - [3.5 Login Usuarios de prueba (3)](#35-login-usuarios-de-prueba-3)
+  - [3.6 Testing con Jest/supertest](#36-testing-con-jestsupertest)
+- [7. Documentacion API](#7-documentacion-api)
+  - [7.1 Swagger](#71-swagger)
+- [8. Tech Stack](#8-tech-stack)
+- [9. Dependencias](#9-dependencias)
+  - [9.1 Dependencias del Backend](#91-dependencias-del-backend)
+  - [9.2 Dependencias de Desarrollo del Backend](#92-dependencias-de-desarrollo-del-backend)
+  - [9.3 Dependencias del Frontend](#93-dependencias-del-frontend)
+  - [9.4 Dependencias de Desarrollo del Frontend](#94-dependencias-de-desarrollo-del-frontend)
+
+---
+
 ## 1.1 Nombre de Proyecto:
 
 "Verdulería La Gata de Campo"
@@ -45,9 +73,10 @@ Para realizar una implementación local del software, se deben seguir los siguie
 ## 3.1 Crear Base de datos
 
 Se requiere un servidor de postgres y seguir los siguientes pasos:
+
 1. Crear base de datos: sugerimos usar el nombre **verduleria**
 
-2. Instalar estructura de datos: 
+2. Instalar estructura de datos:
 
 ```
 ./backend/db/schema/DDL.sql
@@ -64,10 +93,11 @@ Se requiere un servidor de postgres y seguir los siguientes pasos:
 Dentro de los directorios **./backend/** y **./frontend/**, se deben instalar las dependencias con el comando:
 
 ```
-npm install
+## 3.2 Instalacion de dependencias
 ```
 
 ## 3.3 Variables de entorno
+
 Se debe crear un archivo de varibles de entorno **.env** en la raiz del directorio **./backend/**, se sugiere la siguiente estructura:
 
 ```
@@ -83,19 +113,27 @@ JWT_SECRET=test
 ## 3.4 Ejecución (servidores)
 
 ### Para levantar el Backend
+
 Dentro del directorio ./backend/ ejecutar el comando:
+
 ```
 npm run dev
 ```
+
 ### Para levantar el Frontend
+
 Dentro del directorio ./frontend/ ejecutar el comando:
+
 ```
 npm run dev
 ```
+
 El servidor web de acceso usuarios seestá levantando en el puerto **5173**
+
 ```
 http://localhost:5173/
 ```
+
 ## 3.5 Login Usuarios de prueba (3)
 
 ### Cliente:
