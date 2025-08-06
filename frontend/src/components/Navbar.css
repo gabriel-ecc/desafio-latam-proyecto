@@ -38,7 +38,7 @@ body {
 /* Logo */
 .nav-logo {
   text-decoration: none;
-  display: none;
+  display: flex;
   align-items: center;
 }
 
@@ -266,7 +266,7 @@ body {
   gap: 8px;
   background: linear-gradient(135deg, #2a9d8f, #21897c);
   color: white;
-  padding: 18px 32px;
+  padding: 14px 20px;
   border-radius: 50px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(42, 157, 143, 0.2);
@@ -274,7 +274,7 @@ body {
   cursor: pointer;
 }
 .auth-button p {
-  display: none;
+  display: flex;
   margin: 0;
   font-weight: 600;
   font-size: 0.9rem;

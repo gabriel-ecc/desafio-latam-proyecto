@@ -74,9 +74,6 @@ const Navbar = () => {
         <div className="nav-desktop-links">
           <ul className="nav-categories-list">
             <li>
-              <Link to="/">Inicio</Link>
-            </li>
-            <li>
               <Link to="/products">Productos</Link>
             </li>
             {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
@@ -161,9 +158,6 @@ const Navbar = () => {
             </button>
             <ul className="dropdown-content">
               {/* TODO: Adapta estas categorías a tu verdulería si es necesario */}
-              <li className="link-inicio">
-                <Link to="/">Inicio</Link>
-              </li>
               <li>
                 <Link to="/products">Productos</Link>
               </li>
@@ -199,8 +193,8 @@ const Navbar = () => {
                         <Link to={`products?season=${season.id}`}>
                           {season.name}
                         </Link>
-                      </li>
-                    ))}
+                    </li>
+                  ))}
                   </ul>
                 </li>
               )}
@@ -339,7 +333,7 @@ const Navbar = () => {
             <div className="nav-auth-links">
               <Link to="/login" className="auth-button">
                 <i className="fas fa-user"></i>
-                <p>Ingresar / Registrar</p>
+                <p>Inicia Sesión</p>
               </Link>
             </div>
           )}
