@@ -1,6 +1,6 @@
 // Pie de página.
-import { Link } from "react-router-dom"
-import "./Footer.css"
+import { Link } from 'react-router-dom'
+import './Footer.css'
 
 const Footer = () => {
   return (
@@ -9,14 +9,13 @@ const Footer = () => {
           (ej. Footer.css) con los estilos correspondientes y luego importarlo aquí. */}
       <div className="row justify-content-center mb-0 pt-5 pb-4 row-2">
         <div className="col-lg-10 col-12 px-3">
-          <div className="row row-2 align-items-start gy-4">
-            <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center">
+          <div className="row row-2 align-items-center gy-4">
+            <div className="col-lg-3 col-md-6 d-flex justify-content-center align-items-center h-100">
               <img
-                src="../../public/imgs/logo-ejemplo.jpeg"
+                src="/imgs/title-logo-gata.png"
                 alt="Logo La Gata De Campo"
                 className="logo-image"
               />
-              <b className="mt-2">La Gata De Campo</b>
             </div>
             <div className="col-lg-3 col-md-6 text-center">
               <ul className="list-unstyled">
@@ -29,7 +28,7 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/">
+                  <Link to="/nosotros">
                     <strong>
                       <i className="fa-solid fa-sm fa-arrow-right"></i> Sobre
                       nosotros

@@ -10,7 +10,9 @@ import {
   ProtectedUsers,
   ProtectedInventory,
   ProtectedEditProduct,
-  ProtectedCreateEmployee
+  ProtectedCreateEmployee,
+  ProtectedAdminPurchases,
+  ProtectedDashboard
 } from './components/ProtectedComponents'
 import Home from './pages/Home'
 import Register from './pages/Register'
@@ -25,6 +27,7 @@ import PurchaseConfirmation from './pages/PurchaseConfirmation'
 import MyPurchases from './pages/MyPurchases'
 import OrderDetail from './pages/OrderDetail'
 import ProductDetail from './pages/ProductDetail'
+import About from './pages/About'
 import Footer from './components/Footer'
 
 // Componente para redireccionar /card/:id a /products/:id
@@ -39,12 +42,15 @@ function App() {
       <Navbar /> {/* <-- Aquí va el Navbar, fuera de <Routes> */}
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/nosotros" element={<About />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/usuarios" element={<ProtectedUsers />} />
         <Route path="/users" element={<ProtectedUsers />} />
         <Route path="/create-employee" element={<ProtectedCreateEmployee />} />
+        <Route path="/admin-compras" element={<ProtectedAdminPurchases />} />
+        <Route path="/dashboard" element={<ProtectedDashboard />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/products" element={<Products />} />
         <Route path="/catalogo" element={<Catalog />} />
