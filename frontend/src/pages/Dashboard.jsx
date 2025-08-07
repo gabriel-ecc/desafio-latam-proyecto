@@ -1,10 +1,12 @@
 // Dashboard del administrador - Vista general del sistema
 import React from 'react'
+import BackButton from '../components/BackButton'
 import './Dashboard.css'
 
 const Dashboard = () => {
   return (
     <div className="dashboard-container">
+      <BackButton />
       <div className="dashboard-header">
         <h1>Dashboard del Administrador</h1>
         <p>Panel de control y estadísticas del sistema</p>
