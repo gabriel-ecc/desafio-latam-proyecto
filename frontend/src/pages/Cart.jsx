@@ -2,14 +2,16 @@ import useCart, { CartContext } from '../context/CartContext.jsx'
 import { ENDPOINT } from '../config/constants.js'
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useProfile } from '../hooks/useProfile.js' 
+import { useProfile } from '../hooks/useProfile.js'
 import axios from 'axios'
 import Button from 'react-bootstrap/Button'
 import '../pages/Cart.css'
+import { toast } from '../utils/swalHelper'
 import BackButton from '../components/BackButton'
 
 const Cart = () => {
-  const { cart, setCart, updateQuantity, subtraction, totalPrice, addToCart } = useContext(CartContext)
+  const { cart, setCart, updateQuantity, subtraction, totalPrice, addToCart } =
+    useContext(CartContext)
   const [selectedPayment, setSelectedPayment] = useState(null)
   const { user } = useProfile()
   const navigate = useNavigate()
@@ -20,79 +22,123 @@ const Cart = () => {
     { id: 'paypal', label: 'PayPal', img: '/imgs/paypal.png' }
   ]
 
-    useEffect(() => {
+  useEffect(() => {
     document.body.classList.add('home-background')
     return () => {
       document.body.classList.remove('home-background')
     }
   }, [])
 
-// Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.
+  // Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.
 
   return (
-    <main className='big_container_cart'>
-        <div className='section_left'>
-          <div className="products">
-            <h2>Detalles del Pedido:</h2>
-              {cart.length === 0 ? (
-              <p>Tu carrito está vacío.</p>
-              ) : (
-              cart.map((item) => (
-            <div key={item.id} className='product_cart'>
-              <div className='img_section'>
-              <img className='product_img'
-                src={item.img}
-                alt={item.name}
-              />
-              <h5>{item.name}</h5>
-            </div>
-              <div className='price_stock'>
-                <span className='price'>Precio: ${item.price.toLocaleString('es-CL')}</span>
-                <span className='stock'>Cantidad: {item.quantity}</span>
-                <span className='subtotal'> Subtotal: ${(item.price * item.quantity).toLocaleString('es-CL')} </span>
+    <>
+    <BackButton />
+    <main className="big_container_cart">
+      <div className="section_left">
+        <div className="products">
+          <h2>Detalles del Pedido:</h2>
+          {cart.length === 0 ? (
+            <p>Tu carrito está vacío.</p>
+          ) : (
+            cart.map(item => (
+              <div key={item.id} className="product_cart">
+                <div className="img_section">
+                  <img className="product_img" src={item.img} alt={item.name} />
+                  <h5>{item.name}</h5>
+                </div>
+                <div className="price_stock">
+                  <span className="price">
+                    Precio: ${item.price.toLocaleString('es-CL')}
+                  </span>
+                  <span className="stock">Cantidad: {item.quantity}</span>
+                  <span className="subtotal">
+                    {' '}
+                    Subtotal: $
+                    {(item.price * item.quantity).toLocaleString('es-CL')}{' '}
+                  </span>
+                </div>
+                <div className="button_items">
+                  <button
+                    className="btn-round btn-qty"
+                    onClick={() => {
+                      toast({
+                        icon: 'info',
+                        title: `Has quitado 1 ${item.name} del carrito.`
+                      })
+                      subtraction(item.id)
+                    }}
+                  >
+                    <i className="fa-solid fa-minus"></i>
+                  </button>
+                  <button
+                    className="btn-round btn-qty"
+                    onClick={() => {
+                      toast({
+                        icon: 'success',
+                        title: `Has agregado 1 ${item.name} al carrito.`
+                      })
+                      updateQuantity(item.id, item.quantity + 1)
+                    }}
+                  >
+                    <i className="fa-solid fa-plus"></i>
+                  </button>
+                  <button
+                    className="btn-round btn-cart"
+                    onClick={() => {
+                      toast({
+                        icon: 'warning',
+                        title: `Has Removido ${item.name} del carrito.`
+                      })
+                      updateQuantity(item.id, 0)
+                    }}
+                  >
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                </div>
               </div>
-            <div className='button_items'>
-              <button className='btn-round btn-qty' onClick={() => subtraction(item.id)}><i className="fa-solid fa-minus"></i></button>
-              <button className='btn-round btn-qty' onClick={() => updateQuantity(item.id, item.quantity + 1)}><i className="fa-solid fa-plus"></i></button>
-              <button className='btn-round btn-cart' onClick={() => updateQuantity(item.id, 0)}><i className="fa-solid fa-trash"></i></button>
-            </div>          
+            ))
+          )}
         </div>
-       ))
-      )}
-    </div>
-      <div className='total_option'>
-        <h5 className='total_title'>Total: ${totalPrice().toLocaleString('es-CL')} </h5>
-        <div className='total_button'>
-        <Button variant='danger'>Cancelar</Button>
-        <Button variant='success'>Continuar</Button>
+        <div className="total_option">
+          <h5 className="total_title">
+            Total: ${totalPrice().toLocaleString('es-CL')}{' '}
+          </h5>
+          <div className="total_button">
+            <Button variant="danger">Cancelar</Button>
+            <Button variant="success">Continuar</Button>
+          </div>
+        </div>
       </div>
-      </div>
-  </div>
 
-
-    <div className='section_right'>
-      <div className='payment_container'>
-        <h2>Verificación y Pago:</h2>
-        <p>Total de artículos: {cart.reduce((sum, item) => sum + item.quantity, 0)}</p>
-        <p>Total a pagar: ${totalPrice().toLocaleString('es-CL')}</p>
-      <div className='payment_option'>
-        {paymentMethods.map(method => (
-        <button
-          key={method.id}
-          onClick={() => setSelectedPayment(method.id)}
-          className={`payment_option ${selectedPayment === method.id ? 'selected' : ''}`}
-          >
-            <img className='payment_option img_card'
-              src={method.img}
-              alt={method.label}
-              />
-          </button>
-       ))}
+      <div className="section_right">
+        <div className="payment_container">
+          <h2>Verificación y Pago:</h2>
+          <p>
+            Total de artículos:{' '}
+            {cart.reduce((sum, item) => sum + item.quantity, 0)}
+          </p>
+          <p>Total a pagar: ${totalPrice().toLocaleString('es-CL')}</p>
+          <div className="payment_option">
+            {paymentMethods.map(method => (
+              <button
+                key={method.id}
+                onClick={() => setSelectedPayment(method.id)}
+                className={`payment_option ${selectedPayment === method.id ? 'selected' : ''}`}
+              >
+                <img
+                  className="payment_option img_card"
+                  src={method.img}
+                  alt={method.label}
+                />
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>  
-    </div>    
     </main>
+    </>
   )
- }
+}
 
 export default Cart

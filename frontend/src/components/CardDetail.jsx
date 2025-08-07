@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import './CardDetail.css'
 import FavoriteButton from './FavoriteButton'
-import { URLBASE } from '../config/constants'
+import { toast } from '../utils/swalHelper'
 
 const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
   const [quantity, setQuantity] = useState(0)
@@ -14,15 +14,20 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
   //   : '/imgs/placeholder.jpg'
 
   const handleIncrease = () => {
-    setQuantity((prev) => (prev + 1 > product.stock ? product.stock : prev + 1))
+    setQuantity(prev => (prev + 1 > product.stock ? product.stock : prev + 1))
   }
 
   const handleDecrease = () => {
-    setQuantity((prev) => (prev - 1 >= 0 ? prev - 1 : 0))
+    setQuantity(prev => (prev - 1 >= 0 ? prev - 1 : 0))
   }
 
   const handleAddToCart = () => {
     onAddToCart(product, quantity)
+
+    toast({
+      icon: 'success',
+      title: `Has agregado ${quantity} ${product.name} al carrito.`
+    })
     setQuantity(0)
   }
 
@@ -33,11 +38,7 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
           isFavorite={product.isFavorite}
           onClick={() => onToggleFavorite(product.id)}
         />
-        <img
-          src={imageUrl}
-          alt={product.name}
-          className="card-detail-image"
-        />
+        <img src={imageUrl} alt={product.name} className="card-detail-image" />
       </div>
 
       <div className="card-detail-content">
@@ -87,7 +88,7 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
                 min="1"
                 max={product.stock}
                 value={quantity}
-                onChange={(e) =>
+                onChange={e =>
                   setQuantity(
                     Math.max(
                       1,
@@ -131,10 +132,10 @@ CardDetail.propTypes = {
     stock: PropTypes.number.isRequired,
     img: PropTypes.string,
     description: PropTypes.string,
-    isFavorite: PropTypes.bool,
+    isFavorite: PropTypes.bool
   }).isRequired,
   onAddToCart: PropTypes.func.isRequired,
-  onToggleFavorite: PropTypes.func.isRequired,
+  onToggleFavorite: PropTypes.func.isRequired
 }
 
 export default CardDetail
