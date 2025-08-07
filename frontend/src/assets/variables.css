@@ -43,7 +43,12 @@
   --color-surface: #ffffff;
   --color-surface-alt: #f8f9fa;
   --color-overlay: rgba(0, 0, 0, 0.5);
+  --color-overlay-dark: rgba(0, 0, 0, 0.8);
   --color-backdrop: rgba(0, 0, 0, 0.3);
+  --color-white-translucent: rgba(255, 255, 255, 0.2);
+  --color-success-translucent: rgba(40, 167, 69, 0.7);
+  --color-success-shadow: rgba(40, 167, 69, 0.4);
+  --color-border-translucent: rgba(0, 0, 0, 0.2);
 
   /* ========== COLORES DE TEXTO ========== */
   --color-text: #2d2d2d;

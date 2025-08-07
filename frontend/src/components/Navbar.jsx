@@ -62,7 +62,7 @@ const Navbar = () => {
       <div className="order">
         <Link to="/" className="nav-logo">
           {/* Asegúrate de que la imagen del logo esté en la carpeta `public/img` */}
-          <img src="/imgs/logo-ejemplo.jpeg" alt="Logo Verdulería Fresca" />
+          <img src="/imgs/gata-logo.png" alt="Logo Verdulería Fresca" />
         </Link>
 
         {/* Links de navegación centrales (PC/Tablet) */}
@@ -74,6 +74,10 @@ const Navbar = () => {
 
             <li>
               <Link to="/products">Productos</Link>
+            </li>
+
+            <li>
+              <Link to="/nosotros">Nosotros</Link>
             </li>
 
             {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
@@ -98,6 +102,12 @@ const Navbar = () => {
                 <li>
                   <Link to="/usuarios">Gestión de Usuarios</Link>
                 </li>
+                <li>
+                  <Link to="/admin-compras">Gestión de Compras</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
               </>
             )}
           </ul>
@@ -117,6 +127,10 @@ const Navbar = () => {
               {/* TODO: Adapta estas categorías a tu verdulería si es necesario */}
               <li>
                 <Link to="/products">Productos</Link>
+              </li>
+
+              <li>
+                <Link to="/nosotros">Nosotros</Link>
               </li>
 
               {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
@@ -140,6 +154,12 @@ const Navbar = () => {
                   </li>
                   <li>
                     <Link to="/usuarios">Gestión de Usuarios</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin-compras">Gestión de Compras</Link>
+                  </li>
+                  <li>
+                    <Link to="/dashboard">Dashboard</Link>
                   </li>
                 </>
               )}
@@ -228,6 +248,12 @@ const Navbar = () => {
                       <li>
                         <Link to="/usuarios">Gestión de Usuarios</Link>
                       </li>
+                      <li>
+                        <Link to="/admin-compras">Gestión de Compras</Link>
+                      </li>
+                      <li>
+                        <Link to="/dashboard">Dashboard</Link>
+                      </li>
                       <li className="dropdown-divider"></li>
                     </>
                   )}
@@ -235,6 +261,12 @@ const Navbar = () => {
                   <li>
                     <Link to="/profile">Mi Perfil</Link>
                   </li>
+                  {/* Mostrar "Mis Compras" solo para clientes */}
+                  {user && user.userType === 1 && (
+                    <li>
+                      <Link to="/mis-compras">Mis Compras</Link>
+                    </li>
+                  )}
                   <li>
                     <Link to="/favoritos">Mis Favoritos</Link>
                   </li>

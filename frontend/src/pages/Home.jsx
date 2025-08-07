@@ -13,17 +13,36 @@ export default function Home() {
   const [cards, setCards] = useState([])
   const { addToCart } = useCart()
   const navigate = useNavigate()
-  const { favorites, handleActionFavorite, fetchFavorites } =
-    useContext(FavoriteContext)
+  const { favorites, handleActionFavorite } = useContext(FavoriteContext)
 
-  // Imágenes del panel deslizable (ajusta las rutas si es necesario)
-  const sliderImages = [
-    { id: 1, src: '/imgs/delibery.jpg', alt: 'Ofertas especiales' },
-    { id: 2, src: '/imgs/agosto.jpg', alt: 'Promoción de frutas' },
-    { id: 3, src: '/imgs/septiembre.jpg', alt: 'Ofertas especiales' },
-    { id: 4, src: '/imgs/beneficios.jpg', alt: 'Verduras de temporada' },
-    { id: 5, src: '/imgs/mas.jpg', alt: 'Verduras de temporada' }
+  // Imágenes del carrusel de categorías
+  const categoryImages = [
+    { id: 1, src: '/imgs/frutas-gata.webp', alt: 'Frutas', title: 'Frutas' },
+    {
+      id: 2,
+      src: '/imgs/verduras-gata.webp',
+      alt: 'Verduras',
+      title: 'Verduras'
+    },
+    {
+      id: 3,
+      src: '/imgs/legumbre-gata.jpg',
+      alt: 'Legumbres',
+      title: 'Legumbres'
+    },
+    { id: 4, src: '/imgs/carnes-gata.jpeg', alt: 'Carnes', title: 'Carnes' }
   ]
+
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  // Efecto para el carrusel automático
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % categoryImages.length)
+    }, 4000) // Cambia cada 4 segundos
+
+    return () => clearInterval(interval)
+  }, [categoryImages.length])
 
   useEffect(() => {
     document.body.classList.add('home-background')
@@ -46,7 +65,7 @@ export default function Home() {
         }))
         setCards(transformedProducts)
         if (favorites.length > 0) {
-          favorites.map(favorite => {
+          favorites.forEach(favorite => {
             printFavorite(favorite.id, true)
           })
         }
@@ -58,11 +77,11 @@ export default function Home() {
     }
 
     fetchProducts()
-  }, [])
+  }, [favorites])
 
   useEffect(() => {
     if (favorites.length > 0) {
-      favorites.map(favorite => {
+      favorites.forEach(favorite => {
         printFavorite(favorite.id, true)
       })
     } else {
@@ -107,13 +126,36 @@ export default function Home() {
         <img src="/imgs/panel.jpeg" alt="Banner de productos frescos" />
       </div>
 
-      {/* Panel deslizable de imágenes */}
-      <div className="sliding-panel">
-        {sliderImages.map(image => (
-          <div className="slide" key={image.id}>
-            <img src={image.src} alt={image.alt} />
+      {/* Carrusel de categorías */}
+      <div className="carousel-container">
+        <div className="carousel-wrapper">
+          <div
+            className="carousel-track"
+            style={{ transform: `translateX(-${currentSlide * 25}%)` }}
+          >
+            {categoryImages.map(category => (
+              <div className="carousel-slide" key={category.id}>
+                <div className="category-card">
+                  <img src={category.src} alt={category.alt} />
+                  <div className="category-title">
+                    <h3>{category.title}</h3>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+          <div className="carousel-indicators">
+            <div className="carousel-indicators-wrapper">
+              {categoryImages.map((category, index) => (
+                <button
+                  key={`indicator-${category.id}`}
+                  className={`indicator ${index === currentSlide ? 'active' : ''}`}
+                  onClick={() => setCurrentSlide(index)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="row card-container">

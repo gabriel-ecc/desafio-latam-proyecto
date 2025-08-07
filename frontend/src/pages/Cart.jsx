@@ -6,6 +6,7 @@ import { useProfile } from '../hooks/useProfile.js'
 import axios from 'axios'
 import Button from 'react-bootstrap/Button'
 import '../pages/Cart.css'
+import BackButton from '../components/BackButton'
 
 const Cart = () => {
   const { cart, setCart, updateQuantity, subtraction, totalPrice, addToCart } = useContext(CartContext)
@@ -25,6 +26,8 @@ const Cart = () => {
       document.body.classList.remove('home-background')
     }
   }, [])
+
+// Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.
 
   return (
     <main className='big_container_cart'>
@@ -87,6 +90,6 @@ const Cart = () => {
     </div>    
     </main>
   )
-}
+ }
 
 export default Cart
