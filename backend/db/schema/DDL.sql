@@ -97,7 +97,7 @@ CREATE TABLE client_favorites(
     CONSTRAINT client_favorites_user_fkey FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT client_favorites_product_fkey FOREIGN KEY (product_id) REFERENCES products(id)
 );
-//Carrito de Compras
+--Carrito de Compras
 
 CREATE TABLE cart_items (
     id SERIAL PRIMARY KEY,
@@ -109,7 +109,7 @@ CREATE TABLE cart_items (
     UNIQUE(user_id, product_id) 
 );
 
-//Ordenes
+--Ordenes
 
 CREATE TABLE orders (
   id SERIAL PRIMARY KEY,
