@@ -143,4 +143,8 @@
   border-radius: 8px;
   padding: 4px;
 }
+.img_card{
+  width: 80%;
+  height: auto;
+}
 

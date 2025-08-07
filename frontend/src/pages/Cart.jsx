@@ -75,15 +75,18 @@ const Cart = () => {
         <h2>Verificación y Pago:</h2>
         <p>Total de artículos: {cart.reduce((sum, item) => sum + item.quantity, 0)}</p>
         <p>Total a pagar: ${totalPrice().toLocaleString('es-CL')}</p>
-      <div className='payment_options'>
+      <div className='payment_option'>
         {paymentMethods.map(method => (
-        <img
+        <button
           key={method.id}
-          src={method.img}
-          alt={method.label}
-          className={`payment_option ${selectedPayment === method.id ? 'selected' : ''}`}
           onClick={() => setSelectedPayment(method.id)}
-        />
+          className={`payment_option ${selectedPayment === method.id ? 'selected' : ''}`}
+          >
+            <img className='payment_option img_card'
+              src={method.img}
+              alt={method.label}
+              />
+          </button>
        ))}
       </div>
     </div>  
