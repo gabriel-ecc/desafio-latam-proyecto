@@ -23,6 +23,7 @@ body {
   background-color: #fff;
   display: flex;
   height: 100px;
+  padding-right: 0 1rem; /* Menos padding lateral */
 }
 
 .order {
@@ -116,13 +117,6 @@ body {
   left: auto;
 }
 
-/* Saludo al usuario en la barra de navegación */
-.nav-greeting {
-  color: #333;
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
 /* Divisor para separar opciones en el menú */
 .dropdown-divider {
   height: 1px;
@@ -172,11 +166,6 @@ body {
   transition:
     background-color 0.3s,
     border-color 0.3s;
-}
-
-/* Dropdown de categorías para Tablet (oculto en desktop) */
-.nav-tablet-categories {
-  display: none;
 }
 
 /* Contenedor para los elementos de la derecha */
@@ -237,7 +226,7 @@ body {
   display: flex;
   align-items: center;
   background-color: #e9f5f3;
-  padding: 8px 16px;
+  padding: 14px 32px;
   border-radius: 50px;
   text-decoration: none;
   transition: background-color 0.3s;
@@ -250,12 +239,17 @@ body {
 .nav-cart i {
   color: #2a9d8f;
   font-size: 1.2rem;
-  margin-right: 10px;
 }
 
 .cart-total {
+  display: none;
+  align-items: center;
   font-weight: 600;
   color: #1e796d;
+}
+.cart-total p {
+  display: none;
+  margin: 0;
 }
 
 /* Chevrón del perfil (oculto en desktop por defecto) */
@@ -268,11 +262,6 @@ body {
   margin-left: 5px; /* Pequeño espacio a la izquierda de la imagen */
 }
 
-/* Links que solo aparecen en el menú móvil */
-.nav-mobile-link {
-  display: none;
-}
-
 .nav-auth-links {
   display: flex;
   align-items: center;
@@ -282,19 +271,25 @@ body {
 /* Botón de autenticación mejorado */
 .auth-button {
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: linear-gradient(135deg, #2a9d8f, #21897c);
   color: white;
-  text-decoration: none;
-  padding: 8px 20px;
-  border-radius: 25px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  padding: 14px 20px;
+  border-radius: 50px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(42, 157, 143, 0.2);
   border: none;
   cursor: pointer;
+}
+.auth-button p {
+  display: flex;
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
 }
 
 .auth-button:hover {
@@ -309,92 +304,138 @@ body {
   box-shadow: 0 2px 6px rgba(42, 157, 143, 0.2);
 }
 
+/* Ocultamos la lista de PC y mostramos el botón de tablet */
+.nav-categories-list {
+  display: none;
+}
+
+/* Ocultamos el saludo de texto en móvil */
+.nav-greeting {
+  display: none;
+}
+
+/* Mostramos los links de móvil dentro del menú desplegable */
+.nav-mobile-link {
+  display: block;
+}
+
+/* Hacemos que el menú de perfil ocupe más espacio */
+.nav-profile-menu .dropdown-content {
+  width: 250px; /* Ancho fijo para el menú móvil */
+}
+
+/* Ajustamos el botón de autenticación para móvil */
+
 .auth-button i {
-  font-size: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Mostramos y estilizamos el chevrón en móvil */
+
+.nav-profile-menu.is-open .profile-chevron {
+  transform: rotate(180deg);
+}
+
+/* Estilos para el submenú de categorías en móvil */
+.mobile-submenu {
+  list-style: none;
+  padding-left: 1rem; /* Indenta las sub-opciones */
+  margin-top: 0.5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.nav-mobile-dropdown.is-open .mobile-submenu {
+  max-height: 800px; /* Un valor suficientemente grande para mostrar todos los items */
+}
+
+.category-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.category-toggle .fa-chevron-right {
+  transition: transform 0.3s ease-in-out;
+}
+
+.nav-mobile-dropdown.is-open .category-toggle .fa-chevron-right {
+  transform: rotate(90deg);
+}
+
+.dropdown-item {
+  text-align: center;
 }
 
 /* --- ESTILOS RESPONSIVE --- */
-
-/* Estilos para Tablet (entre 769px y 992px) */
-@media (max-width: 992px) {
-  /* Ocultamos la lista de PC y mostramos el botón de tablet */
-  .nav-categories-list {
-    display: none;
+@media (min-width: 576px) {
+  /* Estilos para tabletas en adelante */
+  body {
+    font-size: 16px;
   }
-  .nav-tablet-categories {
+  .nav-logo {
+    display: flex;
+  }
+  .nav-cart i {
+    margin-right: 10px;
+  }
+  .cart-total {
+    display: flex;
+  }
+  .cart-total p {
     display: block;
+  }
+  .link-inicio {
+    display: none;
   }
 }
 
-/* Estilos para Tablet y Móvil (pantallas de hasta 768px de ancho) */
-@media (max-width: 767px) {
-  .navbar {
-    padding-right: 0 1rem; /* Menos padding lateral */
+@media (min-width: 768px) {
+  .auth-button i {
+    font-size: 1rem;
   }
+}
 
+@media (min-width: 992px) {
+  /* Lista de categorías en la navbar de PC */
+  .nav-categories-list {
+    display: flex;
+    align-items: center;
+    margin: auto 0;
+    padding: 0;
+    gap: 1.4rem; /* Espacio entre links */
+    list-style: none;
+    margin-bottom: 0; /* Sin margen inferior */
+  }
+  /* Dropdown de categorías para Tablet (oculto en desktop) */
+  .nav-tablet-categories {
+    display: none;
+  }
   /* Ocultamos los links de desktop */
   .nav-desktop-links {
-    display: none;
-  }
-
-  /* Ocultamos el saludo de texto en móvil */
-  .nav-greeting {
-    display: none;
-  }
-
-  /* Mostramos los links de móvil dentro del menú desplegable */
-  .nav-mobile-link {
     display: block;
   }
 
-  /* Hacemos que el menú de perfil ocupe más espacio */
-  .nav-profile-menu .dropdown-content {
-    width: 250px; /* Ancho fijo para el menú móvil */
+  /* Saludo al usuario en la barra de navegación */
+  .nav-greeting {
+    color: #333;
+    font-weight: 500;
+    font-size: 0.95rem;
   }
-
-  /* Ajustamos el botón de autenticación para móvil */
-  .auth-button {
-    padding: 7px 16px;
-    font-size: 0.9rem;
-    border-radius: 20px;
+  /* Links que solo aparecen en el menú móvil */
+  .nav-mobile-link {
+    display: none;
   }
+}
 
-  .auth-button i {
-    font-size: 0.9rem;
+@media (min-width: 1200px) {
+  /* Estilos para monitores muy grandes */
+  .container {
+    width: 1170px;
   }
-
-  /* Mostramos y estilizamos el chevrón en móvil */
-
-  .nav-profile-menu.is-open .profile-chevron {
-    transform: rotate(180deg);
-  }
-
-  /* Estilos para el submenú de categorías en móvil */
-  .mobile-submenu {
-    list-style: none;
-    padding-left: 1rem; /* Indenta las sub-opciones */
-    margin-top: 0.5rem;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-in-out;
-  }
-
-  .nav-mobile-dropdown.is-open .mobile-submenu {
-    max-height: 200px; /* Un valor suficientemente grande para mostrar todos los items */
-  }
-
-  .category-toggle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-
-  .category-toggle .fa-chevron-right {
-    transition: transform 0.3s ease-in-out;
-  }
-
-  .nav-mobile-dropdown.is-open .category-toggle .fa-chevron-right {
-    transform: rotate(90deg);
+  .auth-button p {
+    display: inline;
   }
 }

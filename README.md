@@ -93,7 +93,7 @@ Se requiere un servidor de postgres y seguir los siguientes pasos:
 Dentro de los directorios **./backend/** y **./frontend/**, se deben instalar las dependencias con el comando:
 
 ```
-## npm install
+npm install
 ```
 
 ## 3.3 Variables de entorno

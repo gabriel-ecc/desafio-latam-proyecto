@@ -5,6 +5,7 @@ import useCart from '../context/CartContext.jsx'
 import { UserContext } from '../context/UserContext'
 import { ENDPOINT } from '../config/constants.js'
 import axios from 'axios'
+import { Nav, NavDropdown, Container } from 'react-bootstrap'
 
 import './Navbar.css'
 
@@ -19,6 +20,7 @@ const Navbar = () => {
   const [isTabletCategoriesOpen, setTabletCategoriesOpen] = useState(false)
   const [isMobileCategoriesOpen, setMobileCategoriesOpen] = useState(false)
   const [listSeasons, setListSeasons] = useState([])
+  const [listCategories, setCategories] = useState([])
 
   // Refs para detectar clics fuera de los menús
   const profileMenuRef = useRef(null)
@@ -38,11 +40,16 @@ const Navbar = () => {
         !tabletCategoriesRef.current.contains(event.target)
       ) {
         setTabletCategoriesOpen(false)
+        // Resetear también el estado del submenú móvil cuando se cierra el menú principal
+        setMobileCategoriesOpen(false)
       }
     }
 
     axios.get(ENDPOINT.seasons).then(({ data }) => {
       setListSeasons(data)
+    })
+    axios.get(ENDPOINT.categories).then(({ data }) => {
+      setCategories(data)
     })
 
     document.addEventListener('mousedown', handleClickOutside)
@@ -50,6 +57,13 @@ const Navbar = () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
+
+  // Resetear el submenú móvil cuando se cierre el menú principal de tablet
+  useEffect(() => {
+    if (!isTabletCategoriesOpen) {
+      setMobileCategoriesOpen(false)
+    }
+  }, [isTabletCategoriesOpen])
 
   const handleLogout = () => {
     logout()
@@ -69,47 +83,75 @@ const Navbar = () => {
         <div className="nav-desktop-links">
           <ul className="nav-categories-list">
             <li>
-              <Link to="/">Inicio</Link>
-            </li>
-
-            <li>
               <Link to="/products">Productos</Link>
             </li>
-
-            <li>
-              <Link to="/nosotros">Nosotros</Link>
-            </li>
-
             {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
-            {(!user || user.userType === 1) &&
-              listSeasons.map(season => (
-                <li key={season.id}>
-                  <Link to={`/products?season=${season.id}`}>
-                    {season.name}
-                  </Link>
-                </li>
-              ))}
+            {(!user || user.userType === 1) && (
+              <NavDropdown title="Temporadas" id="temporadas-nav-dropdown">
+                {listSeasons.map(season => (
+                  <li key={season.id}>
+                    {
+                      <Link
+                        className="dropdown-item"
+                        to={`/products?season=${season.id}`}
+                      >
+                        {season.name}
+                      </Link>
+                    }
+                  </li>
+                ))}
+              </NavDropdown>
+            )}
+            {(!user || user.userType === 1) && (
+              <NavDropdown title="Categorias" id="temporadas-nav-dropdown">
+                {listCategories.map(category => (
+                  <li key={category.id}>
+                    {
+                      <Link
+                        className="dropdown-item"
+                        to={`/products?category=${category.id}`}
+                      >
+                        {category.name}
+                      </Link>
+                    }
+                  </li>
+                ))}
+              </NavDropdown>
+            )}
 
             {/* Mostrar botones solo para empleados y administradores */}
             {user && (user.userType === 2 || user.userType === 3) && (
-              <>
+              <NavDropdown title="Administración" id="temporadas-nav-dropdown">
                 <li>
-                  <Link to="/inventario">Inventario</Link>
+                  <Link className="dropdown-item" to="/inventario">
+                    Inventario
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/editar-producto/0">Nuevo Producto</Link>
+                  <Link className="dropdown-item" to="/editar-producto/0">
+                    Nuevo Producto
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/usuarios">Gestión de Usuarios</Link>
+                  <Link className="dropdown-item" to="/usuarios">
+                    Gestión de Usuarios
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/admin-compras">Gestión de Compras</Link>
+                  <Link className="dropdown-item" to="/admin-compras">
+                    Gestión de Compras
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/dashboard">Dashboard</Link>
+                  <Link className="dropdown-item" to="/dashboard">
+                    Dashboard
+                  </Link>
                 </li>
-              </>
+              </NavDropdown>
             )}
+            <li>
+              <Link to="/nosotros">Nosotros</Link>
+            </li>
           </ul>
           <div
             className={`dropdown nav-tablet-categories ${
@@ -119,7 +161,11 @@ const Navbar = () => {
           >
             <button
               className="categories-btn"
-              onClick={() => setTabletCategoriesOpen(!isTabletCategoriesOpen)}
+              onClick={() => {
+                setTabletCategoriesOpen(!isTabletCategoriesOpen)
+                // Resetear el submenú móvil cuando se abre/cierra el menú principal
+                setMobileCategoriesOpen(false)
+              }}
             >
               Menú <i className="fa-solid fa-chevron-down"></i>
             </button>
@@ -128,41 +174,84 @@ const Navbar = () => {
               <li>
                 <Link to="/products">Productos</Link>
               </li>
-
+              {user && user.userType === 1 ? (
+                <li>
+                  <Link to="/favoritos">Mis Favoritos</Link>
+                </li>
+              ) : (
+                <></>
+              )}
+              {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
+              {(!user || user.userType === 1) && (
+                <li
+                  className={`nav-mobile-link nav-mobile-dropdown ${
+                    isMobileCategoriesOpen ? 'is-open' : ''
+                  }`}
+                >
+                  <a
+                    href="#!"
+                    className="category-toggle"
+                    onClick={e => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setMobileCategoriesOpen(!isMobileCategoriesOpen)
+                    }}
+                  >
+                    Temporadas{' '}
+                    <i className="fa-solid fa-chevron-right"></i>{' '}
+                  </a>
+                  <ul className="mobile-submenu">
+                    {listSeasons.map(season => (
+                      <li key={season.id}>
+                        <Link to={`products?season=${season.id}`}>
+                          {season.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              )}
+              {/* Mostrar botones solo para empleados y administradores */}
+              {user && (user.userType === 2 || user.userType === 3) && (
+                <li
+                  className={`nav-mobile-link nav-mobile-dropdown ${
+                    isMobileCategoriesOpen ? 'is-open' : ''
+                  }`}
+                >
+                  <a
+                    href="#!"
+                    className="category-toggle"
+                    onClick={e => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setMobileCategoriesOpen(!isMobileCategoriesOpen)
+                    }}
+                  >
+                    Administración{' '}
+                    <i className="fa-solid fa-chevron-right"></i>{' '}
+                  </a>
+                  <ul className="mobile-submenu">
+                    <li>
+                      <Link to="/inventario">Inventario</Link>
+                    </li>
+                    <li>
+                      <Link to="/editar-producto/0">Nuevo Producto</Link>
+                    </li>
+                    <li>
+                      <Link to="/usuarios">Gestión de Usuarios</Link>
+                    </li>
+                    <li>
+                      <Link to="/admin-compras">Gestión de Compras</Link>
+                    </li>
+                    <li>
+                      <Link to="/dashboard">Dashboard</Link>
+                    </li>
+                  </ul>
+                </li>
+              )}
               <li>
                 <Link to="/nosotros">Nosotros</Link>
               </li>
-
-              {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
-              {(!user || user.userType === 1) &&
-                listSeasons.map(season => (
-                  <li key={season.id}>
-                    <Link to={`products?season=${season.id}`}>
-                      {season.name}
-                    </Link>
-                  </li>
-                ))}
-
-              {/* Mostrar botones solo para empleados y administradores */}
-              {user && (user.userType === 2 || user.userType === 3) && (
-                <>
-                  <li>
-                    <Link to="/inventario">Inventario</Link>
-                  </li>
-                  <li>
-                    <Link to="/editar-producto/0">Nuevo Producto</Link>
-                  </li>
-                  <li>
-                    <Link to="/usuarios">Gestión de Usuarios</Link>
-                  </li>
-                  <li>
-                    <Link to="/admin-compras">Gestión de Compras</Link>
-                  </li>
-                  <li>
-                    <Link to="/dashboard">Dashboard</Link>
-                  </li>
-                </>
-              )}
             </ul>
           </div>
         </div>
@@ -171,7 +260,10 @@ const Navbar = () => {
         <div className="nav-right">
           <Link to="/cart" className="nav-cart">
             <i className="fa-solid fa-cart-shopping"></i>
-            <span className="cart-total">${total.toLocaleString()}</span>
+            <span className="cart-total">
+              <p>$</p>
+              {total.toLocaleString()}
+            </span>
           </Link>
 
           {token && user ? (
@@ -206,36 +298,6 @@ const Navbar = () => {
                   <i className="fa-solid fa-chevron-down profile-chevron"></i>
                 </button>
                 <ul className="dropdown-content">
-                  <li
-                    className={`nav-mobile-link nav-mobile-dropdown ${
-                      isMobileCategoriesOpen ? 'is-open' : ''
-                    }`}
-                  >
-                    <a
-                      href="#!"
-                      className="category-toggle"
-                      onClick={e => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        setMobileCategoriesOpen(!isMobileCategoriesOpen)
-                      }}
-                    >
-                      Categorías <i className="fa-solid fa-chevron-right"></i>{' '}
-                      {/* TODO: Adapta estas categorías a tu verdulería si es necesario */}
-                    </a>
-                    <ul className="mobile-submenu">
-                      {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
-                      {(!user || user.userType === 1) &&
-                        listSeasons.map(season => (
-                          <li key={season.id}>
-                            <Link to={`products?season=${season.id}`}>
-                              {season.name}
-                            </Link>
-                          </li>
-                        ))}
-                    </ul>
-                  </li>
-
                   {/* Mostrar opciones solo para empleados y administradores */}
                   {user && (user.userType === 2 || user.userType === 3) && (
                     <>
@@ -263,13 +325,15 @@ const Navbar = () => {
                   </li>
                   {/* Mostrar "Mis Compras" solo para clientes */}
                   {user && user.userType === 1 && (
-                    <li>
-                      <Link to="/mis-compras">Mis Compras</Link>
-                    </li>
+                    <>
+                      <li>
+                        <Link to="/mis-compras">Mis Compras</Link>
+                      </li>
+                      <li>
+                        <Link to="/favoritos">Mis Favoritos</Link>
+                      </li>
+                    </>
                   )}
-                  <li>
-                    <Link to="/favoritos">Mis Favoritos</Link>
-                  </li>
                   <li className="dropdown-divider"></li>
                   <li>
                     {/* Usamos un botón para la acción de cerrar sesión */}
@@ -282,7 +346,7 @@ const Navbar = () => {
             <div className="nav-auth-links">
               <Link to="/login" className="auth-button">
                 <i className="fas fa-user"></i>
-                Ingresar / Registrar
+                <p>Inicia Sesión</p>
               </Link>
             </div>
           )}
