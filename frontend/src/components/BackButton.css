@@ -1,0 +1,101 @@
+@import '../assets/variables.css';
+
+.back-button {
+  position: fixed;
+  top: calc(var(--navbar-height) + 2vw);
+  left: var(--spacing-lg);
+  z-index: calc(
+    var(--z-index-toast) + 10
+  ); /* Más alto que cualquier z-index del sistema */
+
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+
+  background: linear-gradient(
+    135deg,
+    var(--color-cart),
+    var(--color-cart-dark)
+  );
+  color: var(--color-text-inverse);
+  border: none;
+  border-radius: var(--radius-3xl);
+  padding: var(--spacing-md) var(--spacing-lg);
+
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+
+  box-shadow: var(--box-shadow-lg);
+  transition: var(--transition-normal);
+
+  /* Evita que el texto se seleccione */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.back-button:hover {
+  background: linear-gradient(135deg, var(--color-cart-dark), #1a766a);
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow-xl);
+}
+
+.back-button:active {
+  transform: translateY(0);
+  box-shadow: var(--box-shadow-md);
+}
+
+.back-button:focus {
+  outline: none;
+  box-shadow: var(--box-shadow-focus), var(--box-shadow-lg);
+}
+
+.back-button i {
+  font-size: var(--font-size-md);
+  transition: var(--transition-fast);
+}
+
+.back-button:hover i {
+  transform: translateX(-2px);
+}
+
+.back-button-text {
+  white-space: nowrap;
+}
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+  .back-button {
+    top: calc(var(--navbar-height) + 3vw);
+    left: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+  }
+
+  .back-button i {
+    font-size: var(--font-size-sm);
+  }
+}
+
+/* Para pantallas muy pequeñas, mostrar solo el icono */
+@media (max-width: 480px) {
+  .back-button {
+    top: calc(var(--navbar-height) + 4vw);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-full);
+    min-width: 48px;
+    min-height: 48px;
+    justify-content: center;
+  }
+
+  .back-button-text {
+    display: none;
+  }
+
+  .back-button i {
+    font-size: var(--font-size-lg);
+  }
+}

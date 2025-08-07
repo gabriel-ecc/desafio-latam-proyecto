@@ -7,6 +7,7 @@ import './AuthForm.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ENDPOINT } from '../config/constants.js'
 import Swal from 'sweetalert2'
+import BackButton from '../components/BackButton'
 import {
   faUser,
   faEnvelope,
@@ -134,6 +135,7 @@ export default function CreateEmployee() {
 
   return (
     <div className="auth-bg">
+      <BackButton />
       <div className="auth-card shadow">
         <form className="register-form employee-form" onSubmit={handleSubmit}>
           <div className="text-center mb-4">

@@ -11,6 +11,7 @@ import {
   faCamera,
 } from '@fortawesome/free-solid-svg-icons'
 import Swal from 'sweetalert2'
+import BackButton from '../components/BackButton'
 import './Profile.css'
 
 export default function Profile() {
@@ -205,6 +206,7 @@ export default function Profile() {
 
   return (
     <div className="profile-container">
+      <BackButton />
       <div className="profile-header">
         <h1 className="profile-title">Mi Perfil</h1>
         <p className="profile-subtitle">

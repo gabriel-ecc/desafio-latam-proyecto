@@ -124,6 +124,17 @@ body {
   background-color: #eee;
 }
 
+/* Lista de categorías en la navbar de PC */
+.nav-categories-list {
+  display: flex;
+  align-items: center;
+  margin: auto 0;
+  padding: 0;
+  gap: 1.4rem; /* Espacio entre links */
+  list-style: none;
+  margin-bottom: 0; /* Sin margen inferior */
+}
+
 .nav-categories-list a {
   text-decoration: none;
   color: #333;

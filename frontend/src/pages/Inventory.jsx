@@ -5,6 +5,7 @@ import { ENDPOINT } from '../config/constants'
 import { getToken } from '../services/authService'
 import { UserContext } from '../context/UserContext'
 import Swal from 'sweetalert2'
+import BackButton from '../components/BackButton'
 import './Inventory.css'
 
 // Página para que el administrador/empleado vea y gestione el inventario de productos.
@@ -212,6 +213,7 @@ export default function Inventory() {
 
   return (
     <div className="inventory-container">
+      <BackButton />
       <div className="inventory-header">
         <h1>Inventario de Productos</h1>
         <button onClick={handleCreateProduct} className="btn btn-success">

@@ -5,6 +5,7 @@ import './Products.css'
 import { useContext, useEffect, useState } from 'react'
 import { FavoriteContext } from '../context/FavoriteContext.jsx'
 import { ENDPOINT } from '../config/constants.js'
+import BackButton from '../components/BackButton'
 import axios from 'axios'
 
 export default function Favorites() {
@@ -88,6 +89,7 @@ export default function Favorites() {
 
   return (
     <div>
+      <BackButton />
       <div className="container">
         <div>
           <h2 className="text-center my-4">Mis Favoritos</h2>
