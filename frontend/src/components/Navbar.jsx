@@ -76,11 +76,6 @@ const Navbar = () => {
             <li>
               <Link to="/products">Productos</Link>
             </li>
-
-            <li>
-              <Link to="/nosotros">Nosotros</Link>
-            </li>
-
             {/* Mostrar temporadas solo para clientes (userType === 1) o usuarios no logueados */}
             {(!user || user.userType === 1) && (
               <NavDropdown title="Temporadas" id="temporadas-nav-dropdown">
@@ -166,11 +161,6 @@ const Navbar = () => {
               <li>
                 <Link to="/products">Productos</Link>
               </li>
-
-              <li>
-                <Link to="/nosotros">Nosotros</Link>
-              </li>
-
               {user && user.userType === 1 ? (
                 <li>
                   <Link to="/favoritos">Mis Favoritos</Link>
@@ -203,8 +193,8 @@ const Navbar = () => {
                         <Link to={`products?season=${season.id}`}>
                           {season.name}
                         </Link>
-                    </li>
-                  ))}
+                      </li>
+                    ))}
                   </ul>
                 </li>
               )}
