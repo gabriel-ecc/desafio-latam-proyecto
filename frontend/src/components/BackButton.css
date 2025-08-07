@@ -20,7 +20,7 @@
   color: var(--color-text-inverse);
   border: none;
   border-radius: var(--radius-3xl);
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
 
   font-family: inherit;
   font-size: var(--font-size-md);
