@@ -40,6 +40,8 @@ const Navbar = () => {
         !tabletCategoriesRef.current.contains(event.target)
       ) {
         setTabletCategoriesOpen(false)
+        // Resetear también el estado del submenú móvil cuando se cierra el menú principal
+        setMobileCategoriesOpen(false)
       }
     }
 
@@ -55,6 +57,13 @@ const Navbar = () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
+
+  // Resetear el submenú móvil cuando se cierre el menú principal de tablet
+  useEffect(() => {
+    if (!isTabletCategoriesOpen) {
+      setMobileCategoriesOpen(false)
+    }
+  }, [isTabletCategoriesOpen])
 
   const handleLogout = () => {
     logout()
@@ -157,7 +166,11 @@ const Navbar = () => {
           >
             <button
               className="categories-btn"
-              onClick={() => setTabletCategoriesOpen(!isTabletCategoriesOpen)}
+              onClick={() => {
+                setTabletCategoriesOpen(!isTabletCategoriesOpen)
+                // Resetear el submenú móvil cuando se abre/cierra el menú principal
+                setMobileCategoriesOpen(false)
+              }}
             >
               Menú <i className="fa-solid fa-chevron-down"></i>
             </button>
@@ -203,8 +216,8 @@ const Navbar = () => {
                         <Link to={`products?season=${season.id}`}>
                           {season.name}
                         </Link>
-                    </li>
-                  ))}
+                      </li>
+                    ))}
                   </ul>
                 </li>
               )}
