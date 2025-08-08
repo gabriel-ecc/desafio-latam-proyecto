@@ -17,6 +17,10 @@ const Cart = () => {
   const [paymentStep, setPaymentStep] = useState(false)
   const { user } = useProfile()
   const navigate = useNavigate()
+//Pago Final
+  const [nombreTitular, setNombreTitular] = useState('')
+  const [expiracion, setExpiracion] = useState('')
+  const [cvv, setCvv] = useState('')
 
   const paymentMethods = [
     { id: 'credito', label: 'Crédito', img: '/imgs/credit_card.png' },
@@ -72,8 +76,21 @@ const Cart = () => {
     setSelectedPayment(null)
   }
 
-  /* En construcción
-  const handlePay = () => {
+  const formatCardNumber = (value) => {
+    const onlyNums = value.replace(/\D/g, '');
+    const spaced = onlyNums.match(/.{1,4}/g)?.join(' ') || '';
+   return spaced;
+  }
+
+  const formatExpiry = (value) => {
+    const onlyNums = value.replace(/\D/g, '');
+    if (onlyNums.length === 0) return '';
+    if (onlyNums.length <= 2) return onlyNums;
+   return onlyNums.slice(0, 2) + '/' + onlyNums.slice(2, 4);
+  }
+
+  const handlePay = async() => {
+    //No selecciona Pago
     if(!selectedPayment) {
       Swal.fire({
         icon: 'error',
@@ -81,19 +98,41 @@ const Cart = () => {
     })
     return
     }
-    Swal.fire({
+
+    //Seleciona pago pero no coloca los datos completos
+    if(selectedPayment === 'credito' || selectedPayment === 'debito' ){
+      if (!nombreTitular.trim() || !expiracion.trim() || !cvv.trim()) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Campos incompletos',
+          text: 'Por favor completa todos los campos de la tarjeta.',
+        });
+        return;
+      }
+    }
+    const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
+    const cvvOk = /^\d{3}$/.test(cvv)
+
+    if (!expiryOk || !cvvOk) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Formato inválido',
+        text: 'Llenar los campos correctamente'
+      })
+      return
+    }
+// validando todo ok
+
+    await Swal.fire({
       title: 'Pago realizado con éxito',
       html: `
-        <p>Gracias, <strong>${user.name}</strong>!</p>
-        <p>Se ha procesado tu pago correctamente.</p>
-        <p>Correo: ${user.email}</p>`,
+        <p>Se ha procesado tu pago correctamente.</p>`,
       icon: 'success',
       confirmButtonText: 'Cerrar'
-    }).then(() => {
+    })
     setCart([])
     navigate('/')
-  })
-  }*/
+  }
 
   // Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.
 
@@ -190,13 +229,13 @@ const Cart = () => {
       </div>
 
       <div className="section_right">
+        <h2>Verificación y Pago:</h2>
         <div className="payment_container">
-          <h2>Verificación y Pago:</h2>
-          <p>
+          <p className="price">
             Total de artículos:{' '}
             {cart.reduce((sum, item) => sum + item.quantity, 0)}
           </p>
-          <p>Total a pagar: ${totalPrice().toLocaleString('es-CL')}</p>
+          <p className='total_title'>Total a pagar: ${totalPrice().toLocaleString('es-CL')}</p>
 
           {paymentStep && (
             <>
@@ -219,13 +258,15 @@ const Cart = () => {
 
               {(selectedPayment === 'credito' ||
                 selectedPayment === 'debito') && (
-                <form className="card_form">
+                <form className="card_form" onSubmit={(e) => e.preventDefault()}>
                   <div>
                     <label>Nombre titular de la Tarjeta</label>
                     <input
                       type="text"
                       placeholder="XXXX XXXX XXXX XXXX"
                       maxLength="19"
+                      value={nombreTitular}
+                      onChange={(e) => setNombreTitular(formatCardNumber(e.target.value))}
                       required
                     />
                   </div>
@@ -236,6 +277,8 @@ const Cart = () => {
                         type="text"
                         placeholder="MM/AA"
                         maxLength="5"
+                        value={expiracion}
+                        onChange={(e) => setExpiracion(formatExpiry(e.target.value))}
                         required
                       />
                     </div>
@@ -245,6 +288,8 @@ const Cart = () => {
                         type="text"
                         placeholder="XXX"
                         maxLength="3"
+                        value={cvv}
+                        onChange={(e) => setCvv(e.target.value)}
                         required
                       />
                     </div>
@@ -267,7 +312,11 @@ const Cart = () => {
           <Button variant="danger" onClick={handleBack} disabled={!paymentStep}>
             Volver
           </Button>
-          <Button variant="success" disabled={!paymentStep || !selectedPayment}>
+          <Button
+            type='button' 
+            variant="success" 
+            onClick={handlePay} 
+            disabled={!paymentStep || !selectedPayment}>
             {' '}
             Pagar{' '}
           </Button>

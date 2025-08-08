@@ -32,6 +32,11 @@
   flex-direction: column;
   padding-left: 20px;
   padding-right: 20px;
+  text-align: center;
+}
+
+.section_right h2 {
+  padding-bottom: 100px;
 }
 
 /* Productos individuales*/
@@ -124,8 +129,8 @@
 
 /*Segunda seccion*/
 .payment_container {
-  background: #fff;
-  padding: 20px;
+  background: #dee2e6;
+  height: max-content;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
   text-align: center;
@@ -133,6 +138,7 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
+  padding: 20px;
 }
 
 .kind_payment {
