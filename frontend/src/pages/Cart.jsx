@@ -17,8 +17,10 @@ const Cart = () => {
   const [paymentStep, setPaymentStep] = useState(false)
   const { user } = useProfile()
   const navigate = useNavigate()
-//Pago Final
+
+  //Requerimientos para el Pago
   const [nombreTitular, setNombreTitular] = useState('')
+  const [numeroTarjeta, setNumeroTarjeta] = useState('')
   const [expiracion, setExpiracion] = useState('')
   const [cvv, setCvv] = useState('')
 
@@ -34,6 +36,8 @@ const Cart = () => {
       document.body.classList.remove('home-background')
     }
   }, [])
+
+//Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago
 
   const handleCancel = () => {
     Swal.fire({
@@ -76,11 +80,15 @@ const Cart = () => {
     setSelectedPayment(null)
   }
 
+//Fromatear el número de tarjeta 
+
   const formatCardNumber = (value) => {
     const onlyNums = value.replace(/\D/g, '');
     const spaced = onlyNums.match(/.{1,4}/g)?.join(' ') || '';
    return spaced;
   }
+
+//Formatear la fecha con / de forma automatica
 
   const formatExpiry = (value) => {
     const onlyNums = value.replace(/\D/g, '');
@@ -101,7 +109,7 @@ const Cart = () => {
 
     //Seleciona pago pero no coloca los datos completos
     if(selectedPayment === 'credito' || selectedPayment === 'debito' ){
-      if (!nombreTitular.trim() || !expiracion.trim() || !cvv.trim()) {
+      if (!nombreTitular.trim() || !expiracion.trim() || !cvv.trim() || !numeroTarjeta.trim()) {
         Swal.fire({
           icon: 'error',
           title: 'Campos incompletos',
@@ -110,6 +118,8 @@ const Cart = () => {
         return;
       }
     }
+//Validación de expiración y código de seguridad
+
     const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
     const cvvOk = /^\d{3}$/.test(cvv)
 
@@ -121,7 +131,7 @@ const Cart = () => {
       })
       return
     }
-// validando todo ok
+// Pago éxitoso
 
     await Swal.fire({
       title: 'Pago realizado con éxito',
@@ -140,6 +150,8 @@ const Cart = () => {
     <>
     <BackButton />
     <main className="big_container_cart">
+//Sección de visualización de productos y totales
+
       <div className="section_left">
         <div className="products">
           <h2>Detalles del Pedido:</h2>
@@ -205,6 +217,9 @@ const Cart = () => {
             ))
           )}
         </div>
+
+//Suma del total de productos cargados + Botones de decisión
+
         <div className="total_option">
           <h5 className="total_title">
             Total: ${totalPrice().toLocaleString('es-CL')}{' '}
@@ -228,6 +243,8 @@ const Cart = () => {
         </div>
       </div>
 
+//Sección de pago Cantidad Artículo + Pago + Botones de decisión
+
       <div className="section_right">
         <h2>Verificación y Pago:</h2>
         <div className="payment_container">
@@ -239,7 +256,13 @@ const Cart = () => {
 
           {paymentStep && (
             <>
+            {!selectedPayment && (
+              <div>
+               <p>Por favor Seleccionar un Método de Pago</p>
+              </div>
+            )}
               <div className="kind_payment">
+                
                 {paymentMethods.map(method => (
                   <button
                     key={method.id}
@@ -260,13 +283,21 @@ const Cart = () => {
                 selectedPayment === 'debito') && (
                 <form className="card_form" onSubmit={(e) => e.preventDefault()}>
                   <div>
-                    <label>Nombre titular de la Tarjeta</label>
+                    <label>Nombre del Titular</label>
                     <input
                       type="text"
+                      placeholder="Rigoberto Felines P"
+                      maxLength="25"
+                      value={nombreTitular}
+                      required
+                    />
+                    <label>Número de Tarjeta</label>
+                    <input
+                      type="number"
                       placeholder="XXXX XXXX XXXX XXXX"
                       maxLength="19"
-                      value={nombreTitular}
-                      onChange={(e) => setNombreTitular(formatCardNumber(e.target.value))}
+                      value={numeroTarjeta}
+                      onChange={(e) => setNumeroTarjeta(formatCardNumber(e.target.value))}
                       required
                     />
                   </div>
@@ -285,7 +316,7 @@ const Cart = () => {
                     <div>
                       <label> CVV </label>
                       <input
-                        type="text"
+                        type="number"
                         placeholder="XXX"
                         maxLength="3"
                         value={cvv}

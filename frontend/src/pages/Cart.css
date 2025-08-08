@@ -149,8 +149,6 @@
 .payment_option {
   margin: 0.5rem;
   cursor: pointer;
-  opacity: 0.4;
-  transition: opacity 0.1s, transform 0.3s;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -159,8 +157,8 @@
 }
 
 .payment_option:hover {
-  opacity: 0.8;
-  transform: scale(1.05);
+  opacity: 0.9;
+  transform: scale(1.2);
 }
 
 .payment_option.selected {
@@ -172,6 +170,7 @@
   width: 80px;
   height: auto;
   object-fit: contain;
+  filter: saturate(150%)
 }
 
 .card_form {
