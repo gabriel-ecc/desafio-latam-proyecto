@@ -109,7 +109,7 @@ const Cart = () => {
 
     //Seleciona pago pero no coloca los datos completos
     if(selectedPayment === 'credito' || selectedPayment === 'debito' ){
-      if (!nombreTitular.trim() || !expiracion.trim() || !cvv.trim() || !numeroTarjeta.trim()) {
+      if (!nombreTitular.trim() || !numeroTarjeta.trim() || !expiracion.trim() || !cvv.trim()) {
         Swal.fire({
           icon: 'error',
           title: 'Campos incompletos',
@@ -150,7 +150,7 @@ const Cart = () => {
     <>
     <BackButton />
     <main className="big_container_cart">
-//Sección de visualización de productos y totales
+
 
       <div className="section_left">
         <div className="products">
@@ -218,9 +218,7 @@ const Cart = () => {
           )}
         </div>
 
-
-
-        <div className="total_option"> //Suma del total de productos cargados + Botones de decisión
+        <div className="total_option">
           <h5 className="total_title">
             Total: ${totalPrice().toLocaleString('es-CL')}{' '}
           </h5>
@@ -243,7 +241,7 @@ const Cart = () => {
         </div>
       </div>
 
-//Sección de pago Cantidad Artículo + Pago + Botones de decisión
+
 
       <div className="section_right">
         <h2>Verificación y Pago:</h2>
@@ -288,6 +286,8 @@ const Cart = () => {
                       type="text"
                       placeholder="Rigoberto Felines P"
                       maxLength="25"
+                      value={nombreTitular}
+                      onChange={(e) => setNombreTitular(e.target.value)}
                       required
                     />
                     <label>Número de Tarjeta</label>
