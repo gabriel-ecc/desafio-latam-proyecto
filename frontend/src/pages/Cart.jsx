@@ -218,9 +218,9 @@ const Cart = () => {
           )}
         </div>
 
-//Suma del total de productos cargados + Botones de decisión
 
-        <div className="total_option">
+
+        <div className="total_option"> //Suma del total de productos cargados + Botones de decisión
           <h5 className="total_title">
             Total: ${totalPrice().toLocaleString('es-CL')}{' '}
           </h5>
@@ -288,12 +288,11 @@ const Cart = () => {
                       type="text"
                       placeholder="Rigoberto Felines P"
                       maxLength="25"
-                      value={nombreTitular}
                       required
                     />
                     <label>Número de Tarjeta</label>
                     <input
-                      type="number"
+                      type="text"
                       placeholder="XXXX XXXX XXXX XXXX"
                       maxLength="19"
                       value={numeroTarjeta}
