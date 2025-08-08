@@ -2,14 +2,16 @@ import useCart, { CartContext } from '../context/CartContext.jsx'
 import { ENDPOINT } from '../config/constants.js'
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useProfile } from '../hooks/useProfile.js' 
+import { useProfile } from '../hooks/useProfile.js'
 import axios from 'axios'
 import Button from 'react-bootstrap/Button'
 import '../pages/Cart.css'
+import { toast } from '../utils/swalHelper'
 import Swal from 'sweetalert2'
 
 const Cart = () => {
-  const { cart, setCart, updateQuantity, subtraction, totalPrice, addToCart } = useContext(CartContext)
+  const { cart, setCart, updateQuantity, subtraction, totalPrice, addToCart } =
+    useContext(CartContext)
   const [selectedPayment, setSelectedPayment] = useState(null)
   const [paymentStep, setPaymentStep] = useState(false)
   const { user } = useProfile()
@@ -21,7 +23,7 @@ const Cart = () => {
     { id: 'efectivo', label: 'Efectivo', img: '/imgs/cash_payment.png' }
   ]
 
-    useEffect(() => {
+  useEffect(() => {
     document.body.classList.add('home-background')
     return () => {
       document.body.classList.remove('home-background')
@@ -187,11 +189,11 @@ const Cart = () => {
      </div> 
      <div className='total_button'>
       <Button variant='danger' onClick={handleBack} disabled={!paymentStep}>Volver</Button>
-      <Button variant='success' onClick={handlePay} disabled={!paymentStep || !selectedPayment}> Pagar </Button>
+      <Button variant='success' disabled={!paymentStep || !selectedPayment}> Pagar </Button>
      </div>
     </div>    
    </main>
   )
- }
+}
 
 export default Cart

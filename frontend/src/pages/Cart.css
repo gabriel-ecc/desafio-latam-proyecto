@@ -187,3 +187,17 @@
   font-weight: 600;
 }
 
+.toast-success-container {
+  background-color: #008a20 !important;
+  color: #fff;
+}
+
+.toast-info-container {
+  background-color: #008f8f !important;
+  color: #fff;
+}
+
+.toast-warning-container {
+  background-color: #8a4000 !important;
+  color: #fff;
+}
