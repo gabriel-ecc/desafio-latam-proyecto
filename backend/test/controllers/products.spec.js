@@ -75,7 +75,7 @@ describe('API /products', () => {
 
   // --- Pruebas para GET /api/v1/products/:id ---
   describe('GET /api/v1/products/:id', () => {
-    it('Deberia retornar status 200', async () => {
+    it('Deberia retornar status 200 al obtener el producto', async () => {
       jest.spyOn(productsModel, 'getProductById').mockResolvedValue({
         id: '043b050c-c603-4d84-aa5a-7cdfa05c4191',
         product_name: 'Producto 1',
@@ -88,7 +88,9 @@ describe('API /products', () => {
         season: 'a',
         season_id: 1
       })
-      const response = await request(app).get('/api/v1/products/043b050c-c603-4d84-aa5a-7cdfa05c4191')
+      const response = await request(app)
+        .get('/api/v1/products/043b050c-c603-4d84-aa5a-7cdfa05c4191')
+
       expect(response.statusCode).toBe(200)
       expect(response.body.name).toBe('Producto 1')
     })
@@ -114,7 +116,7 @@ describe('API /products', () => {
     })
   })
 
-  // --- Pruebas para /teamporadas y /categorias ---
+  // --- Pruebas para /temporadas y /categorias ---
   describe('GET /api/v1/seasons', () => {
     it('Deberia retornar status 200', async () => {
       const response = await request(app).get('/api/v1/seasons')
