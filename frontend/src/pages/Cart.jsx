@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button'
 import '../pages/Cart.css'
 import { toast } from '../utils/swalHelper'
 import Swal from 'sweetalert2'
+import BackButton from '../components/BackButton'
 
 const Cart = () => {
   const { cart, setCart, updateQuantity, subtraction, totalPrice, addToCart } =
@@ -98,6 +99,8 @@ const Cart = () => {
 // Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.
 
   return (
+    <>
+    <BackButton />
     <main className='big_container_cart'>
         <div className='section_left'>
           <div className="products">
@@ -193,7 +196,9 @@ const Cart = () => {
      </div>
     </div>    
    </main>
+</>
   )
 }
+
 
 export default Cart
