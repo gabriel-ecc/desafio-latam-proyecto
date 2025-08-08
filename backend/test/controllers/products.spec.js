@@ -32,7 +32,7 @@ describe('API /products', () => {
     mockError = new Error('Error de BD simulado')
   })
 
-  // Limpia los mocks después de cada prueba
+  // Limpiamos los mocks después de cada prueba
   afterEach(() => {
     jest.restoreAllMocks()
   })
@@ -42,7 +42,39 @@ describe('API /products', () => {
       const response = await request(app).get('/api/v1/products')
       expect(response.statusCode).toBe(200)
     })
+    it('Deberia retornar status 500 si ocurre un error en el modelo', async () => {
+      jest.spyOn(productsModel, 'getProductsByPage').mockRejectedValue(mockError)
+      jest.spyOn(productsModel, 'getProductsCount').mockRejectedValue(mockError)
+
+      const response = await request(app).get('/api/v1/products')
+      expect(response.statusCode).toBe(500)
+      expect(response.body).toEqual({
+        error: mockError.message
+      })
+    })
+    it('Debería retornar status 200 con HATEOAS', async () => {
+      const mockProducts = [{
+        id: 1,
+        name: 'Producto 1'
+      }]
+      const mockCount = 1
+      const mockHATEOAS = {
+        total: mockCount,
+        results: mockProducts
+      }
+      jest.spyOn(productsModel, 'getProductsByPage').mockResolvedValue(mockProducts)
+      jest.spyOn(productsModel, 'getProductsCount').mockResolvedValue(mockCount)
+      jest.spyOn(productsModel, 'productsHATEOAS').mockResolvedValue(mockHATEOAS)
+
+      const response = await request(app)
+        .get('/api/v1/products?page=1&limits=2')
+
+      expect(response.statusCode).toBe(200)
+      expect(response.body).toEqual(mockHATEOAS)
+    })
   })
+
+  // --- Pruebas para /products/frontPage ---
   describe('GET /api/v1/products/frontPage', () => {
     it('Deberia retornar status 200', async () => {
       const response = await request(app).get('/api/v1/products/frontPage')
@@ -53,9 +85,13 @@ describe('API /products', () => {
       const response = await request(app).get('/api/v1/products/frontPage')
 
       expect(response.statusCode).toBe(500)
-      expect(response.body).toEqual({})
+      expect(response.body).toEqual({
+        error: mockError.message
+      })
     })
   })
+
+  // --- Pruebas para /seasons y /categories ---
   describe('GET /api/v1/seasons', () => {
     it('Deberia retornar status 200', async () => {
       const response = await request(app).get('/api/v1/seasons')
@@ -69,24 +105,12 @@ describe('API /products', () => {
     })
   })
 
-  describe('Empleado intenta acceder a GET /api/v1/products/inventory', () => {
-    it('Deberia retornar status 200 y productos con HATEOAS', async () => {
-      const userData = {
-        email: 'test2@test.com',
-        password: '123456'
-      }
-
-      const loginResponse = await request(app)
-        .post('/api/v1/login')
-        .send(userData)
-      // Nos aseguramos que el login fue exitoso y obtenemos el token
-      expect(loginResponse.statusCode).toBe(200)
-      const loginToken = loginResponse.body.token
-
-      // Usamos el token del login para la petición a la ruta protegida
+  // --- Pruebas para /products/inventory (ruta protegida) ---
+  describe('GET /api/v1/products/inventory', () => {
+    it('El empleado debería retornar status 200', async () => {
       const response = await request(app)
         .get('/api/v1/products/inventory')
-        .set('Authorization', `Bearer ${loginToken}`)
+        .set('Authorization', `Bearer ${loginTokenAdmin}`)
       expect(response.statusCode).toBe(200)
     })
 
@@ -94,27 +118,6 @@ describe('API /products', () => {
       const response = await request(app)
         .get('/api/v1/products/inventory')
         .set('Authorization', `Bearer ${loginTokenClient}`)
-      expect(response.statusCode).toBe(403)
-    })
-  })
-  describe('Cliente intenta acceder a GET /api/v1/products/inventory', () => {
-    it('Deberia retornar status 200', async () => {
-      const userData = {
-        email: 'test1@test.com',
-        password: '123456'
-      }
-
-      const loginResponse = await request(app)
-        .post('/api/v1/login')
-        .send(userData)
-      // Nos aseguramos que el login fue exitoso y obtenemos el token
-      expect(loginResponse.statusCode).toBe(200)
-      const loginToken = loginResponse.body.token
-
-      // Usamos el token del login para la petición a la ruta protegida
-      const response = await request(app)
-        .get('/api/v1/products/inventory')
-        .set('Authorization', `Bearer ${loginToken}`)
       expect(response.statusCode).toBe(403)
     })
   })
