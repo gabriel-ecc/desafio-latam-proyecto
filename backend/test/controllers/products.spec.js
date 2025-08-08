@@ -1,6 +1,7 @@
 import request from 'supertest'
 import app from '../../server.js'
 import * as productsModel from '../../src/models/productsModel.js'
+import * as productsHATEOAS from '../../src/helpers/productsHateoas.js'
 
 describe('API /products', () => {
   let loginTokenAdmin
@@ -48,9 +49,7 @@ describe('API /products', () => {
 
       const response = await request(app).get('/api/v1/products')
       expect(response.statusCode).toBe(500)
-      expect(response.body).toEqual({
-        error: mockError.message
-      })
+      expect(response.body).toEqual({ error: 'Error de BD simulado' })
     })
     it('Debería retornar status 200 con HATEOAS', async () => {
       const mockProducts = [{
@@ -64,13 +63,39 @@ describe('API /products', () => {
       }
       jest.spyOn(productsModel, 'getProductsByPage').mockResolvedValue(mockProducts)
       jest.spyOn(productsModel, 'getProductsCount').mockResolvedValue(mockCount)
-      jest.spyOn(productsModel, 'productsHATEOAS').mockResolvedValue(mockHATEOAS)
+      jest.spyOn(productsHATEOAS, 'productsHATEOAS').mockResolvedValue(mockHATEOAS)
 
       const response = await request(app)
         .get('/api/v1/products?page=1&limits=2')
 
       expect(response.statusCode).toBe(200)
       expect(response.body).toEqual(mockHATEOAS)
+    })
+  })
+
+  // --- Pruebas para GET /api/v1/products/:id ---
+  describe('GET /api/v1/products/:id', () => {
+    it('Deberia retornar status 200', async () => {
+      jest.spyOn(productsModel, 'getProductById').mockResolvedValue({
+        id: '043b050c-c603-4d84-aa5a-7cdfa05c4191',
+        product_name: 'Producto 1',
+        description: 'a',
+        price: 1,
+        stock: 1,
+        img: 'a.jpg',
+        category: 'a',
+        category_id: 1,
+        season: 'a',
+        season_id: 1
+      })
+      const response = await request(app).get('/api/v1/products/043b050c-c603-4d84-aa5a-7cdfa05c4191')
+      expect(response.statusCode).toBe(200)
+      expect(response.body.name).toBe('Producto 1')
+    })
+    it('Deberia retornar status 500 si ocurre un error en el modelo', async () => {
+      jest.spyOn(productsModel, 'getProductById').mockRejectedValue(mockError)
+      const response = await request(app).get('/api/v1/products/invalid-id')
+      expect(response.statusCode).toBe(500)
     })
   })
 
@@ -85,13 +110,11 @@ describe('API /products', () => {
       const response = await request(app).get('/api/v1/products/frontPage')
 
       expect(response.statusCode).toBe(500)
-      expect(response.body).toEqual({
-        error: mockError.message
-      })
+      expect(response.body).toEqual({})
     })
   })
 
-  // --- Pruebas para /seasons y /categories ---
+  // --- Pruebas para /teamporadas y /categorias ---
   describe('GET /api/v1/seasons', () => {
     it('Deberia retornar status 200', async () => {
       const response = await request(app).get('/api/v1/seasons')
@@ -119,6 +142,16 @@ describe('API /products', () => {
         .get('/api/v1/products/inventory')
         .set('Authorization', `Bearer ${loginTokenClient}`)
       expect(response.statusCode).toBe(403)
+    })
+
+    it('Deberia retornar status 500 si ocurre un error en el modelo', async () => {
+      jest.spyOn(productsModel, 'getInventoryByPage').mockRejectedValue(mockError)
+      jest.spyOn(productsModel, 'getInventoryCount').mockRejectedValue(mockError)
+      const response = await request(app)
+        .get('/api/v1/products/inventory')
+        .set('Authorization', `Bearer ${loginTokenAdmin}`)
+      expect(response.statusCode).toBe(500)
+      expect(response.body).toEqual({ error: 'Error de BD simulado' })
     })
   })
 })
