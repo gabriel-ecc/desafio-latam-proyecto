@@ -37,7 +37,7 @@ const Cart = () => {
     }
   }, [])
 
-//Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago
+{/* Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago */}
 
   const handleCancel = () => {
     Swal.fire({
@@ -80,7 +80,7 @@ const Cart = () => {
     setSelectedPayment(null)
   }
 
-//Fromatear el número de tarjeta 
+{/* Formatear el número de tarjeta  */}
 
   const formatCardNumber = (value) => {
     const onlyNums = value.replace(/\D/g, '');
@@ -88,7 +88,7 @@ const Cart = () => {
    return spaced;
   }
 
-//Formatear la fecha con / de forma automatica
+{/* Formatear la fecha con / de forma automatica */}
 
   const formatExpiry = (value) => {
     const onlyNums = value.replace(/\D/g, '');
@@ -107,7 +107,8 @@ const Cart = () => {
     return
     }
 
-    //Seleciona pago pero no coloca los datos completos
+    {/*Seleciona pago pero no coloca los datos completos */}
+
     if(selectedPayment === 'credito' || selectedPayment === 'debito' ){
       if (!nombreTitular.trim() || !numeroTarjeta.trim() || !expiracion.trim() || !cvv.trim()) {
         Swal.fire({
@@ -118,7 +119,8 @@ const Cart = () => {
         return;
       }
     }
-//Validación de expiración y código de seguridad
+
+    {/* Validación de expiración y código de seguridad */}
 
     const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
     const cvvOk = /^\d{3}$/.test(cvv)
@@ -131,8 +133,8 @@ const Cart = () => {
       })
       return
     }
-// Pago éxitoso
-
+    
+    {/* Pago éxitoso */}
     await Swal.fire({
       title: 'Pago realizado con éxito',
       html: `
@@ -144,14 +146,14 @@ const Cart = () => {
     navigate('/')
   }
 
-  // Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.
+  {/* Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar. */}
 
   return (
     <>
     <BackButton />
     <main className="big_container_cart">
 
-
+    {/* Sección de Productos agregar, sacar o eliminar */}
       <div className="section_left">
         <div className="products">
           <h2>Detalles del Pedido:</h2>
@@ -218,6 +220,8 @@ const Cart = () => {
           )}
         </div>
 
+        {/* Totales y Botones de avance para pagar o vaciado de carrito */}
+
         <div className="total_option">
           <h5 className="total_title">
             Total: ${totalPrice().toLocaleString('es-CL')}{' '}
@@ -241,7 +245,7 @@ const Cart = () => {
         </div>
       </div>
 
-
+        {/* Sección de Pago */}
 
       <div className="section_right">
         <h2>Verificación y Pago:</h2>
@@ -338,6 +342,9 @@ const Cart = () => {
             </>
           )}
         </div>
+
+        {/* Pgo Final o volver a la edición de productos*/}
+        
         <div className="total_button">
           <Button variant="danger" onClick={handleBack} disabled={!paymentStep}>
             Volver
