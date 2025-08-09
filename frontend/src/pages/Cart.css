@@ -5,12 +5,12 @@
   grid-template-areas:
     'left'
     'right';
-  height: 70vh;
+  min-height: 70vh;
   justify-content: center;
   align-items: center;
   padding: 15px;
   box-sizing: border-box;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .section_left,
@@ -18,7 +18,7 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .section_left {
@@ -34,6 +34,8 @@
   padding-right: 20px;
   text-align: center;
   align-items: center;
+  max-height: 70vh;    
+  overflow-y: auto;
 }
 
 /* Productos individuales*/
@@ -197,6 +199,10 @@
   font-weight: 600;
 }
 
+.input_large{
+  width: 203px;
+}
+
 .toast-success-container {
   background-color: #008a20 !important;
   color: #fff;
@@ -218,15 +224,20 @@
   }
 }
 
+
 @media screen and (min-width: 1200px) {
   .big_container_cart {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     grid-template-areas: 'left right';
-    overflow-y: hidden;
+    overflow-y: auto; 
+    height: auto; 
   }
   .section_left {
-    height: 67vh;
+    height: 70vh;
+  }
+  .section_left{
+    height: 100%;
   }
 }

@@ -291,7 +291,7 @@ const Cart = () => {
                       required
                     />
                     <label>Número de Tarjeta</label>
-                    <input
+                    <input className='input_large'
                       type="text"
                       placeholder="XXXX XXXX XXXX XXXX"
                       maxLength="19"
