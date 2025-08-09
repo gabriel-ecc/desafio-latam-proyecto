@@ -10,8 +10,8 @@ import { Nav, NavDropdown, Container } from 'react-bootstrap'
 import './Navbar.css'
 
 const Navbar = () => {
-  const { calculateTotalPrice } = useCart()
-  const total = calculateTotalPrice()
+  const { totalPrice } = useCart()
+  const total = totalPrice()
   const { token, user, logout } = useContext(UserContext)
   const navigate = useNavigate()
 

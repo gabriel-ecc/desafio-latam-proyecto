@@ -7,6 +7,7 @@ import { FavoriteContext } from '../context/FavoriteContext.jsx'
 import { ENDPOINT } from '../config/constants.js'
 import BackButton from '../components/BackButton'
 import axios from 'axios'
+import useCart from '../context/CartContext.jsx'
 
 export default function Favorites() {
   const [searchParams] = useSearchParams()
@@ -14,6 +15,7 @@ export default function Favorites() {
   const season = searchParams.get('season')
   const [cards, setCards] = useState([])
   const [listCategories, setListCategories] = useState([])
+  const { addToCart } = useCart()
   const { favorites, handleActionFavorite } = useContext(FavoriteContext)
   const [selectedCategory, setSelectedCategory] = useState(
     category === '0' ? '' : category || ''

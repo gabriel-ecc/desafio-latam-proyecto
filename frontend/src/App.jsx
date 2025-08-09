@@ -29,6 +29,7 @@ import OrderDetail from './pages/OrderDetail'
 import ProductDetail from './pages/ProductDetail'
 import About from './pages/About'
 import Footer from './components/Footer'
+import ProtectedRoute from './components/ProtectedRoute'
 
 // Componente para redireccionar /card/:id a /products/:id
 const CardRedirect = () => {
@@ -51,7 +52,12 @@ function App() {
         <Route path="/create-employee" element={<ProtectedCreateEmployee />} />
         <Route path="/admin-compras" element={<ProtectedAdminPurchases />} />
         <Route path="/dashboard" element={<ProtectedDashboard />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/cart" element={
+          <ProtectedRoute allowedUserTypes={[1, 2, 3]} redirectTo='/login'>
+            <Cart/>
+          </ProtectedRoute>
+          }
+        />
         <Route path="/products" element={<Products />} />
         <Route path="/catalogo" element={<Catalog />} />
         <Route path="/inventario" element={<ProtectedInventory />} />
