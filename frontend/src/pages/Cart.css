@@ -1,3 +1,5 @@
+@import '../assets/variables.css';
+
 .big_container_cart {
   display: grid;
   grid-template-columns: 1fr;
@@ -8,7 +10,7 @@
   min-height: 70vh;
   justify-content: center;
   align-items: center;
-  padding: 15px;
+  padding: var(--spacing-md);
   box-sizing: border-box;
   overflow-y: hidden;
 }
@@ -23,15 +25,15 @@
 
 .section_left {
   grid-area: left;
-  padding: 1rem;
+  padding: var(--spacing-md);
   text-align: center;
 }
 .section_right {
   grid-area: right;
   display: flex;
   flex-direction: column;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -45,7 +47,7 @@
 .products {
   overflow-y: auto;
   flex-grow: 1;
-  padding-right: 30px;
+  padding-right: var(--spacing-xl);
   height: 80%;
 }
 
@@ -54,25 +56,25 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: var(--spacing-md);
   height: 20%;
 }
 .product_cart {
-  margin: 15px auto;
+  margin: var(--spacing-md) auto;
   height: 175px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-background);
+  border-radius: var(--radius-md);
+  box-shadow: var(--box-shadow-md);
   flex-wrap: wrap;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px;
+  padding: var(--spacing-md);
 }
 .product_img {
   width: 70px;
   height: 70px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   overflow: hidden;
   flex-shrink: 0;
   object-fit: contain;
@@ -91,7 +93,7 @@
 .price_stock {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--spacing-xs);
   align-items: center;
   text-align: center;
   justify-content: center;
@@ -100,28 +102,28 @@
 }
 
 .subtotal {
-  color: #856404;
-  font-size: 1.1rem;
-  font-weight: 600;
+  color: var(--color-warning-dark);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
 }
 
 .total_title {
-  color: #0f3a1a;
-  font-size: 1.7rem;
-  font-weight: 800;
+  color: var(--color-primary-darker);
+  font-size: var(--font-size-xxl);
+  font-weight: var(--font-weight-extrabold);
 }
 
 .total_button {
   display: flex;
-  gap: 10px;
+  gap: var(--spacing-sm);
   justify-content: center;
 }
 
 .button_items {
   display: flex;
-  padding-left: 15px;
-  margin-left: 5px;
-  gap: 5px;
+  padding-left: var(--spacing-md);
+  margin-left: var(--spacing-xs);
+  gap: var(--spacing-xs);
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -130,17 +132,17 @@
 
 /*Segunda seccion*/
 .payment_container {
-  background: #dee2e6;
+  background: var(--color-border);
   height: max-content;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ddd;
+  box-shadow: var(--box-shadow-sm);
+  border: 1px solid var(--color-border-light);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-  padding: 20px;
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-lg);
   width: 100%;
   position: relative;
 }
@@ -149,12 +151,12 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 1rem;
+  gap: var(--spacing-md);
   flex-wrap: wrap;
 }
 
 .payment_option {
-  margin: 0.5rem;
+  margin: var(--spacing-sm);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -169,9 +171,9 @@
 }
 
 .payment_option.selected {
-  border: 2px solid #007bff;
-  border-radius: 8px;
-  padding: 4px;
+  border: 2px solid var(--color-text-link);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xs);
 }
 .img_card {
   width: 80px;
@@ -181,27 +183,27 @@
 }
 
 .card_form {
-  margin-top: 15px;
+  margin-top: var(--spacing-md);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--spacing-sm);
 }
 
 .card_date {
   display: flex;
-  gap: 10px;
+  gap: var(--spacing-sm);
 }
 
 .card_form input {
-  padding: 9px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-light);
 }
 
 .card_form label {
   display: block;
   margin-bottom: 3px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .input_large {
@@ -209,18 +211,18 @@
 }
 
 .toast-success-container {
-  background-color: #008a20 !important;
-  color: #fff;
+  background-color: var(--color-success-dark) !important;
+  color: var(--color-text-inverse);
 }
 
 .toast-info-container {
-  background-color: #008f8f !important;
-  color: #fff;
+  background-color: var(--color-info-dark) !important;
+  color: var(--color-text-inverse);
 }
 
 .toast-warning-container {
-  background-color: #8a4000 !important;
-  color: #fff;
+  background-color: var(--color-warning-dark) !important;
+  color: var(--color-text-inverse);
 }
 
 @media screen and (min-width: 768px) {
@@ -245,7 +247,7 @@
 
 /* Estilos para la tarjeta superpuesta */
 .card-container {
-  margin: 2rem 0;
+  margin: var(--spacing-xl) 0;
   display: block !important;
   width: 100% !important;
   text-align: center !important;
@@ -256,9 +258,9 @@
   position: relative;
   width: 450px;
   height: 280px;
-  border-radius: 15px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--box-shadow-2xl);
   margin: 0 auto !important;
   display: inline-block !important;
   left: 0 !important;
@@ -272,19 +274,19 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: var(--z-index-base);
 }
 
 .card-type-label {
   position: absolute;
-  top: 20px;
-  left: 25px;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
   text-transform: uppercase;
-  z-index: 3;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  z-index: var(--z-index-dropdown);
+  text-shadow: 2px 2px 4px var(--color-overlay-dark);
   letter-spacing: 1px;
 }
 
@@ -294,11 +296,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: var(--z-index-docked);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20px;
+  padding: var(--spacing-lg);
   box-sizing: border-box;
 }
 
@@ -313,19 +315,19 @@
 .card-number-input {
   background: transparent;
   border: none;
-  color: white;
-  font-size: 29px;
-  font-weight: bold;
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
   text-align: center;
   width: 100%;
   letter-spacing: 2px;
   font-family: 'Courier New', monospace;
   outline: none;
-  padding: 12px;
+  padding: var(--spacing-sm);
 }
 
 .card-number-input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-white-translucent);
 }
 
 .card-holder-section {
@@ -338,28 +340,28 @@
 .card-holder-input {
   background: transparent;
   border: none;
-  color: white;
-  font-size: 19px;
-  font-weight: 600;
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
   width: 100%;
   outline: none;
-  padding: 4px;
+  padding: var(--spacing-xs);
   text-align: left;
 }
 
 .card-holder-input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-white-translucent);
   text-transform: uppercase;
 }
 
 .card-details-section {
   position: absolute;
   bottom: 27px;
-  right: 30px;
+  right: var(--spacing-xl);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--spacing-xs);
   align-items: flex-end;
 }
 
@@ -367,9 +369,9 @@
 .card-cvv-input {
   background: transparent;
   border: none;
-  color: white;
-  font-size: 21.5px;
-  font-weight: 600;
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
   text-align: center;
   width: 80px;
   outline: none;
@@ -377,7 +379,7 @@
 
 .card-expiry-input::placeholder,
 .card-cvv-input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-white-translucent);
 }
 
 /* Efectos de focus para mejor UX */
@@ -385,17 +387,17 @@
 .card-holder-input:focus,
 .card-expiry-input:focus,
 .card-cvv-input:focus {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  padding: 12px;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+  background: var(--color-white-translucent);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  box-shadow: var(--box-shadow-focus);
 }
 
 /* Responsive para la tarjeta */
 @media screen and (max-width: 768px) {
   .card-container {
     padding: 0;
-    margin: 1rem auto;
+    margin: var(--spacing-md) auto;
   }
 
   .card-background {
@@ -404,24 +406,24 @@
   }
 
   .card-type-label {
-    font-size: 12px;
-    top: 15px;
-    left: 20px;
+    font-size: var(--font-size-sm);
+    top: var(--spacing-md);
+    left: var(--spacing-lg);
     letter-spacing: 0.5px;
   }
 
   .card-number-input {
-    font-size: 18px;
+    font-size: var(--font-size-lg);
     letter-spacing: 2px;
   }
 
   .card-holder-input {
-    font-size: 14px;
+    font-size: var(--font-size-md);
   }
 
   .card-expiry-input,
   .card-cvv-input {
-    font-size: 14px;
+    font-size: var(--font-size-md);
     width: 65px;
   }
 }
@@ -429,7 +431,7 @@
 @media screen and (max-width: 480px) {
   .card-container {
     padding: 0;
-    margin: 1rem auto;
+    margin: var(--spacing-md) auto;
   }
 
   .card-background {
@@ -438,24 +440,24 @@
   }
 
   .card-type-label {
-    font-size: 12px;
-    top: 12px;
-    left: 15px;
+    font-size: var(--font-size-sm);
+    top: var(--spacing-sm);
+    left: var(--spacing-md);
     letter-spacing: 0.3px;
   }
 
   .card-number-input {
-    font-size: 16px;
+    font-size: var(--font-size-md);
     letter-spacing: 1.5px;
   }
 
   .card-holder-input {
-    font-size: 12px;
+    font-size: var(--font-size-sm);
   }
 
   .card-expiry-input,
   .card-cvv-input {
-    font-size: 12px;
+    font-size: var(--font-size-sm);
     width: 55px;
   }
 }

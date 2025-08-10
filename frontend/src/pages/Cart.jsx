@@ -321,7 +321,7 @@ const Cart = () => {
                           <input
                             type="text"
                             placeholder="Nombre del Titular"
-                            maxLength="30"
+                            maxLength="26"
                             value={nombreTitular}
                             onChange={e => setNombreTitular(e.target.value)}
                             className="card-holder-input"
