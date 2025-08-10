@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import './Card.css' // Se importa el CSS para la tarjeta de producto
 import FavoriteButton from './FavoriteButton'
+import { toast } from '../utils/swalHelper'
 
 const ProductCard = ({
   product,
@@ -30,6 +31,10 @@ const ProductCard = ({
   const handleAddToCart = () => {
     // Llama a la función pasada por props, añadiendo la cantidad seleccionada
     onAddToCart({ ...product, quantity })
+    toast({
+      icon: 'success',
+      title: `Has agregado ${quantity} ${product.name} al carrito.`
+    })
     setQuantity(0)
   }
 

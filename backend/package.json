@@ -32,13 +32,22 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.28.0",
+    "babel-plugin-transform-import-meta": "^2.3.3",
     "jest": "^30.0.5",
     "standard": "^17.1.2",
     "supertest": "^7.1.4"
   },
   "jest": {
     "transform": {
-      "^.+\\.js$": "babel-jest"
+      "^.+\\.js$": [
+        "babel-jest",
+        {
+          "presets": [
+            "@babel/preset-env"
+          ],
+          "plugins": []
+        }
+      ]
     },
     "collectCoverageFrom": [
       "**/*.js"
@@ -46,7 +55,6 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "backend/coverage"
-      
     ],
     "coverageThreshold": {
       "global": {

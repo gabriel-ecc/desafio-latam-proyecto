@@ -1,0 +1,243 @@
+.big_container_cart {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    'left'
+    'right';
+  min-height: 70vh;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  box-sizing: border-box;
+  overflow-y: hidden;
+}
+
+.section_left,
+.section_right {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  justify-content: flex-start;
+}
+
+.section_left {
+  grid-area: left;
+  padding: 1rem;
+  text-align: center;
+}
+.section_right {
+  grid-area: right;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  align-items: center;
+  max-height: 70vh;    
+  overflow-y: auto;
+}
+
+/* Productos individuales*/
+
+.products {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: 30px;
+  height: 80%;
+}
+
+.total_option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 20%;
+}
+.product_cart {
+  margin: 15px auto;
+  height: 175px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+}
+.product_img {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  object-fit: contain;
+  margin-bottom: 7px;
+}
+
+.img_section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 30%;
+}
+
+.price_stock {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  width: 30%;
+  margin-bottom: 3px;
+}
+
+.subtotal {
+  color: #856404;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.total_title {
+  color: #0f3a1a;
+  font-size: 1.7rem;
+  font-weight: 800;
+}
+
+.total_button {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.button_items {
+  display: flex;
+  padding-left: 15px;
+  margin-left: 5px;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 30%;
+}
+
+/*Segunda seccion*/
+.payment_container {
+  background: #dee2e6;
+  height: max-content;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.kind_payment {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.payment_option {
+  margin: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border: none;
+}
+
+.payment_option:hover {
+  opacity: 0.9;
+  transform: scale(1.2);
+}
+
+.payment_option.selected {
+  border: 2px solid #007BFF;
+  border-radius: 8px;
+  padding: 4px;
+}
+.img_card{
+  width: 80px;
+  height: auto;
+  object-fit: contain;
+  filter: saturate(150%)
+}
+
+.card_form {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card_date {
+  display: flex;
+  gap: 10px;
+}
+
+.card_form input {
+  padding: 9px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.card_form label {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+
+.input_large{
+  width: 203px;
+}
+
+.toast-success-container {
+  background-color: #008a20 !important;
+  color: #fff;
+}
+
+.toast-info-container {
+  background-color: #008f8f !important;
+  color: #fff;
+}
+
+.toast-warning-container {
+  background-color: #8a4000 !important;
+  color: #fff;
+}
+
+@media screen and (min-width: 768px) {
+  .product_cart {
+    height: 150px;
+  }
+}
+
+
+@media screen and (min-width: 1200px) {
+  .big_container_cart {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'left right';
+    overflow-y: auto; 
+    height: auto; 
+  }
+  .section_left {
+    height: 70vh;
+  }
+  .section_left{
+    height: 100%;
+  }
+}
