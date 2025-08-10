@@ -9,8 +9,8 @@
     'left'
     'right';
   min-height: 70vh;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   padding: var(--spacing-sm);
   box-sizing: border-box;
   overflow-y: hidden;
@@ -38,7 +38,7 @@
   padding-right: var(--spacing-md);
   text-align: center;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 }
 
@@ -48,7 +48,7 @@
   flex-grow: 1;
   padding-right: var(--spacing-md);
   height: 80%;
-  max-height: 400px; /* Altura para móvil (ajustada para 3 productos pequeños) */
+  max-height: 540px; /* Altura para móvil (ajustada para 3 productos pequeños) */
 }
 
 .total_option {
@@ -62,7 +62,7 @@
 
 .product_cart {
   margin: var(--spacing-sm) auto;
-  height: 130px; /* Altura reducida para móvil */
+  height: auto; /* Altura reducida para móvil */
   background-color: var(--color-background);
   border-radius: var(--radius-md);
   box-shadow: var(--box-shadow-md);
@@ -141,7 +141,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Cambiado a flex-start para alinear arriba */
   margin-bottom: var(--spacing-md);
   padding: var(--spacing-md);
   width: 100%;
@@ -232,6 +232,8 @@
 @media screen and (min-width: 768px) {
   .big_container_cart {
     padding: var(--spacing-md);
+    justify-content: center;
+    align-items: center;
   }
 
   .section_left {
@@ -241,6 +243,7 @@
   .section_right {
     padding-left: var(--spacing-lg);
     padding-right: var(--spacing-lg);
+    justify-content: flex-start; /* Cambiado a flex-start para tablet */
   }
 
   .products {
@@ -271,6 +274,7 @@
   .payment_container {
     margin-bottom: var(--spacing-lg);
     padding: var(--spacing-lg);
+    justify-content: flex-start; /* Alineación superior en tablet también */
   }
 
   .img_card {
@@ -293,16 +297,44 @@
     min-height: 85vh;
     height: auto;
     padding: var(--spacing-lg);
+    justify-content: center;
+    align-items: stretch; /* Hace que ambas secciones tengan la misma altura */
   }
 
   .section_left {
     height: 100%;
     padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuye el contenido */
   }
 
   .section_right {
-    padding-left: var(--spacing-xl);
-    padding-right: var(--spacing-xl);
+    padding: var(--spacing-xl); /* Restauro el padding aquí */
+    justify-content: flex-start; /* Cambio a flex-start para alinear arriba */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-border); /* Agrego el fondo gris directamente a la sección */
+  }
+
+  /* Contenedor principal de pago se alinea arriba */
+  .payment_container {
+    justify-content: flex-start;
+    margin-bottom: 0;
+    flex-grow: 1;
+    height: auto;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  /* Espacio para botones de pago al final */
+  .payment_buttons {
+    margin-top: auto; /* Empuja los botones hacia abajo */
+    padding-top: var(--spacing-lg);
   }
 
   .products {
@@ -320,7 +352,7 @@
   }
 
   .img_card {
-    width: 90px;
+    width: 70px; /* Reducido para desktop */
   }
 }
 
@@ -514,8 +546,8 @@
   }
 
   .card-background {
-    width: 450px;
-    height: 280px;
+    width: 380px; /* Reducido de 450px */
+    height: 240px; /* Reducido de 280px */
   }
 
   .card-type-label {
