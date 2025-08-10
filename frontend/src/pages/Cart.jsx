@@ -321,7 +321,7 @@ const Cart = () => {
                           <input
                             type="text"
                             placeholder="Nombre del Titular"
-                            maxLength="25"
+                            maxLength="30"
                             value={nombreTitular}
                             onChange={e => setNombreTitular(e.target.value)}
                             className="card-holder-input"
@@ -342,11 +342,14 @@ const Cart = () => {
                             required
                           />
                           <input
-                            type="number"
+                            type="text"
                             placeholder="CVV"
                             maxLength="3"
                             value={cvv}
-                            onChange={e => setCvv(e.target.value)}
+                            onChange={e => {
+                              const value = e.target.value.replace(/\D/g, '')
+                              setCvv(value)
+                            }}
                             className="card-cvv-input"
                             required
                           />

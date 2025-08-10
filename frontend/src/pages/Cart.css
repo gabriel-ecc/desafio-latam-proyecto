@@ -280,11 +280,12 @@
   top: 20px;
   left: 25px;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   text-transform: uppercase;
   z-index: 3;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  letter-spacing: 1px;
 }
 
 .card_form_overlay {
@@ -303,7 +304,7 @@
 
 .card-number-section {
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
@@ -313,14 +314,14 @@
   background: transparent;
   border: none;
   color: white;
-  font-size: 22px;
+  font-size: 29px;
   font-weight: bold;
   text-align: center;
   width: 100%;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   font-family: 'Courier New', monospace;
   outline: none;
-  padding: 10px;
+  padding: 12px;
 }
 
 .card-number-input::placeholder {
@@ -329,21 +330,21 @@
 
 .card-holder-section {
   position: absolute;
-  bottom: 25px;
-  left: 30px;
-  width: 50%;
+  bottom: 23px;
+  left: 22px;
+  width: 80%;
 }
 
 .card-holder-input {
   background: transparent;
   border: none;
   color: white;
-  font-size: 14px;
+  font-size: 19px;
   font-weight: 600;
   text-transform: uppercase;
   width: 100%;
   outline: none;
-  padding: 5px;
+  padding: 4px;
   text-align: left;
 }
 
@@ -354,11 +355,11 @@
 
 .card-details-section {
   position: absolute;
-  bottom: 25px;
+  bottom: 27px;
   right: 30px;
   display: flex;
-  flex-direction: row;
-  gap: 15px;
+  flex-direction: column;
+  gap: 4px;
   align-items: flex-end;
 }
 
@@ -367,12 +368,11 @@
   background: transparent;
   border: none;
   color: white;
-  font-size: 14px;
+  font-size: 21.5px;
   font-weight: 600;
   text-align: center;
-  width: 60px;
+  width: 80px;
   outline: none;
-  padding: 5px;
 }
 
 .card-expiry-input::placeholder,
@@ -386,9 +386,9 @@
 .card-expiry-input:focus,
 .card-cvv-input:focus {
   background: rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
-  padding: 8px;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
 
 /* Responsive para la tarjeta */
@@ -407,20 +407,22 @@
     font-size: 12px;
     top: 15px;
     left: 20px;
+    letter-spacing: 0.5px;
   }
 
   .card-number-input {
-    font-size: 14px;
+    font-size: 18px;
+    letter-spacing: 2px;
   }
 
   .card-holder-input {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .card-expiry-input,
   .card-cvv-input {
-    font-size: 12px;
-    width: 50px;
+    font-size: 14px;
+    width: 65px;
   }
 }
 
@@ -436,23 +438,24 @@
   }
 
   .card-type-label {
-    font-size: 10px;
+    font-size: 12px;
     top: 12px;
     left: 15px;
+    letter-spacing: 0.3px;
   }
 
   .card-number-input {
-    font-size: 12px;
-    letter-spacing: 1px;
+    font-size: 16px;
+    letter-spacing: 1.5px;
   }
 
   .card-holder-input {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .card-expiry-input,
   .card-cvv-input {
-    font-size: 10px;
-    width: 40px;
+    font-size: 12px;
+    width: 55px;
   }
 }
