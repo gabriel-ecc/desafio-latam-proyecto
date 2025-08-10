@@ -37,7 +37,7 @@ const Cart = () => {
     }
   }, [])
 
-//Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago
+  //Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago
 
   const handleCancel = () => {
     Swal.fire({
@@ -80,45 +80,50 @@ const Cart = () => {
     setSelectedPayment(null)
   }
 
-//Fromatear el número de tarjeta 
+  //Fromatear el número de tarjeta
 
-  const formatCardNumber = (value) => {
-    const onlyNums = value.replace(/\D/g, '');
-    const spaced = onlyNums.match(/.{1,4}/g)?.join(' ') || '';
-   return spaced;
+  const formatCardNumber = value => {
+    const onlyNums = value.replace(/\D/g, '')
+    const spaced = onlyNums.match(/.{1,4}/g)?.join(' ') || ''
+    return spaced
   }
 
-//Formatear la fecha con / de forma automatica
+  //Formatear la fecha con / de forma automatica
 
-  const formatExpiry = (value) => {
-    const onlyNums = value.replace(/\D/g, '');
-    if (onlyNums.length === 0) return '';
-    if (onlyNums.length <= 2) return onlyNums;
-   return onlyNums.slice(0, 2) + '/' + onlyNums.slice(2, 4);
+  const formatExpiry = value => {
+    const onlyNums = value.replace(/\D/g, '')
+    if (onlyNums.length === 0) return ''
+    if (onlyNums.length <= 2) return onlyNums
+    return onlyNums.slice(0, 2) + '/' + onlyNums.slice(2, 4)
   }
 
-  const handlePay = async() => {
+  const handlePay = async () => {
     //No selecciona Pago
-    if(!selectedPayment) {
+    if (!selectedPayment) {
       Swal.fire({
         icon: 'error',
-        title: 'Selecciona un método de pago',
-    })
-    return
+        title: 'Selecciona un método de pago'
+      })
+      return
     }
 
     //Seleciona pago pero no coloca los datos completos
-    if(selectedPayment === 'credito' || selectedPayment === 'debito' ){
-      if (!nombreTitular.trim() || !numeroTarjeta.trim() || !expiracion.trim() || !cvv.trim()) {
+    if (selectedPayment === 'credito' || selectedPayment === 'debito') {
+      if (
+        !nombreTitular.trim() ||
+        !numeroTarjeta.trim() ||
+        !expiracion.trim() ||
+        !cvv.trim()
+      ) {
         Swal.fire({
           icon: 'error',
           title: 'Campos incompletos',
-          text: 'Por favor completa todos los campos de la tarjeta.',
-        });
-        return;
+          text: 'Por favor completa todos los campos de la tarjeta.'
+        })
+        return
       }
     }
-//Validación de expiración y código de seguridad
+    //Validación de expiración y código de seguridad
 
     const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
     const cvvOk = /^\d{3}$/.test(cvv)
@@ -131,7 +136,7 @@ const Cart = () => {
       })
       return
     }
-// Pago éxitoso
+    // Pago éxitoso
 
     await Swal.fire({
       title: 'Pago realizado con éxito',
@@ -148,214 +153,242 @@ const Cart = () => {
 
   return (
     <>
-    <BackButton />
-    <main className="big_container_cart">
+      <BackButton />
+      <main className="big_container_cart">
+        <div className="section_left">
+          <div className="products">
+            <h2>Detalles del Pedido:</h2>
+            {cart.length === 0 ? (
+              <p>Tu carrito está vacío.</p>
+            ) : (
+              cart.map(item => (
+                <div key={item.id} className="product_cart">
+                  <div className="img_section">
+                    <img
+                      className="product_img"
+                      src={item.img}
+                      alt={item.name}
+                    />
+                    <h5>{item.name}</h5>
+                  </div>
+                  <div className="price_stock">
+                    <span className="price">
+                      Precio: ${item.price.toLocaleString('es-CL')}
+                    </span>
+                    <span className="stock">Cantidad: {item.quantity}</span>
+                    <span className="subtotal">
+                      {' '}
+                      Subtotal: $
+                      {(item.price * item.quantity).toLocaleString(
+                        'es-CL'
+                      )}{' '}
+                    </span>
+                  </div>
+                  <div className="button_items">
+                    <button
+                      className="btn-round btn-qty"
+                      onClick={() => {
+                        toast({
+                          icon: 'info',
+                          title: `Has quitado 1 ${item.name} del carrito.`
+                        })
+                        subtraction(item.id)
+                      }}
+                    >
+                      <i className="fa-solid fa-minus"></i>
+                    </button>
+                    <button
+                      className="btn-round btn-qty"
+                      onClick={() => {
+                        toast({
+                          icon: 'success',
+                          title: `Has agregado 1 ${item.name} del carrito.`
+                        })
+                        updateQuantity(item.id, item.quantity + 1)
+                      }}
+                    >
+                      <i className="fa-solid fa-plus"></i>
+                    </button>
+                    <button
+                      className="btn-round btn-cart"
+                      onClick={() => {
+                        toast({
+                          icon: 'warning',
+                          title: `Has Removido ${item.name} del carrito.`
+                        })
+                        updateQuantity(item.id, 0)
+                      }}
+                    >
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
 
-
-      <div className="section_left">
-        <div className="products">
-          <h2>Detalles del Pedido:</h2>
-          {cart.length === 0 ? (
-            <p>Tu carrito está vacío.</p>
-          ) : (
-            cart.map(item => (
-              <div key={item.id} className="product_cart">
-                <div className="img_section">
-                  <img className="product_img" src={item.img} alt={item.name} />
-                  <h5>{item.name}</h5>
-                </div>
-                <div className="price_stock">
-                  <span className="price">
-                    Precio: ${item.price.toLocaleString('es-CL')}
-                  </span>
-                  <span className="stock">Cantidad: {item.quantity}</span>
-                  <span className="subtotal">
-                    {' '}
-                    Subtotal: $
-                    {(item.price * item.quantity).toLocaleString('es-CL')}{' '}
-                  </span>
-                </div>
-                <div className="button_items">
-                  <button
-                    className="btn-round btn-qty"
-                    onClick={() => {
-                      toast({
-                        icon: 'info',
-                        title: `Has quitado 1 ${item.name} del carrito.`
-                      })
-                      subtraction(item.id)
-                    }}
-                  >
-                    <i className="fa-solid fa-minus"></i>
-                  </button>
-                  <button
-                    className="btn-round btn-qty"
-                    onClick={() => {
-                      toast({
-                        icon: 'success',
-                        title: `Has agregado 1 ${item.name} del carrito.`
-                      })
-                      updateQuantity(item.id, item.quantity + 1)
-                    }}
-                  >
-                    <i className="fa-solid fa-plus"></i>
-                  </button>
-                  <button
-                    className="btn-round btn-cart"
-                    onClick={() => {
-                      toast({
-                        icon: 'warning',
-                        title: `Has Removido ${item.name} del carrito.`
-                      })
-                      updateQuantity(item.id, 0)
-                    }}
-                  >
-                    <i className="fa-solid fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
+          <div className="total_option">
+            <h5 className="total_title">
+              Total: ${totalPrice().toLocaleString('es-CL')}{' '}
+            </h5>
+            <div className="total_button">
+              <Button
+                variant="danger"
+                onClick={handleCancel}
+                disabled={paymentStep}
+              >
+                Vaciar Carrito
+              </Button>
+              <Button
+                variant="success"
+                onClick={handleContinue}
+                disabled={paymentStep || cart.length === 0}
+              >
+                Continuar
+              </Button>
+            </div>
+          </div>
         </div>
 
-        <div className="total_option">
-          <h5 className="total_title">
-            Total: ${totalPrice().toLocaleString('es-CL')}{' '}
-          </h5>
+        <div className="section_right">
+          <h2>Verificación y Pago:</h2>
+          <div className="payment_container">
+            <p className="price">
+              Total de artículos:{' '}
+              {cart.reduce((sum, item) => sum + item.quantity, 0)}
+            </p>
+            <p className="total_title">
+              Total a pagar: ${totalPrice().toLocaleString('es-CL')}
+            </p>
+
+            {paymentStep && (
+              <>
+                {!selectedPayment && (
+                  <div>
+                    <p>Por favor Seleccionar un Método de Pago</p>
+                  </div>
+                )}
+                <div className="kind_payment">
+                  {paymentMethods.map(method => (
+                    <button
+                      key={method.id}
+                      onClick={() => setSelectedPayment(method.id)}
+                      className={`payment_option ${selectedPayment === method.id ? 'selected' : ''}`}
+                    >
+                      <img
+                        className="img_card"
+                        src={method.img}
+                        alt={method.label}
+                      />
+                      <p className="payment_title"> {method.label}</p>
+                    </button>
+                  ))}
+                </div>
+
+                {(selectedPayment === 'credito' ||
+                  selectedPayment === 'debito') && (
+                  <div className="card-container">
+                    <div className="card-background">
+                      <img
+                        src="/imgs/gata-card-clean.png"
+                        alt="Tarjeta GataBank"
+                        className="card-image"
+                      />
+                      <div className="card-type-label">
+                        {selectedPayment === 'credito'
+                          ? 'Tarjeta de Crédito'
+                          : 'Tarjeta de Débito'}
+                      </div>
+                      <form
+                        className="card_form_overlay"
+                        onSubmit={e => e.preventDefault()}
+                      >
+                        <div className="card-number-section">
+                          <input
+                            type="text"
+                            placeholder="XXXX XXXX XXXX XXXX"
+                            maxLength="19"
+                            value={numeroTarjeta}
+                            onChange={e =>
+                              setNumeroTarjeta(formatCardNumber(e.target.value))
+                            }
+                            className="card-number-input"
+                            required
+                          />
+                        </div>
+
+                        <div className="card-holder-section">
+                          <input
+                            type="text"
+                            placeholder="Nombre del Titular"
+                            maxLength="25"
+                            value={nombreTitular}
+                            onChange={e => setNombreTitular(e.target.value)}
+                            className="card-holder-input"
+                            required
+                          />
+                        </div>
+
+                        <div className="card-details-section">
+                          <input
+                            type="text"
+                            placeholder="MM/AA"
+                            maxLength="5"
+                            value={expiracion}
+                            onChange={e =>
+                              setExpiracion(formatExpiry(e.target.value))
+                            }
+                            className="card-expiry-input"
+                            required
+                          />
+                          <input
+                            type="number"
+                            placeholder="CVV"
+                            maxLength="3"
+                            value={cvv}
+                            onChange={e => setCvv(e.target.value)}
+                            className="card-cvv-input"
+                            required
+                          />
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
+                {selectedPayment === 'efectivo' && (
+                  <div>
+                    <p>
+                      {' '}
+                      El pago en efectivo se realizará al momento de retirar la
+                      compra.{' '}
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
           <div className="total_button">
             <Button
               variant="danger"
-              onClick={handleCancel}
-              disabled={paymentStep}
+              onClick={handleBack}
+              disabled={!paymentStep}
             >
-              Vaciar Carrito
+              Volver
             </Button>
             <Button
+              type="button"
               variant="success"
-              onClick={handleContinue}
-              disabled={paymentStep || cart.length === 0}
+              onClick={handlePay}
+              disabled={!paymentStep || !selectedPayment}
             >
-              Continuar
+              {' '}
+              Pagar{' '}
             </Button>
           </div>
         </div>
-      </div>
-
-
-
-      <div className="section_right">
-        <h2>Verificación y Pago:</h2>
-        <div className="payment_container">
-          <p className="price">
-            Total de artículos:{' '}
-            {cart.reduce((sum, item) => sum + item.quantity, 0)}
-          </p>
-          <p className='total_title'>Total a pagar: ${totalPrice().toLocaleString('es-CL')}</p>
-
-          {paymentStep && (
-            <>
-            {!selectedPayment && (
-              <div>
-               <p>Por favor Seleccionar un Método de Pago</p>
-              </div>
-            )}
-              <div className="kind_payment">
-                
-                {paymentMethods.map(method => (
-                  <button
-                    key={method.id}
-                    onClick={() => setSelectedPayment(method.id)}
-                    className={`payment_option ${selectedPayment === method.id ? 'selected' : ''}`}
-                  >
-                    <img
-                      className="img_card"
-                      src={method.img}
-                      alt={method.label}
-                    />
-                    <p className="payment_title"> {method.label}</p>
-                  </button>
-                ))}
-              </div>
-
-              {(selectedPayment === 'credito' ||
-                selectedPayment === 'debito') && (
-                <form className="card_form" onSubmit={(e) => e.preventDefault()}>
-                  <div>
-                    <label>Nombre del Titular</label>
-                    <input
-                      type="text"
-                      placeholder="Rigoberto Felines P"
-                      maxLength="25"
-                      value={nombreTitular}
-                      onChange={(e) => setNombreTitular(e.target.value)}
-                      required
-                    />
-                    <label>Número de Tarjeta</label>
-                    <input className='input_large'
-                      type="text"
-                      placeholder="XXXX XXXX XXXX XXXX"
-                      maxLength="19"
-                      value={numeroTarjeta}
-                      onChange={(e) => setNumeroTarjeta(formatCardNumber(e.target.value))}
-                      required
-                    />
-                  </div>
-                  <div className="card_date">
-                    <div>
-                      <label> Expiración </label>
-                      <input
-                        type="text"
-                        placeholder="MM/AA"
-                        maxLength="5"
-                        value={expiracion}
-                        onChange={(e) => setExpiracion(formatExpiry(e.target.value))}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label> CVV </label>
-                      <input
-                        type="number"
-                        placeholder="XXX"
-                        maxLength="3"
-                        value={cvv}
-                        onChange={(e) => setCvv(e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-                </form>
-              )}
-              {selectedPayment === 'efectivo' && (
-                <div>
-                  <p>
-                    {' '}
-                    El pago en efectivo se realizará al momento de retirar la
-                    compra.{' '}
-                  </p>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-        <div className="total_button">
-          <Button variant="danger" onClick={handleBack} disabled={!paymentStep}>
-            Volver
-          </Button>
-          <Button
-            type='button' 
-            variant="success" 
-            onClick={handlePay} 
-            disabled={!paymentStep || !selectedPayment}>
-            {' '}
-            Pagar{' '}
-          </Button>
-        </div>
-      </div>
-    </main>
-</>
+      </main>
+    </>
   )
 }
-
 
 export default Cart
