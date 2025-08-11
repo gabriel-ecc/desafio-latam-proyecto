@@ -898,7 +898,7 @@
 
   .payment_container {
     padding-top: var(--spacing-lg);
-    transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animación más suave y lenta */
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* Misma animación suave que efectivo */
     height: auto; /* Permite cambios dinámicos de altura */
     overflow: hidden; /* Transiciones suaves para contenido que cambia */
   }
@@ -1002,9 +1002,9 @@
   opacity: 0; /* Invisible inicialmente */
   overflow: hidden; /* Oculta el contenido cuando se colapsa */
   transition:
-    max-height 0.7s cubic-bezier(0.25, 0.8, 0.25, 1),
-    opacity 0.5s ease 0.1s,
-    margin 0.7s ease; /* Animación más suave y lenta */
+    max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.6s ease 0.2s,
+    margin 0.8s ease; /* Misma animación que efectivo */
   transform-origin: top center; /* Para animación desde arriba */
   justify-content: center; /* Centra horizontalmente */
   align-items: flex-start; /* Alinea al inicio verticalmente */
@@ -1014,7 +1014,7 @@
 .credit-card-container.visible {
   max-height: 400px; /* Altura suficiente para mostrar la tarjeta */
   opacity: 1; /* Visible */
-  margin: var(--spacing-sm) auto; /* Margen con centrado explícito */
+  margin: var(--spacing-md) auto; /* Margen con centrado explícito */
 }
 
 .card-background {
@@ -1026,6 +1026,7 @@
   box-shadow: var(--box-shadow-2xl);
   flex-shrink: 0; /* Evita que se encoja */
   margin: 0 auto; /* Centrado adicional */
+  transition: all 0.3s ease; /* Transición suave para el card */
 }
 
 .card-image {
