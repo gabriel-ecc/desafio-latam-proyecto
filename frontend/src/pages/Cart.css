@@ -426,21 +426,21 @@
   .cash-payment-info {
     min-height: 180px; /* Reducido para móvil */
   }
-  
+
   .cash-header {
     justify-content: center;
     text-align: center;
   }
-  
+
   .cash-header h4 {
     font-size: var(--font-size-md);
   }
-  
+
   .cash-total {
     font-size: var(--font-size-sm);
     padding: var(--spacing-sm);
   }
-  
+
   .amount {
     font-size: var(--font-size-md);
   }
@@ -718,15 +718,15 @@
   .cash-payment-info {
     min-height: 220px; /* Reducido para tablet */
   }
-  
+
   .cash-header h4 {
     font-size: var(--font-size-xl);
   }
-  
+
   .cash-content p {
     font-size: var(--font-size-md);
   }
-  
+
   .cash-total {
     font-size: var(--font-size-lg);
   }
@@ -963,19 +963,19 @@
     padding: var(--spacing-xl);
     min-height: 240px; /* Reducido para desktop */
   }
-  
+
   .cash-header h4 {
     font-size: var(--font-size-xl);
   }
-  
+
   .cash-content p {
     font-size: var(--font-size-md);
   }
-  
+
   .cash-total {
     font-size: var(--font-size-lg);
   }
-  
+
   .amount {
     font-size: var(--font-size-xl);
   }
@@ -994,6 +994,7 @@
 .credit-card-container {
   margin: 0 auto; /* Centrado explícito */
   display: flex; /* Cambio de block a flex */
+  flex-direction: column; /* Organiza verticalmente: mensaje arriba, tarjeta abajo */
   width: 100%;
   text-align: center;
   position: relative;
@@ -1006,15 +1007,50 @@
     opacity 0.6s ease 0.2s,
     margin 0.8s ease; /* Misma animación que efectivo */
   transform-origin: top center; /* Para animación desde arriba */
-  justify-content: center; /* Centra horizontalmente */
-  align-items: flex-start; /* Alinea al inicio verticalmente */
+  justify-content: flex-start; /* Alinea todo al inicio */
+  align-items: center; /* Centra horizontalmente los elementos */
 }
 
 /* Clase para cuando la tarjeta está visible */
 .credit-card-container.visible {
-  max-height: 400px; /* Altura suficiente para mostrar la tarjeta */
+  max-height: 480px; /* Aumentado para acomodar el mensaje más grande */
   opacity: 1; /* Visible */
   margin: var(--spacing-md) auto; /* Margen con centrado explícito */
+}
+
+/* Mensaje de instrucción para la tarjeta */
+.card-instruction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs); /* Aumentado para más separación de la tarjeta */
+  padding: var(--spacing-sm); /* Aumentado el padding */
+  border: 2px solid var(--color-info);
+  border-radius: var(--radius-md);
+  color: var(--color-info-dark);
+  font-size: var(--font-size-md); /* Aumentado el tamaño de fuente */
+  font-weight: var(--font-weight-bold); /* Más prominente */
+  animation: cardInstructionFadeIn 0.6s ease-out;
+  width: 50%; /* Ocupa todo el ancho disponible */
+  box-sizing: border-box;
+  order: 1; /* Asegura que aparezca primero */
+}
+
+.card-instruction i {
+  color: var(--color-info);
+  font-size: var(--font-size-md);
+}
+
+@keyframes cardInstructionFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .card-background {
@@ -1027,6 +1063,7 @@
   flex-shrink: 0; /* Evita que se encoja */
   margin: 0 auto; /* Centrado adicional */
   transition: all 0.3s ease; /* Transición suave para el card */
+  order: 2; /* Asegura que aparezca después del mensaje */
 }
 
 .card-image {
@@ -1159,7 +1196,7 @@
   /* Tablet - Tarjeta mejorada */
   .credit-card-container.visible {
     margin: var(--spacing-lg) auto; /* Margen con centrado explícito */
-    max-height: 500px; /* Más altura para tablet */
+    max-height: 580px; /* Aumentado para acomodar el mensaje más grande */
   }
 
   .card-background {
@@ -1238,7 +1275,7 @@
 
   .credit-card-container.visible {
     margin: var(--spacing-lg) auto; /* Margen con centrado explícito */
-    max-height: 600px; /* Más altura para desktop */
+    max-height: 680px; /* Aumentado para acomodar el mensaje más grande en desktop */
     display: flex;
     justify-content: center; /* Mantiene el centrado con flexbox */
     width: 100%; /* Ocupa todo el ancho disponible */

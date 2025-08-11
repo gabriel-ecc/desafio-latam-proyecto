@@ -293,6 +293,10 @@ const Cart = () => {
                   : ''
               }`}
             >
+              <div className="card-instruction">
+                <i className="fa-solid fa-credit-card"></i>
+                <span>Ingrese los datos de la tarjeta</span>
+              </div>
               <div className="card-background">
                 <img
                   src="/imgs/gata-card-clean.png"
@@ -372,10 +376,13 @@ const Cart = () => {
                 </div>
                 <div className="cash-content">
                   <p>
-                    <strong>¿Dónde pagar?</strong> Al retirar tu compra en nuestra tienda.
+                    <strong>¿Dónde pagar?</strong> Al retirar tu compra en
+                    nuestra tienda.
                   </p>
                   <p>
-                    <strong>Plazo:</strong> <span className="highlight">24 horas</span> para retirar tu pedido.
+                    <strong>Plazo:</strong>{' '}
+                    <span className="highlight">24 horas</span> para retirar tu
+                    pedido.
                   </p>
                 </div>
                 <div className="cash-tip">
