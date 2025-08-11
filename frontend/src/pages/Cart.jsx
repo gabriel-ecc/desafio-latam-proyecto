@@ -138,13 +138,65 @@ const Cart = () => {
       return
     }
     // Pago éxitoso
+    const generateTicketNumber = () =>
+      Math.floor(Math.random() * 900000) + 100000
+    const currentDate = new Date()
+    const formatDate = date => {
+      const day = date.getDate().toString().padStart(2, '0')
+      const month = (date.getMonth() + 1).toString().padStart(2, '0')
+      const year = date.getFullYear()
+      return `${day}/${month}/${year}`
+    }
+    const formatTime = date => {
+      const hours = date.getHours().toString().padStart(2, '0')
+      const minutes = date.getMinutes().toString().padStart(2, '0')
+      const seconds = date.getSeconds().toString().padStart(2, '0')
+      return `${hours}:${minutes}:${seconds}`
+    }
 
     await Swal.fire({
-      title: 'Pago realizado con éxito',
+      title: '',
       html: `
-        <p>Se ha procesado tu pago correctamente.</p>`,
-      icon: 'success',
-      confirmButtonText: 'Cerrar'
+        <div class="receipt-container">
+          <div class="receipt-title">
+            <h3>Comprobante de Pago</h3>
+          </div>
+          <div class="receipt-body">
+            <div class="receipt-section">
+              <div class="receipt-row">
+                <span class="receipt-label">Monto</span>
+                <span class="receipt-value">$${totalPrice().toLocaleString('es-CL')}</span>
+              </div>
+            </div>
+            
+            <div class="receipt-section">
+              <div class="receipt-row">
+                <span class="receipt-label">Banco</span>
+                <h5>GataBank</h5>
+              </div>
+            </div>
+            
+            <div class="receipt-footer">
+              <div class="receipt-row">
+                <span class="receipt-label">Fecha y hora</span>
+                <span class="receipt-value">${formatDate(currentDate)} ${formatTime(currentDate)}</span>
+              </div>
+              <div class="receipt-row">
+                <span class="receipt-label">N° de operación</span>
+                <span class="receipt-value">${generateTicketNumber()}</span>
+              </div>
+            </div>
+          </div>
+        </div>`,
+      icon: null,
+      showConfirmButton: true,
+      confirmButtonText: 'Cerrar',
+      confirmButtonColor: '#28a745',
+      customClass: {
+        popup: 'receipt-popup',
+        confirmButton: 'receipt-button'
+      },
+      width: '450px'
     })
     setCart([])
     navigate('/')

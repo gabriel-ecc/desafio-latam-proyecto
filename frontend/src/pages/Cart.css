@@ -1024,7 +1024,9 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-xs); /* Aumentado para más separación de la tarjeta */
+  margin-bottom: var(
+    --spacing-xs
+  ); /* Aumentado para más separación de la tarjeta */
   padding: var(--spacing-sm); /* Aumentado el padding */
   border: 2px solid var(--color-info);
   border-radius: var(--radius-md);
@@ -1314,5 +1316,209 @@
   .card-cvv-input {
     font-size: var(--font-size-lg);
     width: 80px;
+  }
+}
+
+/* ================= ESTILOS PARA LA BOLETA ================= */
+/* Estilos para la boleta/comprobante */
+.receipt-popup {
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--box-shadow-2xl) !important;
+}
+
+.receipt-container {
+  background: url('/imgs/comprobante.jpg') center/contain no-repeat;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: var(--radius-md);
+  font-family: 'Courier New', monospace;
+  max-width: 400px;
+  min-height: 500px;
+  margin: 0 auto;
+  position: relative;
+  overflow: visible;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  animation: receiptSlideIn 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.receipt-title {
+  text-align: center;
+  padding: var(--spacing-xs) 0;
+  margin: 80px var(--spacing-lg) 0 var(--spacing-lg);
+  background: transparent;
+  border-radius: var(--radius-sm);
+  position: relative;
+}
+
+.receipt-title::before {
+  content: '✓';
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #28a745;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+  border: 2px solid white;
+}
+
+.receipt-title h3 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-extrabold);
+  color: #2c3e50;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: none;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.receipt-body {
+  padding: var(--spacing-xs) var(--spacing-lg);
+  background: transparent;
+  margin: var(--spacing-md) var(--spacing-lg) 0 var(--spacing-lg);
+  margin-bottom: 60px;
+  border-radius: var(--radius-sm);
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.receipt-section {
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.receipt-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-sm) 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+.receipt-row:last-child {
+  margin-bottom: 0;
+}
+
+.receipt-label {
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
+  text-transform: capitalize;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.receipt-value {
+  color: var(--color-text);
+  font-weight: var(--font-weight-bold);
+  text-align: right;
+  max-width: 60%;
+  word-break: break-word;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* Estilo especial para el monto principal */
+.receipt-section:first-child .receipt-value {
+  font-size: var(--font-size-xl);
+  color: var(--color-success);
+  font-weight: var(--font-weight-extrabold);
+  text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9);
+}
+
+.receipt-footer {
+  background: transparent;
+  padding: var(--spacing-xs) var(--spacing-xs);
+  margin: 0 var(--spacing-lg);
+  margin-bottom: 80px;
+  border-radius: var(--radius-sm);
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.receipt-button {
+  background: var(--color-success) !important;
+  border: none !important;
+  border-radius: var(--radius-md) !important;
+  padding: var(--spacing-sm) var(--spacing-lg) !important;
+  font-weight: var(--font-weight-bold) !important;
+  font-size: var(--font-size-md) !important;
+  transition: all var(--transition-normal) !important;
+}
+
+.receipt-button:hover {
+  background: var(--color-success-dark) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: var(--box-shadow-lg) !important;
+}
+
+/* Animación de entrada */
+@keyframes receiptSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsivo para la boleta */
+@media screen and (max-width: 767px) {
+  .receipt-container {
+    max-width: 320px;
+    font-size: var(--font-size-xs);
+  }
+
+  .receipt-header {
+    padding: var(--spacing-md);
+  }
+
+  .receipt-body {
+    padding: var(--spacing-md);
+  }
+
+  .receipt-row {
+    font-size: var(--font-size-xs);
+  }
+
+  .section-title {
+    font-size: var(--font-size-sm);
+  }
+
+  .success-icon {
+    font-size: 2rem;
   }
 }
