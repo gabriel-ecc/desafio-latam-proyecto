@@ -285,7 +285,7 @@ const Cart = () => {
             </div>
 
             <div
-              className={`card-container ${
+              className={`credit-card-container ${
                 (selectedPayment === 'credito' ||
                   selectedPayment === 'debito') &&
                 paymentStep
@@ -365,10 +365,24 @@ const Cart = () => {
             <div
               className={`cash-payment-text ${selectedPayment === 'efectivo' && paymentStep ? 'visible' : ''}`}
             >
-              <p>
-                El pago en efectivo se realizará al momento de retirar la
-                compra.
-              </p>
+              <div className="cash-payment-info">
+                <div className="cash-header">
+                  <i className="fa-solid fa-money-bills"></i>
+                  <h4>Pago en Efectivo</h4>
+                </div>
+                <div className="cash-content">
+                  <p>
+                    <strong>¿Dónde pagar?</strong> Al retirar tu compra en nuestra tienda.
+                  </p>
+                  <p>
+                    <strong>Plazo:</strong> <span className="highlight">24 horas</span> para retirar tu pedido.
+                  </p>
+                </div>
+                <div className="cash-tip">
+                  <i className="fa-solid fa-lightbulb"></i>
+                  <span>Trae el monto exacto para agilizar tu compra</span>
+                </div>
+              </div>
             </div>
           </div>
           <div className="total_button">

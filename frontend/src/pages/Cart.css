@@ -317,9 +317,133 @@
 }
 
 .cash-payment-text.visible {
-  max-height: 80px;
+  max-height: 220px; /* Reducido al quitar la sección del total */
   opacity: 1;
   margin: var(--spacing-md) 0;
+}
+
+/* Estilos simplificados para el mensaje de efectivo */
+.cash-payment-info {
+  background: linear-gradient(135deg, #f8fff9 0%, #e8f5e8 100%);
+  border: 2px solid #28a745;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.1);
+  animation: cashInfoSlideIn 0.5s ease-out;
+  min-height: 200px; /* Reducido al quitar la sección del total */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cash-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  color: #155724;
+}
+
+.cash-header i {
+  font-size: 1.5rem;
+  color: #28a745;
+}
+
+.cash-header h4 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.cash-content p {
+  margin: var(--spacing-sm) 0; /* Aumentado el espaciado */
+  color: #2d5a3d;
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+.cash-content strong {
+  color: #155724;
+  font-weight: var(--font-weight-semibold);
+}
+
+.highlight {
+  background: #ffeaa7;
+  color: #2d3436;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.cash-total {
+  background: rgba(40, 167, 69, 0.1);
+  padding: var(--spacing-md); /* Aumentado el padding */
+  border-radius: var(--radius-md);
+  margin: var(--spacing-md) 0; /* Aumentado el margin */
+  text-align: center;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: #155724;
+}
+
+.amount {
+  color: #28a745;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+}
+
+.cash-tip {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: rgba(255, 193, 7, 0.1);
+  border-left: 3px solid #ffc107;
+  padding: var(--spacing-sm);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-size: var(--font-size-sm);
+  color: #856404;
+  margin-top: var(--spacing-md);
+}
+
+.cash-tip i {
+  color: #ffc107;
+  font-size: var(--font-size-md);
+}
+
+@keyframes cashInfoSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsivo para el diseño de efectivo */
+@media screen and (max-width: 767px) {
+  .cash-payment-info {
+    min-height: 180px; /* Reducido para móvil */
+  }
+  
+  .cash-header {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .cash-header h4 {
+    font-size: var(--font-size-md);
+  }
+  
+  .cash-total {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm);
+  }
+  
+  .amount {
+    font-size: var(--font-size-md);
+  }
 }
 
 /* ================= MEDIA QUERIES ================= */
@@ -585,9 +709,26 @@
   }
 
   .cash-payment-text.visible {
-    max-height: 100px;
+    max-height: 240px; /* Reducido para tablet */
     opacity: 1;
     margin: var(--spacing-lg) 0;
+  }
+
+  /* Estilos específicos para efectivo en tablet */
+  .cash-payment-info {
+    min-height: 220px; /* Reducido para tablet */
+  }
+  
+  .cash-header h4 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .cash-content p {
+    font-size: var(--font-size-md);
+  }
+  
+  .cash-total {
+    font-size: var(--font-size-lg);
   }
 
   /* Mejoras en tipografía para tablet */
@@ -812,9 +953,31 @@
   }
 
   .cash-payment-text.visible {
-    max-height: 100px;
+    max-height: 260px; /* Reducido para desktop */
     opacity: 1;
     margin: var(--spacing-lg) 0;
+  }
+
+  /* Estilos específicos para efectivo en desktop */
+  .cash-payment-info {
+    padding: var(--spacing-xl);
+    min-height: 240px; /* Reducido para desktop */
+  }
+  
+  .cash-header h4 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .cash-content p {
+    font-size: var(--font-size-md);
+  }
+  
+  .cash-total {
+    font-size: var(--font-size-lg);
+  }
+  
+  .amount {
+    font-size: var(--font-size-xl);
   }
 
   .payment_buttons button {
@@ -828,7 +991,7 @@
 }
 
 /* Estilos para la tarjeta superpuesta - Mobile First */
-.card-container {
+.credit-card-container {
   margin: 0 auto; /* Centrado explícito */
   display: flex; /* Cambio de block a flex */
   width: 100%;
@@ -848,7 +1011,7 @@
 }
 
 /* Clase para cuando la tarjeta está visible */
-.card-container.visible {
+.credit-card-container.visible {
   max-height: 400px; /* Altura suficiente para mostrar la tarjeta */
   opacity: 1; /* Visible */
   margin: var(--spacing-sm) auto; /* Margen con centrado explícito */
@@ -993,7 +1156,7 @@
 /* Responsive para la tarjeta - Mobile First approach */
 @media screen and (min-width: 768px) and (max-width: 1199px) {
   /* Tablet - Tarjeta mejorada */
-  .card-container.visible {
+  .credit-card-container.visible {
     margin: var(--spacing-lg) auto; /* Margen con centrado explícito */
     max-height: 500px; /* Más altura para tablet */
   }
@@ -1065,14 +1228,14 @@
 
 @media screen and (min-width: 1200px) {
   /* Desktop - Tarjeta tamaño completo */
-  .card-container {
+  .credit-card-container {
     margin: 0 auto; /* Centrado explícito adicional para desktop */
     display: flex;
     justify-content: center; /* Fuerza el centrado con flexbox */
     width: 100%; /* Ocupa todo el ancho disponible */
   }
 
-  .card-container.visible {
+  .credit-card-container.visible {
     margin: var(--spacing-lg) auto; /* Margen con centrado explícito */
     max-height: 600px; /* Más altura para desktop */
     display: flex;
