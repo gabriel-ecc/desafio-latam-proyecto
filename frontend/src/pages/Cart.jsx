@@ -15,6 +15,7 @@ const Cart = () => {
     useContext(CartContext)
   const [selectedPayment, setSelectedPayment] = useState(null)
   const [paymentStep, setPaymentStep] = useState(false)
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false)
   const { user } = useProfile()
   const navigate = useNavigate()
 
@@ -261,114 +262,114 @@ const Cart = () => {
               Total a pagar: ${totalPrice().toLocaleString('es-CL')}
             </p>
 
-            {paymentStep && (
-              <>
-                {!selectedPayment && (
-                  <div>
-                    <p>Por favor Seleccionar un Método de Pago</p>
-                  </div>
-                )}
-                <div className="kind_payment">
-                  {paymentMethods.map(method => (
-                    <button
-                      key={method.id}
-                      onClick={() => setSelectedPayment(method.id)}
-                      className={`payment_option ${selectedPayment === method.id ? 'selected' : ''}`}
-                    >
-                      <img
-                        className="img_card"
-                        src={method.img}
-                        alt={method.label}
-                      />
-                      <p className="payment_title"> {method.label}</p>
-                    </button>
-                  ))}
+            <div
+              className={`payment-selection-text ${paymentStep && !selectedPayment ? 'visible' : ''}`}
+            >
+              <p>Por favor Seleccionar un Método de Pago</p>
+            </div>
+            <div className={`kind_payment ${paymentStep ? 'visible' : ''}`}>
+              {paymentMethods.map(method => (
+                <button
+                  key={method.id}
+                  onClick={() => setSelectedPayment(method.id)}
+                  className={`payment_option ${selectedPayment === method.id ? 'selected' : ''}`}
+                >
+                  <img
+                    className="img_card"
+                    src={method.img}
+                    alt={method.label}
+                  />
+                  <p className="payment_title"> {method.label}</p>
+                </button>
+              ))}
+            </div>
+
+            <div
+              className={`card-container ${
+                (selectedPayment === 'credito' ||
+                  selectedPayment === 'debito') &&
+                paymentStep
+                  ? 'visible'
+                  : ''
+              }`}
+            >
+              <div className="card-background">
+                <img
+                  src="/imgs/gata-card-clean.png"
+                  alt="Tarjeta GataBank"
+                  className="card-image"
+                />
+                <div className="card-type-label">
+                  {selectedPayment === 'credito'
+                    ? 'Tarjeta de Crédito'
+                    : 'Tarjeta de Débito'}
                 </div>
-
-                {(selectedPayment === 'credito' ||
-                  selectedPayment === 'debito') && (
-                  <div className="card-container">
-                    <div className="card-background">
-                      <img
-                        src="/imgs/gata-card-clean.png"
-                        alt="Tarjeta GataBank"
-                        className="card-image"
-                      />
-                      <div className="card-type-label">
-                        {selectedPayment === 'credito'
-                          ? 'Tarjeta de Crédito'
-                          : 'Tarjeta de Débito'}
-                      </div>
-                      <form
-                        className="card_form_overlay"
-                        onSubmit={e => e.preventDefault()}
-                      >
-                        <div className="card-number-section">
-                          <input
-                            type="text"
-                            placeholder="XXXX XXXX XXXX XXXX"
-                            maxLength="19"
-                            value={numeroTarjeta}
-                            onChange={e =>
-                              setNumeroTarjeta(formatCardNumber(e.target.value))
-                            }
-                            className="card-number-input"
-                            required
-                          />
-                        </div>
-
-                        <div className="card-holder-section">
-                          <input
-                            type="text"
-                            placeholder="Nombre del Titular"
-                            maxLength="26"
-                            value={nombreTitular}
-                            onChange={e => setNombreTitular(e.target.value)}
-                            className="card-holder-input"
-                            required
-                          />
-                        </div>
-
-                        <div className="card-details-section">
-                          <input
-                            type="text"
-                            placeholder="MM/AA"
-                            maxLength="5"
-                            value={expiracion}
-                            onChange={e =>
-                              setExpiracion(formatExpiry(e.target.value))
-                            }
-                            className="card-expiry-input"
-                            required
-                          />
-                          <input
-                            type="text"
-                            placeholder="CVV"
-                            maxLength="3"
-                            value={cvv}
-                            onChange={e => {
-                              const value = e.target.value.replace(/\D/g, '')
-                              setCvv(value)
-                            }}
-                            className="card-cvv-input"
-                            required
-                          />
-                        </div>
-                      </form>
-                    </div>
+                <form
+                  className="card_form_overlay"
+                  onSubmit={e => e.preventDefault()}
+                >
+                  <div className="card-number-section">
+                    <input
+                      type="text"
+                      placeholder="XXXX XXXX XXXX XXXX"
+                      maxLength="19"
+                      value={numeroTarjeta}
+                      onChange={e =>
+                        setNumeroTarjeta(formatCardNumber(e.target.value))
+                      }
+                      className="card-number-input"
+                      required
+                    />
                   </div>
-                )}
-                {selectedPayment === 'efectivo' && (
-                  <div>
-                    <p>
-                      {' '}
-                      El pago en efectivo se realizará al momento de retirar la
-                      compra.{' '}
-                    </p>
+
+                  <div className="card-holder-section">
+                    <input
+                      type="text"
+                      placeholder="Nombre del Titular"
+                      maxLength="26"
+                      value={nombreTitular}
+                      onChange={e => setNombreTitular(e.target.value)}
+                      className="card-holder-input"
+                      required
+                    />
                   </div>
-                )}
-              </>
-            )}
+
+                  <div className="card-details-section">
+                    <input
+                      type="text"
+                      placeholder="MM/AA"
+                      maxLength="5"
+                      value={expiracion}
+                      onChange={e =>
+                        setExpiracion(formatExpiry(e.target.value))
+                      }
+                      className="card-expiry-input"
+                      required
+                    />
+                    <input
+                      type="text"
+                      placeholder="CVV"
+                      maxLength="3"
+                      value={cvv}
+                      onChange={e => {
+                        const value = e.target.value.replace(/\D/g, '')
+                        setCvv(value)
+                      }}
+                      className="card-cvv-input"
+                      required
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div
+              className={`cash-payment-text ${selectedPayment === 'efectivo' && paymentStep ? 'visible' : ''}`}
+            >
+              <p>
+                El pago en efectivo se realizará al momento de retirar la
+                compra.
+              </p>
+            </div>
           </div>
           <div className="total_button">
             <Button
