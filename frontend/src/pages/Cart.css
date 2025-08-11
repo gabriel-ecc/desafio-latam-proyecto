@@ -4,16 +4,17 @@
 .big_container_cart {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: auto 1fr;
   grid-template-areas:
     'left'
     'right';
-  min-height: 70vh;
+  min-height: 100vh;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: var(--spacing-xs); /* Reducido de var(--spacing-sm) */
+  padding: var(--spacing-xs);
   box-sizing: border-box;
-  overflow-y: hidden;
+  overflow-y: auto;
+  gap: var(--spacing-sm);
 }
 
 .section_left,
@@ -26,29 +27,30 @@
 
 .section_left {
   grid-area: left;
-  padding: var(--spacing-xs); /* Reducido de var(--spacing-sm) */
+  padding: var(--spacing-sm);
   text-align: center;
+  min-height: 400px;
 }
 
 .section_right {
   grid-area: right;
   display: flex;
   flex-direction: column;
-  padding-left: var(--spacing-sm); /* Reducido de var(--spacing-md) */
-  padding-right: var(--spacing-sm); /* Reducido de var(--spacing-md) */
+  padding: var(--spacing-sm);
   text-align: center;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
+  min-height: 300px;
 }
 
 /* Productos individuales - Mobile */
 .products {
   overflow-y: auto;
   flex-grow: 1;
-  padding-right: var(--spacing-sm); /* Reducido de var(--spacing-md) */
-  height: 30%;
-  height: 432px; /* Altura para móvil reducida 20% (540px * 0.8) */
+  padding-right: var(--spacing-xs);
+  max-height: 50vh;
+  min-height: 300px;
 }
 
 .total_option {
@@ -56,13 +58,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-xs); /* Reducido de var(--spacing-sm) */
-  height: 20%;
+  padding: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+  background-color: var(--color-background);
+  border-radius: var(--radius-md);
+  box-shadow: var(--box-shadow-sm);
 }
 
 .product_cart {
-  margin: var(--spacing-xs) auto; /* Reducido de var(--spacing-sm) */
-  height: auto; /* Altura reducida para móvil */
+  margin: var(--spacing-xs) auto;
+  height: auto;
+  min-height: 80px;
   background-color: var(--color-background);
   border-radius: var(--radius-md);
   box-shadow: var(--box-shadow-md);
@@ -70,16 +76,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-xs); /* Reducido de var(--spacing-sm) */
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
 }
 .product_img {
-  width: 40px; /* Tamaño reducido 20% para móvil (50px * 0.8) */
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: var(--radius-md);
   overflow: hidden;
   flex-shrink: 0;
   object-fit: contain;
-  margin-bottom: 3px; /* Reducido de 5px */
+  margin-bottom: var(--spacing-xs);
 }
 
 .img_section {
@@ -88,7 +95,8 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  width: 30%;
+  width: 28%;
+  min-width: 60px;
 }
 
 .price_stock {
@@ -98,8 +106,8 @@
   align-items: center;
   text-align: center;
   justify-content: center;
-  width: 30%;
-  margin-bottom: 1px; /* Reducido de 3px */
+  width: 35%;
+  margin-bottom: var(--spacing-xs);
 }
 
 .subtotal {
@@ -116,36 +124,38 @@
 
 .total_button {
   display: flex;
-  gap: var(--spacing-lg); /* Reducido de var(--spacing-sm) */
+  gap: var(--spacing-md);
   justify-content: center;
+  flex-wrap: wrap;
+  margin-top: var(--spacing-sm);
 }
 
 .button_items {
   display: flex;
-  padding-left: var(--spacing-xs); /* Reducido de var(--spacing-sm) */
+  padding-left: var(--spacing-xs);
   margin-left: var(--spacing-xs);
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  width: 30%;
+  width: 20%;
+  min-width: 80px;
 }
 
 /* Segunda sección - Mobile */
 .payment_container {
-  background: var(
-    --color-background
-  ); /* Cambiado de var(--color-border) a blanco */
+  background: var(--color-background);
   height: max-content;
   box-shadow: var(--box-shadow-sm);
   border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Cambiado a flex-start para alinear arriba */
-  margin-bottom: var(--spacing-sm); /* Reducido de var(--spacing-md) */
-  padding: var(--spacing-sm); /* Reducido de var(--spacing-md) */
+  justify-content: flex-start;
+  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-md);
   width: 100%;
   position: relative;
 }
@@ -154,18 +164,22 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: var(--spacing-sm); /* Reducido de var(--spacing-md) */
+  gap: var(--spacing-md);
   flex-wrap: wrap;
+  margin: var(--spacing-sm) 0;
 }
 
 .payment_option {
-  margin: var(--spacing-xs); /* Reducido de var(--spacing-sm) */
+  margin: var(--spacing-sm);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: transparent;
   border: none;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
 }
 
 .payment_option:hover {
@@ -179,38 +193,44 @@
   padding: var(--spacing-xs);
 }
 .img_card {
-  width: 48px; /* Tamaño reducido 20% para móvil (60px * 0.8) */
+  width: 60px;
   height: auto;
   object-fit: contain;
   filter: saturate(150%);
 }
 
 .card_form {
-  margin-top: var(--spacing-sm); /* Reducido de var(--spacing-md) */
+  margin-top: var(--spacing-md);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs); /* Reducido de var(--spacing-sm) */
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
 }
 
 .card_date {
   display: flex;
-  gap: var(--spacing-xs); /* Reducido de var(--spacing-sm) */
+  gap: var(--spacing-sm);
+  justify-content: space-between;
 }
 
 .card_form input {
-  padding: var(--spacing-xs); /* Reducido de var(--spacing-sm) */
+  padding: var(--spacing-sm);
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border-light);
+  font-size: var(--font-size-md);
+  min-height: 40px;
 }
 
 .card_form label {
   display: block;
-  margin-bottom: 2px; /* Reducido de 3px */
+  margin-bottom: var(--spacing-xs);
   font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
 }
 
 .input_large {
-  width: 144px; /* Ajustado para móvil reducido 20% (180px * 0.8) */
+  width: 100%;
+  max-width: 180px;
 }
 
 .toast-success-container {
