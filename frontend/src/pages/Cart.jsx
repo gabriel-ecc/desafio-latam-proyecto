@@ -140,6 +140,7 @@ const Cart = () => {
     // Pago éxitoso
     const generateTicketNumber = () =>
       Math.floor(Math.random() * 900000) + 100000
+    // Reemplazar después por el futuro order_id en el backend
     const currentDate = new Date()
     const formatDate = date => {
       const day = date.getDate().toString().padStart(2, '0')
