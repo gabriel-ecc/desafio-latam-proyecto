@@ -1032,7 +1032,7 @@
   font-size: var(--font-size-md); /* Aumentado el tamaño de fuente */
   font-weight: var(--font-weight-bold); /* Más prominente */
   animation: cardInstructionFadeIn 0.6s ease-out;
-  width: 50%; /* Ocupa todo el ancho disponible */
+  width: 80%; /* Ocupa todo el ancho disponible */
   box-sizing: border-box;
   order: 1; /* Asegura que aparezca primero */
 }
@@ -1218,6 +1218,10 @@
     text-shadow: 3px 3px 6px var(--color-overlay-dark);
   }
 
+  .card-instruction {
+    width: 50%;
+  }
+
   .card_form_overlay {
     padding: var(--spacing-md); /* Mismo padding que desktop */
   }
@@ -1265,6 +1269,9 @@
 }
 
 @media screen and (min-width: 1200px) {
+  .card-instruction {
+    width: 50%;
+  }
   /* Desktop - Tarjeta tamaño completo */
   .credit-card-container {
     margin: 0 auto; /* Centrado explícito adicional para desktop */
