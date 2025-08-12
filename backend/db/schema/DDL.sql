@@ -130,7 +130,8 @@ CREATE TABLE orders (
   shipping_address VARCHAR(500),
   recipient_name VARCHAR(100),
   total_amount INT NOT NULL,
-  CONSTRAINT orders_user_fkey FOREIGN KEY (user_id) REFERENCES users(id)
+  CONSTRAINT orders_user_fkey FOREIGN KEY (user_id) REFERENCES users(id),
+  CONSTRAINT orders_order_status_fkey FOREIGN KEY (order_status) REFERENCES order_status(id)
 );
 
 CREATE TABLE order_items (
