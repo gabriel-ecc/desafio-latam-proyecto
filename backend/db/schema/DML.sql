@@ -109,3 +109,12 @@ INSERT INTO products (name, description, price, stock, product_category_id, seas
 ('Garbanzos', 'Garbanzos seleccionados, perfectos para ensaladas y hummus.', 2400, 80, 3, 3, 'garbanzos.webp', true),
 ('Porotos Tórtola', 'Clásicos porotos para preparar con riendas.', 2600, 70, 3, 3, 'porotosTortola.webp', true),
 ('Arveja Partida', 'Arveja seca partida, ideal para cremas y purés.', 2100, 110, 3, 3, 'arvejaPartida.webp', true);
+
+INSERT INTO order_status (id, name, description) VALUES 
+(0, 'Carrito cancelado', 'Carrito cancelado por cliente'),
+(1, 'Carrito', 'Carrito en preparación por cliente'),
+(2, 'Preparación', 'Orden en preparación'),
+(3, 'Retiro en tienda', 'Indicación para que cliente retire en local'),
+(4, 'En delivery', 'Indicación de que orden va en camino'),
+(5, 'Finalizada', 'Entregado satisfactorio al cliente'),
+(6, 'Cancelada', 'Fallo la entrega al cliente');

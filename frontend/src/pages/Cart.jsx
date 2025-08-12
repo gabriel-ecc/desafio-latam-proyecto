@@ -18,7 +18,7 @@ const Cart = () => {
   const { user } = useProfile()
   const navigate = useNavigate()
 
-  //Requerimientos para el Pago
+  {/*Requerimientos para el Pago*/}
   const [nombreTitular, setNombreTitular] = useState('')
   const [numeroTarjeta, setNumeroTarjeta] = useState('')
   const [expiracion, setExpiracion] = useState('')
@@ -37,7 +37,7 @@ const Cart = () => {
     }
   }, [])
 
-//Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago
+{/*Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago*/}
 
   const handleCancel = () => {
     Swal.fire({
@@ -80,7 +80,7 @@ const Cart = () => {
     setSelectedPayment(null)
   }
 
-//Fromatear el número de tarjeta 
+{/*Formatear el número de tarjeta*/}
 
   const formatCardNumber = (value) => {
     const onlyNums = value.replace(/\D/g, '');
@@ -88,7 +88,7 @@ const Cart = () => {
    return spaced;
   }
 
-//Formatear la fecha con / de forma automatica
+{/*Formatear la fecha con / de forma automatica*/}
 
   const formatExpiry = (value) => {
     const onlyNums = value.replace(/\D/g, '');
@@ -98,7 +98,6 @@ const Cart = () => {
   }
 
   const handlePay = async() => {
-    //No selecciona Pago
     if(!selectedPayment) {
       Swal.fire({
         icon: 'error',
@@ -107,7 +106,7 @@ const Cart = () => {
     return
     }
 
-    //Seleciona pago pero no coloca los datos completos
+    {/*Seleciona pago pero no coloca los datos completos*/}
     if(selectedPayment === 'credito' || selectedPayment === 'debito' ){
       if (!nombreTitular.trim() || !numeroTarjeta.trim() || !expiracion.trim() || !cvv.trim()) {
         Swal.fire({
@@ -117,8 +116,6 @@ const Cart = () => {
         });
         return;
       }
-    }
-//Validación de expiración y código de seguridad
 
     const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
     const cvvOk = /^\d{3}$/.test(cvv)
@@ -131,7 +128,9 @@ const Cart = () => {
       })
       return
     }
-// Pago éxitoso
+  }
+
+{/*Pago éxitoso*/}
 
     await Swal.fire({
       title: 'Pago realizado con éxito',
@@ -144,7 +143,7 @@ const Cart = () => {
     navigate('/')
   }
 
-  // Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.
+  {/*Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.*/}
 
   return (
     <>
