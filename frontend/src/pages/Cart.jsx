@@ -187,14 +187,12 @@ const Cart = () => {
                 <span class="receipt-value">$${totalPrice().toLocaleString('es-CL')}</span>
               </div>
             </div>
-            
             <div class="receipt-section">
               <div class="receipt-row">
                 <span class="receipt-label">Banco</span>
                 <h5>GataBank</h5>
               </div>
             </div>
-            
             <div class="receipt-section">
               <div class="receipt-row">
                 <span class="receipt-label">Destinatario</span>
@@ -205,7 +203,6 @@ const Cart = () => {
                 <span class="receipt-value">${direccionEntrega}</span>
               </div>
             </div>
-            
             <div class="receipt-footer">
               <div class="receipt-row">
                 <span class="receipt-label">Fecha y hora</span>
@@ -417,7 +414,7 @@ const Cart = () => {
                     className="confirm-delivery-btn"
                   >
                     <i className="fa-solid fa-check"></i>
-                    Confirmar Datos de Entrega
+                    {" "}Confirmar Datos de Entrega
                   </button>
                 </div>
               </div>

@@ -76,9 +76,9 @@ const ProductCard = ({
         >
           {name}
         </h2>
-        <span className="price">${price.toLocaleString('es-cl')}</span>
+        <span className="price">${price.toLocaleString('es-CL')}</span>
         <span className="stock">
-          Stock Disponible: {stock.toLocaleString('es-cl')}
+          Stock Disponible: {stock.toLocaleString('es-CL')}
         </span>
         <div className="product-actions">
           <div className="quantity-control">
