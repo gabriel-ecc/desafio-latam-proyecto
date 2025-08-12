@@ -19,6 +19,7 @@ export default function Inventory() {
   // Filtros
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedSeason, setSelectedSeason] = useState('')
+  const [searchTerm, setSearchTerm] = useState('') // Para filtrar productos
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
   const [limits, setLimits] = useState(10)
@@ -61,7 +62,8 @@ export default function Inventory() {
         page,
         limits,
         category: selectedCategory,
-        season: selectedSeason
+        season: selectedSeason,
+        search: searchTerm
       }
 
       const response = await axios.get(ENDPOINT.inventory, {
@@ -95,7 +97,7 @@ export default function Inventory() {
     } finally {
       setLoading(false)
     }
-  }, [page, limits, selectedCategory, selectedSeason, navigate])
+  }, [page, limits, selectedCategory, selectedSeason, searchTerm, navigate])
 
   useEffect(() => {
     if (user) {
@@ -182,6 +184,18 @@ export default function Inventory() {
   }
 
   // Crear nuevo producto
+  // Función para manejar cambios en el input de búsqueda
+  const handleSearchChange = value => {
+    setSearchTerm(value)
+    setPage(1) // Reiniciar a la primera página
+  }
+
+  // Función para limpiar la búsqueda
+  const clearSearch = () => {
+    setSearchTerm('')
+    setPage(1)
+  }
+
   const handleCreateProduct = () => {
     navigate('/editar-producto/0')
   }
@@ -223,6 +237,29 @@ export default function Inventory() {
 
       {/* Filtros */}
       <div className="filters-container">
+        {/* SearchBar para búsqueda de productos */}
+        <div className="filter-group search-group">
+          <span className="filter-label">Buscar productos:</span>
+          <div className="search-controls">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={e => handleSearchChange(e.target.value)}
+              placeholder="Escriba para buscar productos..."
+              className="search-input"
+            />
+            {searchTerm && (
+              <button
+                onClick={clearSearch}
+                className="btn btn-outline-secondary btn-sm clear-search-btn"
+                title="Limpiar búsqueda"
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            )}
+          </div>
+        </div>
+
         <div className="filter-group">
           <label htmlFor="category-filter">Categoría:</label>
           <select
