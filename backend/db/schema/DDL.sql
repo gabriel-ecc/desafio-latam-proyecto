@@ -97,36 +97,49 @@ CREATE TABLE client_favorites(
     CONSTRAINT client_favorites_user_fkey FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT client_favorites_product_fkey FOREIGN KEY (product_id) REFERENCES products(id)
 );
---Carrito de Compras
 
-CREATE TABLE cart_items (
-    id SERIAL PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES users(id),
-    product_id UUID NOT NULL REFERENCES products(id),
-    quantity INT NOT NULL CHECK (quantity > 0),
-    added_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    UNIQUE(user_id, product_id) 
+/*
+ORDER STATUS
+0 = Carrito cancelado => Carrito cancelado por cliente
+1 = Carrito => carrito en preparación por cliente -- Cuando el cliente agrega algo al carrito
+2 = Preparación => orden en preparación -- Inicia después de confirmar pago
+3 = Retiro en tienda => indicación para que cliente retire en local -- empleado cambia estado
+4 = En delivery => indicación de que orden va en camino -- empleado cambia estado
+5 = Entregada => Entregado satisfactorio al cliente -- empleado cambia estado
+6 = Cancelada => Fallo la entrega al cliente -- empleado cambia estado
+
+*/
+CREATE TABLE order_status(
+    id SERIAL PRIMARY KEY NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    create_date TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
---Ordenes
 
+/*
+Ordenes
+delivery_type = 1 (DELIVERY) o 2 (RETIRO TIENDA)
+*/
 CREATE TABLE orders (
   id SERIAL PRIMARY KEY,
-  user_id UUID NOT NULL REFERENCES users(id), -- relación directa con users
-  buyer_email VARCHAR(200) NOT NULL,
-  buyer_first_name VARCHAR(100) NOT NULL,
-  buyer_last_name VARCHAR(100) NOT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-  total_price INT NOT NULL,
-  status VARCHAR(50) NOT NULL DEFAULT 'pendiente'
+  user_id UUID NOT NULL,
+  create_date TIMESTAMP NOT NULL DEFAULT NOW(),
+  order_status INT NOT NULL,
+  delivery_type INT NOT NULL,
+  shipping_address VARCHAR(500),
+  recipient_name VARCHAR(100),
+  total_amount INT NOT NULL,
+  CONSTRAINT orders_user_fkey FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE order_items (
-  id SERIAL PRIMARY KEY,
-  order_id INT NOT NULL REFERENCES orders(id),
-  product_id UUID NOT NULL REFERENCES products(id),
+  order_id INT NOT NULL,
+  product_id UUID NOT NULL,
   quantity INT NOT NULL CHECK (quantity > 0),
-  unit_price INT NOT NULL
+  unit_price INT NOT NULL,
+  CONSTRAINT order_items_pkey PRIMARY KEY (order_id, product_id),
+  CONSTRAINT order_items_order_fkey FOREIGN KEY (order_id) REFERENCES orders(id),
+  CONSTRAINT order_items_product_fkey FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
