@@ -25,6 +25,11 @@ const Cart = () => {
   const [expiracion, setExpiracion] = useState('')
   const [cvv, setCvv] = useState('')
 
+  //Datos de entrega
+  const [nombreDestinatario, setNombreDestinatario] = useState('')
+  const [direccionEntrega, setDireccionEntrega] = useState('')
+  const [deliveryConfirmed, setDeliveryConfirmed] = useState(false)
+
   const paymentMethods = [
     { id: 'credito', label: 'Crédito', img: '/imgs/credit_card.png' },
     { id: 'debito', label: 'Débito', img: '/imgs/debit_card.png' },
@@ -79,6 +84,19 @@ const Cart = () => {
   const handleBack = () => {
     setPaymentStep(false)
     setSelectedPayment(null)
+    setDeliveryConfirmed(false)
+  }
+
+  const handleConfirmDelivery = () => {
+    if (!nombreDestinatario.trim() || !direccionEntrega.trim()) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Campos incompletos',
+        text: 'Por favor completa el nombre del destinatario y la dirección.'
+      })
+      return
+    }
+    setDeliveryConfirmed(true)
   }
 
   //Fromatear el número de tarjeta
@@ -174,6 +192,17 @@ const Cart = () => {
               <div class="receipt-row">
                 <span class="receipt-label">Banco</span>
                 <h5>GataBank</h5>
+              </div>
+            </div>
+            
+            <div class="receipt-section">
+              <div class="receipt-row">
+                <span class="receipt-label">Destinatario</span>
+                <span class="receipt-value">${nombreDestinatario}</span>
+              </div>
+              <div class="receipt-row">
+                <span class="receipt-label">Dirección</span>
+                <span class="receipt-value">${direccionEntrega}</span>
               </div>
             </div>
             
@@ -324,7 +353,10 @@ const Cart = () => {
               {paymentMethods.map(method => (
                 <button
                   key={method.id}
-                  onClick={() => setSelectedPayment(method.id)}
+                  onClick={() => {
+                    setSelectedPayment(method.id)
+                    setDeliveryConfirmed(false)
+                  }}
                   className={`payment_option ${selectedPayment === method.id ? 'selected' : ''}`}
                 >
                   <img
@@ -338,10 +370,65 @@ const Cart = () => {
             </div>
 
             <div
+              className={`delivery-info-container ${
+                (selectedPayment === 'credito' ||
+                  selectedPayment === 'debito') &&
+                paymentStep &&
+                !deliveryConfirmed
+                  ? 'visible'
+                  : ''
+              }`}
+            >
+              <div className="delivery-instruction">
+                <i className="fa-solid fa-truck"></i>
+                <span>Datos para la entrega a domicilio</span>
+              </div>
+              <div className="delivery-form">
+                <div className="form-group">
+                  <label htmlFor="nombreDestinatario">
+                    Nombre de quien recibirá el pedido:
+                  </label>
+                  <input
+                    type="text"
+                    id="nombreDestinatario"
+                    placeholder="Nombre completo del destinatario"
+                    value={nombreDestinatario}
+                    onChange={e => setNombreDestinatario(e.target.value)}
+                    className="delivery-input"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="direccionEntrega">Agrega tu dirección:</label>
+                  <input
+                    type="text"
+                    id="direccionEntrega"
+                    placeholder="Dirección completa para la entrega"
+                    value={direccionEntrega}
+                    onChange={e => setDireccionEntrega(e.target.value)}
+                    className="delivery-input"
+                    required
+                  />
+                </div>
+                <div className="delivery-button-container">
+                  <button
+                    type="button"
+                    onClick={handleConfirmDelivery}
+                    className="confirm-delivery-btn"
+                  >
+                    <i className="fa-solid fa-check"></i>
+                    Confirmar Datos de Entrega
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
               className={`credit-card-container ${
                 (selectedPayment === 'credito' ||
                   selectedPayment === 'debito') &&
-                paymentStep
+                paymentStep &&
+                deliveryConfirmed
                   ? 'visible'
                   : ''
               }`}
