@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useCallback } from 'react'
+import { useState, useEffect, useContext, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { ENDPOINT } from '../config/constants'
@@ -19,7 +19,8 @@ export default function Inventory() {
   // Filtros
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedSeason, setSelectedSeason] = useState('')
-  const [searchTerm, setSearchTerm] = useState('') // Para filtrar productos
+  const [searchTerm, setSearchTerm] = useState('') // Para filtrar productos (usado en la API)
+  const [searchInput, setSearchInput] = useState('') // Para el input inmediato (sin debounce)
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
   const [limits, setLimits] = useState(10)
@@ -29,6 +30,10 @@ export default function Inventory() {
 
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
+  
+  // Ref para mantener el foco en el input de búsqueda
+  const searchInputRef = useRef(null)
+  const [shouldMaintainFocus, setShouldMaintainFocus] = useState(false)
 
   // Cargar datos iniciales
   useEffect(() => {
@@ -104,6 +109,31 @@ export default function Inventory() {
       fetchInventory()
     }
   }, [user, fetchInventory])
+
+  // Debounce para el término de búsqueda
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchTerm(searchInput)
+      setPage(1) // Reiniciar a la primera página cuando cambia la búsqueda
+    }, 500) // 500ms de retraso
+
+    return () => clearTimeout(timer)
+  }, [searchInput])
+
+  // Restaurar el foco en el input de búsqueda después de que se actualicen los productos
+  useEffect(() => {
+    if (shouldMaintainFocus && searchInputRef.current && document.activeElement !== searchInputRef.current) {
+      const timer = setTimeout(() => {
+        searchInputRef.current.focus()
+        // Mover el cursor al final del texto
+        const length = searchInputRef.current.value.length
+        searchInputRef.current.setSelectionRange(length, length)
+        setShouldMaintainFocus(false)
+      }, 50) // Pequeño delay para asegurar que el DOM se ha actualizado
+
+      return () => clearTimeout(timer)
+    }
+  }, [products, shouldMaintainFocus])
 
   // Alternar expansión de producto
   const toggleProductExpansion = productId => {
@@ -186,8 +216,9 @@ export default function Inventory() {
   // Crear nuevo producto
   // Función para manejar cambios en el input de búsqueda
   const handleSearchChange = value => {
-    setSearchTerm(value)
-    setPage(1) // Reiniciar a la primera página
+    setSearchInput(value) // Actualizar el input inmediatamente
+    setShouldMaintainFocus(true) // Activar el flag para mantener el foco
+    // El searchTerm se actualizará automáticamente con debounce
   }
 
   const handleCreateProduct = () => {
@@ -236,8 +267,9 @@ export default function Inventory() {
           <span className="filter-label">Buscar productos:</span>
           <div className="search-controls">
             <input
+              ref={searchInputRef}
               type="text"
-              value={searchTerm}
+              value={searchInput}
               onChange={e => handleSearchChange(e.target.value)}
               placeholder="Escriba para buscar productos..."
               className="search-input"
