@@ -20,7 +20,6 @@ import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Cart from './pages/Cart'
 import Products from './pages/Products'
-import Catalog from './pages/Catalog'
 import SeasonProducts from './pages/SeasonProducts'
 import Favorites from './pages/Favorites'
 import PurchaseConfirmation from './pages/PurchaseConfirmation'
@@ -59,7 +58,6 @@ function App() {
           }
         />
         <Route path="/products" element={<Products />} />
-        <Route path="/catalogo" element={<Catalog />} />
         <Route path="/inventario" element={<ProtectedInventory />} />
         <Route path="/editar-producto/:id" element={<ProtectedEditProduct />} />
         <Route path="/temporada" element={<SeasonProducts />} />
