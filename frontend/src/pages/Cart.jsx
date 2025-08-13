@@ -19,7 +19,7 @@ const Cart = () => {
   const { user } = useProfile()
   const navigate = useNavigate()
 
-  //Requerimientos para el Pago
+  {/*Requerimientos para el Pago*/}
   const [nombreTitular, setNombreTitular] = useState('')
   const [numeroTarjeta, setNumeroTarjeta] = useState('')
   const [expiracion, setExpiracion] = useState('')
@@ -43,7 +43,7 @@ const Cart = () => {
     }
   }, [])
 
-  //Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago
+{/*Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago*/}
 
   const handleCancel = () => {
     Swal.fire({
@@ -99,7 +99,7 @@ const Cart = () => {
     setDeliveryConfirmed(true)
   }
 
-  //Fromatear el número de tarjeta
+{/*Formatear el número de tarjeta*/}
 
   const formatCardNumber = value => {
     const onlyNums = value.replace(/\D/g, '')
@@ -107,7 +107,7 @@ const Cart = () => {
     return spaced
   }
 
-  //Formatear la fecha con / de forma automatica
+{/*Formatear la fecha con / de forma automatica*/}
 
   const formatExpiry = value => {
     const onlyNums = value.replace(/\D/g, '')
@@ -116,9 +116,8 @@ const Cart = () => {
     return onlyNums.slice(0, 2) + '/' + onlyNums.slice(2, 4)
   }
 
-  const handlePay = async () => {
-    //No selecciona Pago
-    if (!selectedPayment) {
+  const handlePay = async() => {
+    if(!selectedPayment) {
       Swal.fire({
         icon: 'error',
         title: 'Selecciona un método de pago'
@@ -126,7 +125,7 @@ const Cart = () => {
       return
     }
 
-    //Seleciona pago pero no coloca los datos completos
+    {/*Seleciona pago pero no coloca los datos completos*/}
     if (selectedPayment === 'credito' || selectedPayment === 'debito') {
       if (
         !nombreTitular.trim() ||
@@ -142,7 +141,6 @@ const Cart = () => {
         return
       }
     }
-    //Validación de expiración y código de seguridad
 
     const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
     const cvvOk = /^\d{3}$/.test(cvv)
@@ -155,7 +153,7 @@ const Cart = () => {
       })
       return
     }
-    // Pago éxitoso
+    {/*Pago éxitoso*/}
     const generateTicketNumber = () =>
       Math.floor(Math.random() * 900000) + 100000
     // Reemplazar después por el futuro order_id en el backend
@@ -229,7 +227,7 @@ const Cart = () => {
     navigate('/')
   }
 
-  // Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.
+  {/*Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.*/}
 
   return (
     <>
