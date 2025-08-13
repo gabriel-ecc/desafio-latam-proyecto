@@ -1,6 +1,6 @@
 /* Estilos para el Dashboard del administrador */
 .dashboard-container {
-  max-width: 100vw;
+  max-width: 80vw;
   margin: 0 auto;
   padding-top: 2rem;
   min-height: 80vh;
@@ -28,4 +28,16 @@ img {
   align-items: center;
   height: auto;
   width: 100vw;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.graph-container {
+  width: 650px;
 }
