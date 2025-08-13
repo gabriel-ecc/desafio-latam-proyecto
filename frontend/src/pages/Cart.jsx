@@ -153,7 +153,7 @@ const Cart = () => {
       })
       return
     }
-      }
+  }
 
 {/*Pago éxitoso*/}
     const generateTicketNumber = () =>
@@ -551,6 +551,7 @@ const Cart = () => {
       </main>
     </>
   )
+}
 
 
 export default Cart
