@@ -239,15 +239,33 @@
 /* Responsivo */
 @media (max-width: 768px) {
   .search-bar {
-    max-width: 100%;
+    max-width: 95%;
+    width: 95%;
   }
 
   .search-input-container {
-    padding: 10px 16px;
+    padding: 10px;
+    border-radius: 20px;
   }
 
   .search-input {
-    font-size: 16px; /* Evita zoom en iOS */
+    font-size: 20px;
+    min-width: 120px;
+  }
+
+  .search-input::placeholder {
+    font-size: 20px;
+  }
+
+  .search-icon {
+    font-size: 18px;
+    margin: 8px 20px 8px 14px;
+  }
+
+  .clear-button {
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
   }
 
   .suggestion-item {
@@ -258,6 +276,39 @@
     width: 48px;
     height: 48px;
     margin-right: 16px;
+  }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .search-bar {
+    max-width: 90%;
+    width: 90%;
+  }
+
+  .search-input-container {
+    padding: 10px 8px;
+    border-radius: 18px;
+  }
+
+  .search-input {
+    font-size: 14px;
+    min-width: 100px;
+  }
+
+  .search-input::placeholder {
+    font-size: 14px;
+  }
+
+  .search-icon {
+    font-size: 11px;
+    margin: 1px 6px 1px 2px;
+  }
+
+  .clear-button {
+    width: 18px;
+    height: 18px;
+    margin-left: 2px;
   }
 }
 

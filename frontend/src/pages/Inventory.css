@@ -13,13 +13,16 @@
   margin-bottom: 2rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid var(--color-secondary, #7b9445);
+  gap: 1rem;
+  margin-left: 60px;
 }
 
 .inventory-header h1 {
   color: var(--color-primary, #1e7c3a);
   margin: 0;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
 /* Filtros */
@@ -34,6 +37,24 @@
   flex-wrap: wrap;
 }
 
+/* Estilos específicos para inputs en la página de inventario */
+.inventory-container .search-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 2px solid #ddd !important;
+  border-radius: 8px;
+  font-size: 1rem;
+  min-width: 350px;
+  background: white !important;
+  transition: border-color 0.3s ease;
+}
+
+.inventory-container .search-input:focus {
+  outline: none;
+  border-color: var(--color-primary, #1e7c3a) !important;
+  box-shadow: 0 0 0 2px rgba(30, 124, 58, 0.1);
+}
+
 .filter-group {
   display: flex;
   flex-direction: column;
@@ -42,12 +63,28 @@
 }
 
 .search-group {
-  flex: 1;
-  min-width: 300px;
+  flex: 2;
+  min-width: 400px;
 }
 
 .search-group .search-bar-container {
   margin-top: 0;
+}
+
+/* Contenedor para selectores */
+.selectors-row {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* En desktop mantener la fila */
+@media (min-width: 1025px) {
+  .selectors-row {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+  }
 }
 
 .search-controls {
@@ -59,26 +96,18 @@
 .search-input {
   flex: 1;
   padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  min-width: 200px;
+  border: none !important;
+  border-radius: 8px;
+  font-size: 1rem;
+  min-width: 350px;
+  background: white !important;
+  transition: border-color 0.3s ease;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: var(--color-primary, #1e7c3a);
+  border-color: var(--color-primary, #1e7c3a) !important;
   box-shadow: 0 0 0 2px rgba(30, 124, 58, 0.1);
-}
-
-.clear-search-btn {
-  min-width: 36px;
-  height: 36px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
 }
 
 .filter-group label {
@@ -399,8 +428,57 @@
   color: var(--color-text, #2d2d2d);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* Tablet específico - iPad es 768x1024 */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .inventory-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .inventory-header h1 {
+    font-size: 2.2rem;
+    text-align: center;
+    order: 1;
+  }
+
+  .inventory-header .btn {
+    order: 2;
+    max-width: 250px;
+  }
+
+  /* Reorganizar filtros en tablet: buscador arriba, selectores abajo en fila */
+  .filters-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .search-group {
+    width: 100%;
+    min-width: auto;
+  }
+
+  /* FORZAR que los 3 selectores estén en fila SOLO en tablet */
+  .inventory-container .selectors-row {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .inventory-container .selectors-row .filter-group {
+    flex: 1 !important;
+    min-width: 120px !important;
+    max-width: calc(33.33% - 0.67rem) !important;
+  }
+}
+
+/* Mobile específico */
+@media (max-width: 767px) {
   .inventory-container {
     padding: 1rem;
   }
@@ -408,12 +486,25 @@
   .inventory-header {
     flex-direction: column;
     gap: 1rem;
-    align-items: stretch;
+    align-items: center;
+    margin-left: 0;
+    text-align: center;
   }
 
   .inventory-header h1 {
     font-size: 2rem;
     text-align: center;
+    order: 1;
+    margin-top: 0.5rem;
+  }
+
+  /* Botón crear producto más pequeño en móvil */
+  .inventory-header .btn {
+    order: 2;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    max-width: 200px;
+    width: auto;
   }
 
   .filters-container {
@@ -421,14 +512,64 @@
     gap: 1rem;
   }
 
+  /* Buscador centrado y menos ancho en móvil */
+  .search-group {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    max-width: 250px !important;
+    margin: 0 auto !important;
+    width: 85% !important;
+  }
+
+  .search-group .search-input {
+    min-width: 120px !important;
+    max-width: 160px !important;
+    width: 70% !important;
+    margin: 0 auto !important;
+    text-align: left !important;
+    font-size: 0.8rem !important;
+    padding: 0.35rem !important;
+  }
+
+  /* En móvil los selectores van en columna */
+  .selectors-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .selectors-row .filter-group {
+    min-width: auto;
+    max-width: 280px;
+    width: 100%;
+  }
+
+  .selectors-row .filter-group select {
+    width: 100%;
+    max-width: 280px;
+    padding: 0.75rem 0.5rem;
+    font-size: 1rem;
+  }
+
   .filter-group {
     min-width: auto;
   }
 
+  /* Mejoras para productos en mobile */
+  .product-item {
+    margin-bottom: 1rem !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+
   .product-summary {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    align-items: stretch !important;
+    padding: 1rem !important;
     /* Mantener estilos de button en responsive */
     background: none;
     border: none;
@@ -440,17 +581,72 @@
   }
 
   .product-basic-info {
-    justify-content: center;
-    text-align: center;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 0.5rem !important;
+  }
+
+  .product-image {
+    width: 80px !important;
+    height: 80px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .product-main-info {
+    text-align: center !important;
+  }
+
+  .product-main-info h3 {
+    font-size: 1.2rem !important;
+    margin-bottom: 0.5rem !important;
+    color: var(--color-text, #2d2d2d) !important;
   }
 
   .product-price-stock {
-    align-items: center;
-    margin-right: 0;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-right: 0 !important;
+    padding: 0.5rem !important;
+    background: #f8f9fa !important;
+    border-radius: 8px !important;
+    margin-top: 0.5rem !important;
+  }
+
+  .product-price {
+    font-size: 1.1rem !important;
+    font-weight: bold !important;
+    color: var(--color-primary, #1e7c3a) !important;
+  }
+
+  .product-stock {
+    font-size: 0.9rem !important;
+    color: #666 !important;
   }
 
   .product-actions {
-    justify-content: center;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    margin-top: 1rem !important;
+    padding: 0.5rem !important;
+  }
+
+  .product-actions .btn {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.8rem !important;
+    border-radius: 6px !important;
+    min-width: auto !important;
+  }
+
+  /* Mejorar spacing entre productos */
+  .products-list {
+    gap: 1.5rem !important;
   }
 
   .pagination-container {
@@ -461,7 +657,7 @@
 
 @media (max-width: 480px) {
   .inventory-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .product-image {
@@ -476,5 +672,19 @@
   .btn {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
+  }
+
+  /* SearchBar aún más pequeño en móviles muy pequeños */
+  .search-group {
+    max-width: 90% !important;
+    width: 90% !important;
+  }
+
+  .search-group .search-input {
+    min-width: 100px !important;
+    max-width: 150px !important;
+    width: 85% !important;
+    font-size: 0.75rem !important;
+    padding: 0.3rem !important;
   }
 }

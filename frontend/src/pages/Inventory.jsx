@@ -190,12 +190,6 @@ export default function Inventory() {
     setPage(1) // Reiniciar a la primera página
   }
 
-  // Función para limpiar la búsqueda
-  const clearSearch = () => {
-    setSearchTerm('')
-    setPage(1)
-  }
-
   const handleCreateProduct = () => {
     navigate('/editar-producto/0')
   }
@@ -248,71 +242,65 @@ export default function Inventory() {
               placeholder="Escriba para buscar productos..."
               className="search-input"
             />
-            {searchTerm && (
-              <button
-                onClick={clearSearch}
-                className="btn btn-outline-secondary btn-sm clear-search-btn"
-                title="Limpiar búsqueda"
-              >
-                <i className="fa-solid fa-xmark"></i>
-              </button>
-            )}
           </div>
         </div>
 
-        <div className="filter-group">
-          <label htmlFor="category-filter">Categoría:</label>
-          <select
-            id="category-filter"
-            value={selectedCategory}
-            onChange={e => {
-              setSelectedCategory(e.target.value)
-              setPage(1)
-            }}
-          >
-            <option value="">Todas</option>
-            {categories.map(category => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Contenedor para los 3 selectores */}
+        <div className="selectors-row">
+          <div className="filter-group">
+            <label htmlFor="category-filter">Categoría:</label>
+            <select
+              id="category-filter"
+              value={selectedCategory}
+              onChange={e => {
+                setSelectedCategory(e.target.value)
+                setPage(1)
+              }}
+            >
+              <option value="">Todas</option>
+              {categories.map(category => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className="filter-group">
-          <label htmlFor="season-filter">Temporada:</label>
-          <select
-            id="season-filter"
-            value={selectedSeason}
-            onChange={e => {
-              setSelectedSeason(e.target.value)
-              setPage(1)
-            }}
-          >
-            <option value="">Todas</option>
-            {seasons.map(season => (
-              <option key={season.id} value={season.id}>
-                {season.name}
-              </option>
-            ))}
-          </select>
-        </div>
+          <div className="filter-group">
+            <label htmlFor="season-filter">Temporada:</label>
+            <select
+              id="season-filter"
+              value={selectedSeason}
+              onChange={e => {
+                setSelectedSeason(e.target.value)
+                setPage(1)
+              }}
+            >
+              <option value="">Todas</option>
+              {seasons.map(season => (
+                <option key={season.id} value={season.id}>
+                  {season.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className="filter-group">
-          <label htmlFor="limit-filter">Mostrar:</label>
-          <select
-            id="limit-filter"
-            value={limits}
-            onChange={e => {
-              setLimits(parseInt(e.target.value))
-              setPage(1)
-            }}
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-          </select>
+          <div className="filter-group">
+            <label htmlFor="limit-filter">Mostrar:</label>
+            <select
+              id="limit-filter"
+              value={limits}
+              onChange={e => {
+                setLimits(parseInt(e.target.value))
+                setPage(1)
+              }}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+            </select>
+          </div>
         </div>
       </div>
 
