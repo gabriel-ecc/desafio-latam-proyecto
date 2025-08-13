@@ -75,7 +75,7 @@ const ProductDetail = () => {
         <div className="error">
           <h2>Error</h2>
           <p>{error}</p>
-          <button onClick={() => navigate('/catalog')} className="btn-primary">
+          <button onClick={() => navigate('/products')} className="btn-primary">
             Volver al catálogo
           </button>
           <button onClick={fetchProduct} className="btn-secondary">
@@ -91,7 +91,7 @@ const ProductDetail = () => {
       <div className="product-detail-container">
         <div className="error">
           <h2>Producto no encontrado</h2>
-          <button onClick={() => navigate('/catalog')} className="btn-primary">
+          <button onClick={() => navigate('/products')} className="btn-primary">
             Volver al catálogo
           </button>
         </div>
