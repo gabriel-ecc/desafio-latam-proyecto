@@ -551,7 +551,6 @@ const Cart = () => {
       </main>
     </>
   )
-}
 
 
 export default Cart
