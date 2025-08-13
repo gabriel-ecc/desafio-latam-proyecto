@@ -178,7 +178,7 @@ export const getInventoryCount = async ({
     filtros.push(
       '(LOWER(a.name) LIKE LOWER(%L) OR LOWER(b.name) LIKE LOWER(%L))'
     )
-    valores.push(`%${search}%`, `%${search}%`)
+    valores.push(`${search}%`, `${search}%`)
   }
 
   let sqlQuery =
@@ -215,7 +215,7 @@ export const getInventoryByPage = async ({
     filtros.push(
       '(LOWER(a.name) LIKE LOWER(%L) OR LOWER(b.name) LIKE LOWER(%L))'
     )
-    valores.push(`%${search}%`, `%${search}%`)
+    valores.push(`${search}%`, `${search}%`)
   }
 
   const [columna, direccion] = orderBy.split('_')
