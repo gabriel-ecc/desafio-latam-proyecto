@@ -25,7 +25,7 @@ const Cart = () => {
   const [expiracion, setExpiracion] = useState('')
   const [cvv, setCvv] = useState('')
 
-  //Datos de entrega
+  {/*Datos de entrega*/}
   const [nombreDestinatario, setNombreDestinatario] = useState('')
   const [direccionEntrega, setDireccionEntrega] = useState('')
   const [deliveryConfirmed, setDeliveryConfirmed] = useState(false)
@@ -140,7 +140,6 @@ const Cart = () => {
         })
         return
       }
-    }
 
     const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
     const cvvOk = /^\d{3}$/.test(cvv)
@@ -156,6 +155,7 @@ const Cart = () => {
   }
 
 {/*Pago éxitoso*/}
+
     const generateTicketNumber = () =>
       Math.floor(Math.random() * 900000) + 100000
     // Reemplazar después por el futuro order_id en el backend
@@ -228,6 +228,7 @@ const Cart = () => {
     setCart([])
     navigate('/')
   }
+
 
   {/*Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.*/}
 
@@ -551,6 +552,6 @@ const Cart = () => {
       </main>
     </>
   )
-
+}
 
 export default Cart
