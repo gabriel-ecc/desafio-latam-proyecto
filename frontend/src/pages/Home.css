@@ -1,3 +1,5 @@
+@import '../assets/variables.css';
+
 * {
   margin: 0;
   padding: 0;
@@ -129,6 +131,7 @@
   background: var(--color-white-translucent);
   padding: 0.8rem 1.2rem;
   border-radius: 30px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -197,5 +200,53 @@
   .indicator {
     width: 12px; /* Reducido de 14px a 12px */
     height: 12px;
+  }
+}
+
+/* --- Estilos para SearchBar en Home --- */
+.search-container-home {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem auto 1.2rem auto;
+  padding: 0 1rem;
+  max-width: 1000px; /* Mucho más ancho en desktop */
+  position: relative;
+  z-index: 100; /* Asegurar que el dropdown esté por encima de otros elementos */
+}
+
+/* Estilos específicos para desktop - pantallas grandes */
+@media (min-width: 1024px) {
+  .search-container-home {
+    max-width: 650px; /* Aún más ancho en pantallas grandes */
+    padding: 0 2rem; /* Menos restricción de padding */
+  }
+}
+
+.home-search {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Responsivo para SearchBar en Home */
+@media (max-width: 768px) {
+  .search-container-home {
+    margin: 1.5rem auto 2rem auto;
+    padding: 0 0.5rem;
+    max-width: 600px; /* Ancho original para tablets y móviles */
+  }
+
+  .home-search .search-input-container {
+    padding: 10px 16px;
+  }
+
+  .home-search .search-input {
+    font-size: 16px; /* Mantener 16px para evitar zoom en iOS */
+  }
+}
+
+@media (max-width: 480px) {
+  .search-container-home {
+    margin: 1rem auto 1.5rem auto;
+    max-width: 500px; /* Ancho más pequeño para móviles */
   }
 }

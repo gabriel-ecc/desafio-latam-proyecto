@@ -20,12 +20,14 @@ const Cart = () => {
   const navigate = useNavigate()
 
   {/*Requerimientos para el Pago*/}
+
   const [nombreTitular, setNombreTitular] = useState('')
   const [numeroTarjeta, setNumeroTarjeta] = useState('')
   const [expiracion, setExpiracion] = useState('')
   const [cvv, setCvv] = useState('')
 
   {/*Datos de entrega*/}
+
   const [nombreDestinatario, setNombreDestinatario] = useState('')
   const [direccionEntrega, setDireccionEntrega] = useState('')
   const [deliveryConfirmed, setDeliveryConfirmed] = useState(false)
@@ -141,8 +143,8 @@ const Cart = () => {
         return
       }
 
-    const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
-    const cvvOk = /^\d{3}$/.test(cvv)
+      const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
+      const cvvOk = /^\d{3}$/.test(cvv)
 
     if (!expiryOk || !cvvOk) {
       Swal.fire({
@@ -154,9 +156,9 @@ const Cart = () => {
     }
   }
 
-{/*Pago éxitoso*/}
 
-    const generateTicketNumber = () =>
+    {/*Pago éxitoso*/}
+    const generateTicketNumber = () => 
       Math.floor(Math.random() * 900000) + 100000
     // Reemplazar después por el futuro order_id en el backend
     const currentDate = new Date()
@@ -214,7 +216,8 @@ const Cart = () => {
               </div>
             </div>
           </div>
-        </div>`,
+        </div>
+        `,
       icon: null,
       showConfirmButton: true,
       confirmButtonText: 'Cerrar',
