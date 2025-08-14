@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useCallback } from 'react'
+import { useState, useEffect, useContext, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { ENDPOINT } from '../config/constants'
@@ -19,6 +19,8 @@ export default function Inventory() {
   // Filtros
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedSeason, setSelectedSeason] = useState('')
+  const [searchTerm, setSearchTerm] = useState('') // Para filtrar productos (usado en la API)
+  const [searchInput, setSearchInput] = useState('') // Para el input inmediato (sin debounce)
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
   const [limits, setLimits] = useState(10)
@@ -28,6 +30,10 @@ export default function Inventory() {
 
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
+  
+  // Ref para mantener el foco en el input de búsqueda
+  const searchInputRef = useRef(null)
+  const [shouldMaintainFocus, setShouldMaintainFocus] = useState(false)
 
   // Cargar datos iniciales
   useEffect(() => {
@@ -61,7 +67,8 @@ export default function Inventory() {
         page,
         limits,
         category: selectedCategory,
-        season: selectedSeason
+        season: selectedSeason,
+        search: searchTerm
       }
 
       const response = await axios.get(ENDPOINT.inventory, {
@@ -95,13 +102,38 @@ export default function Inventory() {
     } finally {
       setLoading(false)
     }
-  }, [page, limits, selectedCategory, selectedSeason, navigate])
+  }, [page, limits, selectedCategory, selectedSeason, searchTerm, navigate])
 
   useEffect(() => {
     if (user) {
       fetchInventory()
     }
   }, [user, fetchInventory])
+
+  // Debounce para el término de búsqueda
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchTerm(searchInput)
+      setPage(1) // Reiniciar a la primera página cuando cambia la búsqueda
+    }, 500) // 500ms de retraso
+
+    return () => clearTimeout(timer)
+  }, [searchInput])
+
+  // Restaurar el foco en el input de búsqueda después de que se actualicen los productos
+  useEffect(() => {
+    if (shouldMaintainFocus && searchInputRef.current && document.activeElement !== searchInputRef.current) {
+      const timer = setTimeout(() => {
+        searchInputRef.current.focus()
+        // Mover el cursor al final del texto
+        const length = searchInputRef.current.value.length
+        searchInputRef.current.setSelectionRange(length, length)
+        setShouldMaintainFocus(false)
+      }, 50) // Pequeño delay para asegurar que el DOM se ha actualizado
+
+      return () => clearTimeout(timer)
+    }
+  }, [products, shouldMaintainFocus])
 
   // Alternar expansión de producto
   const toggleProductExpansion = productId => {
@@ -182,6 +214,13 @@ export default function Inventory() {
   }
 
   // Crear nuevo producto
+  // Función para manejar cambios en el input de búsqueda
+  const handleSearchChange = value => {
+    setSearchInput(value) // Actualizar el input inmediatamente
+    setShouldMaintainFocus(true) // Activar el flag para mantener el foco
+    // El searchTerm se actualizará automáticamente con debounce
+  }
+
   const handleCreateProduct = () => {
     navigate('/editar-producto/0')
   }
@@ -223,59 +262,77 @@ export default function Inventory() {
 
       {/* Filtros */}
       <div className="filters-container">
-        <div className="filter-group">
-          <label htmlFor="category-filter">Categoría:</label>
-          <select
-            id="category-filter"
-            value={selectedCategory}
-            onChange={e => {
-              setSelectedCategory(e.target.value)
-              setPage(1)
-            }}
-          >
-            <option value="">Todas</option>
-            {categories.map(category => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+        {/* SearchBar para búsqueda de productos */}
+        <div className="filter-group search-group">
+          <span className="filter-label">Buscar productos:</span>
+          <div className="search-controls">
+            <input
+              ref={searchInputRef}
+              type="text"
+              value={searchInput}
+              onChange={e => handleSearchChange(e.target.value)}
+              placeholder="Escriba para buscar productos..."
+              className="search-input"
+            />
+          </div>
         </div>
 
-        <div className="filter-group">
-          <label htmlFor="season-filter">Temporada:</label>
-          <select
-            id="season-filter"
-            value={selectedSeason}
-            onChange={e => {
-              setSelectedSeason(e.target.value)
-              setPage(1)
-            }}
-          >
-            <option value="">Todas</option>
-            {seasons.map(season => (
-              <option key={season.id} value={season.id}>
-                {season.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Contenedor para los 3 selectores */}
+        <div className="selectors-row">
+          <div className="filter-group">
+            <label htmlFor="category-filter">Categoría:</label>
+            <select
+              id="category-filter"
+              value={selectedCategory}
+              onChange={e => {
+                setSelectedCategory(e.target.value)
+                setPage(1)
+              }}
+            >
+              <option value="">Todas</option>
+              {categories.map(category => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className="filter-group">
-          <label htmlFor="limit-filter">Mostrar:</label>
-          <select
-            id="limit-filter"
-            value={limits}
-            onChange={e => {
-              setLimits(parseInt(e.target.value))
-              setPage(1)
-            }}
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-          </select>
+          <div className="filter-group">
+            <label htmlFor="season-filter">Temporada:</label>
+            <select
+              id="season-filter"
+              value={selectedSeason}
+              onChange={e => {
+                setSelectedSeason(e.target.value)
+                setPage(1)
+              }}
+            >
+              <option value="">Todas</option>
+              {seasons.map(season => (
+                <option key={season.id} value={season.id}>
+                  {season.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="filter-group">
+            <label htmlFor="limit-filter">Mostrar:</label>
+            <select
+              id="limit-filter"
+              value={limits}
+              onChange={e => {
+                setLimits(parseInt(e.target.value))
+                setPage(1)
+              }}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+            </select>
+          </div>
         </div>
       </div>
 
