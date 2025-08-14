@@ -1,26 +1,98 @@
-import { getDailySales } from '../../src/models/dashboardModel.js'
+import { getDailySalesWeekly, getNewClientsWeekly } from '../models/dashboardModel.js'
 
-export const getDailySalesController = async (req, res) => {
+export const getDailySalesWeeklyController = async (req, res) => {
   try {
-    const dailySalesData = await getDailySales()
+    const dailySalesData = await getDailySalesWeekly()
 
-    if (!dailySalesData) {
-      return res.status(404).json({
-        ok: false,
-        message: 'No hubo ventas el día de hoy'
+    // 1. Crear un arreglo de los últimos 7 días para asegurar que el gráfico tenga todos los puntos
+    const last7Days = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date()
+      d.setDate(d.getDate() - i)
+      return d.toISOString().split('T')[0]
+    }).reverse()
+
+    // 2. Mapear los datos de la DB a un objeto para fácil acceso por fecha
+    const dataMap = dailySalesData.reduce((acc, current) => {
+      const dateKey = new Date(current.date).toISOString().split('T')[0]
+      acc[dateKey] = Number(current.total_revenue)
+      return acc
+    }, {})
+
+    // 3. Generar el dataset final, incluyendo días sin ventas con valor 0
+    const dataset = last7Days.map((date) => ({
+      date: new Date(date).toLocaleDateString('es-CL', { month: 'short', day: 'numeric' }),
+      total_revenue: dataMap[date] || 0
+    }))
+
+    if (dataset.length === 0) {
+      return res.status(200).json({
+        ok: true,
+        data: [],
+        message: 'No se encontraron ventas en la última semana.'
       })
     }
 
     return res.status(200).json({
       ok: true,
-      data: dailySalesData,
-      message: 'Ventas del día obtenidas correctamente'
+      data: dataset,
+      message: 'Ventas diarias de la última semana obtenidas con éxito.'
     })
   } catch (error) {
-    console.error('Error en getDailySalesController', error)
+    console.error('Error in getDailySalesWeeklyController:', error)
     return res.status(500).json({
       ok: false,
-      message: 'Error en el servidor',
+      message: 'Ha ocurrido un error en el servidor.',
+      error: error.message
+    })
+  }
+}
+
+export const getNewClientsWeeklyController = async (req, res) => {
+  try {
+    const newClientsData = await getNewClientsWeekly()
+
+    // Formateamos los datos para react-charts-2
+    // Creamos un dataset que incluye todos los días de la semana (incluso si no hubo nuevos clientes)
+    // y se transforma el formato de fecha para la presentación.
+
+    // 1. Crear un arreglo de los últimos 7 días
+    const last7Days = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date()
+      d.setDate(d.getDate() - i)
+      return d.toISOString().split('T')[0]
+    }).reverse() // Invertir el orden para que sea ascendente
+
+    // 2. Mapeamos los datos de la DB a un objeto para fácil acceso
+    const dataMap = newClientsData.reduce((acc, current) => {
+      const dateKey = new Date(current.date).toISOString().split('T')[0]
+      acc[dateKey] = Number(current.new_clients)
+      return acc
+    }, {})
+
+    // 3. Generamos el dataset final
+    const dataset = last7Days.map((date) => ({
+      date: new Date(date).toLocaleDateString('es-CL', { month: 'short', day: 'numeric' }),
+      new_clients: dataMap[date] || 0
+    }))
+
+    if (dataset.length === 0) {
+      return res.status(200).json({
+        ok: true,
+        data: [],
+        message: 'No se encontraron nuevos clientes en la última semana.'
+      })
+    }
+
+    return res.status(200).json({
+      ok: true,
+      data: dataset,
+      message: 'Nuevos clientes de la última semana obtenidos con éxito.'
+    })
+  } catch (error) {
+    console.error('Error en getNewClientsWeeklyController:', error)
+    return res.status(500).json({
+      ok: false,
+      message: 'Ha ocurrido un error en el servidor.',
       error: error.message
     })
   }

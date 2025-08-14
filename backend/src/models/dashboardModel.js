@@ -1,31 +1,48 @@
 import pool from '../../db/schema/config.js'
+// import format from 'pg-format'
 
-export const getDailySales = async () => {
+export const getDailySalesWeekly = async () => {
   try {
     const sqlQuery = `
       SELECT
-        COUNT(id) AS total_sales_count,
-        SUM(total_amount) AS total_daily_revenue
+        DATE_TRUNC('day', create_date) AS date,
+        SUM(total_amount) AS total_revenue
       FROM
         orders
       WHERE
-        DATE_TRUNC('day', create_date) = DATE_TRUNC('day', NOW());
+        create_date >= NOW() - INTERVAL '7 days'
+      GROUP BY
+        date
+      ORDER BY
+        date ASC;
     `
     const response = await pool.query(sqlQuery)
-    return response.rows[0]
+    return response.rows
   } catch (error) {
-    console.error('Error fetching daily sales:', error)
+    console.error('Error obteniendo las ventas diarias para la semana:', error)
     throw error
   }
 }
 
-export const getDailyNewClients = async () => {
+export const getNewClientsWeekly = async () => {
   try {
     const sqlQuery = `
-      SELECT 
-        DATE_TRUNC('day', create_date)
+      SELECT
+        DATE_TRUNC('day', create_date) AS date,
+        COUNT(id) AS new_clients
+      FROM
+        users
+      WHERE
+        create_date >= NOW() - INTERVAL '7 days'
+      GROUP BY
+        date
+      ORDER BY
+        date ASC;
     `
+    const response = await pool.query(sqlQuery)
+    return response.rows
   } catch (error) {
-    
+    console.error('Error obteniendo los nuevos clientes de la semana:', error)
+    throw error
   }
 }
