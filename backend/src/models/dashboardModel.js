@@ -46,3 +46,73 @@ export const getNewClientsWeekly = async () => {
     throw error
   }
 }
+
+export const getInactiveClients = async () => {
+  try {
+    const sqlQuery = `
+      SELECT
+        COUNT(u.id) AS inactive_clients_count
+      FROM
+        users u
+      LEFT JOIN
+        orders o ON u.id = o.user_id
+      WHERE
+        o.user_id IS NULL OR o.create_date < NOW() - INTERVAL '30 days';
+    `
+    const response = await pool.query(sqlQuery)
+    return response.rows[0]
+  } catch (error) {
+    console.error('Error obteniendo los clients sin compras:', error)
+    throw error
+  }
+}
+
+export const getTopSellingProductsDaily = async () => {
+  try {
+    const sqlQuery = `
+      SELECT
+        p.name AS product_name,
+        SUM(oi.quantity) AS total_sold
+      FROM
+        order_items oi
+      INNER JOIN
+        orders o ON oi.order_id = o.id
+      INNER JOIN
+        products p ON oi.product_id = p.id
+      WHERE
+        DATE_TRUNC('day', o.create_date) = DATE_TRUNC('day', NOW())
+      GROUP BY
+        p.name
+      ORDER BY
+        total_sold DESC
+      LIMIT 10;
+    `
+    const response = await pool.query(sqlQuery)
+    return response.rows
+  } catch (error) {
+    console.error('Error obteniendo los productos mas vendidos diariamente:', error)
+    throw error
+  }
+}
+
+export const getLowStockProducts = async () => {
+  try {
+    const sqlQuery = `
+      SELECT
+        name AS product_name,
+        stock
+      FROM
+        products
+      WHERE
+        status = true AND stock > 0
+      ORDER BY
+        stock ASC
+      LIMIT 5;
+    `
+    const response = await pool.query(sqlQuery)
+    return response.rows
+  } catch (error) {
+    console.error('Error obteniendo los productos con bajo stock:', error)
+    throw error
+  }
+}

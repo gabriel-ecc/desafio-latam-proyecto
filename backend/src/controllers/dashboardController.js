@@ -1,4 +1,10 @@
-import { getDailySalesWeekly, getNewClientsWeekly } from '../models/dashboardModel.js'
+import {
+  getDailySalesWeekly,
+  getNewClientsWeekly,
+  getInactiveClients,
+  getTopSellingProductsDaily,
+  getLowStockProducts
+} from '../models/dashboardModel.js'
 
 export const getDailySalesWeeklyController = async (req, res) => {
   try {
@@ -38,7 +44,7 @@ export const getDailySalesWeeklyController = async (req, res) => {
       message: 'Ventas diarias de la última semana obtenidas con éxito.'
     })
   } catch (error) {
-    console.error('Error in getDailySalesWeeklyController:', error)
+    console.error('Error en getDailySalesWeeklyController:', error)
     return res.status(500).json({
       ok: false,
       message: 'Ha ocurrido un error en el servidor.',
@@ -90,6 +96,87 @@ export const getNewClientsWeeklyController = async (req, res) => {
     })
   } catch (error) {
     console.error('Error en getNewClientsWeeklyController:', error)
+    return res.status(500).json({
+      ok: false,
+      message: 'Ha ocurrido un error en el servidor.',
+      error: error.message
+    })
+  }
+}
+
+export const getInactiveClientsController = async (req, res) => {
+  try {
+    const inactiveClientsCount = await getInactiveClients()
+
+    if (!inactiveClientsCount) {
+      return res.status(200).json({
+        ok: true,
+        data: { inactive_clients_count: 0 },
+        message: 'No se encontraron clientes inactivos.'
+      })
+    }
+
+    return res.status(200).json({
+      ok: true,
+      data: inactiveClientsCount,
+      message: 'Conteo de clientes inactivos obtenido con éxito.'
+    })
+  } catch (error) {
+    console.error('Error in getInactiveClientsController:', error)
+    return res.status(500).json({
+      ok: false,
+      message: 'Ha ocurrido un error en el servidor.',
+      error: error.message
+    })
+  }
+}
+
+export const getTopSellingProductsDailyController = async (req, res) => {
+  try {
+    const topProducts = await getTopSellingProductsDaily()
+
+    if (topProducts.length === 0) {
+      return res.status(200).json({
+        ok: true,
+        data: [],
+        message: 'No se encontraron ventas de productos para el día de hoy.'
+      })
+    }
+
+    return res.status(200).json({
+      ok: true,
+      data: topProducts,
+      message: 'Productos más vendidos del día obtenidos con éxito.'
+    })
+  } catch (error) {
+    console.error('Error in getTopSellingProductsDailyController:', error)
+    return res.status(500).json({
+      ok: false,
+      message: 'Ha ocurrido un error en el servidor.',
+      error: error.message
+    })
+  }
+}
+
+export const getLowStockProductsController = async (req, res) => {
+  try {
+    const lowStockProducts = await getLowStockProducts()
+
+    if (lowStockProducts.length === 0) {
+      return res.status(200).json({
+        ok: true,
+        data: [],
+        message: 'No se encontraron productos con stock bajo.'
+      })
+    }
+
+    return res.status(200).json({
+      ok: true,
+      data: lowStockProducts,
+      message: 'Productos con stock bajo obtenidos con éxito.'
+    })
+  } catch (error) {
+    console.error('Error in getLowStockProductsController:', error)
     return res.status(500).json({
       ok: false,
       message: 'Ha ocurrido un error en el servidor.',
