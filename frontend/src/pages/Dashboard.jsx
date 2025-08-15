@@ -1,5 +1,11 @@
 // Dashboard del administrador - Vista general del sistema
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { ENDPOINT } from '../config/constants'
+import { getToken } from '../services/authService'
 import React from 'react'
+import '../assets/variables.css'
 import BackButton from '../components/BackButton'
 import './Dashboard.css'
 import {
@@ -14,6 +20,7 @@ import {
   Legend
 } from 'chart.js'
 import { Bar, Line } from 'react-chartjs-2'
+import Swal from 'sweetalert2' // Importar Swal para el SweetAlert
 
 ChartJS.register(
   CategoryScale,
@@ -30,7 +37,7 @@ export const options = {
   plugins: {
     title: {
       display: true,
-      text: 'Ejemplo de gráfica de barras'
+      text: 'Ventas últimos 7 días'
     }
   },
   responsive: true,
@@ -57,48 +64,70 @@ export const options2 = {
   }
 }
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
-
-export const data = {
-  labels,
+// Inicializar el objeto de datos del gráfico con una estructura válida
+export const initialDataGraph = {
+  labels: [],
   datasets: [
     {
-      label: 'Frutas',
-      data: labels.map(() => Math.floor(Math.random() * 50)),
-      backgroundColor: 'rgba(206, 255, 99, 1)'
-    },
-    {
-      label: 'Verduras',
-      data: labels.map(() => Math.floor(Math.random() * 50)),
-      backgroundColor: 'rgba(97, 192, 75, 1)'
-    },
-    {
-      label: 'Carnes',
-      data: labels.map(() => Math.floor(Math.random() * 50)),
-      backgroundColor: 'rgba(235, 53, 53, 1)'
+      label: 'Ventas Diarias',
+      data: [],
+      backgroundColor: '#1e7c3a'
     }
   ]
 }
 
-export const data2 = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: labels.map(() => Math.floor(Math.random() * 50)),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)'
-    },
-    {
-      label: 'Dataset 2',
-      data: labels.map(() => Math.floor(Math.random() * 50)),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)'
-    }
-  ]
-}
+export default function Dashboard() {
+  const [dailySalesWeeklyData, setDailySalesWeeklyData] = useState([])
+  const [dataGraph1, setDataGraph1] = useState(initialDataGraph) // Inicializar con la estructura de datos correcta
 
-const Dashboard = () => {
+  const token = getToken()
+  // Asumiendo que `navigate` y `setLoading` se importan o definen en otra parte del código
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchDailySalesWeeklyData = async () => {
+      // Validar el token antes de la llamada a la API
+      if (!token) {
+        Swal.fire({
+          title: 'Acceso denegado',
+          text: 'Debes iniciar sesión para realizar esta acción.',
+          icon: 'error',
+          confirmButtonColor: '#dc3545'
+        })
+        navigate('/login')
+        return
+      }
+
+      try {
+        const response = await axios.get(ENDPOINT.dailySalesWeekly, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        setDailySalesWeeklyData(response.data.data)
+
+        const labels = response.data.data.map(item => item.date)
+        const totalRevenueData = response.data.data.map(
+          item => item.total_revenue
+        )
+
+        setDataGraph1({
+          labels,
+          datasets: [
+            {
+              label: 'Ventas',
+              data: totalRevenueData,
+              backgroundColor: '#1e7c3a'
+            }
+          ]
+        })
+      } catch (error) {
+        console.error('Error fetching daily sales weekly data:', error)
+      } finally {
+        // setLoading(false)
+      }
+    }
+    fetchDailySalesWeeklyData()
+  }, [])
+
   return (
     <div className="dashboard-container">
       <BackButton />
@@ -108,20 +137,9 @@ const Dashboard = () => {
       </div>
       <section className="dashboard-content">
         <div className="graph-container">
-          <Bar options={options} data={data} />
-        </div>
-        <div className="graph-container">
-          <Line options={options2} data={data2} />
-        </div>
-        <div className="graph-container">
-          <Bar options={options} data={data} />
-        </div>
-        <div className="graph-container">
-          <Bar options={options} data={data} />
+          <Bar options={options} data={dataGraph1} />
         </div>
       </section>
     </div>
   )
 }
-
-export default Dashboard

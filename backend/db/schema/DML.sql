@@ -32,12 +32,17 @@ INSERT INTO security_actions (id,security_route,security_method,description) VAL
 (16,'/favorites/product/:id','get','Ver Favoritos'),
 (17,'/favorites/my','get','Ver mis favoritos'),
 (18,'/products/inventory','get','Ver Inventario'),
-(19,'/products/lock/:id','put','Bloquear Producto');
+(19,'/products/lock/:id','put','Bloquear Producto'),
+(20,'/dashboard/daily-sales-weekly','get','Ventas diarias de la última semana'),
+(21,'/dashboard/new-clients-weekly','get','Nuevos clientes de la última semana'),
+(22,'/dashboard/inactive-clients','get','Clientes que no han comprado en el último mes'),
+(23,'/dashboard/top-selling-products-daily','get','Productos más vendidos del día');
 
 INSERT INTO security_actions_roles (security_action_id,user_type_id) VALUES
 (1,3),(2,3),(3,3),(4,3),(4,2),(5,3),(6,3),(7,3),(7,2),(8,3),(9,3),(9,2),
 (10,3),(10,2),(10,1),(11,3),(11,2),(12,3),(12,2),(12,1),(13,3),(13,1),
-(15,1),(16,3),(16,2),(16,1),(17,3),(17,2),(17,1),(18,3),(18,2),(19,3);
+(15,1),(16,3),(16,2),(16,1),(17,3),(17,2),(17,1),(18,3),(18,2),(19,3),
+(20,3),(21,3),(22,3),(23,3);
 
 -- password admin: admin1 , otros usuarios: 123456
 INSERT INTO users (first_name, last_name, email, phone, password, user_type, user_status, profile_photo) VALUES 
