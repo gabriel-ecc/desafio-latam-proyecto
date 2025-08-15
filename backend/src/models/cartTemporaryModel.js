@@ -12,7 +12,7 @@ const getOrCreateTemporaryCart = async (userId) => {
   }
   const sqlQuery = {
     text: 'INSERT INTO orders (user_id, order_status, delivery_type, total_amount) VALUES ($1, $2, $3, $4) RETURNING *',
-    values: [[userId, 1, 1, 0]]
+    values: [userId, 1, 1, 0]
   }
   const insert = await pool.query(sqlQuery)
   return insert.rows[0]
@@ -53,33 +53,4 @@ const updateItemCart = async (orderId, productId, quantity, unitPrice) => {
   await pool.query(updateTotalQuery)
 }
 
-// Actualizar carrito completo
-const replaceCartItems = async (orderId, cart) => {
-  const replaceCartQuery = {
-    text: 'DELETE FROM order_items WHERE order_id = $1',
-    values: [orderId]
-  }
-  await pool.query(replaceCartQuery)
-
-  for (const item of cart) {
-    const insertItemCart = {
-      text: 'INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES ($1, $2, $3, $4)',
-      values: [orderId, item.id, item.quantity, item.price]
-    }
-    await pool.query(insertItemCart)
-  }
-
-  const totalCartQuery = {
-    text: 'SELECT SUM(quantity * unit_price) AS total FROM order_items WHERE order_id = $1',
-    values: [orderId]
-  }
-  const totalRes = await pool.query(totalCartQuery)
-
-  const updateTotalQuery = {
-    text: 'UPDATE orders SET total_amount = $1 WHERE id = $2',
-    values: [totalRes.rows[0].total, orderId]
-  }
-  await pool.query(updateTotalQuery)
-}
-
-export { getOrCreateTemporaryCart, updateItemCart, replaceCartItems }
+export { getOrCreateTemporaryCart, updateItemCart }

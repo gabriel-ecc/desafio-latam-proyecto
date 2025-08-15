@@ -67,13 +67,15 @@ const Cart = () => {
 
   const handlePayEfectivo = async() =>{
     try {
+      console.log("USER ID:", user.id);    
+      console.log("Cart items:", cart); 
       const payload = {
         user_id: user.id,
         order_status: 2,
         payment_type: 1,
         delivery_type: 2,
-        shipping_address: direccionEntrega,
-        recipient_name: nombreDestinatario,
+        shipping_address: direccionEntrega || 'Calle Falsa 123, Santiago',
+        recipient_name: nombreDestinatario || 'Juan Pérez',
         total_amount: Math.round(totalPrice()),
           items: cart.map(item => ({
             product_id:item.id,
@@ -81,6 +83,7 @@ const Cart = () => {
             unit_price:Math.round(item.price)
         }))
       }
+      console.log("Payload que se enviará:", payload);
       await axios.post(`${URLBASE}${apiVersion}/orders`, payload,{
         headers: { Authorization: `Bearer ${token}`}
       })

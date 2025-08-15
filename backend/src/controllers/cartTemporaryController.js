@@ -1,8 +1,9 @@
-import { getOrCreateTemporaryCart, updateItemCart, replaceCartItems } from '../models/cartTemporaryModel.js'
+import { getOrCreateTemporaryCart, updateItemCart } from '../models/cartTemporaryModel.js'
 
 const getTemporaryCart = async (req, res) => {
   try {
-    const { userId } = req.body
+    const { userId } = req.query
+    if (!userId) return res.status(400).json({ error: 'userId es requerido' })
     const cart = await getOrCreateTemporaryCart(userId)
     res.status(200).json(cart)
   } catch (error) {
@@ -13,22 +14,14 @@ const getTemporaryCart = async (req, res) => {
 
 const putItem = async (req, res) => {
   try {
-    const { orderId, cart, productId, quantity, unitPrice } = req.body
-    if (!orderId) {
-      return res.status(400).json({ error: 'orderId es requerido' })
-    }
-    if (cart && Array.isArray(cart)) {
-      // Caso 1: reemplazar todo el carrito
-      await replaceCartItems(orderId, cart)
-      return res.json({ message: 'Carrito reemplazado con éxito' })
-    }
+    const { orderId, items } = req.body
+    if (!orderId) return res.status(400).json({ error: 'orderId es requerido' })
 
-    if (productId && quantity != null && unitPrice != null) {
-      // Caso 2: agregar/actualizar solo un producto
-      await updateItemCart(orderId, productId, quantity, unitPrice)
-      return res.json({ message: 'Producto agregado/actualizado con éxito' })
+    for (const item of items) {
+      const { product_id, quantity, unit_price } = item
+      await updateItemCart(orderId, product_id, quantity, unit_price)
     }
-    return res.status(400).json({ error: 'Datos inválidos para actualizar carrito' })
+    res.json({ message: 'Carrito temporal actualizado con éxito' })
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Error al actualizar el carrito' })
