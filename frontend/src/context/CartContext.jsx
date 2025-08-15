@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react"
+import { URLBASE, apiVersion } from "../config/constants"
 
 export const CartContext = createContext()
 
@@ -11,7 +12,7 @@ export function CartProvider({ children }) {
   //Carrito Temporal
   const handleTemporaryCart = async(newCart) => {
     try {
-    await fetch("/api/cart", {
+    await fetch(`${URLBASE}${apiVersion}/cart`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ cart: newCart, order_status: 1 })

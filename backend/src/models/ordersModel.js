@@ -12,7 +12,7 @@ const createOrderCartModel = async ({ userId, orderStatus, deliveryType, shippin
 }
 const addOrderItemModel = async (orderId, productId, quantity, unitPrice) => {
   const sqlQuery = {
-    text: 'INSERT INTO order_items (order_id, product_id, quantity, unit_prince) VALUES ($1, $2, $3, $4) RETURNING *',
+    text: 'INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES ($1, $2, $3, $4) RETURNING *',
     values: [orderId, productId, quantity, unitPrice]
   }
   const response = await pool.query(sqlQuery)

@@ -55,7 +55,7 @@ const Cart = () => {
         order_status: 0,
         item: [],
       }
-      await axios.post(`${ENDPOINT}/orders`, payload, {
+      await axios.post(`${ENDPOINT}/cart`, payload, {
         headers: { Authorization: `Bearer ${token}`}
       })
       setCart([])
@@ -71,7 +71,7 @@ const Cart = () => {
         user_id: user.id,
         order_status: 3,
         payment_type:"efectivo",
-        total_amount: toLocaleString(totalPrice()),
+        total_amount: (totalPrice() ?? 0).toLocaleString('es-CL'),
           items: cart.map(item => ({
             product_id:item.id,
             quantity:item.quantity,
