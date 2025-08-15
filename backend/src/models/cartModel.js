@@ -19,4 +19,4 @@ const addOrderItemModel = async (orderId, productId, quantity, unitPrice) => {
   return response.rows[0]
 }
 
-export default { createOrderCartModel, addOrderItemModel }
+export { createOrderCartModel, addOrderItemModel }

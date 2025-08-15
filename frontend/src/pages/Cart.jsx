@@ -1,5 +1,6 @@
-import useCart, { CartContext } from '../context/CartContext.jsx'
+import { CartContext } from '../context/CartContext.jsx'
 import { ENDPOINT } from '../config/constants.js'
+import { UserContext } from '../context/UserContext.jsx'
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useProfile } from '../hooks/useProfile.js'
@@ -16,8 +17,8 @@ const Cart = () => {
   const [selectedPayment, setSelectedPayment] = useState(null)
   const [paymentStep, setPaymentStep] = useState(false)
   const [showPaymentOptions, setShowPaymentOptions] = useState(false)
-  const { user } = useProfile()
   const navigate = useNavigate()
+  const { user, token } = useContext(UserContext)
 
   {/*Requerimientos para el Pago*/}
 
@@ -45,7 +46,73 @@ const Cart = () => {
     }
   }, [])
 
-  {/*Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago*/}
+ 
+ {/* Conexión con el backend */}
+  const handleEmptyCart = async() => {
+    try{
+      const payload = {
+        user_id: user.id,
+        order_status: 0,
+        item: [],
+      }
+      await axios.post(`${ENDPOINT}/orders`, payload, {
+        headers: { Authorization: `Bearer ${token}`}
+      })
+      setCart([])
+      alert("Carrito Vacío")
+    }catch(error){
+      console.error("Error al vacíar el carrito", error)
+    }
+  }
+
+  const handlePayEfectivo = async() =>{
+    try {
+      const payload = {
+        user_id: user.id,
+        order_status: 3,
+        payment_type:"efectivo",
+        total_amount: toLocaleString(totalPrice()),
+          items: cart.map(item => ({
+            product_id:item.id,
+            quantity:item.quantity,
+            unit_price:item.price
+        }))
+      }
+      await axios.post(`${ENDPOINT}/orders`, payload,{
+        headers: { Authorization: `Bearer ${token}`}
+      })
+      setCart([])
+      console.log("Pago en efectivo realizado")
+    } catch (error) {
+      console.error("Error al pagar:", error)
+    }
+  }
+
+  const handlePayCard = async() => {
+    try {
+      const payload = {
+        user_id: user.id,
+        order_status: 4,
+        payment_type:"tarjeta",
+        total_amount: toLocaleString(totalPrice()),
+          items: cart.map(item => ({
+            product_id:item.id,
+            quantity:item.quantity,
+            unit_price:item.price
+        }))
+      }
+
+    await axios.post(`${ENDPOINT}/orders`, payload, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    setCart([])
+    console.log("Pago con tarjeta realizado")
+    } catch (error) {
+      console.error("Error al pagar:", error)
+    }
+  }
+
+ {/*Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago*/}
 
   const handleCancel = () => {
     Swal.fire({
@@ -59,16 +126,18 @@ const Cart = () => {
       cancelButtonColor: '#3085d6'
     }).then(result => {
       if (result.isConfirmed) {
-        setCart([]) // Vaciar carrito
+        handleEmptyCart().then(() => {
         Swal.fire({
           title: 'Carrito vacío',
           icon: 'success',
           confirmButtonText: 'OK',
           confirmButtonColor: '#28a745'
-        })
+        })   
+      })
       }
     })
   }
+
 
   const handleContinue = () => {
     if (cart.length === 0) {
@@ -127,7 +196,6 @@ const Cart = () => {
       return
     }
 
-    {/*Seleciona pago pero no coloca los datos completos*/}
     if (selectedPayment === 'credito' || selectedPayment === 'debito') {
       if (
         !nombreTitular.trim() ||
@@ -143,8 +211,8 @@ const Cart = () => {
         return
       }
 
-      const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
-      const cvvOk = /^\d{3}$/.test(cvv)
+    const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
+    const cvvOk = /^\d{3}$/.test(cvv)
 
     if (!expiryOk || !cvvOk) {
       Swal.fire({
@@ -156,8 +224,10 @@ const Cart = () => {
     }
   }
 
-
     {/*Pago éxitoso*/}
+    const kindPaymet = selectedPayment === 'efectivo' ? handlePayEfectivo() : handlePayCard()
+    
+    kindPaymet.then(() => {
     const generateTicketNumber = () => 
       Math.floor(Math.random() * 900000) + 100000
     // Reemplazar después por el futuro order_id en el backend
@@ -175,7 +245,7 @@ const Cart = () => {
       return `${hours}:${minutes}:${seconds}`
     }
 
-    await Swal.fire({
+    return Swal.fire({
       title: '',
       html: `
         <div class="receipt-container">
@@ -228,13 +298,15 @@ const Cart = () => {
       },
       width: '450px'
     })
+  })
+  .then(() => {
     setCart([])
     navigate('/')
-  }
+  })
+}
 
 
   {/*Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.*/}
-
   return (
     <>
       <BackButton />

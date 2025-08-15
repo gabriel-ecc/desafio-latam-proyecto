@@ -7,10 +7,27 @@ export function CartProvider({ children }) {
     const storedCart = localStorage.getItem('cart')
     return storedCart ? JSON.parse(storedCart) : []
   })
-  //Primera función es para agregar al carrito y descartar duplicados
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart))
-  }, [cart])
+
+  //Carrito Temporal
+  const handleTemporaryCart = async(newCart) => {
+    try {
+    await fetch("/api/cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cart: newCart, order_status: 1 })
+    })
+    console.log("Carrito temporal guardado en backend")
+  } catch (error) {
+    console.error("Error guardando carrito temporal:", error)
+  }
+  }
+
+    useEffect(() => {
+      localStorage.setItem('cart', JSON.stringify(cart))
+      if (cart.length > 0) {
+        handleTemporaryCart(cart)
+      }
+    }, [cart])
 
   const addToCart = (item, quantity = 1) => {
     setCart(prevCart => {
