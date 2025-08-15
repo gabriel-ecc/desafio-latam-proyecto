@@ -1,5 +1,5 @@
 import { CartContext } from '../context/CartContext.jsx'
-import { ENDPOINT } from '../config/constants.js'
+import { URLBASE, apiVersion } from "../config/constants.js"
 import { UserContext } from '../context/UserContext.jsx'
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -55,7 +55,7 @@ const Cart = () => {
         order_status: 0,
         item: [],
       }
-      await axios.post(`${ENDPOINT}/cart`, payload, {
+      await axios.put(`${URLBASE}${apiVersion}/cart`, payload, {
         headers: { Authorization: `Bearer ${token}`}
       })
       setCart([])
@@ -69,16 +69,19 @@ const Cart = () => {
     try {
       const payload = {
         user_id: user.id,
-        order_status: 3,
-        payment_type:"efectivo",
-        total_amount: (totalPrice() ?? 0).toLocaleString('es-CL'),
+        order_status: 2,
+        payment_type: 1,
+        delivery_type: 2,
+        shipping_address: direccionEntrega,
+        recipient_name: nombreDestinatario,
+        total_amount: Math.round(totalPrice()),
           items: cart.map(item => ({
             product_id:item.id,
             quantity:item.quantity,
-            unit_price:item.price
+            unit_price:Math.round(item.price)
         }))
       }
-      await axios.post(`${ENDPOINT}/orders`, payload,{
+      await axios.post(`${URLBASE}${apiVersion}/orders`, payload,{
         headers: { Authorization: `Bearer ${token}`}
       })
       setCart([])
@@ -92,17 +95,20 @@ const Cart = () => {
     try {
       const payload = {
         user_id: user.id,
-        order_status: 4,
-        payment_type:"tarjeta",
-        total_amount: toLocaleString(totalPrice()),
+        order_status: 3,
+        payment_type: 1,
+        delivery_type: 1,
+        shipping_address: direccionEntrega,
+        recipient_name: nombreDestinatario,
+        total_amount: Math.round(totalPrice()),
           items: cart.map(item => ({
             product_id:item.id,
             quantity:item.quantity,
-            unit_price:item.price
+            unit_price:Math.round(item.price)
         }))
       }
 
-    await axios.post(`${ENDPOINT}/orders`, payload, {
+    await axios.post(`${URLBASE}${apiVersion}/orders`, payload, {
       headers: { Authorization: `Bearer ${token}` }
     })
     setCart([])

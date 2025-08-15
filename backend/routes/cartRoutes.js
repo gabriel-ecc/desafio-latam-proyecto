@@ -1,9 +1,10 @@
 import express from 'express'
-import postCartOrder from '../src/controllers/ordersController.js'
+import { getTemporaryCart, putItem } from '../src/controllers/cartTemporaryController.js'
 
 const router = express.Router()
 
 // Guardar carrito temporal
-router.post('/', postCartOrder)
+router.get('/', getTemporaryCart)
+router.put('/', putItem)
 
 export default router

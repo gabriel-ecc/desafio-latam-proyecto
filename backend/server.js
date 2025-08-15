@@ -12,7 +12,7 @@ import seasonRoutes from './routes/seasonRoutes.js'
 import productsRoutes from './routes/productsRoutes.js'
 import favoritesRoutes from './routes/favoritesRoutes.js'
 import ordersRoutes from './routes/ordersRoutes.js'
-import cartRoutes from './routes/cartRoutes.js'
+import cartTemporaryRoutes from './routes/cartRoutes.js'
 
 import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
@@ -45,7 +45,7 @@ app.use('/api/v1', seasonRoutes) // Temporadas de Productos
 app.use('/api/v1', productsRoutes) // Ruta de Productos
 app.use('/api/v1', favoritesRoutes) // Ruta de Favoritos
 app.use('/api/v1/orders', ordersRoutes) // Ruta Ordenes
-app.use('/api/v1/cart', cartRoutes) // Ruta Carrito
+app.use('/api/v1/cart', cartTemporaryRoutes) // Ruta Carrito
 
 // Disponer imagenes para recursos de pagina web
 const __dirname = path.resolve()
