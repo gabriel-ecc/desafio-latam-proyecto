@@ -30,6 +30,10 @@ export const getProducts = async (req, res) => {
 
 export const getInventory = async (req, res) => {
   try {
+    console.log('=== INVENTORY SEARCH DEBUG ===')
+    console.log('Query params:', req.query)
+    console.log('Search term:', req.query.search)
+
     const products = await getInventoryByPage(req.query)
 
     const count = await getInventoryCount(req.query)

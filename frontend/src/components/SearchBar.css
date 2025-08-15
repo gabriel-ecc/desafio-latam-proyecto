@@ -1,0 +1,366 @@
+/* SearchBar.css */
+.search-bar {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* Aumentado para permitir más ancho */
+  margin: 0 auto;
+}
+
+/* Para pantallas grandes, permitir que sea aún más ancho */
+@media (min-width: 1024px) {
+  .search-bar {
+    max-width: 500px; /* Mucho más ancho en desktop */
+  }
+}
+
+.search-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 2px solid #e1e5e9;
+  border-radius: 25px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-input-container:focus-within {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.search-icon {
+  color: #666;
+  margin: 2px 20px 2px 8px;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.search-input-container:focus-within .search-icon {
+  color: #4caf50;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 18px;
+  color: #333;
+  padding: 0;
+}
+
+.search-input::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.clear-button {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  margin-left: 8px;
+}
+
+.clear-button:hover {
+  background: #f5f5f5;
+  color: #666;
+}
+
+/* Dropdown de sugerencias */
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e1e5e9;
+  border-radius: 12px;
+  margin-top: 4px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 25px 16px; /* Reducido de 12px a 8px para menos espacio vertical */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover,
+.suggestion-item.highlighted {
+  background: #f8f9fa;
+  transform: translateX(2px);
+}
+
+.suggestion-image {
+  width: 55px; /* Reducido de 40px a 35px */
+  height: 55px; /* Reducido de 40px a 35px */
+  margin-right: 22px; /* Reducido de 12px a 10px */
+  margin-left: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Evitar que la imagen se comprima */
+}
+
+.suggestion-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.suggestion-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Mejorar aprovechamiento del espacio horizontal */
+@media (min-width: 480px) {
+  .suggestion-item {
+    min-height: 48px; /* Altura mínima fija para consistencia */
+  }
+
+  .suggestion-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .suggestion-details {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .suggestion-price {
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+}
+
+.suggestion-name {
+  font-weight: 600;
+  font-size: 19px;
+  color: #333;
+  margin-bottom: 1px; /* Reducido de 2px a 1px */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2; /* Mejor espaciado de línea */
+}
+
+.suggestion-category {
+  font-size: 16px; /* Reducido de 12px a 11px */
+  color: #666;
+  margin-bottom: 1px; /* Reducido de 2px a 1px */
+  line-height: 1.1; /* Espaciado de línea más compacto */
+}
+
+.suggestion-price {
+  font-size: 18px; /* Reducido de 14px a 13px */
+  color: #4caf50;
+  font-weight: 600;
+  margin-right: 30px;
+  line-height: 1.1; /* Espaciado de línea más compacto */
+}
+
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  color: #999;
+  text-align: center;
+}
+
+.no-results i {
+  font-size: 32px;
+  margin-bottom: 8px;
+  opacity: 0.5;
+}
+
+/* Scrollbar personalizada */
+.suggestions-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.suggestions-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.suggestions-dropdown::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.suggestions-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .search-bar {
+    max-width: 95%;
+    width: 95%;
+  }
+
+  .search-input-container {
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .search-input {
+    font-size: 20px;
+    min-width: 120px;
+  }
+
+  .search-input::placeholder {
+    font-size: 20px;
+  }
+
+  .search-icon {
+    font-size: 18px;
+    margin: 8px 20px 8px 14px;
+  }
+
+  .clear-button {
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+  }
+
+  .suggestion-item {
+    padding: 16px;
+  }
+
+  .suggestion-image {
+    width: 48px;
+    height: 48px;
+    margin-right: 16px;
+  }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .search-bar {
+    max-width: 90%;
+    width: 90%;
+  }
+
+  .search-input-container {
+    padding: 10px 8px;
+    border-radius: 18px;
+  }
+
+  .search-input {
+    font-size: 14px;
+    min-width: 100px;
+  }
+
+  .search-input::placeholder {
+    font-size: 14px;
+  }
+
+  .search-icon {
+    font-size: 11px;
+    margin: 1px 6px 1px 2px;
+  }
+
+  .clear-button {
+    width: 18px;
+    height: 18px;
+    margin-left: 2px;
+  }
+}
+
+/* Estados de carga */
+.search-bar.loading .search-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Estilos adicionales */
+.search-bar-simple {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.search-bar-simple .search-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 2px solid #e1e5e9;
+  border-radius: 25px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar-simple .search-input-container:focus-within {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.search-hint {
+  text-align: center;
+  margin-top: 0.5rem;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.search-hint small {
+  padding: 0.25rem 0.75rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}

@@ -6,7 +6,8 @@ export const getProductsCount = async ({
   page = 1,
   orderBy = 'id_ASC',
   season = '',
-  category = ''
+  category = '',
+  search = ''
 }) => {
   const filtros = []
   const valores = []
@@ -18,6 +19,12 @@ export const getProductsCount = async ({
   if (season) {
     filtros.push('c.id = %L')
     valores.push(season)
+  }
+  if (search) {
+    filtros.push(
+      '(LOWER(a.name) LIKE LOWER(%L) OR LOWER(b.name) LIKE LOWER(%L))'
+    )
+    valores.push(`%${search}%`, `%${search}%`)
   }
 
   let sqlQuery =
@@ -36,7 +43,8 @@ export const getProductsByPage = async ({
   page = 1,
   orderBy = 'id_ASC',
   season = '',
-  category = ''
+  category = '',
+  search = ''
 }) => {
   const filtros = []
   const valores = []
@@ -48,6 +56,12 @@ export const getProductsByPage = async ({
   if (season) {
     filtros.push('c.id = %L')
     valores.push(season)
+  }
+  if (search) {
+    filtros.push(
+      '(LOWER(a.name) LIKE LOWER(%L) OR LOWER(b.name) LIKE LOWER(%L))'
+    )
+    valores.push(`%${search}%`, `%${search}%`)
   }
 
   const [columna, direccion] = orderBy.split('_')
@@ -146,7 +160,8 @@ export const getInventoryCount = async ({
   page = 1,
   orderBy = 'id_ASC',
   season = '',
-  category = ''
+  category = '',
+  search = ''
 }) => {
   const filtros = []
   const valores = []
@@ -158,6 +173,12 @@ export const getInventoryCount = async ({
   if (season) {
     filtros.push('c.id = %L')
     valores.push(season)
+  }
+  if (search) {
+    filtros.push(
+      '(LOWER(a.name) LIKE LOWER(%L) OR LOWER(b.name) LIKE LOWER(%L))'
+    )
+    valores.push(`${search}%`, `${search}%`)
   }
 
   let sqlQuery =
@@ -176,7 +197,8 @@ export const getInventoryByPage = async ({
   page = 1,
   orderBy = 'id_ASC',
   season = '',
-  category = ''
+  category = '',
+  search = ''
 }) => {
   const filtros = []
   const valores = []
@@ -188,6 +210,12 @@ export const getInventoryByPage = async ({
   if (season) {
     filtros.push('c.id = %L')
     valores.push(season)
+  }
+  if (search) {
+    filtros.push(
+      '(LOWER(a.name) LIKE LOWER(%L) OR LOWER(b.name) LIKE LOWER(%L))'
+    )
+    valores.push(`${search}%`, `${search}%`)
   }
 
   const [columna, direccion] = orderBy.split('_')

@@ -134,12 +134,9 @@
   --radius-input: 4px;
 
   /* ========== BREAKPOINTS RESPONSIVE ========== */
-  --breakpoint-xs: 320px; /* Teléfonos pequeños */
-  --breakpoint-sm: 480px; /* Teléfonos */
-  --breakpoint-md: 768px; /* Tablets */
-  --breakpoint-lg: 1024px; /* Laptops */
-  --breakpoint-xl: 1200px; /* Desktops */
-  --breakpoint-xxl: 1400px; /* Pantallas grandes */
+  --breakpoint-mobile: 767px; /* Móvil (hasta 767px) */
+  --breakpoint-tablet: 768px; /* Tablet (768px - 1023px) */
+  --breakpoint-desktop: 1024px; /* Desktop (1024px en adelante) */
 
   /* ========== Z-INDEX SISTEMÁTICO ========== */
   --z-index-base: 0;
