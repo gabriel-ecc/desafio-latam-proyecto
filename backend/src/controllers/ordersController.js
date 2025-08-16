@@ -2,8 +2,8 @@ import { createOrderCartModel, addOrderItemModel } from '../models/ordersModel.j
 
 const postCartOrder = async (req, res) => {
   try {
+    const userId = req.user
     const {
-      user_id,
       order_status,
       delivery_type,
       shipping_address,
@@ -11,12 +11,10 @@ const postCartOrder = async (req, res) => {
       items
     } = req.body
 
-    console.log('Payload recibido:', req.body)
-
     const totalAmount = items.reduce((sum, item) => sum + item.unit_price * item.quantity, 0)
 
     const newOrder = await createOrderCartModel({
-      userId: user_id,
+      userId,
       orderStatus: order_status,
       deliveryType: delivery_type,
       shippingAddress: shipping_address,
