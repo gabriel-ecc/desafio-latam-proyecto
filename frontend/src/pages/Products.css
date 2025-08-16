@@ -51,28 +51,69 @@
   max-width: 1400px;
 }
 
-/* Responsive para diferentes tamaños */
+/* Responsive para diferentes tamaños - SOLO para la página de Products */
 @media (max-width: 576px) {
+  /* Solo afectar a la página Products */
+  .container .filters-container {
+    gap: 0.8rem;
+    padding: 0.6rem;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container .filter-group {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .container .filter-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #495057;
+    text-align: center;
+  }
+
+  .container .filter-group select {
+    min-width: auto;
+    width: 75%;
+    max-width: 200px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    text-align: center;
+  }
+
   .card-container {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
     padding: 1rem;
   }
+}
 
-  .filters-container {
-    gap: 1rem;
-    padding: 0.8rem;
+/* Para móviles muy pequeños como iPhone - SOLO Products */
+@media (max-width: 480px) {
+  .container .filters-container {
+    gap: 0.6rem;
+    padding: 0.5rem;
   }
 
-  .filter-group {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.3rem;
+  .container .filter-group {
+    max-width: 250px;
+    gap: 0.2rem;
   }
 
-  .filter-group select {
-    min-width: 120px;
-    width: 100%;
+  .container .filter-group label {
+    font-size: 0.8rem;
+  }
+
+  .container .filter-group select {
+    width: 70%;
+    max-width: 180px;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -83,7 +124,40 @@
   }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
+/* Específico para tablet - mantener los 4 selectores en una fila - SOLO Products */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Crear una fila para los 4 selectores - solo en Products */
+  .container .filters-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem 0.5rem;
+  }
+
+  /* Contenedor para los 4 selectores en fila - solo en Products */
+  .container .filters-container .filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 140px;
+    max-width: 160px;
+  }
+
+  .container .filters-container .filter-group label {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    text-align: center;
+  }
+
+  .container .filters-container .filter-group select {
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+    min-width: 130px;
+  }
+
   .card-container {
     grid-template-columns: repeat(auto-fit, minmax(300px, 320px));
     gap: 2rem;

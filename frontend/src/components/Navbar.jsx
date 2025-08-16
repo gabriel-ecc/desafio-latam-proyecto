@@ -262,7 +262,7 @@ const Navbar = () => {
             <i className="fa-solid fa-cart-shopping"></i>
             <span className="cart-total">
               <p>$</p>
-              {total.toLocaleString()}
+              {total.toLocaleString('es-CL')}
             </span>
           </Link>
 
