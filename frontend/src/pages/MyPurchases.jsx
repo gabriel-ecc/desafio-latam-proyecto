@@ -7,135 +7,9 @@ import axios from 'axios'
 
 const MyPurchases = () => {
   const [selectedPurchase, setSelectedPurchase] = useState(null)
+  const [purchases, setPurchases] = useState([])
   const token = getToken()
   const URLBASE = 'http://localhost:3000'
-
-  // Mock data - Datos de ejemplo que reemplazarán cuando esté el backend
-  const [purchases, setPurchases] = useState([
-    {
-      id: 1,
-      orderNumber: '75924112',
-      date: '04/06/2025',
-      status: 'Finalizada',
-      total: 5900,
-      estimatedDate: 'Pedido entregado',
-      products: [
-        {
-          id: 1,
-          name: 'Zapallo Italiano',
-          price: 800,
-          quantity: 1,
-          img: `${URLBASE}/api/v1/uploads/zapalloItaliano.webp`
-        },
-        {
-          id: 2,
-          name: 'Zanahoria',
-          price: 900,
-          quantity: 3,
-          img: `${URLBASE}/api/v1/uploads/zanahoria.webp`
-        },
-        {
-          id: 3,
-          name: 'Cebolla Morada',
-          price: 1200,
-          quantity: 2,
-          img: `${URLBASE}/api/v1/uploads/cebollaMorada.jpeg`
-        }
-      ]
-    },
-    {
-      id: 2,
-      orderNumber: '75981804',
-      date: '02/06/2025',
-      status: 'En delivery',
-      total: 2790,
-      estimatedDate: 'Tú orden va en camino',
-      products: [
-        {
-          id: 4,
-          name: 'Brócoli',
-          price: 930,
-          quantity: 3,
-          img: `${URLBASE}/api/v1/uploads/brocoli.webp`
-        }
-      ]
-    },
-    {
-      id: 3,
-      orderNumber: '75130136',
-      date: '16/05/2025',
-      status: 'Retiro en tienda',
-      total: 5590,
-      estimatedDate: 'Listo para retirar en el local',
-      products: [
-        {
-          id: 5,
-          name: 'Lechuga Costina',
-          price: 1120,
-          quantity: 2,
-          img: `${URLBASE}/api/v1/uploads/LechugaCostina.webp`
-        },
-        {
-          id: 6,
-          name: 'Tomate Larga Vida',
-          price: 1350,
-          quantity: 2,
-          img: `${URLBASE}/api/v1/uploads/tomatesLargaVida.jpeg`
-        }
-      ]
-    },
-    {
-      id: 4,
-      orderNumber: '75130135',
-      date: '15/05/2025',
-      status: 'Preparacion',
-      total: 3200,
-      estimatedDate: 'Orden en preparación',
-      products: [
-        {
-          id: 7,
-          name: 'Palta Hass',
-          price: 1600,
-          quantity: 2,
-          img: `${URLBASE}/api/v1/uploads/paltaHass.webp`
-        }
-      ]
-    },
-    {
-      id: 5,
-      orderNumber: '75130134',
-      date: '14/05/2025',
-      status: 'Carrito',
-      total: 1800,
-      estimatedDate: 'Carrito en preparación',
-      products: [
-        {
-          id: 8,
-          name: 'Tomate Cherry',
-          price: 900,
-          quantity: 2,
-          img: `${URLBASE}/api/v1/uploads/tomatesLargaVida.jpeg`
-        }
-      ]
-    },
-    {
-      id: 6,
-      orderNumber: '75130133',
-      date: '13/05/2025',
-      status: 'Cancelada',
-      total: 2400,
-      estimatedDate: 'Pedido cancelado',
-      products: [
-        {
-          id: 9,
-          name: 'Lechuga',
-          price: 1200,
-          quantity: 2,
-          img: `${URLBASE}/api/v1/uploads/LechugaCostina.webp`
-        }
-      ]
-    }
-  ])
 
   useEffect(() => {
     document.body.classList.add('home-background')
@@ -163,12 +37,12 @@ const MyPurchases = () => {
 
   const getStatusBadge = status => {
     const statusConfig = {
-      Carrito: { className: 'status-cart', icon: '🛒' },
+      0: { className: 'status-cart', icon: '🛒' },
       'Carrito cancelado': { className: 'status-cart-cancelled', icon: '🛒❌' },
-      Preparacion: { className: 'status-preparation', icon: '👨‍🍳' },
+      1: { className: 'status-preparation', icon: '👨‍🍳' },
       'Retiro en tienda': { className: 'status-pickup', icon: '🏪' },
-      'En delivery': { className: 'status-delivery', icon: '🚚' },
-      Finalizada: { className: 'status-completed', icon: '✅' },
+      2: { className: 'status-delivery', icon: '🚚' },
+      3: { className: 'status-completed', icon: '✅' },
       Cancelada: { className: 'status-cancelled', icon: '❌' }
     }
 
@@ -215,13 +89,15 @@ const MyPurchases = () => {
           <h3>Orden #{purchase.orderNumber}</h3>
           <div className="order_info">
             <p>
-              <strong>Fecha:</strong> {purchase.date}
+              <strong>Fecha:</strong>{' '}
+              {new Date(purchase.date).toISOString().slice(0, 10)}
             </p>
             <p>
-              <strong>Estado:</strong> {getStatusBadge(purchase.status)}
+              <strong>Estado:</strong> {getStatusBadge(purchase.order_status)}
             </p>
             <p>
-              <strong>Estimación:</strong> {purchase.estimatedDate}
+              <strong>Estimación:</strong>{' '}
+              {new Date(purchase.estimatedDate).toISOString().slice(0, 10)}
             </p>
           </div>
         </div>
@@ -291,7 +167,10 @@ const MyPurchases = () => {
                       <div className="purchase_info">
                         <h4>Orden: {purchase.id}</h4>
                         <p className="purchase_date">
-                          Fecha de compra: {purchase.create_date}
+                          Fecha de compra:{' '}
+                          {new Date(purchase.create_date)
+                            .toISOString()
+                            .slice(0, 10)}
                         </p>
                         <p className="purchase_total">
                           Total: $
@@ -305,7 +184,11 @@ const MyPurchases = () => {
                       </div>
                     </div>
                     <div className="purchase_details">
-                      <p className="estimated_date">{purchase.create_date}</p>
+                      <p className="estimated_date">
+                        {new Date(purchase.create_date)
+                          .toISOString()
+                          .slice(0, 10)}
+                      </p>
                       <span className="btn_details">Ver detalle</span>
                     </div>
                   </button>
@@ -336,7 +219,10 @@ const MyPurchases = () => {
                   <h3>Orden #{selectedPurchase.orderNumber}</h3>
                   <div className="order_info">
                     <p>
-                      <strong>Fecha:</strong> {selectedPurchase.date}
+                      <strong>Fecha:</strong>{' '}
+                      {new Date(selectedPurchase.date)
+                        .toISOString()
+                        .slice(0, 10)}
                     </p>
                     <p>
                       <strong>Estado:</strong>{' '}
@@ -344,7 +230,9 @@ const MyPurchases = () => {
                     </p>
                     <p>
                       <strong>Estimación:</strong>{' '}
-                      {selectedPurchase.estimatedDate}
+                      {new Date(selectedPurchase.estimatedDate)
+                        .toISOString()
+                        .slice(0, 10)}
                     </p>
                   </div>
                 </div>

@@ -40,7 +40,7 @@ export const addOrderItemModel = async (
 
 export const getMyPurchasesSQL = async userId => {
   const sqlQuery = {
-    text: 'SELECT * FROM orders WHERE user_id = $1',
+    text: 'SELECT * FROM orders WHERE user_id = $1 order by id desc',
     values: [userId]
   }
   const response = await pool.query(sqlQuery)
