@@ -31,21 +31,18 @@ export const getMyPurchasesDetail = async (req, res) => {
 
 export const postCartOrder = async (req, res) => {
   try {
-    const { userId, items, deliveryType, shippingAddress, recipientName } =
-      req.body
+    const { userId = req.body.user_id, items, deliveryType, shippingAddress, recipientName } = req.body
 
     console.log('Payload recibido:', req.body)
-    const totalAmount = items.reduce(
-      (sum, item) => sum + item.unit_price * item.quantity,
-      0
-    )
+    const totalAmount = items.reduce((sum, item) => sum + item.unit_price * item.quantity, 0)
+    const payload = req.body
     const newOrder = await createOrderCartModel({
-      userId,
-      orderStatus: 1,
-      deliveryType,
-      shippingAddress,
-      recipientName,
-      totalAmount
+      userId: payload.user_id,
+      orderStatus: payload.order_status,
+      deliveryType: payload.delivery_type,
+      shippingAddress: payload.shipping_address,
+      recipientName: payload.recipient_name,
+      totalAmount: payload.total_amount
     })
 
     for (const item of items) {
