@@ -50,16 +50,27 @@ const Cart = () => {
  {/* Conexión con el backend */}
   const handleEmptyCart = async() => {
     try{
-      const payload = {
-        user_id: user.id,
-        order_status: 0,
-        item: [],
-      }
-      await axios.put(`${URLBASE}${apiVersion}/cart`, payload, {
-        headers: { Authorization: `Bearer ${token}`}
+      const response = await axios.get(`${URLBASE}${apiVersion}/cart`,{
+        params: { userId: user.id },
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      const cartData = response.data
+      const orderId = cartData.id
+
+      await axios.put(`${URLBASE}${apiVersion}/cart`, {
+        orderId,
+        items: []
+      },{
+        headers: { Authorization: `Bearer ${token}`}  
       })
       setCart([])
-      alert("Carrito Vacío")
+      Swal.fire({
+        title: 'Carrito vacío',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#28a745'
+      })
+      navigate('/')
     }catch(error){
       console.error("Error al vacíar el carrito", error)
     }
@@ -135,18 +146,10 @@ const Cart = () => {
       cancelButtonColor: '#3085d6'
     }).then(result => {
       if (result.isConfirmed) {
-        handleEmptyCart().then(() => {
-        Swal.fire({
-          title: 'Carrito vacío',
-          icon: 'success',
-          confirmButtonText: 'OK',
-          confirmButtonColor: '#28a745'
-        })   
-      })
+        handleEmptyCart()   
       }
-    })
+      })
   }
-
 
   const handleContinue = () => {
     if (cart.length === 0) {

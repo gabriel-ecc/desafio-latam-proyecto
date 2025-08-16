@@ -11,7 +11,7 @@ import {
 const router = express.Router()
 
 // Guardar carrito temporal
-router.post('/orders', postCartOrder)
+router.post('/orders', verifyToken, postCartOrder)
 router.get(
   '/orders/my',
   verduleriaLog,
