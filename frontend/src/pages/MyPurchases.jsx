@@ -7,7 +7,7 @@ const MyPurchases = () => {
   const [selectedPurchase, setSelectedPurchase] = useState(null)
 
   // Mock data - Datos de ejemplo que reemplazarán cuando esté el backend
-  const [purchases] = useState([
+  const [purchases, setPurchases] = useState([
     {
       id: 1,
       orderNumber: '75924112',
