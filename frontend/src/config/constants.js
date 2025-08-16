@@ -14,5 +14,7 @@ export const ENDPOINT = {
   favoritesMy: `${URLBASE}${apiVersion}/favorites/my`,
   favoritesProduct: `${URLBASE}${apiVersion}/favorites/product`,
   cart: `${URLBASE}${apiVersion}/cart`,
-  orders: `${URLBASE}${apiVersion}/orders`
+  orders: `${URLBASE}${apiVersion}/orders`,
+  purchases: `${URLBASE}${apiVersion}/orders/my`,
+  purchasesDetail: `${URLBASE}${apiVersion}/orders/my/detail`
 }

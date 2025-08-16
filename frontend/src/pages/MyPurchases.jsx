@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react'
 import BackButton from '../components/BackButton'
-import { URLBASE } from '../config/constants'
+import { ENDPOINT } from '../config/constants'
+import { getToken } from '../services/authService'
 import './MyPurchases.css'
+import axios from 'axios'
 
 const MyPurchases = () => {
   const [selectedPurchase, setSelectedPurchase] = useState(null)
+  const token = getToken()
+  const URLBASE = 'http://localhost:3000'
 
   // Mock data - Datos de ejemplo que reemplazarán cuando esté el backend
   const [purchases, setPurchases] = useState([
@@ -140,6 +144,23 @@ const MyPurchases = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const getMyPurchases = async () => {
+      try {
+        await axios
+          .get(ENDPOINT.purchases, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+          .then(({ data }) => {
+            setPurchases(data)
+          })
+      } catch (error) {
+        console.error('Error fetching purchases:', error)
+      }
+    }
+    getMyPurchases()
+  }, [])
+
   const getStatusBadge = status => {
     const statusConfig = {
       Carrito: { className: 'status-cart', icon: '🛒' },
@@ -163,8 +184,26 @@ const MyPurchases = () => {
     )
   }
 
-  const handleSelectPurchase = purchase => {
-    setSelectedPurchase(purchase)
+  const handleSelectPurchase = async purchase => {
+    try {
+      const response = await axios.get(
+        `${ENDPOINT.purchasesDetail}/${purchase.id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+      console.log(response.data.purchasesDetail)
+      setSelectedPurchase({
+        orderNumber: purchase.id,
+        date: purchase.create_date,
+        status: purchase.order_status,
+        estimatedDate: purchase.create_date,
+        products: response.data.purchasesDetail,
+        total: purchase.total_amount
+      })
+    } catch (error) {
+      console.error('Error fetching purchase details:', error)
+    }
   }
 
   const renderPurchaseDetails = purchase => {
@@ -246,24 +285,27 @@ const MyPurchases = () => {
                   <button
                     className={`purchase_item ${selectedPurchase?.id === purchase.id ? 'selected' : ''}`}
                     onClick={() => handleSelectPurchase(purchase)}
-                    aria-label={`Seleccionar pedido ${purchase.orderNumber}`}
+                    aria-label={`Seleccionar pedido ${purchase.id}`}
                   >
                     <div className="purchase_header">
                       <div className="purchase_info">
-                        <h4>Orden: {purchase.orderNumber}</h4>
+                        <h4>Orden: {purchase.id}</h4>
                         <p className="purchase_date">
-                          Fecha de compra: {purchase.date}
+                          Fecha de compra: {purchase.create_date}
                         </p>
                         <p className="purchase_total">
-                          Total: ${purchase.total.toLocaleString('es-CL')}
+                          Total: $
+                          {purchase.total_amount > 0
+                            ? purchase.total_amount.toLocaleString('es-CL')
+                            : 0}
                         </p>
                       </div>
                       <div className="purchase_status">
-                        {getStatusBadge(purchase.status)}
+                        {getStatusBadge(purchase.order_status)}
                       </div>
                     </div>
                     <div className="purchase_details">
-                      <p className="estimated_date">{purchase.estimatedDate}</p>
+                      <p className="estimated_date">{purchase.create_date}</p>
                       <span className="btn_details">Ver detalle</span>
                     </div>
                   </button>
@@ -331,9 +373,11 @@ const MyPurchases = () => {
                         </span>
                         <span className="subtotal">
                           Subtotal: $
-                          {(product.price * product.quantity).toLocaleString(
-                            'es-CL'
-                          )}
+                          {product.price === 0
+                            ? 0
+                            : (product.price * product.quantity).toLocaleString(
+                                'es-CL'
+                              )}
                         </span>
                       </div>
                     </div>
@@ -351,7 +395,9 @@ const MyPurchases = () => {
                     </p>
                     <h3 className="final_total">
                       Total Final: $
-                      {selectedPurchase.total.toLocaleString('es-CL')}
+                      {selectedPurchase.total === 0
+                        ? 0
+                        : selectedPurchase.total.toLocaleString('es-CL')}
                     </h3>
                   </div>
                 </div>

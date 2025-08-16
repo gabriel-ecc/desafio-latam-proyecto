@@ -2,7 +2,7 @@ import pool from '../../db/schema/config.js'
 
 // Creamos la orden
 
-const createOrderCartModel = async ({
+export const createOrderCartModel = async ({
   userId,
   orderStatus,
   deliveryType,
@@ -24,7 +24,12 @@ const createOrderCartModel = async ({
   const response = await pool.query(sqlQuery)
   return response.rows[0]
 }
-const addOrderItemModel = async (orderId, productId, quantity, unitPrice) => {
+export const addOrderItemModel = async (
+  orderId,
+  productId,
+  quantity,
+  unitPrice
+) => {
   const sqlQuery = {
     text: 'INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES ($1, $2, $3, $4) RETURNING *',
     values: [orderId, productId, quantity, unitPrice]
@@ -35,7 +40,7 @@ const addOrderItemModel = async (orderId, productId, quantity, unitPrice) => {
 
 export const getMyPurchasesSQL = async userId => {
   const sqlQuery = {
-    text: 'select * from orders where user_id = %L',
+    text: 'SELECT * FROM orders WHERE user_id = $1',
     values: [userId]
   }
   const response = await pool.query(sqlQuery)
@@ -44,16 +49,9 @@ export const getMyPurchasesSQL = async userId => {
 
 export const getMyPurchasesDetailSQL = async (userId, orderId) => {
   const sqlQuery = {
-    text: 'select * from orders as a inner join order_items as b on a.id = b.order_id where user_id = %L and id = %L',
+    text: 'select c.id as product_id,c.name as product_name, a.create_date as date, a.order_status , c.product_photo as img,c.id as id,c.name as name,b.unit_price as price ,b.quantity as quantity, a.total_amount as total from orders as a inner join order_items as b on a.id = b.order_id inner join products as c on b.product_id = c.id where a.user_id = $1 and a.id = $2',
     values: [userId, orderId]
   }
   const response = await pool.query(sqlQuery)
   return response.rows
-}
-
-export {
-  createOrderCartModel,
-  addOrderItemModel,
-  getMyPurchasesSQL,
-  getMyPurchasesDetailSQL
 }

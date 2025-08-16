@@ -1,4 +1,4 @@
-import { productsHATEOAS } from '../helpers/productsHateoas.js'
+import { orderDetailsFormat } from '../helpers/ordersHelper.js'
 import {
   getMyPurchasesSQL,
   getMyPurchasesDetailSQL,
@@ -21,8 +21,9 @@ export const getMyPurchasesDetail = async (req, res) => {
   const userId = req.user
   const orderId = req.params.id
   try {
-    const purchases = await getMyPurchasesDetailSQL(userId, orderId)
-    res.status(200).json(purchases)
+    const data = await getMyPurchasesDetailSQL(userId, orderId)
+    const purchasesDetail = await orderDetailsFormat(data)
+    res.status(200).json({ purchasesDetail })
   } catch (error) {
     console.error(error)
     return res.status(500).json(error)
@@ -31,10 +32,19 @@ export const getMyPurchasesDetail = async (req, res) => {
 
 export const postCartOrder = async (req, res) => {
   try {
-    const { userId = req.body.user_id, items, deliveryType, shippingAddress, recipientName } = req.body
+    const {
+      userId = req.body.user_id,
+      items,
+      deliveryType,
+      shippingAddress,
+      recipientName
+    } = req.body
 
     console.log('Payload recibido:', req.body)
-    const totalAmount = items.reduce((sum, item) => sum + item.unit_price * item.quantity, 0)
+    const totalAmount = items.reduce(
+      (sum, item) => sum + item.unit_price * item.quantity,
+      0
+    )
     const payload = req.body
     const newOrder = await createOrderCartModel({
       userId: payload.user_id,
@@ -59,5 +69,3 @@ export const postCartOrder = async (req, res) => {
     res.status(500).json({ error: 'Error al guardar el carrito' })
   }
 }
-
-
