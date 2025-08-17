@@ -12,5 +12,7 @@ export const ENDPOINT = {
   login: `${URLBASE}${apiVersion}/login`,
   favoritesAction: `${URLBASE}${apiVersion}/favorites/action`,
   favoritesMy: `${URLBASE}${apiVersion}/favorites/my`,
-  favoritesProduct: `${URLBASE}${apiVersion}/favorites/product`
+  favoritesProduct: `${URLBASE}${apiVersion}/favorites/product`,
+  cart: `${URLBASE}${apiVersion}/cart`,
+  orders: `${URLBASE}${apiVersion}/orders`
 }

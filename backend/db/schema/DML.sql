@@ -110,11 +110,42 @@ INSERT INTO products (name, description, price, stock, product_category_id, seas
 ('Porotos Tórtola', 'Clásicos porotos para preparar con riendas.', 2600, 70, 3, 3, 'porotosTortola.webp', true),
 ('Arveja Partida', 'Arveja seca partida, ideal para cremas y purés.', 2100, 110, 3, 3, 'arvejaPartida.webp', true);
 
-INSERT INTO order_status (id, name, description) VALUES 
+/*INSERT INTO order_status (id, name, description) VALUES 
 (0, 'Carrito cancelado', 'Carrito cancelado por cliente'),
 (1, 'Carrito', 'Carrito en preparación por cliente'),
 (2, 'Preparación', 'Orden en preparación'),
 (3, 'Retiro en tienda', 'Indicación para que cliente retire en local'),
 (4, 'En delivery', 'Indicación de que orden va en camino'),
 (5, 'Finalizada', 'Entregado satisfactorio al cliente'),
-(6, 'Cancelada', 'Fallo la entrega al cliente');
+(6, 'Cancelada', 'Fallo la entrega al cliente');*/
+
+
+INSERT INTO order_status (id, name, description) VALUES
+(0, 'Cancelado', 'Orden creada pero cancelada'),
+(1, 'Temporal', 'Orden en preparación'),
+(2, 'Retirar en Tienda', 'Orden enviada al cliente'),
+(3, 'En delivery', 'Orden pagada pero no entregada'),
+(4, 'Completado', 'Orden pagada y entregada');
+
+/*Si ya tenías los inserts viejos solo ocupa estos UPDATE
+
+UPDATE order_status
+SET name = 'Cancelado', description = 'Orden creada pero cancelada'
+WHERE id = 0;
+
+UPDATE order_status
+SET name = 'Temporal', description = 'Orden en preparación'
+WHERE id = 1;
+
+UPDATE order_status
+SET name = 'Retirar en Tienda', description = 'Orden enviada al cliente'
+WHERE id = 2;
+
+UPDATE order_status
+SET name = 'En delivery', description = 'Orden pagada pero no entregada'
+WHERE id = 3;
+
+UPDATE order_status
+SET name = 'Completado', description = 'Orden pagada y entregada'
+WHERE id = 4;
+*/
