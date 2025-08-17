@@ -159,14 +159,16 @@ const ProductDetail = () => {
     <div className="product-detail-container">
       <BackButton />
 
-      <CardDetail
-        product={{
-          ...product,
-          isFavorite: isProductFavorite(product.id)
-        }}
-        onAddToCart={handleAddToCart}
-        onToggleFavorite={handleToggleFavorite}
-      />
+      <div className="main-product-section">
+        <CardDetail
+          product={{
+            ...product,
+            isFavorite: isProductFavorite(product.id)
+          }}
+          onAddToCart={handleAddToCart}
+          onToggleFavorite={handleToggleFavorite}
+        />
+      </div>
 
       {/* Sección de productos relacionados */}
       <div className="related-products-section">
