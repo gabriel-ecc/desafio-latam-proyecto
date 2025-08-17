@@ -206,7 +206,6 @@ export default function Dashboard() {
         const response = await axios.get(ENDPOINT.topSellingProductsDaily, {
           headers: { Authorization: `Bearer ${token}` }
         })
-        console.log(response.data.data)
         const labels = response.data.data.map(item => item.product_name)
         const totalCount = response.data.data.map(item => item.total_sold)
         setDataGraph4({
