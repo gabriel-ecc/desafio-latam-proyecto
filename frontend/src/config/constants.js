@@ -13,6 +13,8 @@ export const ENDPOINT = {
   favoritesAction: `${URLBASE}${apiVersion}/favorites/action`,
   favoritesMy: `${URLBASE}${apiVersion}/favorites/my`,
   favoritesProduct: `${URLBASE}${apiVersion}/favorites/product`,
+  cart: `${URLBASE}${apiVersion}/cart`,
+  orders: `${URLBASE}${apiVersion}/orders`,
   dailySalesWeekly: `${URLBASE}${apiVersion}/dashboard/daily-sales-weekly`,
   newClientsWeekly: `${URLBASE}${apiVersion}/dashboard/new-clients-weekly`,
   inactiveClients: `${URLBASE}${apiVersion}/dashboard/inactive-clients`,

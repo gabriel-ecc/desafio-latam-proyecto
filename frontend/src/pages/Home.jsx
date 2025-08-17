@@ -5,12 +5,14 @@ import axios from 'axios'
 import '../pages/Home.css'
 import '../components/Card.css'
 import ProductCard from '../components/Card'
+import SearchBar from '../components/SearchBar'
 import useCart from '../context/CartContext.jsx'
 import { ENDPOINT } from '../config/constants.js'
 import { FavoriteContext } from '../context/FavoriteContext.jsx'
 
 export default function Home() {
   const [cards, setCards] = useState([])
+  const [allProducts, setAllProducts] = useState([]) // Para búsquedas
   const { addToCart } = useCart()
   const navigate = useNavigate()
   const { favorites, handleActionFavorite } = useContext(FavoriteContext)
@@ -55,6 +57,7 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        // Cargar productos para mostrar en el home
         const response = await axios.get(ENDPOINT.productsFrontPage, {
           params: { limits: 6 } // Mostrar solo X productos en el home
         })
@@ -64,6 +67,20 @@ export default function Home() {
           isFavorite: false
         }))
         setCards(transformedProducts)
+
+        // Cargar todos los productos para la búsqueda
+        const allProductsResponse = await axios.get(ENDPOINT.products, {
+          params: { limits: 1000 } // Obtener muchos productos para la búsqueda
+        })
+        const allTransformedProducts = allProductsResponse.data.results.map(
+          product => ({
+            ...product,
+            category: product.category || 'General',
+            isFavorite: false
+          })
+        )
+        setAllProducts(allTransformedProducts)
+
         if (favorites.length > 0) {
           favorites.forEach(favorite => {
             printFavorite(favorite.id, true)
@@ -73,6 +90,7 @@ export default function Home() {
         console.error('Error fetching products for home:', error)
         // En caso de error, usar productos vacíos
         setCards([])
+        setAllProducts([])
       }
     }
 
@@ -119,8 +137,22 @@ export default function Home() {
     }
   }
 
+  // Función para manejar selección directa de producto desde SearchBar
+  const handleProductSelect = product => {
+    navigate(`/card/${product.id}`)
+  }
+
   return (
     <div className="container">
+      {/* Barra de búsqueda */}
+      <div className="search-container-home">
+        <SearchBar
+          products={allProducts}
+          onProductSelect={handleProductSelect}
+          placeholder="Buscar por producto, categoría o temporada..."
+          className="home-search"
+        />
+      </div>
       {/* Panel superior */}
       <div className="hero-panel">
         <img src="/imgs/panel.jpeg" alt="Banner de productos frescos" />
