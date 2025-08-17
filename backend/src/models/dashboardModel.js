@@ -51,18 +51,28 @@ export const getInactiveClients = async () => {
   try {
     const sqlQuery = `
       SELECT
-        COUNT(u.id) AS inactive_clients_count
+        u.id,
+        u.first_name,
+        u.last_name,
+        u.email,
+        MAX(o.create_date) AS last_purchase_date
       FROM
         users u
       LEFT JOIN
         orders o ON u.id = o.user_id
       WHERE
-        o.user_id IS NULL OR o.create_date < NOW() - INTERVAL '30 days';
+        u.user_type = 2
+      GROUP BY
+        u.id, u.first_name, u.last_name, u.email
+      HAVING
+        MAX(o.create_date) < NOW() - INTERVAL '30 days' OR MAX(o.create_date) IS NULL
+      ORDER BY
+        last_purchase_date ASC;
     `
     const response = await pool.query(sqlQuery)
-    return response.rows[0]
+    return response.rows
   } catch (error) {
-    console.error('Error obteniendo los clients sin compras:', error)
+    console.error('Error obteniendo los clientes sin compras:', error)
     throw error
   }
 }
@@ -80,7 +90,7 @@ export const getTopSellingProductsDaily = async () => {
       INNER JOIN
         products p ON oi.product_id = p.id
       WHERE
-        DATE_TRUNC('day', o.create_date) = DATE_TRUNC('day', NOW())
+        DATE_TRUNC('day', o.create_date) <= DATE_TRUNC('day', NOW())
       GROUP BY
         p.name
       ORDER BY
