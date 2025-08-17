@@ -85,7 +85,7 @@ export const getLowStockProducts = async () => {
       FROM
         products
       WHERE
-        status = true AND stock < 20
+        status = true AND stock > 0
       ORDER BY
         stock ASC
       LIMIT 5;
