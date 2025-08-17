@@ -241,24 +241,26 @@ const Cart = () => {
   }
 
     {/*Pago éxitoso*/}
-    const kindPaymet = selectedPayment === 'efectivo' ? handlePayEfectivo() : handlePayCard()
-    
-    kindPaymet.then((order_id) => {
-    const currentDate = new Date()
-    const formatDate = date => {
+    try{
+      const order_id = selectedPayment === 'efectivo' ? await handlePayEfectivo() : await handlePayCard()
+
+      if (!order_id) throw new Error('No se obtuvo el ID de la orden')
+
+      const currentDate = new Date()
+      const formatDate = date => {
       const day = date.getDate().toString().padStart(2, '0')
       const month = (date.getMonth() + 1).toString().padStart(2, '0')
       const year = date.getFullYear()
       return `${day}/${month}/${year}`
-    }
-    const formatTime = date => {
+      }
+      const formatTime = date => {
       const hours = date.getHours().toString().padStart(2, '0')
       const minutes = date.getMinutes().toString().padStart(2, '0')
       const seconds = date.getSeconds().toString().padStart(2, '0')
       return `${hours}:${minutes}:${seconds}`
-    }
+      }
 
-    return Swal.fire({
+    await Swal.fire({
       title: '',
       html: `
         <div class="receipt-container">
@@ -301,21 +303,26 @@ const Cart = () => {
           </div>
         </div>
         `,
-      icon: null,
-      showConfirmButton: true,
-      confirmButtonText: 'Cerrar',
-      confirmButtonColor: '#28a745',
-      customClass: {
-        popup: 'receipt-popup',
-        confirmButton: 'receipt-button'
-      },
-      width: '450px'
+        icon: null,
+        showConfirmButton: true,
+        confirmButtonText: 'Cerrar',
+        confirmButtonColor: '#28a745',
+        customClass: {
+          popup: 'receipt-popup',
+          confirmButton: 'receipt-button'
+        },
+        width: '450px'
     })
-  })
-  .then(() => {
     setCart([])
     navigate('/')
-  })
+  }catch(error){
+    console.error("Error al pagar:", error)
+    Swal.fire({
+      icon: 'error',
+      title: 'Error al procesar el pago',
+      text: error.message
+    })
+  }
 }
 
 

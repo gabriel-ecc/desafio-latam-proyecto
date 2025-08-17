@@ -1,4 +1,4 @@
-import { createOrderCartModel, addOrderItemModel } from '../models/ordersModel.js'
+import { createOrderCartModel, addOrderItemModel, updateStock } from '../models/ordersModel.js'
 
 const postCartOrder = async (req, res) => {
   try {
@@ -25,6 +25,11 @@ const postCartOrder = async (req, res) => {
     for (const item of items) {
       await addOrderItemModel(newOrder.id, item.product_id, item.quantity, item.unit_price)
     }
+
+    if (order_status === 2 || order_status === 3) {
+      await updateStock(newOrder.id)
+    }
+
     res.status(201).json({ message: 'Carrito Generado', order_id: newOrder.id })
   } catch (error) {
     console.error(error)

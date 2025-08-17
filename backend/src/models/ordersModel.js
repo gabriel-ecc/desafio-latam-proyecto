@@ -4,7 +4,7 @@ import pool from '../../db/schema/config.js'
 
 const createOrderCartModel = async ({ userId, orderStatus, deliveryType, shippingAddress, recipientName, totalAmount }) => {
   const sqlQuery = {
-    text: 'INSERT INTO orders (user_id, order_status, delivery_type, shipping_address, recipient_name, total_amount) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+    text: 'INSERT INTO orders (user_id, order_status, delivery_type, shipping_address, recipient_name, total_amount) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
     values: [userId, orderStatus, deliveryType, shippingAddress, recipientName, totalAmount]
   }
   const response = await pool.query(sqlQuery)
@@ -19,4 +19,13 @@ const addOrderItemModel = async (orderId, productId, quantity, unitPrice) => {
   return response.rows[0]
 }
 
-export { createOrderCartModel, addOrderItemModel }
+const updateStock = async (orderId) => {
+  const itemQuery = {
+    text: 'UPDATE products SET stock = stock - oi.quantity FROM order_items oi WHERE oi.order_id = $1 AND products.id = oi.product_id RETURNING products.id, products.stock',
+    values: [orderId]
+  }
+  const itemsRes = await pool.query(itemQuery)
+  return itemsRes.rows
+}
+
+export { createOrderCartModel, addOrderItemModel, updateStock }

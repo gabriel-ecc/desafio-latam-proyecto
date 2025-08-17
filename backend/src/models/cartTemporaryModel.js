@@ -19,36 +19,36 @@ const getOrCreateTemporaryCart = async (userId) => {
 }
 
 // Actualizar los Items del carrito
-const updateItemCart = async (orderId, productId, quantity, unitPrice) => {
+const updateItemCart = async (order_id, productId, quantity, unitPrice) => {
   const checkItemQuery = {
     text: 'SELECT * FROM order_items WHERE order_id = $1 AND product_id = $2',
-    values: [orderId, productId]
+    values: [order_id, productId]
   }
   const res = await pool.query(checkItemQuery)
 
   if (res.rows.length > 0) {
     const updateItemQuery = {
       text: 'UPDATE order_items SET quantity = $1, unit_price = $2 WHERE order_id = $3 AND product_id = $4',
-      values: [quantity, unitPrice, orderId, productId]
+      values: [quantity, unitPrice, order_id, productId]
     }
     await pool.query(updateItemQuery)
   } else {
     const insertItemQuery = {
       text: 'INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES ($1, $2, $3, $4)',
-      values: [orderId, productId, quantity, unitPrice]
+      values: [order_id, productId, quantity, unitPrice]
     }
     await pool.query(insertItemQuery)
   }
   // Actualizar el total del carrito
   const totalCartQuery = {
     text: 'SELECT SUM(quantity * unit_price) AS total FROM order_items WHERE order_id = $1',
-    values: [orderId]
+    values: [order_id]
   }
   const totalRes = await pool.query(totalCartQuery)
 
   const updateTotalQuery = {
     text: 'UPDATE orders SET total_amount = $1 WHERE id = $2',
-    values: [totalRes.rows[0].total, orderId]
+    values: [totalRes.rows[0].total, order_id]
   }
   await pool.query(updateTotalQuery)
 }
