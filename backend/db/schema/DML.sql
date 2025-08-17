@@ -119,8 +119,32 @@ INSERT INTO products (name, description, price, stock, product_category_id, seas
 (5, 'Finalizada', 'Entregado satisfactorio al cliente'),
 (6, 'Cancelada', 'Fallo la entrega al cliente');*/
 
-INSERT INTO order_status (id, name, description) VALUES
-  (0, 'Pendiente', 'Orden creada pero no confirmada'),
-  (1, 'En Proceso', 'Orden en preparación'),
-  (2, 'Enviado', 'Orden enviada al cliente'),
-  (3, 'Completado', 'Orden pagada y finalizada');
+
+  INSERT INTO order_status (id, name, description) VALUES
+  (0, 'Cancelado', 'Orden creada pero cancelada'),
+  (1, 'Temporal', 'Orden en preparación'),
+  (2, 'Retirar en Tienda', 'Orden enviada al cliente'),
+  (3, 'En delivery', 'Orden pagada pero no entregada'),
+  (4, 'Completado', 'Orden pagada y entregada');
+
+// Si ya tenías los inserts viejos solo ocupa estos UPDATE
+
+UPDATE order_status
+SET name = 'Cancelado', description = 'Orden creada pero cancelada'
+WHERE id = 0;
+
+UPDATE order_status
+SET name = 'Temporal', description = 'Orden en preparación'
+WHERE id = 1;
+
+UPDATE order_status
+SET name = 'Retirar en Tienda', description = 'Orden enviada al cliente'
+WHERE id = 2;
+
+UPDATE order_status
+SET name = 'En delivery', description = 'Orden pagada pero no entregada'
+WHERE id = 3;
+
+UPDATE order_status
+SET name = 'Completado', description = 'Orden pagada y entregada'
+WHERE id = 4;

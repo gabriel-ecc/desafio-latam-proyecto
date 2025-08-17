@@ -95,11 +95,13 @@ const Cart = () => {
         }))
       }
       console.log("Payload que se enviará:", payload);
-      await axios.post(`${URLBASE}${apiVersion}/orders`, payload,{
+      const response = await axios.post(`${URLBASE}${apiVersion}/orders`, payload,{
         headers: { Authorization: `Bearer ${token}`}
       })
-      setCart([])
+      const orderId = response.data.order_id
       console.log("Pago en efectivo realizado")
+      setCart([])
+      return orderId
     } catch (error) {
       console.error("Error al pagar:", error)
     }
@@ -122,11 +124,13 @@ const Cart = () => {
         }))
       }
 
-    await axios.post(`${URLBASE}${apiVersion}/orders`, payload, {
+    const response = await axios.post(`${URLBASE}${apiVersion}/orders`, payload, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    setCart([])
-    console.log("Pago con tarjeta realizado")
+      const orderId = response.data.order_id
+      console.log("Pago en efectivo realizado")
+      setCart([])
+      return orderId
     } catch (error) {
       console.error("Error al pagar:", error)
     }
@@ -239,10 +243,7 @@ const Cart = () => {
     {/*Pago éxitoso*/}
     const kindPaymet = selectedPayment === 'efectivo' ? handlePayEfectivo() : handlePayCard()
     
-    kindPaymet.then(() => {
-    const generateTicketNumber = () => 
-      Math.floor(Math.random() * 900000) + 100000
-    // Reemplazar después por el futuro order_id en el backend
+    kindPaymet.then((order_id) => {
     const currentDate = new Date()
     const formatDate = date => {
       const day = date.getDate().toString().padStart(2, '0')
@@ -294,7 +295,7 @@ const Cart = () => {
               </div>
               <div class="receipt-row">
                 <span class="receipt-label">N° de operación</span>
-                <span class="receipt-value">${generateTicketNumber()}</span>
+                <span class="receipt-value">${order_id}</span>
               </div>
             </div>
           </div>

@@ -3,7 +3,7 @@ import pool from '../../db/schema/config.js'
 // Obtener el carrito viejo o crear uno nuevo
 const getOrCreateTemporaryCart = async (userId) => {
   const oldCartSql = {
-    text: 'SELECT * FROM orders WHERE user_id = $1 AND order_status = 0',
+    text: 'SELECT * FROM orders WHERE user_id = $1 AND order_status = 1',
     values: [userId]
   }
   const oldCart = await pool.query(oldCartSql)

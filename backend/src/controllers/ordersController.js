@@ -25,7 +25,7 @@ const postCartOrder = async (req, res) => {
     for (const item of items) {
       await addOrderItemModel(newOrder.id, item.product_id, item.quantity, item.unit_price)
     }
-    res.status(201).json({ message: 'Carrito Generado', orderId: newOrder.id })
+    res.status(201).json({ message: 'Carrito Generado', order_id: newOrder.id })
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Error al guardar el carrito' })
