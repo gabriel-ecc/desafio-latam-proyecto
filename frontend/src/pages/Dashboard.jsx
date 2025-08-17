@@ -140,6 +140,7 @@ export default function Dashboard() {
   const [dataGraph1, setDataGraph1] = useState(initialDataGraph1)
   const [dataGraph2, setDataGraph2] = useState(initialDataGraph2)
   const [dataGraph4, setDataGraph4] = useState(initialDataGraph4)
+  const [lowStockProducts, setLowStockProducts] = useState([])
   const [inactiveClients, setInactiveClients] = useState([])
 
   const token = getToken()
@@ -178,6 +179,7 @@ export default function Dashboard() {
         })
       } catch (error) {
         console.error('Error fetching daily sales weekly data:', error)
+        setDataGraph1(initialDataGraph1) //restablecemos al estado inicial
       }
     }
     const fetchNewClientsWeeklyData = async () => {
@@ -199,19 +201,10 @@ export default function Dashboard() {
         })
       } catch (error) {
         console.error('Error obteniendo la informacion de los clientes:', error)
+        setDataGraph2(initialDataGraph2)
       }
     }
-    const fetchInactiveClientsData = async () => {
-      try {
-        const response = await axios.get(ENDPOINT.inactiveClients, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-        // Guardamos el array directamente
-        setInactiveClients(response.data.data)
-      } catch (error) {
-        console.error('Error obteniendo la informacion de los clientes sin movimientos:', error)
-      }
-    }
+
     const fetchTopSellingProductsDailyData = async () => {
       const backgroundColors = [
             'rgba(255, 99, 132, 0.6)',
@@ -243,14 +236,41 @@ export default function Dashboard() {
           ]
         })
       } catch (error) {
-        console.error('Error obtenindo la informacion de los productos mas vendidos:', error)
+        console.error('Error obteniendo la informacion de los productos mas vendidos:', error)
+        setDataGraph4(initialDataGraph4)
       }
     }
+
+    const fetchLowStockProductsData = async () => {
+      try {
+        const response = await axios.get(ENDPOINT.lowStockProducts, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        // Almacenamos el array de productos directamente
+        setLowStockProducts(response.data.data)
+      } catch (error) {
+        console.error('Error al obtener los productos con bajo stock', error)
+      }
+  }
+
+    const fetchInactiveClientsData = async () => {
+      try {
+        const response = await axios.get(ENDPOINT.inactiveClients, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        // Guardamos el array directamente
+        setInactiveClients(response.data.data)
+      } catch (error) {
+        console.error('Error obteniendo la informacion de los clientes sin movimientos:', error)
+      }
+    }
+
 
     fetchDailySalesWeeklyData()
     fetchNewClientsWeeklyData()
     fetchInactiveClientsData()
     fetchTopSellingProductsDailyData()
+    fetchLowStockProductsData()
   }, [])
 
   return (
@@ -272,12 +292,36 @@ export default function Dashboard() {
         </div>
 
         <div className="table-container">
+          <h3>Productos con stock bajo</h3>
+          {lowStockProducts.length > 0 ? (
+            <table className="clients-table">
+              <thead>
+                <tr>
+                  <th>Nombre del Producto</th>
+                  <th>Stock</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* Iteramos sobre el array y creamos una fila por cada producto */}
+                {lowStockProducts.map((product) => (
+                  <tr key={product.id}>
+                    <td>{product.product_name}</td>
+                    <td>{product.stock}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No se encontraron productos con stock bajo en el inventario.</p>
+          )}
+        </div>
+
+        <div className="table-container">
           <h3>Clientes inactivos el último mes</h3>
           {inactiveClients.length > 0 ? (
             <table className="clients-table">
               <thead>
                 <tr>
-                  
                   <th>Nombre</th>
                   <th>Email</th>
                   <th>Última Compra</th>
@@ -286,13 +330,12 @@ export default function Dashboard() {
               <tbody>
                 {inactiveClients.map((client) => (
                   <tr key={client.id}>
-                    
                     <td>{client.first_name} {client.last_name}</td>
                     <td>{client.email}</td>
                     <td>
                       {client.last_purchase_date
                       ? new Date(client.last_purchase_date).toLocaleString()
-                    : 'N/A'}
+                    : 'Sin compras realizadas'}
                     </td>
                   </tr>
                 ))}

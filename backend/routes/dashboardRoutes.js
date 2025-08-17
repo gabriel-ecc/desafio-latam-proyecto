@@ -3,7 +3,8 @@ import {
   getDailySalesWeeklyController,
   getNewClientsWeeklyController,
   getInactiveClientsController,
-  getTopSellingProductsDailyController
+  getTopSellingProductsDailyController,
+  getLowStockProductsController
 } from '../src/controllers/dashboardController.js'
 import { verifyToken } from '../middleware/verifyTokenMiddleware.js'
 import { authorizationMiddleware } from '../middleware/authorizationMiddleware.js'
@@ -45,6 +46,15 @@ router.get(
   verifyToken,
   authorizationMiddleware,
   getTopSellingProductsDailyController
+)
+
+// Obtener la métrica de los productos con bajo stock
+router.get(
+  '/dashboard/low-stock-products',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware,
+  getLowStockProductsController
 )
 
 export default router

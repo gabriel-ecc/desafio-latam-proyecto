@@ -171,6 +171,7 @@ export const getLowStockProductsController = async (req, res) => {
       })
     }
 
+    // Devuelve el array de objetos directamente, sin formato de gráfico
     return res.status(200).json({
       ok: true,
       data: lowStockProducts,
