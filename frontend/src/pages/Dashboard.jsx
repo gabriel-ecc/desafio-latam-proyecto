@@ -60,7 +60,7 @@ export const options2 = {
   plugins: {
     title: {
       display: true,
-      text: 'Clientes registros últimos 7 días'
+      text: 'Clientes registrados últimos 7 días'
     }
   },
   responsive: true,
@@ -123,17 +123,6 @@ export const initialDataGraph2 = {
   ]
 }
 
-export const initialDataGraph3 = {
-  labels: [],
-  datasets: [
-    {
-      label: 'Clientes Inactivos',
-      data: [],
-      backgroundColor: '#1e7c3a'
-    }
-  ]
-}
-
 export const initialDataGraph4 = {
   labels: ['Thing 1', 'Thing 2', 'Thing 3', 'Thing 4', 'Thing 5', 'Thing 6'],
   datasets: [
@@ -150,8 +139,8 @@ export const initialDataGraph4 = {
 export default function Dashboard() {
   const [dataGraph1, setDataGraph1] = useState(initialDataGraph1)
   const [dataGraph2, setDataGraph2] = useState(initialDataGraph2)
-  const [dataGraph3, setDataGraph3] = useState(initialDataGraph3)
   const [dataGraph4, setDataGraph4] = useState(initialDataGraph4)
+  const [inactiveClients, setInactiveClients] = useState([])
 
   const token = getToken()
   const navigate = useNavigate()
@@ -209,7 +198,7 @@ export default function Dashboard() {
           ]
         })
       } catch (error) {
-        console.error('Error fetching new clients weekly data:', error)
+        console.error('Error obteniendo la informacion de los clientes:', error)
       }
     }
     const fetchInactiveClientsData = async () => {
@@ -217,22 +206,10 @@ export default function Dashboard() {
         const response = await axios.get(ENDPOINT.inactiveClients, {
           headers: { Authorization: `Bearer ${token}` }
         })
-        const labels = response.data.data.map(item => item.date)
-        const inactiveClientsData = response.data.data.map(
-          item => item.inactive_clients
-        )
-        setDataGraph3({
-          labels,
-          datasets: [
-            {
-              label: 'Clientes Inactivos',
-              data: inactiveClientsData,
-              backgroundColor: '#1e7c3a'
-            }
-          ]
-        })
+        // Guardamos el array directamente
+        setInactiveClients(response.data.data)
       } catch (error) {
-        console.error('Error fetching inactive clients data:', error)
+        console.error('Error obteniendo la informacion de los clientes sin movimientos:', error)
       }
     }
     const fetchTopSellingProductsDailyData = async () => {
@@ -266,7 +243,7 @@ export default function Dashboard() {
           ]
         })
       } catch (error) {
-        console.error('Error fetching top selling products daily data:', error)
+        console.error('Error obtenindo la informacion de los productos mas vendidos:', error)
       }
     }
 
@@ -291,10 +268,39 @@ export default function Dashboard() {
           <Bar options={options2} data={dataGraph2} />
         </div>
         <div className="graph-container">
-          <Bar options={options3} data={dataGraph3} />
-        </div>
-        <div className="graph-container">
           <Pie options={options4} data={dataGraph4} />
+        </div>
+
+        <div className="table-container">
+          <h3>Clientes inactivos el último mes</h3>
+          {inactiveClients.length > 0 ? (
+            <table className="clients-table">
+              <thead>
+                <tr>
+                  
+                  <th>Nombre</th>
+                  <th>Email</th>
+                  <th>Última Compra</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inactiveClients.map((client) => (
+                  <tr key={client.id}>
+                    
+                    <td>{client.first_name} {client.last_name}</td>
+                    <td>{client.email}</td>
+                    <td>
+                      {client.last_purchase_date
+                      ? new Date(client.last_purchase_date).toLocaleString()
+                    : 'N/A'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No se encontraron clientes sin movimientos el último mes</p>
+          )}
         </div>
       </section>
     </div>

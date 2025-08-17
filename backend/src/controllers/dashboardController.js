@@ -106,23 +106,24 @@ export const getNewClientsWeeklyController = async (req, res) => {
 
 export const getInactiveClientsController = async (req, res) => {
   try {
-    const inactiveClientsCount = await getInactiveClients()
+    const inactiveClientsList = await getInactiveClients()
 
-    if (!inactiveClientsCount) {
+    if (inactiveClientsList.length === 0) {
       return res.status(200).json({
         ok: true,
-        data: { inactive_clients_count: 0 },
-        message: 'No se encontraron clientes inactivos.'
+        data: [],
+        message: 'No se encontraron clientes inactivos en el último mes.'
       })
     }
 
+    // Devolvemos el arreglo de usuarios directamente, sin procesar para gráfico
     return res.status(200).json({
       ok: true,
-      data: inactiveClientsCount,
-      message: 'Conteo de clientes inactivos obtenido con éxito.'
+      data: inactiveClientsList,
+      message: 'Lista de clientes inactivos obtenida con éxito.'
     })
   } catch (error) {
-    console.error('Error in getInactiveClientsController:', error)
+    console.error('Error en getInactiveClientsController:', error)
     return res.status(500).json({
       ok: false,
       message: 'Ha ocurrido un error en el servidor.',
