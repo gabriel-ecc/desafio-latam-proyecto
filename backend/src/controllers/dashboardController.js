@@ -161,9 +161,9 @@ export const getTopSellingProductsDailyController = async (req, res) => {
 
 export const getLowStockProductsController = async (req, res) => {
   try {
-    const lowStockProducts = await getLowStockProducts()
+    const lowStockProductsList = await getLowStockProducts()
 
-    if (lowStockProducts.length === 0) {
+    if (lowStockProductsList.length === 0) {
       return res.status(200).json({
         ok: true,
         data: [],
@@ -174,7 +174,7 @@ export const getLowStockProductsController = async (req, res) => {
     // Devuelve el array de objetos directamente, sin formato de gráfico
     return res.status(200).json({
       ok: true,
-      data: lowStockProducts,
+      data: lowStockProductsList,
       message: 'Productos con stock bajo obtenidos con éxito.'
     })
   } catch (error) {

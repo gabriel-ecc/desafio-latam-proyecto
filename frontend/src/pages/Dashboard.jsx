@@ -246,7 +246,7 @@ export default function Dashboard() {
         const response = await axios.get(ENDPOINT.lowStockProducts, {
           headers: { Authorization: `Bearer ${token}` }
         })
-        // Almacenamos el array de productos directamente
+        // Guardamos el array de productos directamente
         setLowStockProducts(response.data.data)
       } catch (error) {
         console.error('Error al obtener los productos con bajo stock', error)
