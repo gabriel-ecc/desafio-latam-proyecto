@@ -73,23 +73,7 @@ export const options2 = {
     }
   }
 }
-export const options3 = {
-  plugins: {
-    title: {
-      display: true,
-      text: 'Clientes inactivos últimos 7 días'
-    }
-  },
-  responsive: true,
-  scales: {
-    x: {
-      stacked: true
-    },
-    y: {
-      stacked: true
-    }
-  }
-}
+
 export const options4 = {
   plugins: {
     title: {
@@ -293,7 +277,7 @@ export default function Dashboard() {
 
         <div className="table-container">
           <h3>Productos con stock bajo</h3>
-          {lowStockProducts.length > 0 ? (
+          {(lowStockProducts || []).length > 0 ? (
             <table className="clients-table">
               <thead>
                 <tr>

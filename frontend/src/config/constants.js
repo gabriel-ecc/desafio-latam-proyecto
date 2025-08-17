@@ -16,5 +16,6 @@ export const ENDPOINT = {
   dailySalesWeekly: `${URLBASE}${apiVersion}/dashboard/daily-sales-weekly`,
   newClientsWeekly: `${URLBASE}${apiVersion}/dashboard/new-clients-weekly`,
   inactiveClients: `${URLBASE}${apiVersion}/dashboard/inactive-clients`,
-  topSellingProductsDaily: `${URLBASE}${apiVersion}/dashboard/top-selling-products-daily`
+  topSellingProductsDaily: `${URLBASE}${apiVersion}/dashboard/top-selling-products-daily`,
+  lowStockProducts: `${URLBASE}${apiVersion}/dashboard/low-stock-products`
 }

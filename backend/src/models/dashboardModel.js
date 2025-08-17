@@ -47,36 +47,6 @@ export const getNewClientsWeekly = async () => {
   }
 }
 
-export const getInactiveClients = async () => {
-  try {
-    const sqlQuery = `
-      SELECT
-        u.id,
-        u.first_name,
-        u.last_name,
-        u.email,
-        MAX(o.create_date) AS last_purchase_date
-      FROM
-        users u
-      LEFT JOIN
-        orders o ON u.id = o.user_id
-      WHERE
-        u.user_type = 2
-      GROUP BY
-        u.id, u.first_name, u.last_name, u.email
-      HAVING
-        MAX(o.create_date) < NOW() - INTERVAL '30 days' OR MAX(o.create_date) IS NULL
-      ORDER BY
-        last_purchase_date ASC;
-    `
-    const response = await pool.query(sqlQuery)
-    return response.rows
-  } catch (error) {
-    console.error('Error obteniendo los clientes sin compras:', error)
-    throw error
-  }
-}
-
 export const getTopSellingProductsDaily = async () => {
   try {
     const sqlQuery = `
@@ -109,6 +79,7 @@ export const getLowStockProducts = async () => {
   try {
     const sqlQuery = `
       SELECT
+        id,
         name AS product_name,
         stock
       FROM
@@ -123,6 +94,36 @@ export const getLowStockProducts = async () => {
     return response.rows
   } catch (error) {
     console.error('Error obteniendo los productos con bajo stock:', error)
+    throw error
+  }
+}
+
+export const getInactiveClients = async () => {
+  try {
+    const sqlQuery = `
+      SELECT
+        u.id,
+        u.first_name,
+        u.last_name,
+        u.email,
+        MAX(o.create_date) AS last_purchase_date
+      FROM
+        users u
+      LEFT JOIN
+        orders o ON u.id = o.user_id
+      WHERE
+        u.user_type = 2
+      GROUP BY
+        u.id, u.first_name, u.last_name, u.email
+      HAVING
+        MAX(o.create_date) < NOW() - INTERVAL '30 days' OR MAX(o.create_date) IS NULL
+      ORDER BY
+        last_purchase_date ASC;
+    `
+    const response = await pool.query(sqlQuery)
+    return response.rows
+  } catch (error) {
+    console.error('Error obteniendo los clientes sin compras:', error)
     throw error
   }
 }
