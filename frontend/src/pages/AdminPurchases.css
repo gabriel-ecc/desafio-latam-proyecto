@@ -15,38 +15,96 @@
   margin-bottom: 0.5rem;
 }
 
+/* Contenedor para botones de cada pedido */
+.purchase_buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn_products {
+  background-color: #f39c12;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+}
+
+.btn_products:hover {
+  background-color: #e67e22;
+}
+
+/* Botón para volver a detalles completos */
+.btn_back_to_details {
+  background: linear-gradient(135deg, #34495e, #2c3e50);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.btn_back_to_details:hover {
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 73, 94, 0.3);
+}
+
+.products_actions {
+  margin-top: auto;
+  padding: 15px 0;
+}
+
 /* Sección para actualizar estado */
 .status_update_section {
-  margin-top: 2rem;
-  padding: 1.5rem;
+  margin-top: 2rem; /* Aumentar margen superior */
+  padding: 1.5rem; /* Aumentar padding */
   background-color: #f8f9fa;
   border-radius: 12px;
   border: 1px solid #e9ecef;
+  flex-shrink: 0; /* No permitir que se encoja */
 }
 
 .status_update_section h4 {
   color: #2c3e50;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
+  margin-bottom: 1.5rem; /* Aumentar margen inferior */
+  font-size: 1.3rem; /* Aumentar tamaño del título */
 }
 
 .status_buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.8rem; /* Aumentar espaciado entre botones */
+  justify-content: center; /* Centrar los botones */
+  align-items: center; /* Alinear verticalmente */
 }
 
 .status_update_btn {
   background: linear-gradient(135deg, #4caf50, #45a049);
   color: white;
   border: none;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.2rem; /* Aumentar padding */
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 1rem; /* Aumentar tamaño de fuente */
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
+  /* Tamaño uniforme para todos los botones */
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .status_update_btn:hover {
@@ -108,20 +166,34 @@
   .status_buttons {
     flex-direction: column;
   }
-  
+
   .status_update_btn {
     width: 100%;
     text-align: center;
+  }
+
+  .purchase_buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn_details,
+  .btn_products {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5px;
   }
 }
 
 /* Mejoras visuales para información del cliente */
 .order_info p:first-child {
   background-color: #e3f2fd;
-  padding: 0.5rem;
-  border-radius: 6px;
-  margin-bottom: 0.75rem;
+  padding: 1rem; /* Aumentar padding */
+  border-radius: 8px; /* Aumentar radio */
+  margin-bottom: 1rem; /* Aumentar margen inferior */
   border-left: 4px solid #2196f3;
+  font-size: 1.2rem; /* Tamaño más grande para el cliente */
+  font-weight: 600; /* Hacer más bold */
 }
 
 /* Estilos para SweetAlert2 personalizados */
