@@ -312,8 +312,9 @@ const AdminPurchases = () => {
       { value: 1, label: 'Carrito' },
       { value: 2, label: 'Retiro en Tienda' },
       { value: 3, label: 'En Delivery' },
-      { value: 4, label: 'Finalizada' },
-      { value: 5, label: 'Cancelada' }
+      { value: 5, label: 'Cancelada' },
+      { value: 4, label: 'Finalizada' }
+
     ]
 
     // Filtrar opciones según el estado actual
@@ -329,6 +330,80 @@ const AdminPurchases = () => {
   const renderPurchaseDetails = purchase => {
     if (!purchase) return null
 
+    // Si showProducts es true, mostrar solo los productos
+    if (showProducts) {
+      return (
+        <div className="order_details_inline">
+          <div className="order_summary">
+            <h3>Productos - Orden #{purchase.orderNumber}</h3>
+            <div className="order_info">
+              <p>
+                <strong>Cliente:</strong> {purchase.userInfo.name}
+              </p>
+              <p>
+                <strong>Total de artículos:</strong>{' '}
+                {purchase.products.reduce(
+                  (sum, item) => sum + item.quantity,
+                  0
+                )}
+              </p>
+              <p>
+                <strong>Total Final:</strong> $
+                {purchase.total === 0
+                  ? 0
+                  : purchase.total.toLocaleString('es-CL')}
+              </p>
+            </div>
+          </div>
+
+          <div className="products_detail">
+            <h4>Lista de Productos:</h4>
+            {purchase.products.map(product => (
+              <div key={product.id} className="product_detail_item">
+                <div className="product_img_section">
+                  <img
+                    className="product_detail_img"
+                    src={product.img}
+                    alt={product.name}
+                    onError={e => {
+                      e.target.src = '/imgs/placeholder.jpg'
+                    }}
+                  />
+                  <h5>{product.name}</h5>
+                </div>
+                <div className="product_price_info">
+                  <span className="price">
+                    Precio: ${product.price.toLocaleString('es-CL')}
+                  </span>
+                  <span className="quantity">
+                    Cantidad: {product.quantity}
+                  </span>
+                  <span className="subtotal">
+                    Subtotal: $
+                    {product.price === 0
+                      ? 0
+                      : (product.price * product.quantity).toLocaleString(
+                          'es-CL'
+                        )}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="products_actions">
+            <button
+              className="btn_back_to_details"
+              onClick={() => setShowProducts(false)}
+            >
+              ← Volver a Detalles Completos
+            </button>
+          </div>
+        </div>
+      )
+    }
+
+    // Vista completa de detalles (por defecto)
     return (
       <div className="order_details_inline">
         <div className="order_summary">

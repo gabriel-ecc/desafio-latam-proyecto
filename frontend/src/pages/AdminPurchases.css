@@ -72,12 +72,14 @@
   border-radius: 12px;
   border: 1px solid #e9ecef;
   flex-shrink: 0; /* No permitir que se encoja */
+  text-align: center; /* Centrar toda la sección */
 }
 
 .status_update_section h4 {
   color: #2c3e50;
   margin-bottom: 1.5rem; /* Aumentar margen inferior */
   font-size: 1.3rem; /* Aumentar tamaño del título */
+  text-align: center; /* Centrar el título */
 }
 
 .status_buttons {
@@ -100,7 +102,7 @@
   transition: all 0.3s ease;
   white-space: nowrap;
   /* Tamaño uniforme para todos los botones */
-  width: 200px;
+  width: 180px;
   height: 50px;
   display: flex;
   align-items: center;
@@ -183,6 +185,15 @@
     text-align: center;
     margin-bottom: 5px;
   }
+}
+
+/* Ajuste específico de altura para detalles del pedido en AdminPurchases */
+.order_details_container {
+  height: 97vh !important;
+  margin-bottom: 3vh !important;
+  max-height: 97vh !important;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 /* Mejoras visuales para información del cliente */
