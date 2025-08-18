@@ -37,14 +37,15 @@ INSERT INTO security_actions (id,security_route,security_method,description) VAL
 (21,'/dashboard/new-clients-weekly','get','Nuevos clientes de la última semana'),
 (22,'/dashboard/inactive-clients','get','Clientes que no han comprado en el último mes'),
 (23,'/dashboard/top-selling-products-daily','get','Productos más vendidos del día'),
-(24,'/orders/my','get','Ver mis compras'),
-(25,'/orders/my/detail/:id','get','Ver detalle de mis compras');
+(24,'/dashboard/low-stock-products','get','Productos con bajo stock'),
+(25,'/orders/my/detail/:id','get','Ver detalle de mis compras'),
+(26,'/dashboard/low-stock-products','get','Productos con bajo stock');
 
 INSERT INTO security_actions_roles (security_action_id,user_type_id) VALUES
 (1,3),(2,3),(3,3),(4,3),(4,2),(5,3),(6,3),(7,3),(7,2),(8,3),(9,3),(9,2),
 (10,3),(10,2),(10,1),(11,3),(11,2),(12,3),(12,2),(12,1),(13,3),(13,1),
 (15,1),(16,3),(16,2),(16,1),(17,3),(17,2),(17,1),(18,3),(18,2),(19,3),
-(20,3),(21,3),(22,3),(23,3),(24,1),(25,1);
+(20,3),(21,3),(22,3),(23,3),(24,3),(25,1),(26,3);
 
 -- password admin: admin1 , otros usuarios: 123456
 INSERT INTO users (first_name, last_name, email, phone, password, user_type, user_status, profile_photo) VALUES 
@@ -126,8 +127,33 @@ INSERT INTO products (name, description, price, stock, product_category_id, seas
 (5, 'Finalizada', 'Entregado satisfactorio al cliente'),
 (6, 'Cancelada', 'Fallo la entrega al cliente');*/
 
+
 INSERT INTO order_status (id, name, description) VALUES
-  (0, 'Pendiente', 'Orden creada pero no confirmada'),
-  (1, 'En Proceso', 'Orden en preparación'),
-  (2, 'Enviado', 'Orden enviada al cliente'),
-  (3, 'Completado', 'Orden pagada y finalizada');
+(0, 'Cancelado', 'Orden creada pero cancelada'),
+(1, 'Temporal', 'Orden en preparación'),
+(2, 'Retirar en Tienda', 'Orden enviada al cliente'),
+(3, 'En delivery', 'Orden pagada pero no entregada'),
+(4, 'Completado', 'Orden pagada y entregada');
+
+/*Si ya tenías los inserts viejos solo ocupa estos UPDATE
+
+UPDATE order_status
+SET name = 'Cancelado', description = 'Orden creada pero cancelada'
+WHERE id = 0;
+
+UPDATE order_status
+SET name = 'Temporal', description = 'Orden en preparación'
+WHERE id = 1;
+
+UPDATE order_status
+SET name = 'Retirar en Tienda', description = 'Orden enviada al cliente'
+WHERE id = 2;
+
+UPDATE order_status
+SET name = 'En delivery', description = 'Orden pagada pero no entregada'
+WHERE id = 3;
+
+UPDATE order_status
+SET name = 'Completado', description = 'Orden pagada y entregada'
+WHERE id = 4;
+*/

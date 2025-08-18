@@ -2,7 +2,7 @@ import { getOrCreateTemporaryCart, updateItemCart } from '../models/cartTemporar
 
 const getTemporaryCart = async (req, res) => {
   try {
-    const { userId } = req.query
+    const { userId } = req.user
     if (!userId) return res.status(400).json({ error: 'userId es requerido' })
     const cart = await getOrCreateTemporaryCart(userId)
     res.status(200).json(cart)
@@ -14,13 +14,14 @@ const getTemporaryCart = async (req, res) => {
 
 const putItem = async (req, res) => {
   try {
-    const { orderId, items } = req.body
-    if (!orderId) return res.status(400).json({ error: 'orderId es requerido' })
+    const { order_id, items } = req.body
+    if (!order_id) return res.status(400).json({ error: 'orderId es requerido' })
 
     for (const item of items) {
       const { product_id, quantity, unit_price } = item
-      await updateItemCart(orderId, product_id, quantity, unit_price)
+      await updateItemCart(order_id, product_id, quantity, unit_price)
     }
+    // Quiero devolver el carrito actuaizado
     res.json({ message: 'Carrito temporal actualizado con éxito' })
   } catch (error) {
     console.error(error)

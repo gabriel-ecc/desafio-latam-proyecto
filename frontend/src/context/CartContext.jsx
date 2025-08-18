@@ -33,7 +33,7 @@ export function CartProvider({ children }) {
         localStorage.setItem('tempOrderId', currentOrderId)
       }
       const payload = {
-        orderId: currentOrderId, // asegura que 'user' venga del contexto
+        order_id: currentOrderId, 
         items: newCart.map(item => ({
           product_id: item.id,
           quantity: item.quantity,

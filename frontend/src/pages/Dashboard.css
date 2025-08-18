@@ -1,6 +1,6 @@
 /* Estilos para el Dashboard del administrador */
 .dashboard-container {
-  max-width: 100vw;
+  max-width: 80vw;
   margin: 0 auto;
   padding-top: 2rem;
   min-height: 80vh;
@@ -28,4 +28,66 @@ img {
   align-items: center;
   height: auto;
   width: 100vw;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.graph-container {
+  width: 650px;
+}
+
+/* Estilos para el contenedor de la tabla */
+.table-container {
+  width: 100%;
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Para incluir padding y border en el ancho total */
+}
+
+.table-container h3{
+  text-align: center;
+}
+
+/* Estilos para la tabla */
+.clients-table {
+  width: 100%;
+  border-collapse: collapse; /* Para que los bordes de las celdas se unan */
+  margin-top: 15px;
+}
+
+/* Estilos para la cabecera de la tabla */
+.clients-table thead {
+  background-color: #333;
+  color: white;
+}
+
+.clients-table th {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Estilos para el cuerpo de la tabla */
+.clients-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Estilo para las filas alternas */
+.clients-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Estilo al pasar el mouse por encima de una fila */
+.clients-table tbody tr:hover {
+  background-color: #e9e9e9;
 }

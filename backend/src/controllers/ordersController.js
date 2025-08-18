@@ -3,7 +3,8 @@ import {
   getMyPurchasesSQL,
   getMyPurchasesDetailSQL,
   createOrderCartModel,
-  addOrderItemModel
+  addOrderItemModel,
+  updateStock
 } from '../models/ordersModel.js'
 
 export const getMyPurchases = async (req, res) => {
@@ -53,14 +54,14 @@ export const postCartOrder = async (req, res) => {
     })
 
     for (const item of items) {
-      await addOrderItemModel(
-        newOrder.id,
-        item.product_id,
-        item.quantity,
-        item.unit_price
-      )
+      await addOrderItemModel(newOrder.id, item.product_id, item.quantity, item.unit_price)
     }
-    res.status(201).json({ message: 'Carrito Generado', orderId: newOrder.id })
+
+    if (order_status === 2 || order_status === 3) {
+      await updateStock(newOrder.id)
+    }
+
+    res.status(201).json({ message: 'Carrito Generado', order_id: newOrder.id })
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Error al guardar el carrito' })

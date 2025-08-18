@@ -95,11 +95,13 @@ const Cart = () => {
         }))
       }
       console.log("Payload que se enviará:", payload);
-      await axios.post(`${URLBASE}${apiVersion}/orders`, payload,{
+      const response = await axios.post(`${URLBASE}${apiVersion}/orders`, payload,{
         headers: { Authorization: `Bearer ${token}`}
       })
-      setCart([])
+      const orderId = response.data.order_id
       console.log("Pago en efectivo realizado")
+      setCart([])
+      return orderId
     } catch (error) {
       console.error("Error al pagar:", error)
     }
@@ -122,11 +124,13 @@ const Cart = () => {
         }))
       }
 
-    await axios.post(`${URLBASE}${apiVersion}/orders`, payload, {
+    const response = await axios.post(`${URLBASE}${apiVersion}/orders`, payload, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    setCart([])
-    console.log("Pago con tarjeta realizado")
+      const orderId = response.data.order_id
+      console.log("Pago en efectivo realizado")
+      setCart([])
+      return orderId
     } catch (error) {
       console.error("Error al pagar:", error)
     }
@@ -237,27 +241,26 @@ const Cart = () => {
   }
 
     {/*Pago éxitoso*/}
-    const kindPaymet = selectedPayment === 'efectivo' ? handlePayEfectivo() : handlePayCard()
-    
-    kindPaymet.then(() => {
-    const generateTicketNumber = () => 
-      Math.floor(Math.random() * 900000) + 100000
-    // Reemplazar después por el futuro order_id en el backend
-    const currentDate = new Date()
-    const formatDate = date => {
+    try{
+      const order_id = selectedPayment === 'efectivo' ? await handlePayEfectivo() : await handlePayCard()
+
+      if (!order_id) throw new Error('No se obtuvo el ID de la orden')
+
+      const currentDate = new Date()
+      const formatDate = date => {
       const day = date.getDate().toString().padStart(2, '0')
       const month = (date.getMonth() + 1).toString().padStart(2, '0')
       const year = date.getFullYear()
       return `${day}/${month}/${year}`
-    }
-    const formatTime = date => {
+      }
+      const formatTime = date => {
       const hours = date.getHours().toString().padStart(2, '0')
       const minutes = date.getMinutes().toString().padStart(2, '0')
       const seconds = date.getSeconds().toString().padStart(2, '0')
       return `${hours}:${minutes}:${seconds}`
-    }
+      }
 
-    return Swal.fire({
+    await Swal.fire({
       title: '',
       html: `
         <div class="receipt-container">
@@ -294,27 +297,32 @@ const Cart = () => {
               </div>
               <div class="receipt-row">
                 <span class="receipt-label">N° de operación</span>
-                <span class="receipt-value">${generateTicketNumber()}</span>
+                <span class="receipt-value">${order_id}</span>
               </div>
             </div>
           </div>
         </div>
         `,
-      icon: null,
-      showConfirmButton: true,
-      confirmButtonText: 'Cerrar',
-      confirmButtonColor: '#28a745',
-      customClass: {
-        popup: 'receipt-popup',
-        confirmButton: 'receipt-button'
-      },
-      width: '450px'
+        icon: null,
+        showConfirmButton: true,
+        confirmButtonText: 'Cerrar',
+        confirmButtonColor: '#28a745',
+        customClass: {
+          popup: 'receipt-popup',
+          confirmButton: 'receipt-button'
+        },
+        width: '450px'
     })
-  })
-  .then(() => {
     setCart([])
     navigate('/')
-  })
+  }catch(error){
+    console.error("Error al pagar:", error)
+    Swal.fire({
+      icon: 'error',
+      title: 'Error al procesar el pago',
+      text: error.message
+    })
+  }
 }
 
 
