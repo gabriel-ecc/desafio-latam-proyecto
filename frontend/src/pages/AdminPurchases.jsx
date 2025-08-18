@@ -11,14 +11,6 @@ const AdminPurchases = () => {
         <h1>Gestión de Compras</h1>
         <p>Historial completo de compras realizadas por todos los clientes</p>
       </div>
-
-      <div className="work-in-progress">
-        <img
-          src="/imgs/gata-in-progress.png"
-          alt="Trabajo en Progreso"
-          className="wip"
-        />
-      </div>
     </div>
   )
 }
