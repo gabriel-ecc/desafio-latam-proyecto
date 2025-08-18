@@ -90,6 +90,7 @@ const AdminPurchases = () => {
 
       console.log('Response data:', response.data) // Debug log
       console.log('Products detail:', response.data.purchasesDetail) // Debug log
+      console.log('Purchase delivery_type from API:', purchase.delivery_type); // Debug log
 
       setSelectedPurchase({
         orderNumber: purchase.id,
@@ -138,6 +139,8 @@ const AdminPurchases = () => {
           headers: { Authorization: `Bearer ${token}` }
         }
       )
+
+      console.log('handleShowProducts - Purchase delivery_type from API:', purchase.delivery_type); // Debug log
 
       setSelectedPurchase({
         orderNumber: purchase.id,
@@ -307,24 +310,41 @@ const AdminPurchases = () => {
     }
   }
 
-  const getStatusOptions = currentStatus => {
+  const getStatusOptions = (currentStatus, deliveryType) => {
+    console.log('getStatusOptions called with:', { currentStatus, deliveryType }); // Debug log
+    
     const allStatuses = [
       { value: 1, label: 'Carrito' },
       { value: 2, label: 'Retiro en Tienda' },
       { value: 3, label: 'En Delivery' },
       { value: 5, label: 'Cancelada' },
       { value: 4, label: 'Finalizada' }
-
     ]
 
-    // Filtrar opciones según el estado actual
-    return allStatuses.filter(status => {
+    // Filtrar opciones según el estado actual y tipo de entrega
+    const filteredOptions = allStatuses.filter(status => {
       if (currentStatus === 4 || currentStatus === 5) {
         // Si está finalizada o cancelada, no se puede cambiar
         return false
       }
+      
+      // Si es retiro en tienda (2), no permitir "En Delivery"
+      if (deliveryType === 2 && status.value === 3) {
+        console.log('Filtering out "En Delivery" for pickup order'); // Debug log
+        return false
+      }
+      
+      // Si es delivery (1), no permitir "Retiro en Tienda"
+      if (deliveryType === 1 && status.value === 2) {
+        console.log('Filtering out "Retiro en Tienda" for delivery order'); // Debug log
+        return false
+      }
+      
       return status.value !== currentStatus
     })
+    
+    console.log('Filtered options:', filteredOptions); // Debug log
+    return filteredOptions
   }
 
   const renderPurchaseDetails = purchase => {
@@ -375,9 +395,7 @@ const AdminPurchases = () => {
                   <span className="price">
                     Precio: ${product.price.toLocaleString('es-CL')}
                   </span>
-                  <span className="quantity">
-                    Cantidad: {product.quantity}
-                  </span>
+                  <span className="quantity">Cantidad: {product.quantity}</span>
                   <span className="subtotal">
                     Subtotal: $
                     {product.price === 0
@@ -422,16 +440,16 @@ const AdminPurchases = () => {
             </p>
             <p>
               <strong>Tipo de entrega:</strong>{' '}
-              {purchase.deliveryType === 'pickup'
+              {purchase.deliveryType === 2
                 ? 'Retiro en tienda'
                 : 'Delivery'}
             </p>
-            {purchase.shippingAddress && (
+            {purchase.deliveryType !== 2 && purchase.shippingAddress && (
               <p>
                 <strong>Dirección:</strong> {purchase.shippingAddress}
               </p>
             )}
-            {purchase.recipientName && (
+            {purchase.deliveryType !== 2 && purchase.recipientName && (
               <p>
                 <strong>Destinatario:</strong> {purchase.recipientName}
               </p>
@@ -443,7 +461,7 @@ const AdminPurchases = () => {
         <div className="status_update_section">
           <h4>Cambiar Estado del Pedido:</h4>
           <div className="status_buttons">
-            {getStatusOptions(purchase.status).map(statusOption => (
+            {getStatusOptions(purchase.status, purchase.deliveryType).map(statusOption => (
               <button
                 key={statusOption.value}
                 className="status_update_btn"
@@ -650,17 +668,21 @@ const AdminPurchases = () => {
                     </p>
                     <p>
                       <strong>Tipo de entrega:</strong>{' '}
-                      {selectedPurchase.deliveryType === 'pickup'
+                      {selectedPurchase.deliveryType === 2
                         ? 'Retiro en tienda'
                         : 'Delivery'}
                     </p>
-                    {selectedPurchase.shippingAddress && (
+                    {(() => {
+                      console.log('Checking delivery type for address/recipient:', selectedPurchase.deliveryType); // Debug log
+                      return null;
+                    })()}
+                    {selectedPurchase.deliveryType !== 2 && selectedPurchase.shippingAddress && (
                       <p>
                         <strong>Dirección:</strong>{' '}
                         {selectedPurchase.shippingAddress}
                       </p>
                     )}
-                    {selectedPurchase.recipientName && (
+                    {selectedPurchase.deliveryType !== 2 && selectedPurchase.recipientName && (
                       <p>
                         <strong>Destinatario:</strong>{' '}
                         {selectedPurchase.recipientName}
@@ -673,7 +695,10 @@ const AdminPurchases = () => {
                 <div className="status_update_section">
                   <h4>Cambiar Estado del Pedido:</h4>
                   <div className="status_buttons">
-                    {getStatusOptions(selectedPurchase.status).map(
+                    {(() => {
+                      console.log('selectedPurchase before getStatusOptions:', selectedPurchase); // Debug log
+                      return getStatusOptions(selectedPurchase.status, selectedPurchase.deliveryType);
+                    })().map(
                       statusOption => (
                         <button
                           key={statusOption.value}
