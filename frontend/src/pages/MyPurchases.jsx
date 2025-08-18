@@ -37,13 +37,16 @@ const MyPurchases = () => {
 
   const getStatusBadge = status => {
     const statusConfig = {
-      0: { className: 'status-cart', icon: '🛒' },
-      'Carrito cancelado': { className: 'status-cart-cancelled', icon: '🛒❌' },
-      1: { className: 'status-preparation', icon: '👨‍🍳' },
-      'Retiro en tienda': { className: 'status-pickup', icon: '🏪' },
-      2: { className: 'status-delivery', icon: '🚚' },
-      3: { className: 'status-completed', icon: '✅' },
-      Cancelada: { className: 'status-cancelled', icon: '❌' }
+      0: {
+        className: 'status-cart-cancelled',
+        icon: '🛒❌',
+        text: 'Carrito Cancelado'
+      },
+      1: { className: 'status-cart', icon: '🛒', text: 'Carrito' },
+      2: { className: 'status-pickup', icon: '🏪', text: 'Retiro en Tienda' },
+      3: { className: 'status-delivery', icon: '🚚', text: 'En Delivery' },
+      4: { className: 'status-completed', icon: '✅', text: 'Finalizada' },
+      5: { className: 'status-cancelled', icon: '❌', text: 'Cancelada' }
     }
 
     const config = statusConfig[status] || {
@@ -53,7 +56,7 @@ const MyPurchases = () => {
 
     return (
       <span className={`status-badge ${config.className}`}>
-        {config.icon} {status}
+        {config.icon} {config.text}
       </span>
     )
   }
@@ -66,7 +69,6 @@ const MyPurchases = () => {
           headers: { Authorization: `Bearer ${token}` }
         }
       )
-      console.log(response.data.purchasesDetail)
       setSelectedPurchase({
         orderNumber: purchase.id,
         date: purchase.create_date,
