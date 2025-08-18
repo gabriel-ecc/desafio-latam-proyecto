@@ -4,6 +4,7 @@ import { ENDPOINT } from '../config/constants'
 import { getToken } from '../services/authService'
 import './AdminPurchases.css'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const AdminPurchases = () => {
   const [selectedPurchase, setSelectedPurchase] = useState(null)
@@ -27,6 +28,24 @@ const AdminPurchases = () => {
         setPurchases(response.data)
       } catch (error) {
         console.error('Error fetching purchases:', error)
+        
+        await Swal.fire({
+          title: 'Error al cargar pedidos',
+          html: `
+            <div style="text-align: center;">
+              <p>No se pudieron cargar los pedidos de la base de datos</p>
+              <div style="margin: 15px 0; padding: 15px; background-color: #fee; border-radius: 10px; border-left: 4px solid #e74c3c;">
+                <p style="margin: 0; color: #c0392b;">
+                  ${error.response?.data?.message || 'Error interno del servidor'}
+                </p>
+              </div>
+              <small style="color: #666;">Verifica tu conexión o contacta al administrador</small>
+            </div>
+          `,
+          icon: 'error',
+          confirmButtonColor: '#e74c3c',
+          confirmButtonText: 'Entendido'
+        })
       }
     }
     getAllPurchases()
@@ -84,11 +103,89 @@ const AdminPurchases = () => {
       })
     } catch (error) {
       console.error('Error fetching purchase details:', error)
+      
+      await Swal.fire({
+        title: 'Error al cargar detalles',
+        html: `
+          <div style="text-align: center;">
+            <p>No se pudieron cargar los detalles del pedido <strong>#${purchase.id}</strong></p>
+            <div style="margin: 15px 0; padding: 15px; background-color: #fee; border-radius: 10px; border-left: 4px solid #e74c3c;">
+              <p style="margin: 0; color: #c0392b;">
+                ${error.response?.data?.message || 'Error interno del servidor'}
+              </p>
+            </div>
+            <small style="color: #666;">Por favor, intenta nuevamente</small>
+          </div>
+        `,
+        icon: 'error',
+        confirmButtonColor: '#e74c3c',
+        confirmButtonText: 'Entendido'
+      })
     }
   }
 
   const updateOrderStatus = async (orderId, newStatus) => {
+    // Obtener información del estado
+    const statusInfo = {
+      1: { name: 'Carrito', icon: '🛒', color: '#3498db' },
+      2: { name: 'Retiro en Tienda', icon: '🏪', color: '#f39c12' },
+      3: { name: 'En Delivery', icon: '🚚', color: '#9b59b6' },
+      4: { name: 'Finalizada', icon: '✅', color: '#27ae60' },
+      5: { name: 'Cancelada', icon: '❌', color: '#e74c3c' }
+    }
+
+    const newStatusInfo = statusInfo[newStatus]
+
+    // Confirmación antes de cambiar el estado
+    const result = await Swal.fire({
+      title: '¿Confirmar cambio de estado?',
+      html: `
+        <div style="text-align: center;">
+          <p>¿Estás seguro que deseas cambiar el estado del pedido <strong>#${orderId}</strong> a:</p>
+          <div style="margin: 20px 0; padding: 15px; background-color: ${newStatusInfo.color}15; border-radius: 10px; border-left: 4px solid ${newStatusInfo.color};">
+            <span style="font-size: 24px;">${newStatusInfo.icon}</span>
+            <p style="margin: 5px 0; font-weight: bold; color: ${newStatusInfo.color};">${newStatusInfo.name}</p>
+          </div>
+          <small style="color: #666;">Esta acción no se puede deshacer</small>
+        </div>
+      `,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: newStatusInfo.color,
+      cancelButtonColor: '#95a5a6',
+      confirmButtonText: `Sí, cambiar a ${newStatusInfo.name}`,
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+      focusCancel: true
+    })
+
+    if (!result.isConfirmed) {
+      return
+    }
+
     setIsUpdating(true)
+    
+    // Mostrar loading
+    Swal.fire({
+      title: 'Actualizando estado...',
+      html: `
+        <div style="text-align: center;">
+          <div style="margin: 20px 0;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+          <p>Procesando cambio de estado del pedido #${orderId}</p>
+        </div>
+      `,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    })
+
     try {
       await axios.put(
         `${ENDPOINT.updateOrderStatus}/${orderId}/status`,
@@ -112,10 +209,46 @@ const AdminPurchases = () => {
         }))
       }
 
-      alert('Estado del pedido actualizado exitosamente')
+      // Éxito
+      await Swal.fire({
+        title: '¡Estado actualizado!',
+        html: `
+          <div style="text-align: center;">
+            <div style="margin: 20px 0; padding: 20px; background-color: ${newStatusInfo.color}15; border-radius: 15px;">
+              <span style="font-size: 48px; margin-bottom: 10px; display: block;">${newStatusInfo.icon}</span>
+              <p style="margin: 10px 0; font-size: 18px;">El pedido <strong>#${orderId}</strong> ahora está en estado:</p>
+              <p style="margin: 0; font-weight: bold; color: ${newStatusInfo.color}; font-size: 20px;">${newStatusInfo.name}</p>
+            </div>
+          </div>
+        `,
+        icon: 'success',
+        confirmButtonColor: newStatusInfo.color,
+        confirmButtonText: 'Entendido',
+        timer: 5000,
+        timerProgressBar: true
+      })
+
     } catch (error) {
       console.error('Error updating order status:', error)
-      alert('Error al actualizar el estado del pedido')
+      
+      // Error
+      await Swal.fire({
+        title: 'Error al actualizar',
+        html: `
+          <div style="text-align: center;">
+            <p>No se pudo actualizar el estado del pedido <strong>#${orderId}</strong></p>
+            <div style="margin: 15px 0; padding: 15px; background-color: #fee; border-radius: 10px; border-left: 4px solid #e74c3c;">
+              <p style="margin: 0; color: #c0392b;">
+                ${error.response?.data?.message || 'Error interno del servidor'}
+              </p>
+            </div>
+            <small style="color: #666;">Por favor, intenta nuevamente o contacta al administrador</small>
+          </div>
+        `,
+        icon: 'error',
+        confirmButtonColor: '#e74c3c',
+        confirmButtonText: 'Entendido'
+      })
     } finally {
       setIsUpdating(false)
     }
@@ -149,7 +282,8 @@ const AdminPurchases = () => {
           <h3>Orden #{purchase.orderNumber}</h3>
           <div className="order_info">
             <p>
-              <strong>Cliente:</strong> {purchase.userInfo.name} ({purchase.userInfo.email})
+              <strong>Cliente:</strong> {purchase.userInfo.name} (
+              {purchase.userInfo.email})
             </p>
             <p>
               <strong>Fecha:</strong>{' '}
@@ -159,7 +293,10 @@ const AdminPurchases = () => {
               <strong>Estado:</strong> {getStatusBadge(purchase.status)}
             </p>
             <p>
-              <strong>Tipo de entrega:</strong> {purchase.deliveryType === 'pickup' ? 'Retiro en tienda' : 'Delivery'}
+              <strong>Tipo de entrega:</strong>{' '}
+              {purchase.deliveryType === 'pickup'
+                ? 'Retiro en tienda'
+                : 'Delivery'}
             </p>
             {purchase.shippingAddress && (
               <p>
@@ -223,10 +360,14 @@ const AdminPurchases = () => {
               <button
                 key={statusOption.value}
                 className="status_update_btn"
-                onClick={() => updateOrderStatus(purchase.orderNumber, statusOption.value)}
+                onClick={() =>
+                  updateOrderStatus(purchase.orderNumber, statusOption.value)
+                }
                 disabled={isUpdating}
               >
-                {isUpdating ? 'Actualizando...' : `Cambiar a: ${statusOption.label}`}
+                {isUpdating
+                  ? 'Actualizando...'
+                  : `Cambiar a: ${statusOption.label}`}
               </button>
             ))}
           </div>
@@ -242,7 +383,9 @@ const AdminPurchases = () => {
         <div className="section_left">
           <div className="purchases">
             <h2>Gestión de Pedidos</h2>
-            <p className="admin-subtitle">Historial completo de pedidos de todos los clientes</p>
+            <p className="admin-subtitle">
+              Historial completo de pedidos de todos los clientes
+            </p>
             {purchases.length === 0 ? (
               <p>No hay pedidos registrados.</p>
             ) : (
@@ -260,10 +403,16 @@ const AdminPurchases = () => {
                           Cliente: {purchase.user_name}
                         </p>
                         <p className="purchase_date">
-                          Fecha: {new Date(purchase.create_date).toISOString().slice(0, 10)}
+                          Fecha:{' '}
+                          {new Date(purchase.create_date)
+                            .toISOString()
+                            .slice(0, 10)}
                         </p>
                         <p className="purchase_total">
-                          Total: ${purchase.total_amount > 0 ? purchase.total_amount.toLocaleString('es-CL') : 0}
+                          Total: $
+                          {purchase.total_amount > 0
+                            ? purchase.total_amount.toLocaleString('es-CL')
+                            : 0}
                         </p>
                       </div>
                       <div className="purchase_status">
@@ -272,7 +421,9 @@ const AdminPurchases = () => {
                     </div>
                     <div className="purchase_details">
                       <p className="estimated_date">
-                        {new Date(purchase.create_date).toISOString().slice(0, 10)}
+                        {new Date(purchase.create_date)
+                          .toISOString()
+                          .slice(0, 10)}
                       </p>
                       <span className="btn_details">Ver detalle</span>
                     </div>
@@ -304,27 +455,35 @@ const AdminPurchases = () => {
                   <h3>Orden #{selectedPurchase.orderNumber}</h3>
                   <div className="order_info">
                     <p>
-                      <strong>Cliente:</strong> {selectedPurchase.userInfo.name} ({selectedPurchase.userInfo.email})
+                      <strong>Cliente:</strong> {selectedPurchase.userInfo.name}{' '}
+                      ({selectedPurchase.userInfo.email})
                     </p>
                     <p>
                       <strong>Fecha:</strong>{' '}
-                      {new Date(selectedPurchase.date).toISOString().slice(0, 10)}
+                      {new Date(selectedPurchase.date)
+                        .toISOString()
+                        .slice(0, 10)}
                     </p>
                     <p>
                       <strong>Estado:</strong>{' '}
                       {getStatusBadge(selectedPurchase.status)}
                     </p>
                     <p>
-                      <strong>Tipo de entrega:</strong> {selectedPurchase.deliveryType === 'pickup' ? 'Retiro en tienda' : 'Delivery'}
+                      <strong>Tipo de entrega:</strong>{' '}
+                      {selectedPurchase.deliveryType === 'pickup'
+                        ? 'Retiro en tienda'
+                        : 'Delivery'}
                     </p>
                     {selectedPurchase.shippingAddress && (
                       <p>
-                        <strong>Dirección:</strong> {selectedPurchase.shippingAddress}
+                        <strong>Dirección:</strong>{' '}
+                        {selectedPurchase.shippingAddress}
                       </p>
                     )}
                     {selectedPurchase.recipientName && (
                       <p>
-                        <strong>Destinatario:</strong> {selectedPurchase.recipientName}
+                        <strong>Destinatario:</strong>{' '}
+                        {selectedPurchase.recipientName}
                       </p>
                     )}
                   </div>
@@ -356,7 +515,9 @@ const AdminPurchases = () => {
                           Subtotal: $
                           {product.price === 0
                             ? 0
-                            : (product.price * product.quantity).toLocaleString('es-CL')}
+                            : (product.price * product.quantity).toLocaleString(
+                                'es-CL'
+                              )}
                         </span>
                       </div>
                     </div>
@@ -385,16 +546,25 @@ const AdminPurchases = () => {
                 <div className="status_update_section">
                   <h4>Cambiar Estado del Pedido:</h4>
                   <div className="status_buttons">
-                    {getStatusOptions(selectedPurchase.status).map(statusOption => (
-                      <button
-                        key={statusOption.value}
-                        className="status_update_btn"
-                        onClick={() => updateOrderStatus(selectedPurchase.orderNumber, statusOption.value)}
-                        disabled={isUpdating}
-                      >
-                        {isUpdating ? 'Actualizando...' : `Cambiar a: ${statusOption.label}`}
-                      </button>
-                    ))}
+                    {getStatusOptions(selectedPurchase.status).map(
+                      statusOption => (
+                        <button
+                          key={statusOption.value}
+                          className="status_update_btn"
+                          onClick={() =>
+                            updateOrderStatus(
+                              selectedPurchase.orderNumber,
+                              statusOption.value
+                            )
+                          }
+                          disabled={isUpdating}
+                        >
+                          {isUpdating
+                            ? 'Actualizando...'
+                            : `Cambiar a: ${statusOption.label}`}
+                        </button>
+                      )
+                    )}
                   </div>
                 </div>
               </>

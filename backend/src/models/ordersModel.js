@@ -68,7 +68,9 @@ export const updateStock = async orderId => {
 // Función para obtener todas las compras (admin)
 export const getAllPurchasesSQL = async () => {
   const sqlQuery = {
-    text: `SELECT o.*, u.name as user_name, u.email as user_email 
+    text: `SELECT o.*, 
+           CONCAT(u.first_name, ' ', u.last_name) as user_name, 
+           u.email as user_email 
            FROM orders o 
            INNER JOIN users u ON o.user_id = u.id 
            ORDER BY o.id DESC`,
@@ -79,12 +81,13 @@ export const getAllPurchasesSQL = async () => {
 }
 
 // Función para obtener detalles de cualquier compra (admin)
-export const getAllPurchasesDetailSQL = async (orderId) => {
+export const getAllPurchasesDetailSQL = async orderId => {
   const sqlQuery = {
     text: `SELECT c.id as product_id, c.name as product_name, a.create_date as date, 
            a.order_status, c.product_photo as img, c.id as id, c.name as name, 
            b.unit_price as price, b.quantity as quantity, a.total_amount as total,
-           u.name as user_name, u.email as user_email
+           CONCAT(u.first_name, ' ', u.last_name) as user_name, 
+           u.email as user_email
            FROM orders as a 
            INNER JOIN order_items as b ON a.id = b.order_id 
            INNER JOIN products as c ON b.product_id = c.id 

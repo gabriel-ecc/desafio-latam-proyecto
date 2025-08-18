@@ -45,7 +45,10 @@ export const postCartOrder = async (req, res) => {
       items
     } = req.body
 
-    const totalAmount = items.reduce((sum, item) => sum + item.unit_price * item.quantity, 0)
+    const totalAmount = items.reduce(
+      (sum, item) => sum + item.unit_price * item.quantity,
+      0
+    )
 
     const newOrder = await createOrderCartModel({
       userId,
@@ -57,7 +60,12 @@ export const postCartOrder = async (req, res) => {
     })
 
     for (const item of items) {
-      await addOrderItemModel(newOrder.id, item.product_id, item.quantity, item.unit_price)
+      await addOrderItemModel(
+        newOrder.id,
+        item.product_id,
+        item.quantity,
+        item.unit_price
+      )
     }
 
     if (order_status === 2 || order_status === 3) {
@@ -99,21 +107,23 @@ export const getAllPurchasesDetail = async (req, res) => {
 export const updateOrderStatus = async (req, res) => {
   const orderId = req.params.id
   const { order_status } = req.body
-  
+
   try {
     const updatedOrder = await updateOrderStatusSQL(orderId, order_status)
-    
+
     // Si el estado cambia a 2 o 3, actualizar stock
     if (order_status === 2 || order_status === 3) {
       await updateStock(orderId)
     }
-    
-    res.status(200).json({ 
-      message: 'Estado del pedido actualizado exitosamente', 
-      order: updatedOrder 
+
+    res.status(200).json({
+      message: 'Estado del pedido actualizado exitosamente',
+      order: updatedOrder
     })
   } catch (error) {
     console.error(error)
-    return res.status(500).json({ error: 'Error al actualizar el estado del pedido' })
+    return res
+      .status(500)
+      .json({ error: 'Error al actualizar el estado del pedido' })
   }
 }
