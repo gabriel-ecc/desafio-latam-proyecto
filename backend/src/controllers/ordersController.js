@@ -4,7 +4,10 @@ import {
   getMyPurchasesDetailSQL,
   createOrderCartModel,
   addOrderItemModel,
-  updateStock
+  updateStock,
+  getAllPurchasesSQL,
+  getAllPurchasesDetailSQL,
+  updateOrderStatusSQL
 } from '../models/ordersModel.js'
 
 export const getMyPurchases = async (req, res) => {
@@ -65,5 +68,52 @@ export const postCartOrder = async (req, res) => {
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Error al guardar el carrito' })
+  }
+}
+
+// Obtener todas las compras (para admin/empleado)
+export const getAllPurchases = async (req, res) => {
+  try {
+    const purchases = await getAllPurchasesSQL()
+    res.status(200).json(purchases)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json(error)
+  }
+}
+
+// Obtener detalles de cualquier compra (para admin/empleado)
+export const getAllPurchasesDetail = async (req, res) => {
+  const orderId = req.params.id
+  try {
+    const data = await getAllPurchasesDetailSQL(orderId)
+    const purchasesDetail = await orderDetailsFormat(data)
+    res.status(200).json({ purchasesDetail })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json(error)
+  }
+}
+
+// Actualizar estado de un pedido (para admin/empleado)
+export const updateOrderStatus = async (req, res) => {
+  const orderId = req.params.id
+  const { order_status } = req.body
+  
+  try {
+    const updatedOrder = await updateOrderStatusSQL(orderId, order_status)
+    
+    // Si el estado cambia a 2 o 3, actualizar stock
+    if (order_status === 2 || order_status === 3) {
+      await updateStock(orderId)
+    }
+    
+    res.status(200).json({ 
+      message: 'Estado del pedido actualizado exitosamente', 
+      order: updatedOrder 
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ error: 'Error al actualizar el estado del pedido' })
   }
 }

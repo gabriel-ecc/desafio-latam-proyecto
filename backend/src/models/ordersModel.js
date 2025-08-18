@@ -64,3 +64,44 @@ export const updateStock = async orderId => {
   const itemsRes = await pool.query(itemQuery)
   return itemsRes.rows
 }
+
+// Función para obtener todas las compras (admin)
+export const getAllPurchasesSQL = async () => {
+  const sqlQuery = {
+    text: `SELECT o.*, u.name as user_name, u.email as user_email 
+           FROM orders o 
+           INNER JOIN users u ON o.user_id = u.id 
+           ORDER BY o.id DESC`,
+    values: []
+  }
+  const response = await pool.query(sqlQuery)
+  return response.rows
+}
+
+// Función para obtener detalles de cualquier compra (admin)
+export const getAllPurchasesDetailSQL = async (orderId) => {
+  const sqlQuery = {
+    text: `SELECT c.id as product_id, c.name as product_name, a.create_date as date, 
+           a.order_status, c.product_photo as img, c.id as id, c.name as name, 
+           b.unit_price as price, b.quantity as quantity, a.total_amount as total,
+           u.name as user_name, u.email as user_email
+           FROM orders as a 
+           INNER JOIN order_items as b ON a.id = b.order_id 
+           INNER JOIN products as c ON b.product_id = c.id 
+           INNER JOIN users as u ON a.user_id = u.id
+           WHERE a.id = $1`,
+    values: [orderId]
+  }
+  const response = await pool.query(sqlQuery)
+  return response.rows
+}
+
+// Función para actualizar el estado de un pedido
+export const updateOrderStatusSQL = async (orderId, newStatus) => {
+  const sqlQuery = {
+    text: 'UPDATE orders SET order_status = $1 WHERE id = $2 RETURNING *',
+    values: [newStatus, orderId]
+  }
+  const response = await pool.query(sqlQuery)
+  return response.rows[0]
+}
