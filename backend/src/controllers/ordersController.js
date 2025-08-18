@@ -1,6 +1,37 @@
-import { createOrderCartModel, addOrderItemModel, updateStock } from '../models/ordersModel.js'
+import { orderDetailsFormat } from '../helpers/ordersHelper.js'
+import {
+  getMyPurchasesSQL,
+  getMyPurchasesDetailSQL,
+  createOrderCartModel,
+  addOrderItemModel,
+  updateStock
+} from '../models/ordersModel.js'
 
-const postCartOrder = async (req, res) => {
+export const getMyPurchases = async (req, res) => {
+  const userId = req.user
+  try {
+    const purchases = await getMyPurchasesSQL(userId)
+    res.status(200).json(purchases)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json(error)
+  }
+}
+
+export const getMyPurchasesDetail = async (req, res) => {
+  const userId = req.user
+  const orderId = req.params.id
+  try {
+    const data = await getMyPurchasesDetailSQL(userId, orderId)
+    const purchasesDetail = await orderDetailsFormat(data)
+    res.status(200).json({ purchasesDetail })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json(error)
+  }
+}
+
+export const postCartOrder = async (req, res) => {
   try {
     const userId = req.user
     const {
@@ -36,5 +67,3 @@ const postCartOrder = async (req, res) => {
     res.status(500).json({ error: 'Error al guardar el carrito' })
   }
 }
-
-export default postCartOrder

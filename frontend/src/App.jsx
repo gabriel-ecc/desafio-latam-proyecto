@@ -51,10 +51,12 @@ function App() {
         <Route path="/create-employee" element={<ProtectedCreateEmployee />} />
         <Route path="/admin-compras" element={<ProtectedAdminPurchases />} />
         <Route path="/dashboard" element={<ProtectedDashboard />} />
-        <Route path="/cart" element={
-          <ProtectedRoute allowedUserTypes={[1, 2, 3]} redirectTo='/login'>
-            <Cart/>
-          </ProtectedRoute>
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute allowedUserTypes={[1, 2, 3]} redirectTo="/login">
+              <Cart />
+            </ProtectedRoute>
           }
         />
         <Route path="/products" element={<Products />} />
@@ -63,7 +65,14 @@ function App() {
         <Route path="/temporada" element={<SeasonProducts />} />
         <Route path="/favoritos" element={<Favorites />} />
         <Route path="/confirmacion" element={<PurchaseConfirmation />} />
-        <Route path="/mis-compras" element={<MyPurchases />} />
+        <Route
+          path="/mis-compras"
+          element={
+            <ProtectedRoute allowedUserTypes={[1, 2, 3]} redirectTo="/login">
+              <MyPurchases />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/detalle-pedido/:id" element={<OrderDetail />} />
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/card/:id" element={<CardRedirect />} />{' '}
