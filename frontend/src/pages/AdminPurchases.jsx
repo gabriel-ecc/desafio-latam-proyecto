@@ -319,33 +319,19 @@ const AdminPurchases = () => {
       deliveryType
     }) // Debug log
 
+    // Solo permitir cambiar a Finalizada o Cancelada
     const allStatuses = [
-      { value: 1, label: 'Carrito' },
-      { value: 2, label: 'Retiro en Tienda' },
-      { value: 3, label: 'En Delivery' },
       { value: 5, label: 'Cancelada' },
       { value: 4, label: 'Finalizada' }
     ]
 
-    // Filtrar opciones según el estado actual y tipo de entrega
+    // Filtrar opciones según el estado actual
     const filteredOptions = allStatuses.filter(status => {
       if (currentStatus === 4 || currentStatus === 5) {
         // Si está finalizada o cancelada, no se puede cambiar
         return false
       }
-
-      // Si es retiro en tienda (2), no permitir "En Delivery"
-      if (deliveryType === 2 && status.value === 3) {
-        console.log('Filtering out "En Delivery" for pickup order') // Debug log
-        return false
-      }
-
-      // Si es delivery (1), no permitir "Retiro en Tienda"
-      if (deliveryType === 1 && status.value === 2) {
-        console.log('Filtering out "Retiro en Tienda" for delivery order') // Debug log
-        return false
-      }
-
+      
       return status.value !== currentStatus
     })
 
