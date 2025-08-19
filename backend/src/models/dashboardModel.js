@@ -112,7 +112,7 @@ export const getInactiveClients = async () => {
       LEFT JOIN
         orders o ON u.id = o.user_id
       WHERE
-        u.user_type = 2
+        u.user_type = 1
       GROUP BY
         u.id, u.first_name, u.last_name, u.email
       HAVING
