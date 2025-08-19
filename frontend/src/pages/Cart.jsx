@@ -370,6 +370,7 @@ const Cart = () => {
                         })
                         subtraction(item.id)
                       }}
+                      disabled={paymentStep}
                     >
                       <i className="fa-solid fa-minus"></i>
                     </button>
@@ -382,6 +383,7 @@ const Cart = () => {
                         })
                         updateQuantity(item.id, item.quantity + 1)
                       }}
+                      disabled={paymentStep}
                     >
                       <i className="fa-solid fa-plus"></i>
                     </button>
@@ -394,6 +396,7 @@ const Cart = () => {
                         })
                         updateQuantity(item.id, 0)
                       }}
+                      disabled={paymentStep}
                     >
                       <i className="fa-solid fa-trash"></i>
                     </button>
