@@ -20,11 +20,8 @@ import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Cart from './pages/Cart'
 import Products from './pages/Products'
-import SeasonProducts from './pages/SeasonProducts'
 import Favorites from './pages/Favorites'
-import PurchaseConfirmation from './pages/PurchaseConfirmation'
 import MyPurchases from './pages/MyPurchases'
-import OrderDetail from './pages/OrderDetail'
 import ProductDetail from './pages/ProductDetail'
 import About from './pages/About'
 import Footer from './components/Footer'
@@ -62,9 +59,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/inventario" element={<ProtectedInventory />} />
         <Route path="/editar-producto/:id" element={<ProtectedEditProduct />} />
-        <Route path="/temporada" element={<SeasonProducts />} />
         <Route path="/favoritos" element={<Favorites />} />
-        <Route path="/confirmacion" element={<PurchaseConfirmation />} />
         <Route
           path="/mis-compras"
           element={
@@ -73,7 +68,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/detalle-pedido/:id" element={<OrderDetail />} />
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/card/:id" element={<CardRedirect />} />{' '}
         {/* Nueva ruta para redirección */}

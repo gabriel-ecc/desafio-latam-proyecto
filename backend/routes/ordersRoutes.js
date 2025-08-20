@@ -6,7 +6,10 @@ import { validateStockOnPurchase } from '../middleware/ordersMiddleware.js'
 import {
   postCartOrder,
   getMyPurchases,
-  getMyPurchasesDetail
+  getMyPurchasesDetail,
+  getAllPurchases,
+  getAllPurchasesDetail,
+  updateOrderStatus
 } from '../src/controllers/ordersController.js'
 
 const router = express.Router()
@@ -27,6 +30,33 @@ router.get(
   verifyToken,
   authorizationMiddleware,
   getMyPurchasesDetail
+)
+
+// Rutas para admin/empleado - obtener todas las compras
+router.get(
+  '/orders/all',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware,
+  getAllPurchases
+)
+
+// Ruta para admin/empleado - obtener detalles de cualquier compra
+router.get(
+  '/orders/all/detail/:id',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware,
+  getAllPurchasesDetail
+)
+
+// Ruta para admin/empleado - actualizar estado de un pedido
+router.put(
+  '/orders/:id/status',
+  verduleriaLog,
+  verifyToken,
+  authorizationMiddleware,
+  updateOrderStatus
 )
 
 export default router
