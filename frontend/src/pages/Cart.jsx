@@ -87,7 +87,7 @@ const Cart = () => {
         delivery_type: 2,
         shipping_address: direccionEntrega || 'Calle Falsa 123, Santiago',
         recipient_name: nombreDestinatario || 'Juan Pérez',
-        total_amount: Math.round(totalPrice()),
+        total_amount: Math.round(totalPrice),
           items: cart.map(item => ({
             product_id:item.id,
             quantity:item.quantity,
@@ -116,7 +116,7 @@ const Cart = () => {
         delivery_type: 1,
         shipping_address: direccionEntrega,
         recipient_name: nombreDestinatario,
-        total_amount: Math.round(totalPrice()),
+        total_amount: Math.round(totalPrice),
           items: cart.map(item => ({
             product_id:item.id,
             quantity:item.quantity,
@@ -271,7 +271,7 @@ const Cart = () => {
             <div class="receipt-section">
               <div class="receipt-row">
                 <span class="receipt-label">Monto</span>
-                <span class="receipt-value">$${totalPrice().toLocaleString('es-CL')}</span>
+                <span class="receipt-value">$${totalPrice.toLocaleString('es-CL')}</span>
               </div>
             </div>
             <div class="receipt-section">
@@ -408,7 +408,7 @@ const Cart = () => {
 
           <div className="total_option">
             <h5 className="total_title">
-              Total: ${totalPrice().toLocaleString('es-CL')}{' '}
+              Total: ${totalPrice.toLocaleString('es-CL')}{' '}
             </h5>
             <div className="total_button">
               <Button
@@ -437,7 +437,7 @@ const Cart = () => {
               {cart.reduce((sum, item) => sum + item.quantity, 0)}
             </p>
             <p className="total_title">
-              Total a pagar: ${totalPrice().toLocaleString('es-CL')}
+              Total a pagar: ${totalPrice.toLocaleString('es-CL')}
             </p>
 
             <div
