@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import './CardDetail.css'
 import FavoriteButton from './FavoriteButton'
-import { toast } from '../utils/swalHelper'
 
 const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
   const [quantity, setQuantity] = useState(0)
@@ -21,13 +20,8 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
     setQuantity(prev => (prev - 1 >= 0 ? prev - 1 : 0))
   }
 
-  const handleAddToCart = () => {
+  const handleLocalAddToCart = () => {
     onAddToCart(product, quantity)
-
-    toast({
-      icon: 'success',
-      title: `Has agregado ${quantity} ${product.name} al carrito.`
-    })
     setQuantity(0)
   }
 
@@ -109,8 +103,8 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
           </div>
 
           <button
-            onClick={handleAddToCart}
-            disabled={product.stock === 0}
+            onClick={handleLocalAddToCart}
+            disabled={quantity === 0 || product.stock === 0}
             className="btn-add-to-cart"
           >
             <i className="fa-solid fa-cart-plus"></i>

@@ -7,6 +7,7 @@ import useCart from '../context/CartContext.jsx'
 import { FavoriteContext } from '../context/FavoriteContext.jsx'
 import { ENDPOINT } from '../config/constants.js'
 import axios from 'axios'
+import { toast } from '../utils/swalHelper.js'
 
 // Muestra todos los productos disponibles en la tienda sin filtros (para el administrador).
 export default function Products() {
@@ -111,10 +112,21 @@ export default function Products() {
     )
   }
 
-  const handleAddToCart = productWithQuantity => {
+  const handleAddToCart = async productWithQuantity => {
     const { quantity, ...product } = productWithQuantity
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product)
+    const success = await addToCart(product, quantity)
+    if (success) {
+      toast({
+        icon: 'success',
+        title: `Has agregado ${quantity} ${product.name}${quantity > 1 ? 's' : ''
+          } al carrito.`
+      })
+    } else {
+      toast({
+        icon: 'warning',
+        title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${product.name
+          }.`
+      })
     }
   }
 
