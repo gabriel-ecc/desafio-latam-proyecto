@@ -74,13 +74,16 @@ export function CartProvider({ children }) {
   }, [cart, user, token])
 
   const addToCart = (item, quantity = 1) => {
+    setMathOperationComplete(true)
     setCart(prevCart => {
       const productExist = prevCart.find(p => p.id === item.id)
       if (
         productExist &&
-        productExist.stock - (productExist.quantity + quantity) < 0
-      )
+        productExist.stock < (productExist.quantity + quantity) 
+      ) {
         quantity = 0
+        setMathOperationComplete(false)
+      }
       if (productExist) {
         return prevCart.map(p =>
           p.id === item.id
