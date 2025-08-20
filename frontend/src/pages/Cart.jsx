@@ -18,8 +18,7 @@ const Cart = () => {
     updateQuantity,
     subtraction,
     totalPrice,
-    addToCart,
-    mathOperationComplete
+    addToCart
   } = useContext(CartContext)
   const [selectedPayment, setSelectedPayment] = useState(null)
   const [paymentStep, setPaymentStep] = useState(false)
@@ -402,17 +401,20 @@ const Cart = () => {
                     </button>
                     <button
                       className="btn-round btn-qty"
-                      onClick={() => {
-                        updateQuantity(item.id, item.quantity + 1)
-                        if (mathOperationComplete) {
+                      onClick={async () => {
+                        const success = await updateQuantity(
+                          item.id,
+                          item.quantity + 1
+                        )
+                        if (success) {
                           toast({
                             icon: 'success',
                             title: `Has agregado 1 ${item.name} al carrito.`
                           })
-                        }else{
+                        } else {
                           toast({
                             icon: 'warning',
-                            title: `No quedan productos en Stock para ${item.name}.`
+                            title: `No quedan más unidades de ${item.name} en stock.`
                           })
                         }
                       }}

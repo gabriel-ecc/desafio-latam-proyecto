@@ -1,14 +1,11 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import './CardDetail.css'
 import FavoriteButton from './FavoriteButton'
-import { toast } from '../utils/swalHelper'
-import { CartContext } from '../context/CartContext'
 
 const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
   const [quantity, setQuantity] = useState(0)
-  const { mathOperationComplete } = useContext(CartContext)
 
   // Construir la URL completa de la imagen
   const imageUrl = product.img
@@ -23,20 +20,8 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
     setQuantity(prev => (prev - 1 >= 0 ? prev - 1 : 0))
   }
 
-  const handleAddToCart = () => {
+  const handleLocalAddToCart = () => {
     onAddToCart(product, quantity)
-    if (mathOperationComplete) {
-      toast({
-        icon: 'success',
-        title: `Has agregado ${quantity} ${product.name} al carrito.`
-      })
-    } else {
-      toast({
-        icon: 'warning',
-        title: `No hay suficiente stock para ${product.name}.`
-      })
-    }
-
     setQuantity(0)
   }
 
@@ -118,8 +103,8 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
           </div>
 
           <button
-            onClick={handleAddToCart}
-            disabled={quantity === 0}
+            onClick={handleLocalAddToCart}
+            disabled={quantity === 0 || product.stock === 0}
             className="btn-add-to-cart"
           >
             <i className="fa-solid fa-cart-plus"></i>

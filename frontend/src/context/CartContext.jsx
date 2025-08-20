@@ -1,14 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { URLBASE, apiVersion } from '../config/constants.js'
 import { UserContext } from './UserContext.jsx'
-import { use } from 'react'
 
 export const CartContext = createContext()
 
 export function CartProvider({ children }) {
   const { user, token } = useContext(UserContext)
   const [totalPrice, setTotalPrice] = useState(0)
-  const [mathOperationComplete, setMathOperationComplete] = useState(true)
   const [cart, setCart] = useState(() => {
     const storedCart = localStorage.getItem('cart')
     return storedCart ? JSON.parse(storedCart) : []
@@ -74,47 +72,55 @@ export function CartProvider({ children }) {
   }, [cart, user, token])
 
   const addToCart = (item, quantity = 1) => {
-    setMathOperationComplete(true)
-    setCart(prevCart => {
-      const productExist = prevCart.find(p => p.id === item.id)
-      if (
-        productExist &&
-        productExist.stock < (productExist.quantity + quantity) 
-      ) {
-        quantity = 0
-        setMathOperationComplete(false)
-      }
-      if (productExist) {
-        return prevCart.map(p =>
-          p.id === item.id
-            ? { ...p, quantity: p.quantity + quantity, stock: p.stock }
-            : p
-        )
-      } else {
-        return [...prevCart, { ...item, quantity }]
-      }
+    return new Promise(resolve => {
+      setCart(prevCart => {
+        const productInCart = prevCart.find(p => p.id === item.id)
+        const currentQuantity = productInCart ? productInCart.quantity : 0
+
+        if (currentQuantity + quantity > item.stock) {
+          resolve(false)
+          return prevCart
+        }
+
+        if (productInCart) {
+          resolve(true)
+          return prevCart.map(p =>
+            p.id === item.id
+              ? { ...p, quantity: p.quantity + quantity }
+              : p
+          )
+        } else {
+          resolve(true)
+          return [...prevCart, { ...item, quantity }]
+        }
+      })
     })
   }
 
-  // Con esta función eliminaremos los articulos con 0 en el carrito
-
   const updateQuantity = (id, newQuantity) => {
-    setMathOperationComplete(true)
-    if (newQuantity === 0) {
-      setCart(oldCart => oldCart.filter(item => item.id !== id))
-    } else {
-      setCart(oldCart => {
-        const productExist = oldCart.find(p => p.id === id)
-        if (productExist && productExist.stock - newQuantity < 1) {
-          newQuantity =
-            newQuantity > productExist.stock ? productExist.stock : newQuantity
-          setMathOperationComplete(false)
+    return new Promise(resolve => {
+      setCart(prevCart => {
+        const productInCart = prevCart.find(p => p.id === id)
+        if (!productInCart) {
+          resolve(false)
+          return prevCart
         }
-        return oldCart.map(item =>
-          item.id === id ? { ...item, quantity: newQuantity } : item
-        )
+
+        if (newQuantity > 0 && newQuantity > productInCart.stock) {
+          resolve(false)
+          return prevCart // Do not update cart
+        }
+
+        resolve(true)
+        if (newQuantity === 0) {
+          return prevCart.filter(item => item.id !== id)
+        } else {
+          return prevCart.map(item =>
+            item.id === id ? { ...item, quantity: newQuantity } : item
+          )
+        }
       })
-    }
+    })
   }
 
   // Resto Cantidades o lo saco del carrito
@@ -146,8 +152,7 @@ export function CartProvider({ children }) {
         subtraction,
         totalPrice,
         addToCart,
-        handleTemporaryCart,
-        mathOperationComplete
+        handleTemporaryCart
       }}
     >
       {children}
