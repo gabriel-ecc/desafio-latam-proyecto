@@ -146,7 +146,7 @@ export default function Home() {
     <div className="container">
       {/* Panel superior */}
       <div className="hero-panel">
-        <img src="/imgs/panel-gata.jpg" alt="Banner de productos frescos" />
+        <img src="/imgs/panel-gata.png" alt="Banner de productos frescos" />
       </div>
       {/* Barra de búsqueda */}
       <div className="search-container-home">

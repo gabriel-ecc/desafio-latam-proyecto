@@ -16,10 +16,7 @@
 .hero-panel {
   width: 100%;
   margin: 1rem auto; /* Espacio entre el panel y los productos */
-  border-radius: var(--radius-xl); /* Bordes redondeados */
-  border: 3px solid rgba(213, 181, 123, 0.641); /* Borde verde sutil */
   overflow: hidden; /* Asegura que la imagen no se salga de los bordes redondeados */
-  box-shadow: var(--box-shadow-sm); /* Sombra sutil */
   line-height: 0; /* Elimina espacio extra debajo de la imagen */
   transition: border-color 0.3s ease; /* Transición suave para el borde */
 }
@@ -40,11 +37,7 @@
   width: 100%;
   margin: 2rem auto;
   padding: 2rem;
-  background: linear-gradient(
-    135deg,
-    var(--color-light) 0%,
-    var(--color-border-light) 100%
-  );
+  background: #fff;
   border-radius: 20px;
   box-shadow: var(--box-shadow-lg);
   overflow: hidden;
@@ -55,7 +48,8 @@
   .carousel-container {
     margin: 0rem auto 1.4rem auto;
     padding: 1rem;
-    max-width: 1000px;
+    max-width: 1100px;
+    max-height: 330px;
   }
 }
 
