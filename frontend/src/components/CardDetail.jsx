@@ -110,7 +110,7 @@ const CardDetail = ({ product, onAddToCart, onToggleFavorite }) => {
 
           <button
             onClick={handleAddToCart}
-            disabled={product.stock === 0}
+            disabled={quantity === 0}
             className="btn-add-to-cart"
           >
             <i className="fa-solid fa-cart-plus"></i>
