@@ -85,7 +85,7 @@ export const getLowStockProducts = async () => {
       FROM
         products
       WHERE
-        status = true AND stock > 0
+        status = true AND stock >= 0
       ORDER BY
         stock ASC
       LIMIT 5;
@@ -112,7 +112,7 @@ export const getInactiveClients = async () => {
       LEFT JOIN
         orders o ON u.id = o.user_id
       WHERE
-        u.user_type = 2
+        u.user_type = 1
       GROUP BY
         u.id, u.first_name, u.last_name, u.email
       HAVING
