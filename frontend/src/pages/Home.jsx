@@ -144,6 +144,10 @@ export default function Home() {
 
   return (
     <div className="container">
+      {/* Panel superior */}
+      <div className="hero-panel">
+        <img src="/imgs/panel-gata.jpg" alt="Banner de productos frescos" />
+      </div>
       {/* Barra de búsqueda */}
       <div className="search-container-home">
         <SearchBar
@@ -153,11 +157,6 @@ export default function Home() {
           className="home-search"
         />
       </div>
-      {/* Panel superior */}
-      <div className="hero-panel">
-        <img src="/imgs/panel.jpeg" alt="Banner de productos frescos" />
-      </div>
-
       {/* Carrusel de categorías */}
       <div className="carousel-container">
         <div className="carousel-wrapper">

@@ -17,9 +17,15 @@
   width: 100%;
   margin: 1rem auto; /* Espacio entre el panel y los productos */
   border-radius: var(--radius-xl); /* Bordes redondeados */
+  border: 3px solid rgba(213, 181, 123, 0.641); /* Borde verde sutil */
   overflow: hidden; /* Asegura que la imagen no se salga de los bordes redondeados */
   box-shadow: var(--box-shadow-sm); /* Sombra sutil */
   line-height: 0; /* Elimina espacio extra debajo de la imagen */
+  transition: border-color 0.3s ease; /* Transición suave para el borde */
+}
+
+.hero-panel:hover {
+  border-color: rgba(139, 195, 74, 0.5); /* Borde más visible al hacer hover */
 }
 
 .hero-panel img {
@@ -44,9 +50,25 @@
   overflow: hidden;
 }
 
+/* Carrusel más pequeño en desktop */
+@media (min-width: 1024px) {
+  .carousel-container {
+    margin: 0rem auto 1.4rem auto;
+    padding: 1rem;
+    max-width: 1000px;
+  }
+}
+
 .carousel-header {
   text-align: center;
   margin-bottom: 2rem;
+}
+
+/* Header más compacto en desktop */
+@media (min-width: 1024px) {
+  .carousel-header {
+    margin-bottom: 1rem;
+  }
 }
 
 .carousel-wrapper {
@@ -55,6 +77,13 @@
   overflow: hidden;
   border-radius: 15px;
   padding-bottom: 60px; /* Espacio para los indicadores */
+}
+
+/* Wrapper más compacto en desktop */
+@media (min-width: 1024px) {
+  .carousel-wrapper {
+    padding-bottom: 55px;
+  }
 }
 
 .carousel-track {
@@ -91,6 +120,13 @@
   display: block;
 }
 
+/* Imágenes más pequeñas en desktop */
+@media (min-width: 1024px) {
+  .category-card img {
+    height: 245px;
+  }
+}
+
 .category-title {
   position: absolute;
   bottom: 0;
@@ -108,6 +144,17 @@
   margin: 0;
   text-align: center;
   text-shadow: 2px 2px 4px var(--color-overlay);
+}
+
+/* Títulos más pequeños en desktop */
+@media (min-width: 1024px) {
+  .category-title h3 {
+    font-size: 2.2rem;
+  }
+
+  .category-title {
+    padding: 1.75rem 1.35rem 1.35rem;
+  }
 }
 
 .carousel-indicators {
@@ -207,7 +254,7 @@
 .search-container-home {
   display: flex;
   justify-content: center;
-  margin: 0.5rem auto 1.2rem auto;
+  margin: 1.5rem auto 2rem auto;
   padding: 0 1rem;
   max-width: 1000px; /* Mucho más ancho en desktop */
   position: relative;
@@ -216,9 +263,15 @@
 
 /* Estilos específicos para desktop - pantallas grandes */
 @media (min-width: 1024px) {
+  .hero-panel {
+    height: auto;
+    width: 87%;
+  }
+
   .search-container-home {
-    max-width: 650px; /* Aún más ancho en pantallas grandes */
-    padding: 0 2rem; /* Menos restricción de padding */
+    max-width: 1200px; /* Aún más ancho en pantallas grandes */
+    padding: 0 1rem; /* Menos restricción de padding */
+    margin: 1rem auto 0.6rem auto; /* Más margen vertical */
   }
 }
 

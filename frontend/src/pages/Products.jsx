@@ -131,20 +131,31 @@ export default function Products() {
   }
 
   return (
-    <div className="container">
-      <div>
-        {/* Aquí va el contenido*/}
-        <h2 className="text-center my-4">Nuestros Productos</h2>
+    <div className="container products-page">
+      {/* Header Banner Temático */}
+      <div className="products-header">
+        <div className="header-content">
+          <div className="header-icons">
+            <span className="icon">🥕</span>
+            <span className="icon">🥬</span>
+            <span className="icon">🍎</span>
+          </div>
+          <h1 className="products-title">Nuestros Productos Frescos</h1>
+          <p className="products-subtitle">
+            Directamente del campo a tu mesa • Calidad garantizada • Precios
+            justos
+          </p>
+          <div className="header-icons">
+            <span className="icon">🍊</span>
+            <span className="icon">🥒</span>
+            <span className="icon">🍇</span>
+          </div>
+        </div>
+      </div>
 
+      <div>
         {/* Barra de búsqueda */}
-        <div
-          className="search-container"
-          style={{
-            marginBottom: '2rem',
-            display: 'flex',
-            justifyContent: 'center'
-          }}
-        >
+        <div className="search-container">
           <SearchBar
             products={allProducts}
             onProductSelect={handleProductSelect}
@@ -154,32 +165,15 @@ export default function Products() {
         </div>
 
         {isSearching && (
-          <div
-            className="search-info"
-            style={{
-              background: '#f8f9fa',
-              padding: '1rem',
-              borderRadius: '8px',
-              marginBottom: '1rem',
-              textAlign: 'center'
-            }}
-          >
-            <p style={{ margin: 0, color: '#666', fontStyle: 'italic' }}>
-              Mostrando resultados para: "{searchTerm}"
+          <div className="search-info">
+            <p className="search-text">
+              🔍 Mostrando resultados para: "<strong>{searchTerm}</strong>"
             </p>
             <button
               onClick={() => handleSearch('')}
-              style={{
-                marginTop: '0.5rem',
-                padding: '0.5rem 1rem',
-                border: 'none',
-                borderRadius: '6px',
-                background: '#6c757d',
-                color: 'white',
-                cursor: 'pointer'
-              }}
+              className="clear-search-btn"
             >
-              Limpiar búsqueda
+              ✖ Limpiar búsqueda
             </button>
           </div>
         )}
@@ -187,76 +181,90 @@ export default function Products() {
 
       {!isSearching && (
         <div className="filters-container">
-          <div className="filter-group">
-            <label htmlFor="category-filter">Categoría:</label>
-            <select
-              id="category-filter"
-              value={selectedCategory}
-              onChange={e => {
-                setSelectedCategory(e.target.value)
-                setPage(1)
-              }}
-            >
-              <option value="">Todas</option>
-              {listCategories.map(category => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+          <div className="filters-header">
+            <h3 className="filters-title">🌱 Filtrar Productos</h3>
           </div>
+          <div className="filters-grid">
+            <div className="filter-group">
+              <label htmlFor="category-filter">
+                <span className="filter-icon">🥗</span> Categoría:
+              </label>
+              <select
+                id="category-filter"
+                value={selectedCategory}
+                onChange={e => {
+                  setSelectedCategory(e.target.value)
+                  setPage(1)
+                }}
+              >
+                <option value="">Todas las categorías</option>
+                {listCategories.map(category => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="filter-group">
-            <label htmlFor="season-filter">Temporada:</label>
-            <select
-              id="season-filter"
-              value={selectedSeason}
-              onChange={e => {
-                setSelectedSeason(e.target.value)
-                setPage(1)
-              }}
-            >
-              <option value="">Todas</option>
-              {listSeasons.map(season => (
-                <option key={season.id} value={season.id}>
-                  {season.name}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="filter-group">
+              <label htmlFor="season-filter">
+                <span className="filter-icon">🌿</span> Temporada:
+              </label>
+              <select
+                id="season-filter"
+                value={selectedSeason}
+                onChange={e => {
+                  setSelectedSeason(e.target.value)
+                  setPage(1)
+                }}
+              >
+                <option value="">Todas las temporadas</option>
+                {listSeasons.map(season => (
+                  <option key={season.id} value={season.id}>
+                    {season.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="filter-group">
-            <label htmlFor="order-filter">Ordenar por:</label>
-            <select
-              id="order-filter"
-              value={orderBy}
-              onChange={e => {
-                setOrderBy(e.target.value)
-                setPage(1)
-              }}
-            >
-              <option value="id_ASC">Relevancia</option>
-              <option value="price_ASC">Precio: Menor a Mayor</option>
-              <option value="price_DESC">Precio: Mayor a Menor</option>
-              <option value="productname_ASC">Nombre: A-Z</option>
-              <option value="productname_DESC">Nombre: Z-A</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <label htmlFor="limit-filter">Mostrar:</label>
-            <select
-              id="limit-filter"
-              value={limits}
-              onChange={e => {
-                setLimits(parseInt(e.target.value))
-                setPage(1)
-              }}
-            >
-              <option value="3">3</option>
-              <option value="6">6</option>
-              <option value="9">9</option>
-              <option value="12">12</option>
-            </select>
+            <div className="filter-group">
+              <label htmlFor="order-filter">
+                <span className="filter-icon">🔄</span> Ordenar por:
+              </label>
+              <select
+                id="order-filter"
+                value={orderBy}
+                onChange={e => {
+                  setOrderBy(e.target.value)
+                  setPage(1)
+                }}
+              >
+                <option value="id_ASC">Relevancia</option>
+                <option value="price_ASC">Precio: Menor a Mayor</option>
+                <option value="price_DESC">Precio: Mayor a Menor</option>
+                <option value="productname_ASC">Nombre: A-Z</option>
+                <option value="productname_DESC">Nombre: Z-A</option>
+              </select>
+            </div>
+
+            <div className="filter-group">
+              <label htmlFor="limit-filter">
+                <span className="filter-icon">👁</span> Mostrar:
+              </label>
+              <select
+                id="limit-filter"
+                value={limits}
+                onChange={e => {
+                  setLimits(parseInt(e.target.value))
+                  setPage(1)
+                }}
+              >
+                <option value="3">3 productos</option>
+                <option value="6">6 productos</option>
+                <option value="9">9 productos</option>
+                <option value="12">12 productos</option>
+              </select>
+            </div>
           </div>
         </div>
       )}
@@ -274,10 +282,16 @@ export default function Products() {
           ))
         ) : (
           <div className="no-products">
+            <div className="no-products-icon">🥺</div>
             <p>
               {isSearching
                 ? `No se encontraron productos para "${searchTerm}"`
-                : 'No hay productos disponibles.'}
+                : 'No hay productos disponibles en este momento.'}
+            </p>
+            <p className="no-products-subtitle">
+              {isSearching
+                ? 'Intenta con otro término de búsqueda'
+                : 'Pronto tendremos productos frescos para ti'}
             </p>
           </div>
         )}
