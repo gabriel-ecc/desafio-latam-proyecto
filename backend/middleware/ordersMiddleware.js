@@ -3,6 +3,11 @@ import { getProductById } from '../src/models/productsModel.js'
 export const validateStockOnPurchase = async (req, res, next) => {
   try {
     const { items } = req.body
+    if (!items || items.length === 0) {
+      return res.status(400).json({
+        message: `Lista de items vacia`
+      })
+    }
     const stockValidationPromises = items.map(async item => {
       const product = await getProductById(item.product_id)
       if (!product || product.stock < item.quantity) {
