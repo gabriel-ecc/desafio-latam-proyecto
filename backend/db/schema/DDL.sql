@@ -101,12 +101,9 @@ CREATE TABLE client_favorites(
 /*
 ORDER STATUS
 0 = Carrito cancelado => Carrito cancelado por cliente
-1 = Carrito => carrito en preparación por cliente -- Cuando el cliente agrega algo al carrito
-2 = Preparación => orden en preparación -- Inicia después de confirmar pago
-3 = Retiro en tienda => indicación para que cliente retire en local -- empleado cambia estado
-4 = En delivery => indicación de que orden va en camino -- empleado cambia estado
-5 = Entregada => Entregado satisfactorio al cliente -- empleado cambia estado
-6 = Cancelada => Fallo la entrega al cliente -- empleado cambia estado
+1 = Carrito => carrito en preparación por cliente/Temporal -- Cuando el cliente agrega algo al carrito
+2 = Retiro en tienda => indicación para que cliente retire en local -- Una vez paga con efectivo
+3 = En delivery => indicación de que orden va en camino -- Una vez paga con tarjeta
 
 */
 CREATE TABLE order_status(

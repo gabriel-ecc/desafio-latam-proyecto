@@ -1,16 +1,71 @@
 import { createContext, useContext, useEffect, useState } from "react"
+import { URLBASE, apiVersion } from "../config/constants.js"
+import { UserContext } from './UserContext.jsx'
 
 export const CartContext = createContext()
 
 export function CartProvider({ children }) {
+    const { user, token } = useContext(UserContext)  
     const [cart, setCart] = useState(() => {
     const storedCart = localStorage.getItem('cart')
     return storedCart ? JSON.parse(storedCart) : []
   })
-  //Primera función es para agregar al carrito y descartar duplicados
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart))
-  }, [cart])
+
+  const [orderId, setOrderId] = useState(() => {
+    return localStorage.getItem('tempOrderId') || null
+  })
+
+  //Carrito Temporal
+  const handleTemporaryCart = async(newCart) => {
+    if (!user) return console.error("Usuario no logueado")
+    try {
+      let currentOrderId = orderId
+      if (!currentOrderId) {
+          const res = await fetch(`${URLBASE}${apiVersion}/cart?userId=${user.id}`, {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` } // token opcional si no usas middleware
+          })
+
+      if (!res.ok) throw new Error("No se pudo obtener carrito temporal")
+        const data = await res.json()
+        currentOrderId = data.id
+        setOrderId(currentOrderId)
+        localStorage.setItem('tempOrderId', currentOrderId)
+      }
+      const payload = {
+        order_id: currentOrderId, 
+        items: newCart.map(item => ({
+          product_id: item.id,
+          quantity: item.quantity,
+          unit_price: Math.round(item.price)
+        }))
+      }
+       const response = await fetch(`${URLBASE}${apiVersion}/cart`, {
+        method: "PUT",
+        headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      console.error("Error guardando carrito temporal:", errorData)
+      return
+    }
+    console.log("Carrito temporal guardado en backend")
+  } catch (error) {
+    console.error("Error guardando carrito temporal:", error)
+  }
+  }
+
+    useEffect(() => {
+      localStorage.setItem('cart', JSON.stringify(cart))
+      if (cart.length > 0 && user && token) {
+        handleTemporaryCart(cart)
+      }
+    }, [cart,user, token])
 
   const addToCart = (item, quantity = 1) => {
     setCart(prevCart => {
@@ -60,7 +115,7 @@ export function CartProvider({ children }) {
   const total = totalPrice()
 
   return (
-    <CartContext.Provider value={{ cart, setCart, updateQuantity, subtraction, totalPrice, addToCart }}>
+    <CartContext.Provider value={{ cart, setCart, updateQuantity, subtraction, totalPrice, addToCart, handleTemporaryCart }}>
       {children}
     </CartContext.Provider>
   )
