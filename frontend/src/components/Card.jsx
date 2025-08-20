@@ -19,7 +19,6 @@ const ProductCard = ({
   // Estado local para manejar la cantidad del producto
   const [quantity, setQuantity] = useState(0)
   const [imgError, setImgError] = useState(false)
-  const { mathOperationComplete } = useContext(CartContext)
 
   const handleIncrease = () => {
     setQuantity(prev => (prev + 1 > stock ? stock : prev + 1))
@@ -33,17 +32,6 @@ const ProductCard = ({
   const handleAddToCart = () => {
     // Llama a la función pasada por props, añadiendo la cantidad seleccionada
     onAddToCart({ ...product, quantity })
-    if (mathOperationComplete) {
-      toast({
-        icon: 'success',
-        title: `Has agregado ${quantity} ${product.name} al carrito.`
-      })
-    } else {
-      toast({
-        icon: 'warning',
-        title: `No hay suficiente stock para ${product.name}.`
-      })
-    }
     setQuantity(0)
   }
 
