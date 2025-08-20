@@ -3,21 +3,21 @@ import 'dotenv/config'
 
 const { Pool } = pg
 
-const { DATABASE_URL } = process.env
+const { DB_URL } = process.env
 
 const config = {
-  connectionString: DATABASE_URL,
-  allowExitOnIdle: true
+  connectionString: DB_URL
 }
 
 const pool = new Pool(config)
+console.log(config)
 
-pool.query('SELECT NOW()')
-  .then(res => {
-    console.log('DB Connected', res.rows[0])
-  })
-  .catch(err => {
-    console.log('Error connecting to DB', err)
+const db = (query, values) => pool
+  .query(query, values)
+  .then(({ rows }) => rows)
+  .catch(({ code, message }) => {
+    const error = { status: false, code, message }
+    throw error
   })
 
 export default pool

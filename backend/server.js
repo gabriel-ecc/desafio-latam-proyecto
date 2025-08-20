@@ -53,19 +53,25 @@ app.use('/api/v1', dashboardRoutes) // Ruta al dashboard
 const __dirname = path.resolve()
 app.use('/api/v1/uploads', express.static(path.join(__dirname, 'uploads')))
 
-// Connect to the database and then start the server
-pool.query('SELECT NOW()', (err, res) => {
-  if (err) {
-    console.error('Error al conectar a la DB:', err.message)
-  } else {
+// Creamos una funcion asincronica para conectar a la DB y levantar el server
+const startServer = async () => {
+  try {
+  // Conectamos a la base de datos
+    const res = await pool.query('SELECT NOW()')
     console.log(res.rows[0].now, 'Base de datos arriba:')
-    // Subimos el server SÓLO después de que exista coneccion a la BD
+
+    // Subimos el server SÓLO después de que exista conexión a la DB
     app.listen(PORT, () => {
       console.log(
-        `[${new Date().toLocaleString()}] Servidor y Base de Datos corriendo en http://localhost:${PORT}`
+    `[${new Date().toLocaleString()}] Servidor y Base de Datos corriendo en http://localhost:${PORT}`
       )
     })
+  } catch (err) {
+    console.error('Error al conectar a la DB:', err.message)
   }
-})
+}
+
+// Llamamos a la función para iniciar el servidor
+startServer()
 
 export default app
