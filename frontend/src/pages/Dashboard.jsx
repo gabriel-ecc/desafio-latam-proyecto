@@ -2,11 +2,11 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { ENDPOINT } from '../config/constants'
-import { getToken } from '../services/authService'
+import { ENDPOINT } from '../config/constants.js'
+import { getToken } from '../services/authService.js'
 import React from 'react'
 import '../assets/variables.css'
-import BackButton from '../components/BackButton'
+import BackButton from '../components/BackButton.jsx'
 import './Dashboard.css'
 import {
   Chart as ChartJS,

@@ -8,6 +8,7 @@ import { ENDPOINT } from '../config/constants.js'
 import BackButton from '../components/BackButton'
 import axios from 'axios'
 import useCart from '../context/CartContext.jsx'
+import { toast } from '../utils/swalHelper.js'
 
 export default function Favorites() {
   const [searchParams] = useSearchParams()
@@ -82,10 +83,23 @@ export default function Favorites() {
     )
   }
 
-  const handleAddToCart = productWithQuantity => {
+  const handleAddToCart = async productWithQuantity => {
     const { quantity, ...product } = productWithQuantity
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product)
+    const success = await addToCart(product, quantity)
+    if (success) {
+      toast({
+        icon: 'success',
+        title: `Has agregado ${quantity} ${product.name}${
+          quantity > 1 ? 's' : ''
+        } al carrito.`
+      })
+    } else {
+      toast({
+        icon: 'warning',
+        title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${
+          product.name
+        }.`
+      })
     }
   }
 

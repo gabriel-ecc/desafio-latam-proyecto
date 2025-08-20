@@ -1,5 +1,5 @@
 import { CartContext } from '../context/CartContext.jsx'
-import { URLBASE, apiVersion } from "../config/constants.js"
+import { ENDPOINT } from '../config/constants.js'
 import { UserContext } from '../context/UserContext.jsx'
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -12,22 +12,32 @@ import Swal from 'sweetalert2'
 import BackButton from '../components/BackButton'
 
 const Cart = () => {
-  const { cart, setCart, updateQuantity, subtraction, totalPrice, addToCart } =
-    useContext(CartContext)
+  const {
+    cart,
+    setCart,
+    updateQuantity,
+    subtraction,
+    totalPrice,
+    addToCart
+  } = useContext(CartContext)
   const [selectedPayment, setSelectedPayment] = useState(null)
   const [paymentStep, setPaymentStep] = useState(false)
   const [showPaymentOptions, setShowPaymentOptions] = useState(false)
   const navigate = useNavigate()
   const { user, token } = useContext(UserContext)
 
-  {/*Requerimientos para el Pago*/}
+  {
+    /*Requerimientos para el Pago*/
+  }
 
   const [nombreTitular, setNombreTitular] = useState('')
   const [numeroTarjeta, setNumeroTarjeta] = useState('')
   const [expiracion, setExpiracion] = useState('')
   const [cvv, setCvv] = useState('')
 
-  {/*Datos de entrega*/}
+  {
+    /*Datos de entrega*/
+  }
 
   const [nombreDestinatario, setNombreDestinatario] = useState('')
   const [direccionEntrega, setDireccionEntrega] = useState('')
@@ -46,24 +56,31 @@ const Cart = () => {
     }
   }, [])
 
- 
- {/* Conexión con el backend */}
-  const handleEmptyCart = async() => {
-    try{
-      const response = await axios.get(`${URLBASE}${apiVersion}/cart`,{
+  {
+    /* Conexión con el backend */
+  }
+  const handleEmptyCart = async () => {
+    try {
+      setCart([])
+      /*
+      const response = await axios.get(`${ENDPOINT.cart}`, {
         params: { userId: user.id },
         headers: { Authorization: `Bearer ${token}` }
       })
       const cartData = response.data
       const orderId = cartData.id
 
-      await axios.put(`${URLBASE}${apiVersion}/cart`, {
-        orderId,
-        items: []
-      },{
-        headers: { Authorization: `Bearer ${token}`}  
-      })
-      setCart([])
+      await axios.put(
+        `${ENDPOINT.cart}`,
+        {
+          orderId,
+          items: []
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+      */
       Swal.fire({
         title: 'Carrito vacío',
         icon: 'success',
@@ -71,15 +88,13 @@ const Cart = () => {
         confirmButtonColor: '#28a745'
       })
       navigate('/')
-    }catch(error){
-      console.error("Error al vacíar el carrito", error)
+    } catch (error) {
+      console.error('Error al vacíar el carrito', error)
     }
   }
 
-  const handlePayEfectivo = async() =>{
+  const handlePayEfectivo = async () => {
     try {
-      console.log("USER ID:", user.id);    
-      console.log("Cart items:", cart); 
       const payload = {
         user_id: user.id,
         order_status: 2,
@@ -87,27 +102,24 @@ const Cart = () => {
         delivery_type: 2,
         shipping_address: direccionEntrega || 'Calle Falsa 123, Santiago',
         recipient_name: nombreDestinatario || 'Juan Pérez',
-        total_amount: Math.round(totalPrice()),
-          items: cart.map(item => ({
-            product_id:item.id,
-            quantity:item.quantity,
-            unit_price:Math.round(item.price)
+        total_amount: Math.round(totalPrice),
+        items: cart.map(item => ({
+          product_id: item.id,
+          quantity: item.quantity,
+          unit_price: Math.round(item.price)
         }))
       }
-      console.log("Payload que se enviará:", payload);
-      const response = await axios.post(`${URLBASE}${apiVersion}/orders`, payload,{
-        headers: { Authorization: `Bearer ${token}`}
+      const response = await axios.post(`${ENDPOINT.orders}`, payload, {
+        headers: { Authorization: `Bearer ${token}` }
       })
-      const orderId = response.data.order_id
-      console.log("Pago en efectivo realizado")
       setCart([])
-      return orderId
+      return response
     } catch (error) {
-      console.error("Error al pagar:", error)
+      return error
     }
   }
 
-  const handlePayCard = async() => {
+  const handlePayCard = async () => {
     try {
       const payload = {
         user_id: user.id,
@@ -116,27 +128,28 @@ const Cart = () => {
         delivery_type: 1,
         shipping_address: direccionEntrega,
         recipient_name: nombreDestinatario,
-        total_amount: Math.round(totalPrice()),
-          items: cart.map(item => ({
-            product_id:item.id,
-            quantity:item.quantity,
-            unit_price:Math.round(item.price)
+        total_amount: Math.round(totalPrice),
+        items: cart.map(item => ({
+          product_id: item.id,
+          quantity: item.quantity,
+          unit_price: Math.round(item.price)
         }))
       }
 
-    const response = await axios.post(`${URLBASE}${apiVersion}/orders`, payload, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      const orderId = response.data.order_id
-      console.log("Pago en efectivo realizado")
+      const response = await axios.post(`${ENDPOINT.orders}`, payload, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       setCart([])
-      return orderId
+      return response
     } catch (error) {
-      console.error("Error al pagar:", error)
+      console.error('Error al pagar:', error)
+      return error
     }
   }
 
- {/*Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago*/}
+  {
+    /*Acción de botones de decisión tanto para la visualización de productos como para Validación de Pago*/
+  }
 
   const handleCancel = () => {
     Swal.fire({
@@ -150,9 +163,9 @@ const Cart = () => {
       cancelButtonColor: '#3085d6'
     }).then(result => {
       if (result.isConfirmed) {
-        handleEmptyCart()   
+        handleEmptyCart()
       }
-      })
+    })
   }
 
   const handleContinue = () => {
@@ -186,7 +199,9 @@ const Cart = () => {
     setDeliveryConfirmed(true)
   }
 
-{/*Formatear el número de tarjeta*/}
+  {
+    /*Formatear el número de tarjeta*/
+  }
 
   const formatCardNumber = value => {
     const onlyNums = value.replace(/\D/g, '')
@@ -194,7 +209,9 @@ const Cart = () => {
     return spaced
   }
 
-  {/*Formatear la fecha con / de forma automatica*/}
+  {
+    /*Formatear la fecha con / de forma automatica*/
+  }
 
   const formatExpiry = value => {
     const onlyNums = value.replace(/\D/g, '')
@@ -227,42 +244,50 @@ const Cart = () => {
         return
       }
 
-    const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
-    const cvvOk = /^\d{3}$/.test(cvv)
+      const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiracion)
+      const cvvOk = /^\d{3}$/.test(cvv)
 
-    if (!expiryOk || !cvvOk) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Formato inválido',
-        text: 'Llenar los campos correctamente'
-      })
-      return
+      if (!expiryOk || !cvvOk) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Formato inválido',
+          text: 'Llenar los campos correctamente'
+        })
+        return
+      }
     }
-  }
 
-    {/*Pago éxitoso*/}
-    try{
-      const order_id = selectedPayment === 'efectivo' ? await handlePayEfectivo() : await handlePayCard()
-
-      if (!order_id) throw new Error('No se obtuvo el ID de la orden')
+    {
+      /*Pago éxitoso*/
+    }
+    let errorMessage = ''
+    try {
+      const response =
+        selectedPayment === 'efectivo'
+          ? await handlePayEfectivo()
+          : await handlePayCard()
+      if (!response.data) {
+        errorMessage = response.response.data.message
+      }
+      const order_id = response.data.order_id
 
       const currentDate = new Date()
       const formatDate = date => {
-      const day = date.getDate().toString().padStart(2, '0')
-      const month = (date.getMonth() + 1).toString().padStart(2, '0')
-      const year = date.getFullYear()
-      return `${day}/${month}/${year}`
+        const day = date.getDate().toString().padStart(2, '0')
+        const month = (date.getMonth() + 1).toString().padStart(2, '0')
+        const year = date.getFullYear()
+        return `${day}/${month}/${year}`
       }
       const formatTime = date => {
-      const hours = date.getHours().toString().padStart(2, '0')
-      const minutes = date.getMinutes().toString().padStart(2, '0')
-      const seconds = date.getSeconds().toString().padStart(2, '0')
-      return `${hours}:${minutes}:${seconds}`
+        const hours = date.getHours().toString().padStart(2, '0')
+        const minutes = date.getMinutes().toString().padStart(2, '0')
+        const seconds = date.getSeconds().toString().padStart(2, '0')
+        return `${hours}:${minutes}:${seconds}`
       }
 
-    await Swal.fire({
-      title: '',
-      html: `
+      await Swal.fire({
+        title: '',
+        html: `
         <div class="receipt-container">
           <div class="receipt-title">
             <h3>Comprobante de Pago</h3>
@@ -271,7 +296,7 @@ const Cart = () => {
             <div class="receipt-section">
               <div class="receipt-row">
                 <span class="receipt-label">Monto</span>
-                <span class="receipt-value">$${totalPrice().toLocaleString('es-CL')}</span>
+                <span class="receipt-value">$${totalPrice.toLocaleString('es-CL')}</span>
               </div>
             </div>
             <div class="receipt-section">
@@ -312,21 +337,21 @@ const Cart = () => {
           confirmButton: 'receipt-button'
         },
         width: '450px'
-    })
-    setCart([])
-    navigate('/')
-  }catch(error){
-    console.error("Error al pagar:", error)
-    Swal.fire({
-      icon: 'error',
-      title: 'Error al procesar el pago',
-      text: error.message
-    })
+      })
+      setCart([])
+      navigate('/')
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al procesar el pago',
+        text: errorMessage
+      })
+    }
   }
-}
 
-
-  {/*Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.*/}
+  {
+    /*Página del carrito de compras, donde el usuario puede ver y editar los productos que va a comprar.*/
+  }
   return (
     <>
       <BackButton />
@@ -370,18 +395,30 @@ const Cart = () => {
                         })
                         subtraction(item.id)
                       }}
+                      disabled={paymentStep}
                     >
                       <i className="fa-solid fa-minus"></i>
                     </button>
                     <button
                       className="btn-round btn-qty"
-                      onClick={() => {
-                        toast({
-                          icon: 'success',
-                          title: `Has agregado 1 ${item.name} del carrito.`
-                        })
-                        updateQuantity(item.id, item.quantity + 1)
+                      onClick={async () => {
+                        const success = await updateQuantity(
+                          item.id,
+                          item.quantity + 1
+                        )
+                        if (success) {
+                          toast({
+                            icon: 'success',
+                            title: `Has agregado 1 ${item.name} al carrito.`
+                          })
+                        } else {
+                          toast({
+                            icon: 'warning',
+                            title: `No quedan más unidades de ${item.name} en stock.`
+                          })
+                        }
                       }}
+                      disabled={paymentStep}
                     >
                       <i className="fa-solid fa-plus"></i>
                     </button>
@@ -394,6 +431,7 @@ const Cart = () => {
                         })
                         updateQuantity(item.id, 0)
                       }}
+                      disabled={paymentStep}
                     >
                       <i className="fa-solid fa-trash"></i>
                     </button>
@@ -405,7 +443,7 @@ const Cart = () => {
 
           <div className="total_option">
             <h5 className="total_title">
-              Total: ${totalPrice().toLocaleString('es-CL')}{' '}
+              Total: ${totalPrice.toLocaleString('es-CL')}{' '}
             </h5>
             <div className="total_button">
               <Button
@@ -434,7 +472,7 @@ const Cart = () => {
               {cart.reduce((sum, item) => sum + item.quantity, 0)}
             </p>
             <p className="total_title">
-              Total a pagar: ${totalPrice().toLocaleString('es-CL')}
+              Total a pagar: ${totalPrice.toLocaleString('es-CL')}
             </p>
 
             <div
@@ -509,8 +547,8 @@ const Cart = () => {
                     onClick={handleConfirmDelivery}
                     className="confirm-delivery-btn"
                   >
-                    <i className="fa-solid fa-check"></i>
-                    {" "}Confirmar Datos de Entrega
+                    <i className="fa-solid fa-check"></i> Confirmar Datos de
+                    Entrega
                   </button>
                 </div>
               </div>

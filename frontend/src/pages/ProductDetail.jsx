@@ -7,6 +7,7 @@ import ProductCard from '../components/Card'
 import useCart from '../context/CartContext'
 import BackButton from '../components/BackButton'
 import './ProductDetail.css'
+import { toast } from '../utils/swalHelper.js'
 
 const ProductDetail = () => {
   const { id } = useParams()
@@ -98,8 +99,22 @@ const ProductDetail = () => {
     }))
   }
 
-  const handleAddToCart = (product, quantity) => {
-    addToCart(product, quantity)
+  const handleAddToCart = async (product, quantity) => {
+    if (quantity === 0) return
+    const success = await addToCart(product, quantity)
+    if (success) {
+      toast({
+        icon: 'success',
+        title: `Has agregado ${quantity} ${product.name}${quantity > 1 ? 's' : ''
+          } al carrito.`
+      })
+    } else {
+      toast({
+        icon: 'warning',
+        title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${product.name
+          }.`
+      })
+    }
   }
 
   // Funciones para manejar productos relacionados
