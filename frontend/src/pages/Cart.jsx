@@ -12,8 +12,15 @@ import Swal from 'sweetalert2'
 import BackButton from '../components/BackButton'
 
 const Cart = () => {
-  const { cart, setCart, updateQuantity, subtraction, totalPrice, addToCart } =
-    useContext(CartContext)
+  const {
+    cart,
+    setCart,
+    updateQuantity,
+    subtraction,
+    totalPrice,
+    addToCart,
+    mathOperationComplete
+  } = useContext(CartContext)
   const [selectedPayment, setSelectedPayment] = useState(null)
   const [paymentStep, setPaymentStep] = useState(false)
   const [showPaymentOptions, setShowPaymentOptions] = useState(false)
@@ -396,11 +403,18 @@ const Cart = () => {
                     <button
                       className="btn-round btn-qty"
                       onClick={() => {
-                        toast({
-                          icon: 'success',
-                          title: `Has agregado 1 ${item.name} del carrito.`
-                        })
                         updateQuantity(item.id, item.quantity + 1)
+                        if (mathOperationComplete) {
+                          toast({
+                            icon: 'success',
+                            title: `Has agregado 1 ${item.name} al carrito.`
+                          })
+                        }else{
+                          toast({
+                            icon: 'warning',
+                            title: `No quedan productos en Stock para ${item.name}.`
+                          })
+                        }
                       }}
                       disabled={paymentStep}
                     >

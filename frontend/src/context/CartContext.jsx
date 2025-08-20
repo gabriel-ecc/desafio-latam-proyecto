@@ -1,12 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { URLBASE, apiVersion } from '../config/constants.js'
 import { UserContext } from './UserContext.jsx'
+import { use } from 'react'
 
 export const CartContext = createContext()
 
 export function CartProvider({ children }) {
   const { user, token } = useContext(UserContext)
   const [totalPrice, setTotalPrice] = useState(0)
+  const [mathOperationComplete, setMathOperationComplete] = useState(true)
   const [cart, setCart] = useState(() => {
     const storedCart = localStorage.getItem('cart')
     return storedCart ? JSON.parse(storedCart) : []
@@ -94,15 +96,16 @@ export function CartProvider({ children }) {
   // Con esta función eliminaremos los articulos con 0 en el carrito
 
   const updateQuantity = (id, newQuantity) => {
+    setMathOperationComplete(true)
     if (newQuantity === 0) {
       setCart(oldCart => oldCart.filter(item => item.id !== id))
     } else {
       setCart(oldCart => {
         const productExist = oldCart.find(p => p.id === id)
-        if (productExist && productExist.stock - newQuantity < 0) {
-          newQuantity = newQuantity > productExist.stock
-            ? productExist.stock
-            : newQuantity
+        if (productExist && productExist.stock - newQuantity < 1) {
+          newQuantity =
+            newQuantity > productExist.stock ? productExist.stock : newQuantity
+          setMathOperationComplete(false)
         }
         return oldCart.map(item =>
           item.id === id ? { ...item, quantity: newQuantity } : item
@@ -140,7 +143,8 @@ export function CartProvider({ children }) {
         subtraction,
         totalPrice,
         addToCart,
-        handleTemporaryCart
+        handleTemporaryCart,
+        mathOperationComplete
       }}
     >
       {children}
