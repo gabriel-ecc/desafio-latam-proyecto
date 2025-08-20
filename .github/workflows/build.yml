@@ -108,7 +108,7 @@ jobs:
       - name: Deploy to Azure Web App (Backend)
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'gatacampobackend-f6d0dmg6f5c3h6fz.chilecentral-01.azurewebsites.net'
+          app-name: 'gatacampobackend'
           package: ./backend
 
   deploy-frontend:
@@ -137,5 +137,5 @@ jobs:
       - name: Deploy to Azure Web App (Frontend)
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'gatadecampo-g9bjh9bshyb6gthq.chilecentral-01.azurewebsites.net'
+          app-name: 'gatadecampo'
           package: ./frontend/dist
