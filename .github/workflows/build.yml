@@ -1,5 +1,4 @@
-name: Build + Test + Analyze
-
+name: Build, Test, Analyze, and Deploy
 
 on:
   push:
@@ -72,13 +71,9 @@ jobs:
         run: npm run test:coverage
 
       - name: Analyze with SonarCloud
-        # You can pin the exact commit or the version.
-        # uses: SonarSource/sonarcloud-github-action@v2.2.0
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          # Pass postgres environment variables to SonarCloud analysis
-          # This is useful if your backend tests run during analysis
         with:
           args:
             -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto
@@ -88,3 +83,59 @@ jobs:
             -Dsonar.tests=./backend/test
             -Dsonar.javascript.lcov.reportPaths=./backend/coverage/lcov.info
           projectBaseDir: .
+
+  deploy-backend:
+    needs: Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install backend dependencies
+        run: npm install
+        working-directory: ./backend
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App (Backend)
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'gatacampobackend-f6d0dmg6f5c3h6fz.chilecentral-01.azurewebsites.net'
+          package: ./backend
+
+  deploy-frontend:
+    needs: Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install frontend dependencies and build
+        run: |
+          npm install
+          npm run build
+        working-directory: ./frontend
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App (Frontend)
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'gatadecampo-g9bjh9bshyb6gthq.chilecentral-01.azurewebsites.net'
+          package: ./frontend/dist
