@@ -264,7 +264,7 @@
   transition: var(--transition-normal);
   font-weight: var(--font-weight-medium);
   color: #2c3e50 !important;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   /* Personalización del ícono de dropdown */
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -279,7 +279,9 @@
 .filter-group select:focus {
   border-color: var(--color-primary);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(30, 124, 58, 0.15), var(--box-shadow-focus);
+  box-shadow:
+    0 0 0 3px rgba(30, 124, 58, 0.15),
+    var(--box-shadow-focus);
   background: linear-gradient(135deg, #ffffff 0%, #f0f9f1 100%);
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%237b9445' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.75rem center;
@@ -290,7 +292,7 @@
 .filter-group select:hover {
   border-color: var(--color-secondary);
   background: linear-gradient(135deg, #ffffff 0%, #f0f9f1 100%);
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilos para scrollbar en WebKit browsers */
@@ -616,13 +618,17 @@ nav[aria-label='Page navigation'] {
 @media (min-width: 577px) and (max-width: 768px) {
   .filters-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.2rem;
-    max-width: 600px;
+    gap: 1.5rem;
+    max-width: 650px;
+  }
+
+  .filter-group {
+    padding: 1.1rem;
   }
 
   .filter-group select {
-    max-width: 250px;
-    min-width: 180px;
+    max-width: 280px;
+    min-width: 200px;
   }
 
   .card-container {
@@ -666,14 +672,14 @@ nav[aria-label='Page navigation'] {
 /* Tablets grandes */
 @media (min-width: 768px) and (max-width: 1024px) {
   .filters-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.2rem;
-    max-width: 900px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 700px;
   }
 
   .filter-group select {
-    max-width: 200px;
-    min-width: 160px;
+    max-width: 280px;
+    min-width: 200px;
   }
 
   .card-container {
