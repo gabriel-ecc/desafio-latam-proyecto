@@ -1,6 +1,47 @@
-// Script para probar los nuevos endpoints de AdminPurchases
-const axios = require('axios')
+import request from 'supertest'
+import app from '../../server.js'
 
+describe('API /orders', () => {
+  let loginTokenAdmin
+  let mockError
+
+  beforeAll(async () => {
+    const userDataClient = {
+      email: 'test1@test.com',
+      password: '123456'
+    }
+    const loginResponseClient = await request(app)
+      .post('/api/v1/login')
+      .send(userDataClient)
+    loginTokenClient = loginResponseClient.body.token
+
+    const userDataAdmin = {
+      email: 'test2@test.com',
+      password: '123456'
+    }
+    const loginResponseAdmin = await request(app)
+      .post('/api/v1/login')
+      .send(userDataAdmin)
+    loginTokenAdmin = loginResponseAdmin.body.token
+
+    mockError = new Error('Error de BD simulado')
+  })
+
+  describe('GET /api/v1/orders/my', () => {
+    it('Deberia retornar status 200 al obtener la lista de compras paginada', async () => {
+      const response = await request(app)
+        .get('/api/v1/orders/all')
+        .set('Authorization', `Bearer ${loginTokenAdmin}`)
+      expect(response.statusCode).toBe(200)
+    })
+  })
+
+
+
+  
+})
+
+/*
 const URLBASE = 'http://localhost:3000/api/v1'
 
 // Ejemplo de token (reemplazar con uno válido de empleado o admin)
@@ -12,17 +53,15 @@ async function testAdminEndpoints() {
   try {
     // 1. Probar obtener todas las compras
     console.log('1. Probando GET /orders/all')
-    const allPurchasesResponse = await axios.get(`${URLBASE}/orders/all`, {
+    const allPurchasesResponse = await app.get(`${URLBASE}/orders/all`, {
       headers: { Authorization: `Bearer ${testToken}` }
     })
-    console.log(`✅ GET /orders/all - Status: ${allPurchasesResponse.status}`)
-    console.log(`   Compras encontradas: ${allPurchasesResponse.data.length}\n`)
 
     if (allPurchasesResponse.data.length > 0) {
       const firstOrder = allPurchasesResponse.data[0]
 
       // 2. Probar obtener detalles de una compra
-      console.log(`2. Probando GET /orders/all/detail/${firstOrder.id}`)
+
       const detailResponse = await axios.get(
         `${URLBASE}/orders/all/detail/${firstOrder.id}`,
         {
@@ -76,3 +115,4 @@ if (require.main === module) {
 }
 
 module.exports = { testAdminEndpoints }
+*/
