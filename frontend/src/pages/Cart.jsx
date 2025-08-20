@@ -56,6 +56,7 @@ const Cart = () => {
   const handleEmptyCart = async () => {
     try {
       setCart([])
+      /*
       const response = await axios.get(`${ENDPOINT.cart}`, {
         params: { userId: user.id },
         headers: { Authorization: `Bearer ${token}` }
@@ -73,7 +74,7 @@ const Cart = () => {
           headers: { Authorization: `Bearer ${token}` }
         }
       )
-
+      */
       Swal.fire({
         title: 'Carrito vacío',
         icon: 'success',
@@ -105,11 +106,10 @@ const Cart = () => {
       const response = await axios.post(`${ENDPOINT.orders}`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      const orderId = response.data.order_id
       setCart([])
-      return orderId
+      return response
     } catch (error) {
-      console.error('Error al pagar:', error)
+      return error
     }
   }
 
@@ -133,11 +133,11 @@ const Cart = () => {
       const response = await axios.post(`${ENDPOINT.orders}`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      const orderId = response.data.order_id
       setCart([])
-      return orderId
+      return response
     } catch (error) {
       console.error('Error al pagar:', error)
+      return error
     }
   }
 
@@ -254,13 +254,16 @@ const Cart = () => {
     {
       /*Pago éxitoso*/
     }
+    let errorMessage = ''
     try {
-      const order_id =
+      const response =
         selectedPayment === 'efectivo'
           ? await handlePayEfectivo()
           : await handlePayCard()
-
-      if (!order_id) throw new Error('No se obtuvo el ID de la orden')
+      if (!response.data) {
+        errorMessage = response.response.data.message
+      }
+      const order_id = response.data.order_id
 
       const currentDate = new Date()
       const formatDate = date => {
@@ -332,11 +335,10 @@ const Cart = () => {
       setCart([])
       navigate('/')
     } catch (error) {
-      console.error('Error al pagar:', error)
       Swal.fire({
         icon: 'error',
         title: 'Error al procesar el pago',
-        text: error.message
+        text: errorMessage
       })
     }
   }

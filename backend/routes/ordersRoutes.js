@@ -2,6 +2,7 @@ import express from 'express'
 import { verduleriaLog } from '../middleware/logMiddleware.js'
 import { verifyToken } from '../middleware/verifyTokenMiddleware.js'
 import { authorizationMiddleware } from '../middleware/authorizationMiddleware.js'
+import { validateStockOnPurchase } from '../middleware/ordersMiddleware.js'
 import {
   postCartOrder,
   getMyPurchases,
@@ -11,7 +12,7 @@ import {
 const router = express.Router()
 
 // Guardar carrito temporal
-router.post('/orders', verifyToken, postCartOrder)
+router.post('/orders', verifyToken, validateStockOnPurchase, postCartOrder)
 router.get(
   '/orders/my',
   verduleriaLog,

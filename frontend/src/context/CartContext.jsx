@@ -67,7 +67,7 @@ export function CartProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart))
     if (cart.length > 0 && user && token) {
-      handleTemporaryCart(cart)
+      //handleTemporaryCart(cart)
     }
   }, [cart, user, token])
 
@@ -100,8 +100,8 @@ export function CartProvider({ children }) {
       setCart(oldCart => {
         const productExist = oldCart.find(p => p.id === id)
         if (productExist && productExist.stock - newQuantity < 0) {
-          newQuantity > productExist.stock
-            ? (newQuantity = productExist.stock)
+          newQuantity = newQuantity > productExist.stock
+            ? productExist.stock
             : newQuantity
         }
         return oldCart.map(item =>
