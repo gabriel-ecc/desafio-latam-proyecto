@@ -19,7 +19,7 @@ import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
 
 // Cargar archivo YAML
-// const swaggerDocument = YAML.load('../docs/swagger.yml')
+const swaggerDocument = YAML.load('./docs/swagger.yml')
 
 // configuramos el puerto del servidor que va a escuchar
 const PORT = process.env.PORT || 3000
@@ -28,11 +28,11 @@ const PORT = process.env.PORT || 3000
 const app = express()
 
 // Sirve la documentación de Swagger UI
-// app.use(
-//   '/api-docs',
-//   swaggerUi.serve,
-//   swaggerUi.setup(swaggerDocument, { explorer: true })
-// )
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, { explorer: true })
+)
 
 // cargamos el middleware
 app.use(cors())
