@@ -7,7 +7,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage --forceExit",
     "test:github": "npm run test:coverage -- --json --outputFile=reports/jest-results.json",
-    "start": "node server.js"
+    "start": "NODE_ENV=production node server.js"
   },
   "license": "ISC",
   "type": "module",
