@@ -2,6 +2,7 @@ import pg from 'pg'
 process.loadEnvFile()
 
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PORT } = process.env
+const isProduction = process.env.NODE_ENV === 'production'
 
 /*
 console.log('DEBUG: DB_HOST: ', DB_HOST)
@@ -17,6 +18,7 @@ const pool = new pg.Pool({
   password: DB_PASSWORD,
   database: DB_DATABASE,
   port: DB_PORT,
+  ssl: isProduction ? { rejectUnauthorized: false } : false,
   allowExitOnIdle: true,
   // Configuración para UTF-8
   client_encoding: 'UTF8'
