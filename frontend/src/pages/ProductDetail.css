@@ -80,7 +80,8 @@ body {
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -165,7 +166,11 @@ body {
 .main-product-section {
   flex: 0 0 auto;
   margin: 0 2rem 3rem 2rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(248, 249, 250, 0.95)
+  );
   border-radius: 24px;
   box-shadow: var(--box-shadow-lg);
   border: 1px solid var(--color-border-light, #e5e7eb);
@@ -180,7 +185,11 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
   border-radius: 24px 24px 0 0;
 }
 
@@ -195,7 +204,11 @@ body {
   text-align: center;
   padding: 3rem;
   margin: 2rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(248, 249, 250, 0.95)
+  );
   border-radius: 24px;
   border: 2px solid var(--color-border-light, #e5e7eb);
   box-shadow: var(--box-shadow-lg);
@@ -271,7 +284,12 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
@@ -335,7 +353,11 @@ body {
 .related-products-section {
   margin: 0 2rem 2rem 2rem;
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(248, 249, 250, 0.95)
+  );
   border-radius: 24px;
   border: 2px solid var(--color-secondary);
   box-shadow: var(--box-shadow-lg);
@@ -400,7 +422,11 @@ body {
   padding-bottom: 1rem;
   height: auto;
   max-height: none;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 249, 250, 0.9));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(248, 249, 250, 0.9)
+  );
   border: 1px solid var(--color-border-light);
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -416,7 +442,11 @@ body {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
   opacity: 0.8;
 }
 

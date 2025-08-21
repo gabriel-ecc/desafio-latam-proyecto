@@ -127,11 +127,14 @@ const Navbar = () => {
                     Inventario
                   </Link>
                 </li>
-                <li>
-                  <Link className="dropdown-item" to="/editar-producto/0">
-                    Nuevo Producto
-                  </Link>
-                </li>
+                {/* Solo administradores pueden crear productos */}
+                {user.userType === 3 && (
+                  <li>
+                    <Link className="dropdown-item" to="/editar-producto/0">
+                      Nuevo Producto
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <Link className="dropdown-item" to="/usuarios">
                     Gestión de Usuarios
@@ -142,11 +145,14 @@ const Navbar = () => {
                     Gestión de Compras
                   </Link>
                 </li>
-                <li>
-                  <Link className="dropdown-item" to="/dashboard">
-                    Dashboard
-                  </Link>
-                </li>
+                {/* Solo administradores pueden ver el dashboard */}
+                {user.userType === 3 && (
+                  <li>
+                    <Link className="dropdown-item" to="/dashboard">
+                      Dashboard
+                    </Link>
+                  </li>
+                )}
               </NavDropdown>
             )}
             <li>
@@ -234,18 +240,24 @@ const Navbar = () => {
                     <li>
                       <Link to="/inventario">Inventario</Link>
                     </li>
-                    <li>
-                      <Link to="/editar-producto/0">Nuevo Producto</Link>
-                    </li>
+                    {/* Solo administradores pueden crear productos */}
+                    {user.userType === 3 && (
+                      <li>
+                        <Link to="/editar-producto/0">Nuevo Producto</Link>
+                      </li>
+                    )}
                     <li>
                       <Link to="/usuarios">Gestión de Usuarios</Link>
                     </li>
                     <li>
                       <Link to="/admin-compras">Gestión de Compras</Link>
                     </li>
-                    <li>
-                      <Link to="/dashboard">Dashboard</Link>
-                    </li>
+                    {/* Solo administradores pueden ver el dashboard */}
+                    {user.userType === 3 && (
+                      <li>
+                        <Link to="/dashboard">Dashboard</Link>
+                      </li>
+                    )}
                   </ul>
                 </li>
               )}
@@ -304,18 +316,24 @@ const Navbar = () => {
                       <li>
                         <Link to="/inventario">Inventario</Link>
                       </li>
-                      <li>
-                        <Link to="/editar-producto/0">Nuevo Producto</Link>
-                      </li>
+                      {/* Solo administradores pueden crear productos */}
+                      {user.userType === 3 && (
+                        <li>
+                          <Link to="/editar-producto/0">Nuevo Producto</Link>
+                        </li>
+                      )}
                       <li>
                         <Link to="/usuarios">Gestión de Usuarios</Link>
                       </li>
                       <li>
                         <Link to="/admin-compras">Gestión de Compras</Link>
                       </li>
-                      <li>
-                        <Link to="/dashboard">Dashboard</Link>
-                      </li>
+                      {/* Solo administradores pueden ver el dashboard */}
+                      {user.userType === 3 && (
+                        <li>
+                          <Link to="/dashboard">Dashboard</Link>
+                        </li>
+                      )}
                       <li className="dropdown-divider"></li>
                     </>
                   )}

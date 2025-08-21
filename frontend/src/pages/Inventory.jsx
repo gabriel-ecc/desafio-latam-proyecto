@@ -222,6 +222,15 @@ export default function Inventory() {
   }
 
   const handleCreateProduct = () => {
+    if (user.userType !== 3) {
+      Swal.fire({
+        title: 'Acceso denegado',
+        text: 'Solo los administradores pueden crear nuevos productos.',
+        icon: 'error',
+        confirmButtonColor: '#dc3545'
+      })
+      return
+    }
     navigate('/editar-producto/0')
   }
 
@@ -255,9 +264,12 @@ export default function Inventory() {
       <BackButton />
       <div className="inventory-header">
         <h1>Inventario de Productos</h1>
-        <button onClick={handleCreateProduct} className="btn btn-success">
-          <i className="fa-solid fa-plus"></i> Crear Producto
-        </button>
+        {/* Solo mostrar el botón de crear producto si es administrador */}
+        {user.userType === 3 && (
+          <button onClick={handleCreateProduct} className="btn btn-success">
+            <i className="fa-solid fa-plus"></i> Crear Producto
+          </button>
+        )}
       </div>
 
       {/* Filtros */}
