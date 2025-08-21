@@ -8,7 +8,7 @@ const About = () => {
   const navigate = useNavigate()
 
   const handleStartShopping = () => {
-    navigate('/')
+    navigate('/products')
   }
 
   return (
