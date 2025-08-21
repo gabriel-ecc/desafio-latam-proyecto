@@ -1,1 +1,0 @@
-// Formulario reutilizable para crear o editar productos.

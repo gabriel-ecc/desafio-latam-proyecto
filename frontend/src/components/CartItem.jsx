@@ -1,1 +1,0 @@
-// Representa un producto individual dentro del carrito de compras.
