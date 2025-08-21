@@ -35,6 +35,11 @@ jobs:
           # Disabling shallow clone is recommended for improving the quality of SonarCloud analysis
           fetch-depth: 0
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
       - name: Install backend dependencies
         run: npm install
         working-directory: ./backend
@@ -93,7 +98,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install backend dependencies
         run: npm install
@@ -113,6 +118,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
       - name: Deploy to Azure Static Web Apps
         id: build_and_deploy_job
