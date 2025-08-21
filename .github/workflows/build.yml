@@ -114,25 +114,24 @@ jobs:
   deploy-frontend:
     needs: Analysis
     runs-on: ubuntu-latest
+    
     name: Deploy Frontend to Static Web App
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
 
       - name: Deploy to Azure Static Web Apps
         id: build_and_deploy_job
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: 'upload'
           ###### App and build configurations ######
-          app_location: '/frontend' # The location of your frontend source code
-          api_location: '' # Not needed since your API is a separate web app
-          output_location: 'dist' # The folder where your built files are located
+          app_location: '/frontend'
+          api_location: ''
+          output_location: 'dist'
+          # **AÑADIR:** Configurar el comando de construcción para que use Node.js 20
+          app_build_command: 'npm install --force && npm run build'
+          node_version: '20'
           ###### End of configurations ######
