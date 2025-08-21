@@ -19,7 +19,7 @@ import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
 
 // Cargar archivo YAML
-const swaggerDocument = YAML.load('../docs/swagger.yml')
+// const swaggerDocument = YAML.load('../docs/swagger.yml')
 
 // configuramos el puerto del servidor que va a escuchar
 const PORT = process.env.PORT || 3000

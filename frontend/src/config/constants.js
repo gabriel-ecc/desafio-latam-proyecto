@@ -1,4 +1,4 @@
-export const URLBASE = 'http://localhost:3000'
+export const URLBASE = 'gatadecampobackend-f5febsb9b3btaqfc.chilecentral-01.azurewebsites.net:3000'
 export const apiVersion = '/api/v1'
 
 export const ENDPOINT = {
