@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import 'dotenv/config'
+// import 'dotenv/config'
 import pool from './db/schema/config.js'
 import path from 'path'
 
