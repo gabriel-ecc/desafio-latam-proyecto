@@ -100,38 +100,45 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install backend dependencies
-        run: npm install
+      - name: Install backend dependencies and zip artifact
         working-directory: ./backend
+        run: |
+          npm install --production
+          zip -r ../backend-deploy.zip .
 
-      - name: Deploy to Azure Functions
-        uses: azure/functions-action@v1
+      - name: 'Deploy Backend to Azure Web App'
+        uses: azure/webapps-deploy@v2
         with:
-          app-name: 'gatadecampobackend'
-          package: './backend'
-          publish-profile: ${{ secrets.AZURE_FUNCTIONS_PUBLISH_PROFILE }}
+          # Reemplaza con el nombre de tu Web App de backend en Azure
+          app-name: 'gatadecampobackend '
+          # Este secreto contiene el perfil de publicación de tu Web App de backend
+          publish-profile: ${{ secrets.AZURE_BACKEND_WEBAPP_PUBLISH_PROFILE }}
+          package: './backend-deploy.zip'
 
   deploy-frontend:
     needs: Analysis
     runs-on: ubuntu-latest
-    
-    name: Deploy Frontend to Static Web App
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to Azure Static Web Apps
-        id: build_and_deploy_job
-        uses: Azure/static-web-apps-deploy@v1
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: 'upload'
-          ###### App and build configurations ######
-          app_location: '/frontend'
-          api_location: ''
-          output_location: 'dist'
-          # **AÑADIR:** Configurar el comando de construcción para que use Node.js 20
-          app_build_command: 'npm install --force && npm run build'
-          node_version: '20'
-          ###### End of configurations ######
+          node-version: '20'
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: |
+          npm install
+          npm run build
+
+      - name: 'Deploy Frontend to Azure Web App'
+        uses: azure/webapps-deploy@v2
+        with:
+          # Reemplaza con el nombre de tu Web App de frontend en Azure
+          app-name: 'gatadecampo'
+          # Este secreto contiene el perfil de publicación de tu Web App de frontend
+          publish-profile: ${{ secrets.AZURE_FRONTEND_WEBAPP_PUBLISH_PROFILE }}
+          package: './frontend/dist'
+
