@@ -26,8 +26,6 @@ body {
 
 .product-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(76, 175, 80, 0.15);
-  border-color: rgba(139, 195, 74, 0.4);
 }
 
 .image-container {
@@ -52,11 +50,6 @@ body {
   display: block;
   margin: 0.3rem auto 0.5rem auto;
   border-radius: 12px;
-  transition: transform 0.3s ease;
-}
-
-.product-img:hover {
-  transform: scale(1.05);
 }
 
 .product-body {
@@ -185,7 +178,6 @@ body {
 }
 .heart-btn:hover {
   background: linear-gradient(135deg, #ffe0b2, #f8bbd9);
-  transform: scale(1.1);
   box-shadow: 0 4px 12px rgba(244, 81, 30, 0.2);
 }
 
@@ -199,7 +191,6 @@ body {
 }
 .btn-qty:hover {
   background: linear-gradient(135deg, #689f38, #558b2f);
-  transform: scale(1.1);
   box-shadow: 0 4px 12px rgba(139, 195, 74, 0.3);
 }
 
@@ -213,7 +204,6 @@ body {
 }
 .btn-cart:hover {
   background: linear-gradient(135deg, #155c29, #0f3a1a);
-  transform: scale(1.1);
   box-shadow: 0 6px 16px rgba(30, 124, 58, 0.3);
 }
 

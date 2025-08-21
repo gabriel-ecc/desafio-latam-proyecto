@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/Card'
 import SearchBar from '../components/SearchBar'
+import BackButton from '../components/BackButton'
 import './Products.css'
 import useCart from '../context/CartContext.jsx'
 import { FavoriteContext } from '../context/FavoriteContext.jsx'
@@ -118,14 +119,16 @@ export default function Products() {
     if (success) {
       toast({
         icon: 'success',
-        title: `Has agregado ${quantity} ${product.name}${quantity > 1 ? 's' : ''
-          } al carrito.`
+        title: `Has agregado ${quantity} ${product.name}${
+          quantity > 1 ? 's' : ''
+        } al carrito.`
       })
     } else {
       toast({
         icon: 'warning',
-        title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${product.name
-          }.`
+        title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${
+          product.name
+        }.`
       })
     }
   }
@@ -347,6 +350,7 @@ export default function Products() {
       ) : (
         <></>
       )}
+      <BackButton />
     </div>
   )
 }

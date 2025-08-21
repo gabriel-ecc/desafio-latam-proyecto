@@ -18,11 +18,6 @@
   margin: 1rem auto; /* Espacio entre el panel y los productos */
   overflow: hidden; /* Asegura que la imagen no se salga de los bordes redondeados */
   line-height: 0; /* Elimina espacio extra debajo de la imagen */
-  transition: border-color 0.3s ease; /* Transición suave para el borde */
-}
-
-.hero-panel:hover {
-  border-color: rgba(139, 195, 74, 0.5); /* Borde más visible al hacer hover */
 }
 
 .hero-panel img {
@@ -100,11 +95,6 @@
     transform var(--transition-normal),
     box-shadow var(--transition-normal);
   background: var(--color-surface);
-}
-
-.category-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--box-shadow-xl);
 }
 
 .category-card img {
@@ -195,7 +185,6 @@
 .indicator:hover {
   background: var(--color-success-translucent);
   border-color: var(--color-success);
-  transform: scale(1.2);
 }
 
 /* Responsive design */

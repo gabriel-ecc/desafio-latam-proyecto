@@ -155,7 +155,6 @@ body {
   color: #1e7c3a;
   background: rgba(139, 195, 74, 0.1);
   border-color: rgba(139, 195, 74, 0.3);
-  transform: translateY(-1px);
 }
 /* Botón para abrir el menú de categorías */
 .categories-btn {
@@ -180,7 +179,6 @@ body {
 .categories-btn:hover {
   background: rgba(139, 195, 74, 0.2);
   border-color: rgba(139, 195, 74, 0.5);
-  transform: translateY(-1px);
 }
 
 /* Contenedor para los elementos de la derecha */
@@ -231,13 +229,11 @@ body {
   object-fit: cover; /* Evita que la imagen se deforme */
   transition: all 0.3s ease;
   border: 2px solid rgba(139, 195, 74, 0.4);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
 
 .profile-btn:hover img {
   transform: scale(1.05);
   border-color: rgba(139, 195, 74, 0.6);
-  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
 }
 
 .nav-cart {
@@ -257,7 +253,6 @@ body {
 .nav-cart:hover {
   background-color: rgba(30, 124, 58, 0.2);
   border-color: rgba(30, 124, 58, 0.4);
-  transform: translateY(-1px);
 }
 
 .nav-cart i {
@@ -334,7 +329,6 @@ body {
 
 .auth-button:hover {
   background: linear-gradient(135deg, #165a29, #0f3a1a);
-  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(30, 124, 58, 0.3);
   color: white;
 }

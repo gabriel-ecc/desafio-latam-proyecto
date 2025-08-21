@@ -35,8 +35,7 @@
 }
 
 .search-input-container:focus-within {
-  border-color: #4caf50;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  border-color: #e1e5e9;
 }
 
 .search-icon {
@@ -372,8 +371,7 @@
 }
 
 .search-bar-simple .search-input-container:focus-within {
-  border-color: #4caf50;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  border-color: #e1e5e9;
 }
 
 .search-hint {

@@ -431,7 +431,7 @@ export default function Inventory() {
                         <i
                           className={`fa-solid fa-${product.status ? 'ban' : 'check'}`}
                         ></i>
-                        {product.status ? 'Deshabilitar' : 'Habilitar'}
+                        {product.status ? 'Deshabilitar' : ' Habilitar'}
                       </button>
                     )}
                   </div>
