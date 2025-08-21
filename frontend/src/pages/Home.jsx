@@ -9,6 +9,7 @@ import SearchBar from '../components/SearchBar'
 import useCart from '../context/CartContext.jsx'
 import { ENDPOINT } from '../config/constants.js'
 import { FavoriteContext } from '../context/FavoriteContext.jsx'
+import { toast } from '../utils/swalHelper.js'
 
 export default function Home() {
   const [cards, setCards] = useState([])
@@ -130,12 +131,23 @@ export default function Home() {
     )
   }
 
-  const handleAddToCart = productWithQuantity => {
-    const { quantity, ...product } = productWithQuantity
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product)
+  const handleAddToCart = async productWithQuantity => {
+      const { quantity, ...product } = productWithQuantity
+      const success = await addToCart(product, quantity)
+      if (success) {
+        toast({
+          icon: 'success',
+          title: `Has agregado ${quantity} ${product.name}${quantity > 1 ? 's' : ''
+            } al carrito.`
+        })
+      } else {
+        toast({
+          icon: 'warning',
+          title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${product.name
+            }.`
+        })
+      }
     }
-  }
 
   // Función para manejar selección directa de producto desde SearchBar
   const handleProductSelect = product => {
