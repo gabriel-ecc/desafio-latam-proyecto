@@ -39,10 +39,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
 
       - name: Install backend dependencies
         run: npm install
         working-directory: ./backend
+
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: ./frontend
 
       - name: Create .env file
         run: |
@@ -61,7 +69,7 @@ jobs:
           psql -v ON_ERROR_STOP=1 --host localhost --username user --dbname verduleria -f ./backend/db/schema/DML.sql
 
       - name: Make Reports
-        run: mkdir reports
+        run: mkdir -p reports
         working-directory: ./backend
 
       - name: Run backend tests
@@ -76,14 +84,15 @@ jobs:
         run: npm run test:coverage
 
       - name: Analyze with SonarCloud
-        uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
+        uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          args: -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto
+          args: >
+            -Dsonar.projectKey=gabriel-ecc_desafio-latam-proyecto
             -Dsonar.organization=gabriel-ecc
             -Dsonar.sources=./backend/middleware,./backend/routes,./backend/src,./frontend/src
-            -Dsonar.exclusions=**/node_modules/**,**/__tests__/**,**/*.test.js,**/*.test.jsx
+            -Dsonar.exclusions=**/node_modules/**,**/__tests__/**,**/*.test.js,**/*.test.jsx,frontend/dist/**
             -Dsonar.tests=./backend/test
             -Dsonar.javascript.lcov.reportPaths=./backend/coverage/lcov.info
           projectBaseDir: .
@@ -99,17 +108,19 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
 
       - name: Install backend dependencies
         run: npm install --production
         working-directory: ./backend
 
-      - name: Deploy to Azure Functions
-        uses: azure/functions-action@v1
+      - name: 'Deploy Backend to Azure Web App'
+        uses: azure/webapps-deploy@v2
         with:
           app-name: 'gatadecampoapi'
-          package: './backend'
           publish-profile: ${{ secrets.AZURE_BACKEND_WEBAPP_PUBLISH_PROFILE }}
+          package: './backend'
 
   deploy-frontend:
     needs: deploy-backend
@@ -122,6 +133,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Build frontend
         working-directory: ./frontend
@@ -132,9 +145,6 @@ jobs:
       - name: 'Deploy Frontend to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
-          # Reemplaza con el nombre de tu Web App de frontend en Azure
           app-name: 'gatadecampo'
-          # Este secreto contiene el perfil de publicación de tu Web App de frontend
           publish-profile: ${{ secrets.AZURE_FRONTEND_WEBAPP_PUBLISH_PROFILE }}
           package: './frontend/dist'
-
