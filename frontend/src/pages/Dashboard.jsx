@@ -39,31 +39,22 @@ ChartJS.register(
   Legend
 )
 
-export const options1 = {
+// Configuraciones de gráficos
+const options1 = {
   plugins: {
     title: {
       display: true,
-      text: 'Ventas últimos 7 días'
+      text: 'Ventas últimos 7 días',
+      font: {
+        size: 18,
+        weight: 'bold'
+      },
+      padding: 20
     }
   },
   responsive: true,
-  scales: {
-    x: {
-      stacked: true
-    },
-    y: {
-      stacked: true
-    }
-  }
-}
-export const options2 = {
-  plugins: {
-    title: {
-      display: true,
-      text: 'Clientes registrados últimos 7 días'
-    }
-  },
-  responsive: true,
+  maintainAspectRatio: true,
+  aspectRatio: 2.5, // Hacer el gráfico más ancho que alto
   scales: {
     x: {
       stacked: true
@@ -74,18 +65,50 @@ export const options2 = {
   }
 }
 
-export const options4 = {
+const options2 = {
   plugins: {
     title: {
       display: true,
-      text: 'Top 10 productos vendidos en el día'
+      text: 'Clientes registrados últimos 7 días',
+      font: {
+        size: 18,
+        weight: 'bold'
+      },
+      padding: 20
     }
   },
   responsive: true,
+  maintainAspectRatio: true,
+  aspectRatio: 2.5, // Hacer el gráfico más ancho que alto
+  scales: {
+    x: {
+      stacked: true
+    },
+    y: {
+      stacked: true
+    }
+  }
 }
 
-// Inicializar el objeto de datos del gráfico con una estructura válida
-export const initialDataGraph1 = {
+const options4 = {
+  plugins: {
+    title: {
+      display: true,
+      text: 'Top 10 productos vendidos en el día',
+      font: {
+        size: 18,
+        weight: 'bold'
+      },
+      padding: 20
+    }
+  },
+  responsive: true,
+  maintainAspectRatio: true,
+  aspectRatio: 1.5 // Hacer el gráfico circular un poco más ancho
+}
+
+// Datos iniciales de gráficos
+const initialDataGraph1 = {
   labels: [],
   datasets: [
     {
@@ -96,7 +119,7 @@ export const initialDataGraph1 = {
   ]
 }
 
-export const initialDataGraph2 = {
+const initialDataGraph2 = {
   labels: [],
   datasets: [
     {
@@ -107,7 +130,7 @@ export const initialDataGraph2 = {
   ]
 }
 
-export const initialDataGraph4 = {
+const initialDataGraph4 = {
   labels: ['Thing 1', 'Thing 2', 'Thing 3', 'Thing 4', 'Thing 5', 'Thing 6'],
   datasets: [
     {
@@ -191,17 +214,17 @@ export default function Dashboard() {
 
     const fetchTopSellingProductsDailyData = async () => {
       const backgroundColors = [
-            'rgba(255, 99, 132, 0.6)',
-            'rgba(54, 162, 235, 0.6)',
-            'rgba(255, 206, 86, 0.6)',
-            'rgba(75, 192, 192, 0.6)',
-            'rgba(153, 102, 255, 0.6)',
-            'rgba(255, 159, 64, 0.6)',
-            'rgba(199, 199, 199, 0.6)',
-            'rgba(83, 102, 164, 0.6)',
-            'rgba(12, 13, 140, 0.6)',
-            'rgba(123, 234, 12, 0.6)'
-        ];
+        'rgba(255, 99, 132, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(255, 206, 86, 0.6)',
+        'rgba(75, 192, 192, 0.6)',
+        'rgba(153, 102, 255, 0.6)',
+        'rgba(255, 159, 64, 0.6)',
+        'rgba(199, 199, 199, 0.6)',
+        'rgba(83, 102, 164, 0.6)',
+        'rgba(12, 13, 140, 0.6)',
+        'rgba(123, 234, 12, 0.6)'
+      ]
       try {
         const response = await axios.get(ENDPOINT.topSellingProductsDaily, {
           headers: { Authorization: `Bearer ${token}` }
@@ -219,7 +242,10 @@ export default function Dashboard() {
           ]
         })
       } catch (error) {
-        console.error('Error obteniendo la informacion de los productos mas vendidos:', error)
+        console.error(
+          'Error obteniendo la informacion de los productos mas vendidos:',
+          error
+        )
         setDataGraph4(initialDataGraph4)
       }
     }
@@ -234,7 +260,7 @@ export default function Dashboard() {
       } catch (error) {
         console.error('Error al obtener los productos con bajo stock', error)
       }
-  }
+    }
 
     const fetchInactiveClientsData = async () => {
       try {
@@ -244,32 +270,38 @@ export default function Dashboard() {
         // Guardamos el array directamente
         setInactiveClients(response.data.data)
       } catch (error) {
-        console.error('Error obteniendo la informacion de los clientes sin movimientos:', error)
+        console.error(
+          'Error obteniendo la informacion de los clientes sin movimientos:',
+          error
+        )
       }
     }
-
 
     fetchDailySalesWeeklyData()
     fetchNewClientsWeeklyData()
     fetchInactiveClientsData()
     fetchTopSellingProductsDailyData()
     fetchLowStockProductsData()
-  }, [])
+  }, [token, navigate])
 
   return (
     <div className="dashboard-container">
-      <BackButton />
       <div className="dashboard-header">
         <h1>Dashboard del Administrador</h1>
         <p>Panel de control y estadísticas del sistema</p>
       </div>
-      <section className="dashboard-content">
+
+      <div className="dashboard-content">
+        <BackButton />
+
         <div className="graph-container">
           <Bar options={options1} data={dataGraph1} />
         </div>
+
         <div className="graph-container">
           <Bar options={options2} data={dataGraph2} />
         </div>
+
         <div className="graph-container">
           <Pie options={options4} data={dataGraph4} />
         </div>
@@ -285,8 +317,7 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                {/* Iteramos sobre el array y creamos una fila por cada producto */}
-                {lowStockProducts.map((product) => (
+                {lowStockProducts.map(product => (
                   <tr key={product.id}>
                     <td>{product.product_name}</td>
                     <td>{product.stock}</td>
@@ -311,14 +342,16 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                {inactiveClients.map((client) => (
+                {inactiveClients.map(client => (
                   <tr key={client.id}>
-                    <td>{client.first_name} {client.last_name}</td>
+                    <td>
+                      {client.first_name} {client.last_name}
+                    </td>
                     <td>{client.email}</td>
                     <td>
                       {client.last_purchase_date
-                      ? new Date(client.last_purchase_date).toLocaleString()
-                    : 'Sin compras realizadas'}
+                        ? new Date(client.last_purchase_date).toLocaleString()
+                        : 'Sin compras realizadas'}
                     </td>
                   </tr>
                 ))}
@@ -328,7 +361,7 @@ export default function Dashboard() {
             <p>No se encontraron clientes sin movimientos el último mes</p>
           )}
         </div>
-      </section>
+      </div>
     </div>
   )
 }
