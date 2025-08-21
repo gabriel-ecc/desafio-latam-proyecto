@@ -107,7 +107,7 @@ jobs:
       - name: Deploy to Azure Functions
         uses: azure/functions-action@v1
         with:
-          app-name: 'gatadecampobackend'
+          app-name: 'gatadecampoapi'
           package: './backend'
           publish-profile: ${{ secrets.AZURE_BACKEND_WEBAPP_PUBLISH_PROFILE }}
 
