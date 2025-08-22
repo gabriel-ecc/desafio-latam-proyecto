@@ -201,6 +201,34 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Sección de Servicios y Beneficios */}
+      <div className="services-section">
+        <div className="services-container">
+          <div className="services-grid">
+            <div className="service-card featured">
+              <div className="service-icon">🚚</div>
+              <h3>Envío a Domicilio</h3>
+              <p>Entregamos tus productos frescos directamente en tu hogar</p>
+            </div>
+            <div className="service-card">
+              <div className="service-icon">🌱</div>
+              <h3>Productos Frescos</h3>
+              <p>Directo del campo a tu mesa con la máxima calidad</p>
+            </div>
+            <div className="service-card">
+              <div className="service-icon">⏰</div>
+              <h3>Entrega Rápida</h3>
+              <p>Recibe tus productos en el mismo día o al día siguiente</p>
+            </div>
+            <div className="service-card">
+              <div className="service-icon">💳</div>
+              <h3>Pago Seguro</h3>
+              <p>Múltiples formas de pago seguras y confiables</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="row card-container">
         {cards.map(card => (
           <div className="col-lg-3 col-md-5 mb-4" key={card.id}>
