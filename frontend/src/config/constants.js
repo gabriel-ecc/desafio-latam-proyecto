@@ -22,5 +22,8 @@ export const ENDPOINT = {
   topSellingProductsDaily: `${URLBASE}${apiVersion}/dashboard/top-selling-products-daily`,
   lowStockProducts: `${URLBASE}${apiVersion}/dashboard/low-stock-products`,
   purchases: `${URLBASE}${apiVersion}/orders/my`,
-  purchasesDetail: `${URLBASE}${apiVersion}/orders/my/detail`
+  purchasesDetail: `${URLBASE}${apiVersion}/orders/my/detail`,
+  adminPurchases: `${URLBASE}${apiVersion}/orders/all`,
+  adminPurchasesDetail: `${URLBASE}${apiVersion}/orders/all/detail`,
+  updateOrderStatus: `${URLBASE}${apiVersion}/orders`
 }

@@ -11,7 +11,7 @@ import './Navbar.css'
 
 const Navbar = () => {
   const { totalPrice } = useCart()
-  const total = totalPrice()
+  const total = totalPrice
   const { token, user, logout } = useContext(UserContext)
   const navigate = useNavigate()
 
