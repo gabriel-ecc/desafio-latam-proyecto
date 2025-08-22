@@ -63,7 +63,7 @@ const startServer = async () => {
     // Subimos el server SÓLO después de que exista conexión a la DB
     app.listen(PORT, () => {
       console.log(
-    `[${new Date().toLocaleString()}] Servidor y Base de Datos corriendo en http://localhost:${PORT}`
+        `[${new Date().toLocaleString()}] Servidor y Base de Datos corriendo en https://verduleria-3dbt.onrender.com`
       )
     })
   } catch (err) {

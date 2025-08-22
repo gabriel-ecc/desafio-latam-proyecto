@@ -7,7 +7,7 @@ info:
     name: Oscar Garin
     email: oscargarin@gmail.com
 servers:
-  - url: http://localhost:3000/api/v1 # Añadimos el prefijo /api/v1 aquí
+  - url: https://verduleria-3dbt.onrender.com/api/v1 # Añadimos el prefijo /api/v1 aquí
     description: Servidor de desarrollo local
 
 security:

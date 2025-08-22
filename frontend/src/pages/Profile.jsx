@@ -160,7 +160,7 @@ export default function Profile() {
       // Si la foto viene del servidor, construir la URL completa
       return editableProfile.profilePhoto.startsWith('http')
         ? editableProfile.profilePhoto
-        : `http://localhost:3000/api/v1/${editableProfile.profilePhoto}`
+        : `https://verduleria-3dbt.onrender.com/api/v1/${editableProfile.profilePhoto}`
     }
     return null
   }

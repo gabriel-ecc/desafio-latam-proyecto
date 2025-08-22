@@ -264,7 +264,7 @@ export default function Users() {
                         src={
                           userData.profile_photo.startsWith('http')
                             ? userData.profile_photo
-                            : `http://localhost:3000/api/v1/${userData.profile_photo}`
+                            : `https://verduleria-3dbt.onrender.com/api/v1/${userData.profile_photo}`
                         }
                         alt={`${userData.first_name} ${userData.last_name}`}
                       />

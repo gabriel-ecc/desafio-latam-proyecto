@@ -9,7 +9,7 @@ const MyPurchases = () => {
   const [selectedPurchase, setSelectedPurchase] = useState(null)
   const [purchases, setPurchases] = useState([])
   const token = getToken()
-  const URLBASE = 'http://localhost:3000'
+  const URLBASE = 'https://verduleria-3dbt.onrender.com'
 
   useEffect(() => {
     document.body.classList.add('home-background')

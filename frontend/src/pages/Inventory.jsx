@@ -353,7 +353,7 @@ export default function Inventory() {
                       src={
                         product.img.startsWith('http')
                           ? product.img
-                          : `http://localhost:3000/api/v1/uploads/${product.img}`
+                          : `https://verduleria-3dbt.onrender.com/api/v1/uploads/${product.img}`
                       }
                       alt={product.productname}
                       onError={e => {
