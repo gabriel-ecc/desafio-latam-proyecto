@@ -52,7 +52,7 @@ export const getInventory = async (req, res) => {
 }
 
 export const getProduct = async (req, res) => {
-  const port = process.env.port || 3000
+  // const port = process.env.port || 3000
   try {
     const { id } = req.params
     const queryResult = await getProductById(id)

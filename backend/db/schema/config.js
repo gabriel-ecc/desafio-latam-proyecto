@@ -12,6 +12,7 @@ const config = {
 const pool = new Pool(config)
 console.log(config)
 
+/*
 const db = (query, values) => pool
   .query(query, values)
   .then(({ rows }) => rows)
@@ -19,5 +20,6 @@ const db = (query, values) => pool
     const error = { status: false, code, message }
     throw error
   })
+    */
 
 export default pool

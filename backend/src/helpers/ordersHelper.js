@@ -1,5 +1,5 @@
-import 'dotenv/config'
-const port = process.env.port || 3000
+// import 'dotenv/config'
+// const port = process.env.port || 3000
 
 export const orderDetailsFormat = async data => {
   const results = data.map(item => {

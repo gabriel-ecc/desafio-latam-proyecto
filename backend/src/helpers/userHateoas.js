@@ -1,5 +1,5 @@
-import 'dotenv/config'
-const port = process.env.port || 3000
+// import 'dotenv/config'
+// const port = process.env.port || 3000
 
 export const UserHATEOAS = async (entity, data, count) => {
   const results = data.map(item => {
