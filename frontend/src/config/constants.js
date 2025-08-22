@@ -1,4 +1,5 @@
-export const URLBASE = 'http://localhost:3000'
+// export const URLBASE = 'http://localhost:3000'
+export const URLBASE = 'https://verduleria-3dbt.onrender.com'
 export const apiVersion = '/api/v1'
 
 export const ENDPOINT = {

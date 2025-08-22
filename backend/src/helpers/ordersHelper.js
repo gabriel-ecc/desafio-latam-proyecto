@@ -8,7 +8,7 @@ export const orderDetailsFormat = async data => {
       name: item.product_name,
       price: item.price,
       quantity: item.quantity,
-      img: `http://localhost:${port}/api/v1/uploads/${item.img}`
+      img: `https://verduleria-3dbt.onrender.com/api/v1/uploads/${item.img}`
     }
   })
   return results
