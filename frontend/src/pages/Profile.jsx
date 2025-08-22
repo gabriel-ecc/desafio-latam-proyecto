@@ -229,7 +229,7 @@ export default function Profile() {
               ) : (
                 <div className="profile-photo-placeholder">
                   <img
-                    src="../../public/imgs/fotoGenerica.png"
+                    src="/public/imgs/fotoGenerica.png"
                     alt="Foto de perfil"
                   />
                 </div>

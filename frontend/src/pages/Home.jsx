@@ -20,10 +20,10 @@ export default function Home() {
 
   // Imágenes del carrusel de categorías
   const categoryImages = [
-    { id: 1, src: '/imgs/frutas-gata.webp', alt: 'Frutas', title: 'Frutas' },
+    { id: 1, src: '/imgs/frutas-gata.jpg', alt: 'Frutas', title: 'Frutas' },
     {
       id: 2,
-      src: '/imgs/verduras-gata.webp',
+      src: '/imgs/verduras-gata.jpg',
       alt: 'Verduras',
       title: 'Verduras'
     },
