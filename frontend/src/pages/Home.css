@@ -358,7 +358,11 @@
 }
 
 .service-card.featured {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
   color: var(--color-text-inverse);
   border-color: var(--color-primary);
   transform: scale(1.01);

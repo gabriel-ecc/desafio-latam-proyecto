@@ -81,12 +81,6 @@ export default function Home() {
           })
         )
         setAllProducts(allTransformedProducts)
-
-        if (favorites.length > 0) {
-          favorites.forEach(favorite => {
-            printFavorite(favorite.id, true)
-          })
-        }
       } catch (error) {
         console.error('Error fetching products for home:', error)
         // En caso de error, usar productos vacíos
@@ -96,19 +90,29 @@ export default function Home() {
     }
 
     fetchProducts()
-  }, [favorites])
+  }, []) // ← Quitar 'favorites' de las dependencias
 
+  // Sincronizar favoritos cuando cambien
   useEffect(() => {
-    if (favorites.length > 0) {
-      favorites.forEach(favorite => {
-        printFavorite(favorite.id, true)
-      })
-    } else {
+    if (cards.length > 0) {
       setCards(prevCards =>
-        prevCards.map(card => ({ ...card, isFavorite: false }))
+        prevCards.map(card => ({
+          ...card,
+          isFavorite: favorites.some(fav => fav.id === card.id)
+        }))
       )
     }
-  }, [favorites])
+
+    // También sincronizar allProducts para el SearchBar
+    if (allProducts.length > 0) {
+      setAllProducts(prevProducts =>
+        prevProducts.map(product => ({
+          ...product,
+          isFavorite: favorites.some(fav => fav.id === product.id)
+        }))
+      )
+    }
+  }, [favorites, cards.length, allProducts.length])
 
   const handleViewMore = id => {
     navigate(`/card/${id}`)
@@ -123,31 +127,25 @@ export default function Home() {
     )
   }
 
-  const printFavorite = (id, isFav) => {
-    setCards(prevCards =>
-      prevCards.map(card =>
-        card.id === id ? { ...card, isFavorite: isFav } : card
-      )
-    )
-  }
-
   const handleAddToCart = async productWithQuantity => {
-      const { quantity, ...product } = productWithQuantity
-      const success = await addToCart(product, quantity)
-      if (success) {
-        toast({
-          icon: 'success',
-          title: `Has agregado ${quantity} ${product.name}${quantity > 1 ? 's' : ''
-            } al carrito.`
-        })
-      } else {
-        toast({
-          icon: 'warning',
-          title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${product.name
-            }.`
-        })
-      }
+    const { quantity, ...product } = productWithQuantity
+    const success = await addToCart(product, quantity)
+    if (success) {
+      toast({
+        icon: 'success',
+        title: `Has agregado ${quantity} ${product.name}${
+          quantity > 1 ? 's' : ''
+        } al carrito.`
+      })
+    } else {
+      toast({
+        icon: 'warning',
+        title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${
+          product.name
+        }.`
+      })
     }
+  }
 
   // Función para manejar selección directa de producto desde SearchBar
   const handleProductSelect = product => {
