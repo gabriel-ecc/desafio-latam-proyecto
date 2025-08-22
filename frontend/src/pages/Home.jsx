@@ -20,10 +20,10 @@ export default function Home() {
 
   // Imágenes del carrusel de categorías
   const categoryImages = [
-    { id: 1, src: '/imgs/frutas-gata.webp', alt: 'Frutas', title: 'Frutas' },
+    { id: 1, src: '/imgs/frutas-gata.jpg', alt: 'Frutas', title: 'Frutas' },
     {
       id: 2,
-      src: '/imgs/verduras-gata.webp',
+      src: '/imgs/verduras-gata.jpg',
       alt: 'Verduras',
       title: 'Verduras'
     },
@@ -81,12 +81,6 @@ export default function Home() {
           })
         )
         setAllProducts(allTransformedProducts)
-
-        if (favorites.length > 0) {
-          favorites.forEach(favorite => {
-            printFavorite(favorite.id, true)
-          })
-        }
       } catch (error) {
         console.error('Error fetching products for home:', error)
         // En caso de error, usar productos vacíos
@@ -96,19 +90,29 @@ export default function Home() {
     }
 
     fetchProducts()
-  }, [favorites])
+  }, []) // ← Quitar 'favorites' de las dependencias
 
+  // Sincronizar favoritos cuando cambien
   useEffect(() => {
-    if (favorites.length > 0) {
-      favorites.forEach(favorite => {
-        printFavorite(favorite.id, true)
-      })
-    } else {
+    if (cards.length > 0) {
       setCards(prevCards =>
-        prevCards.map(card => ({ ...card, isFavorite: false }))
+        prevCards.map(card => ({
+          ...card,
+          isFavorite: favorites.some(fav => fav.id === card.id)
+        }))
       )
     }
-  }, [favorites])
+
+    // También sincronizar allProducts para el SearchBar
+    if (allProducts.length > 0) {
+      setAllProducts(prevProducts =>
+        prevProducts.map(product => ({
+          ...product,
+          isFavorite: favorites.some(fav => fav.id === product.id)
+        }))
+      )
+    }
+  }, [favorites, cards.length, allProducts.length])
 
   const handleViewMore = id => {
     navigate(`/card/${id}`)
@@ -123,31 +127,25 @@ export default function Home() {
     )
   }
 
-  const printFavorite = (id, isFav) => {
-    setCards(prevCards =>
-      prevCards.map(card =>
-        card.id === id ? { ...card, isFavorite: isFav } : card
-      )
-    )
-  }
-
   const handleAddToCart = async productWithQuantity => {
-      const { quantity, ...product } = productWithQuantity
-      const success = await addToCart(product, quantity)
-      if (success) {
-        toast({
-          icon: 'success',
-          title: `Has agregado ${quantity} ${product.name}${quantity > 1 ? 's' : ''
-            } al carrito.`
-        })
-      } else {
-        toast({
-          icon: 'warning',
-          title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${product.name
-            }.`
-        })
-      }
+    const { quantity, ...product } = productWithQuantity
+    const success = await addToCart(product, quantity)
+    if (success) {
+      toast({
+        icon: 'success',
+        title: `Has agregado ${quantity} ${product.name}${
+          quantity > 1 ? 's' : ''
+        } al carrito.`
+      })
+    } else {
+      toast({
+        icon: 'warning',
+        title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${
+          product.name
+        }.`
+      })
     }
+  }
 
   // Función para manejar selección directa de producto desde SearchBar
   const handleProductSelect = product => {
@@ -156,6 +154,10 @@ export default function Home() {
 
   return (
     <div className="container">
+      {/* Panel superior */}
+      <div className="hero-panel">
+        <img src="/imgs/panel-gata.png" alt="Banner de productos frescos" />
+      </div>
       {/* Barra de búsqueda */}
       <div className="search-container-home">
         <SearchBar
@@ -165,11 +167,6 @@ export default function Home() {
           className="home-search"
         />
       </div>
-      {/* Panel superior */}
-      <div className="hero-panel">
-        <img src="/imgs/panel.jpeg" alt="Banner de productos frescos" />
-      </div>
-
       {/* Carrusel de categorías */}
       <div className="carousel-container">
         <div className="carousel-wrapper">
@@ -197,6 +194,34 @@ export default function Home() {
                   onClick={() => setCurrentSlide(index)}
                 />
               ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Sección de Servicios y Beneficios */}
+      <div className="services-section">
+        <div className="services-container">
+          <div className="services-grid">
+            <div className="service-card">
+              <div className="service-icon">🌱</div>
+              <h3>Productos Frescos</h3>
+              <p>Directo del campo a tu mesa con la máxima calidad</p>
+            </div>
+            <div className="service-card">
+              <div className="service-icon">🚚</div>
+              <h3>Envío a Domicilio</h3>
+              <p>Entregamos tus productos frescos directamente en tu hogar</p>
+            </div>
+            <div className="service-card">
+              <div className="service-icon">⏰</div>
+              <h3>Entrega Rápida</h3>
+              <p>Recibe tus productos en el mismo día o al día siguiente</p>
+            </div>
+            <div className="service-card">
+              <div className="service-icon">💳</div>
+              <h3>Pago Seguro</h3>
+              <p>Múltiples formas de pago seguras y confiables</p>
             </div>
           </div>
         </div>

@@ -10,7 +10,6 @@ const AdminPurchases = () => {
   const [selectedPurchase, setSelectedPurchase] = useState(null)
   const [purchases, setPurchases] = useState([])
   const [isUpdating, setIsUpdating] = useState(false)
-  const [showProducts, setShowProducts] = useState(false)
   const token = getToken()
 
   useEffect(() => {
@@ -107,7 +106,6 @@ const AdminPurchases = () => {
         shippingAddress: purchase.shipping_address,
         recipientName: purchase.recipient_name
       })
-      setShowProducts(false) // Reset products view
     } catch (error) {
       console.error('Error fetching purchase details:', error)
 
@@ -116,59 +114,6 @@ const AdminPurchases = () => {
         html: `
           <div style="text-align: center;">
             <p>No se pudieron cargar los detalles del pedido <strong>#${purchase.id}</strong></p>
-            <div style="margin: 15px 0; padding: 15px; background-color: #fee; border-radius: 10px; border-left: 4px solid #e74c3c;">
-              <p style="margin: 0; color: #c0392b;">
-                ${error.response?.data?.message || 'Error interno del servidor'}
-              </p>
-            </div>
-            <small style="color: #666;">Por favor, intenta nuevamente</small>
-          </div>
-        `,
-        icon: 'error',
-        confirmButtonColor: '#e74c3c',
-        confirmButtonText: 'Entendido'
-      })
-    }
-  }
-
-  const handleShowProducts = async purchase => {
-    try {
-      const response = await axios.get(
-        `${ENDPOINT.adminPurchasesDetail}/${purchase.id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      )
-
-      console.log(
-        'handleShowProducts - Purchase delivery_type from API:',
-        purchase.delivery_type
-      ) // Debug log
-
-      setSelectedPurchase({
-        orderNumber: purchase.id,
-        date: purchase.create_date,
-        status: purchase.order_status,
-        estimatedDate: purchase.create_date,
-        products: response.data.purchasesDetail,
-        total: purchase.total_amount,
-        userInfo: {
-          name: purchase.user_name,
-          email: purchase.user_email
-        },
-        deliveryType: purchase.delivery_type,
-        shippingAddress: purchase.shipping_address,
-        recipientName: purchase.recipient_name
-      })
-      setShowProducts(true) // Show only products view
-    } catch (error) {
-      console.error('Error fetching purchase details:', error)
-
-      await Swal.fire({
-        title: 'Error al cargar productos',
-        html: `
-          <div style="text-align: center;">
-            <p>No se pudieron cargar los productos del pedido <strong>#${purchase.id}</strong></p>
             <div style="margin: 15px 0; padding: 15px; background-color: #fee; border-radius: 10px; border-left: 4px solid #e74c3c;">
               <p style="margin: 0; color: #c0392b;">
                 ${error.response?.data?.message || 'Error interno del servidor'}
@@ -331,7 +276,7 @@ const AdminPurchases = () => {
         // Si está finalizada o cancelada, no se puede cambiar
         return false
       }
-      
+
       return status.value !== currentStatus
     })
 
@@ -342,78 +287,7 @@ const AdminPurchases = () => {
   const renderPurchaseDetails = purchase => {
     if (!purchase) return null
 
-    // Si showProducts es true, mostrar solo los productos
-    if (showProducts) {
-      return (
-        <div className="order_details_inline">
-          <div className="order_summary">
-            <h3>Productos - Orden #{purchase.orderNumber}</h3>
-            <div className="order_info">
-              <p>
-                <strong>Cliente:</strong> {purchase.userInfo.name}
-              </p>
-              <p>
-                <strong>Total de artículos:</strong>{' '}
-                {purchase.products.reduce(
-                  (sum, item) => sum + item.quantity,
-                  0
-                )}
-              </p>
-              <p>
-                <strong>Total Final:</strong> $
-                {purchase.total === 0
-                  ? 0
-                  : purchase.total.toLocaleString('es-CL')}
-              </p>
-            </div>
-          </div>
-
-          <div className="products_detail">
-            <h4>Lista de Productos:</h4>
-            {purchase.products.map(product => (
-              <div key={product.id} className="product_detail_item">
-                <div className="product_img_section">
-                  <img
-                    className="product_detail_img"
-                    src={product.img}
-                    alt={product.name}
-                    onError={e => {
-                      e.target.src = '/imgs/placeholder.jpg'
-                    }}
-                  />
-                  <h5>{product.name}</h5>
-                </div>
-                <div className="product_price_info">
-                  <span className="price">
-                    Precio: ${product.price.toLocaleString('es-CL')}
-                  </span>
-                  <span className="quantity">Cantidad: {product.quantity}</span>
-                  <span className="subtotal">
-                    Subtotal: $
-                    {product.price === 0
-                      ? 0
-                      : (product.price * product.quantity).toLocaleString(
-                          'es-CL'
-                        )}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="products_actions">
-            <button
-              className="btn_back_to_details"
-              onClick={() => setShowProducts(false)}
-            >
-              ← Volver a Detalles Completos
-            </button>
-          </div>
-        </div>
-      )
-    }
-
-    // Vista completa de detalles (por defecto)
+    // Vista completa de detalles que incluye tanto información del pedido como productos
     return (
       <div className="order_details_inline">
         <div className="order_summary">
@@ -444,6 +318,54 @@ const AdminPurchases = () => {
                 <strong>Destinatario:</strong> {purchase.recipientName}
               </p>
             )}
+          </div>
+        </div>
+
+        <div className="products_detail">
+          <h4>Productos:</h4>
+          {purchase.products.map(product => (
+            <div key={product.id} className="product_detail_item">
+              <div className="product_img_section">
+                <img
+                  className="product_detail_img"
+                  src={product.img}
+                  alt={product.name}
+                  onError={e => {
+                    e.target.src = '/imgs/placeholder.jpg'
+                  }}
+                />
+                <h5>{product.name}</h5>
+              </div>
+              <div className="product_price_info">
+                <span className="price">
+                  Precio: ${product.price.toLocaleString('es-CL')}
+                </span>
+                <span className="quantity">Cantidad: {product.quantity}</span>
+                <span className="subtotal">
+                  Subtotal: $
+                  {product.price === 0
+                    ? 0
+                    : (product.price * product.quantity).toLocaleString(
+                        'es-CL'
+                      )}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="order_total">
+          <div className="total_summary">
+            <p>
+              Total de artículos:{' '}
+              {purchase.products.reduce((sum, item) => sum + item.quantity, 0)}
+            </p>
+            <h3 className="final_total">
+              Total Final: $
+              {purchase.total === 0
+                ? 0
+                : purchase.total.toLocaleString('es-CL')}
+            </h3>
           </div>
         </div>
 
@@ -532,15 +454,6 @@ const AdminPurchases = () => {
                         >
                           Ver detalle
                         </span>
-                        <span
-                          className="btn_products"
-                          onClick={e => {
-                            e.stopPropagation()
-                            handleShowProducts(purchase)
-                          }}
-                        >
-                          Productos
-                        </span>
                       </div>
                     </div>
                   </button>
@@ -565,81 +478,8 @@ const AdminPurchases = () => {
                 <p>Selecciona un pedido para ver los detalles</p>
                 <i className="fas fa-shopping-bag fa-3x"></i>
               </div>
-            ) : showProducts ? (
-              // Vista solo de productos
-              <>
-                <div className="order_summary">
-                  <h3>Productos - Orden #{selectedPurchase.orderNumber}</h3>
-                  <div className="order_info">
-                    <p>
-                      <strong>Cliente:</strong> {selectedPurchase.userInfo.name}
-                    </p>
-                    <p>
-                      <strong>Total de artículos:</strong>{' '}
-                      {selectedPurchase.products.reduce(
-                        (sum, item) => sum + item.quantity,
-                        0
-                      )}
-                    </p>
-                    <p>
-                      <strong>Total Final:</strong> $
-                      {selectedPurchase.total === 0
-                        ? 0
-                        : selectedPurchase.total.toLocaleString('es-CL')}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="products_detail">
-                  <h4>Lista de Productos:</h4>
-                  {console.log(
-                    'Rendering products:',
-                    selectedPurchase.products
-                  )}
-                  {selectedPurchase.products.map(product => (
-                    <div key={product.id} className="product_detail_item">
-                      <div className="product_img_section">
-                        <img
-                          className="product_detail_img"
-                          src={product.img}
-                          alt={product.name}
-                          onError={e => {
-                            e.target.src = '/imgs/placeholder.jpg'
-                          }}
-                        />
-                        <h5>{product.name}</h5>
-                      </div>
-                      <div className="product_price_info">
-                        <span className="price">
-                          Precio: ${product.price.toLocaleString('es-CL')}
-                        </span>
-                        <span className="quantity">
-                          Cantidad: {product.quantity}
-                        </span>
-                        <span className="subtotal">
-                          Subtotal: $
-                          {product.price === 0
-                            ? 0
-                            : (product.price * product.quantity).toLocaleString(
-                                'es-CL'
-                              )}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="products_actions">
-                  <button
-                    className="btn_back_to_details"
-                    onClick={() => setShowProducts(false)}
-                  >
-                    ← Volver a Detalles Completos
-                  </button>
-                </div>
-              </>
             ) : (
-              // Vista completa de detalles
+              // Vista completa de detalles que incluye productos
               <>
                 <div className="order_summary">
                   <h3>Orden #{selectedPurchase.orderNumber}</h3>
@@ -685,6 +525,63 @@ const AdminPurchases = () => {
                           {selectedPurchase.recipientName}
                         </p>
                       )}
+                  </div>
+                </div>
+
+                <div className="products_detail">
+                  <h4>Productos:</h4>
+                  {console.log(
+                    'Rendering products:',
+                    selectedPurchase.products
+                  )}
+                  {selectedPurchase.products.map(product => (
+                    <div key={product.id} className="product_detail_item">
+                      <div className="product_img_section">
+                        <img
+                          className="product_detail_img"
+                          src={product.img}
+                          alt={product.name}
+                          onError={e => {
+                            e.target.src = '/imgs/placeholder.jpg'
+                          }}
+                        />
+                        <h5>{product.name}</h5>
+                      </div>
+                      <div className="product_price_info">
+                        <span className="price">
+                          Precio: ${product.price.toLocaleString('es-CL')}
+                        </span>
+                        <span className="quantity">
+                          Cantidad: {product.quantity}
+                        </span>
+                        <span className="subtotal">
+                          Subtotal: $
+                          {product.price === 0
+                            ? 0
+                            : (product.price * product.quantity).toLocaleString(
+                                'es-CL'
+                              )}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="order_total">
+                  <div className="total_summary">
+                    <p>
+                      Total de artículos:{' '}
+                      {selectedPurchase.products.reduce(
+                        (sum, item) => sum + item.quantity,
+                        0
+                      )}
+                    </p>
+                    <h3 className="final_total">
+                      Total Final: $
+                      {selectedPurchase.total === 0
+                        ? 0
+                        : selectedPurchase.total.toLocaleString('es-CL')}
+                    </h3>
                   </div>
                 </div>
 

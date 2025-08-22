@@ -39,12 +39,9 @@
 
 .back-button:hover {
   background: linear-gradient(135deg, var(--color-cart-dark), #1a766a);
-  transform: translateY(-2px);
-  box-shadow: var(--box-shadow-xl);
 }
 
 .back-button:active {
-  transform: translateY(0);
   box-shadow: var(--box-shadow-md);
 }
 

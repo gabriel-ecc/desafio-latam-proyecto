@@ -11,8 +11,9 @@ body {
 }
 
 .main-header {
-  background-color: #fff;
-  box-shadow: var(--box-shadow-md);
+  background: linear-gradient(145deg, #fefefe, #f8fffe);
+  border-bottom: 1px solid rgba(139, 195, 74, 0.2);
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.1);
   padding: 0 var(--spacing-lg);
   position: sticky;
   top: 0;
@@ -58,13 +59,13 @@ body {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #ffffff;
+  background: linear-gradient(145deg, #fefefe, #f8fffe);
   min-width: 170px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 24px rgba(76, 175, 80, 0.15);
   z-index: var(--z-index-dropdown);
   list-style: none;
-  border-radius: 8px;
-  border: 1px solid #eee;
+  border-radius: 16px;
+  border: 1px solid rgba(139, 195, 74, 0.2);
   overflow: hidden;
   margin-top: 10px;
   padding-left: 0.5rem; /* Nueva propiedad: sin padding izquierdo */
@@ -140,32 +141,44 @@ body {
   color: #333;
   font-size: 1.2rem;
   font-weight: 500;
-  border-bottom: 2px solid transparent;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid transparent;
   transition:
-    color 0.3s,
-    border-bottom-color 0.3s;
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .nav-categories-list a:hover {
-  color: #2a9d73;
-  border-bottom-color: #2a9d8f;
+  color: #1e7c3a;
+  background: rgba(139, 195, 74, 0.1);
+  border-color: rgba(139, 195, 74, 0.3);
 }
 /* Botón para abrir el menú de categorías */
 .categories-btn {
-  background-color: transparent;
-  border: 1px solid #ddd;
+  background: rgba(165, 214, 167, 0.1);
+  border: 1px solid rgba(139, 195, 74, 0.3);
   padding: 10px 16px;
-  border-radius: 50px;
+  border-radius: 25px;
   font-family: inherit;
   font-size: 1rem;
   font-weight: 500;
+  color: #2e7d32;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
   transition:
-    background-color 0.3s,
-    border-color 0.3s;
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.categories-btn:hover {
+  background: rgba(139, 195, 74, 0.2);
+  border-color: rgba(139, 195, 74, 0.5);
 }
 
 /* Contenedor para los elementos de la derecha */
@@ -194,7 +207,7 @@ body {
 }
 
 .nav-action:hover {
-  color: #2a9d8f;
+  color: #1e7c3a;
   transform: scale(1.1);
 }
 
@@ -214,30 +227,36 @@ body {
   height: 60px;
   border-radius: 50%;
   object-fit: cover; /* Evita que la imagen se deforme */
-  transition: transform 0.3s;
-  border: 2px solid var(--color-primary); /* Borde sutil gris claro */
+  transition: all 0.3s ease;
+  border: 2px solid rgba(139, 195, 74, 0.4);
 }
 
 .profile-btn:hover img {
-  transform: scale(1.1);
+  transform: scale(1.05);
+  border-color: rgba(139, 195, 74, 0.6);
 }
 
 .nav-cart {
   display: flex;
   align-items: center;
-  background-color: #e9f5f3;
+  background-color: rgba(30, 124, 58, 0.1);
+  border: 1px solid rgba(30, 124, 58, 0.2);
   padding: 14px 32px;
-  border-radius: 50px;
+  border-radius: 25px;
   text-decoration: none;
-  transition: background-color 0.3s;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .nav-cart:hover {
-  background-color: #d4ebe8;
+  background-color: rgba(30, 124, 58, 0.2);
+  border-color: rgba(30, 124, 58, 0.4);
 }
 
 .nav-cart i {
-  color: #2a9d8f;
+  color: #1e7c3a;
   font-size: 1.2rem;
 }
 
@@ -245,7 +264,7 @@ body {
   display: none;
   align-items: center;
   font-weight: 600;
-  color: #1e796d;
+  color: #1e7c3a;
 }
 .cart-total p {
   display: none;
@@ -275,14 +294,30 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, #2a9d8f, #21897c);
+  background: linear-gradient(135deg, #1e7c3a, #165a29);
   color: white;
   padding: 14px 20px;
   border-radius: 50px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(42, 157, 143, 0.2);
+  box-shadow: 0 2px 8px rgba(30, 124, 58, 0.2);
   border: none;
   cursor: pointer;
+}
+
+/* Botón más pequeño en mobile */
+@media (max-width: 767px) {
+  .auth-button {
+    padding: 10px 16px;
+    gap: 6px;
+  }
+
+  .auth-button p {
+    font-size: 0.85rem;
+  }
+
+  .auth-button i {
+    font-size: 0.85rem;
+  }
 }
 .auth-button p {
   display: flex;
@@ -293,15 +328,14 @@ body {
 }
 
 .auth-button:hover {
-  background: linear-gradient(135deg, #21897c, #1e7a6f);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3);
+  background: linear-gradient(135deg, #165a29, #0f3a1a);
+  box-shadow: 0 4px 12px rgba(30, 124, 58, 0.3);
   color: white;
 }
 
 .auth-button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(42, 157, 143, 0.2);
+  box-shadow: 0 2px 6px rgba(30, 124, 58, 0.2);
 }
 
 /* Ocultamos la lista de PC y mostramos el botón de tablet */
@@ -399,6 +433,22 @@ body {
 }
 
 @media (min-width: 992px) {
+  /* Navbar más bajo en desktop */
+  .navbar {
+    height: 80px;
+  }
+
+  /* Logo más pequeño en desktop */
+  .nav-logo img {
+    width: 90px;
+  }
+
+  /* Imagen de perfil más pequeña en desktop */
+  .profile-btn img {
+    width: 50px;
+    height: 50px;
+  }
+
   /* Lista de categorías en la navbar de PC */
   .nav-categories-list {
     display: flex;

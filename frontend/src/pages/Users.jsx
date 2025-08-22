@@ -167,7 +167,6 @@ export default function Users() {
 
   return (
     <div className="users-container">
-      <BackButton />
       <div className="users-header">
         <h1 className="users-title">Gestión de Usuarios</h1>
         <p className="users-subtitle">
@@ -175,189 +174,195 @@ export default function Users() {
         </p>
       </div>
 
-      {/* Selector de tipo de usuario */}
-      <div className="user-type-selector">
-        <button
-          className={`selector-btn ${selectedUserType === 'clients' ? 'active' : ''}`}
-          onClick={() => handleUserTypeChange('clients')}
-        >
-          <i className="fas fa-users"></i> Clientes
-        </button>
-        {/* Solo mostrar el botón de empleados si el usuario es administrador */}
-        {user.userType === 3 && (
+      <div className="users-content">
+        <BackButton />
+
+        {/* Selector de tipo de usuario */}
+        <div className="user-type-selector">
+          <button
+            className={`selector-btn ${selectedUserType === 'clients' ? 'active' : ''}`}
+            onClick={() => handleUserTypeChange('clients')}
+          >
+            <i className="fas fa-users"></i> Clientes
+          </button>
+          {/* Solo mostrar el botón de empleados si el usuario es administrador */}
+          {user.userType === 3 && (
+            <>
+              <button
+                className={`selector-btn ${selectedUserType === 'employees' ? 'active' : ''}`}
+                onClick={() => handleUserTypeChange('employees')}
+              >
+                <i className="fas fa-user-tie"></i> Empleados
+              </button>
+              <button
+                className="selector-btn create-employee-btn"
+                onClick={() => navigate('/create-employee')}
+                title="Crear nuevo empleado"
+              >
+                <i className="fas fa-user-plus"></i> Crear Empleado
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* Controles de paginación superior */}
+        <div className="users-controls">
+          <div className="pagination-info">
+            <span>Mostrando {users.length} usuarios</span>
+          </div>
+          <div className="limits-selector">
+            <label htmlFor="limits">Mostrar:</label>
+            <select
+              id="limits"
+              value={limits}
+              onChange={e => {
+                setLimits(parseInt(e.target.value))
+                setPage(1)
+              }}
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+            </select>
+            <span>por página</span>
+          </div>
+        </div>
+
+        {/* Contenido principal */}
+        {loading ? (
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Cargando usuarios...</p>
+          </div>
+        ) : error ? (
+          <div className="error-container">
+            <i className="fas fa-exclamation-triangle"></i>
+            <h3>Error al cargar usuarios</h3>
+            <p>{error}</p>
+            <button className="retry-btn" onClick={fetchUsers}>
+              <i className="fas fa-redo"></i> Reintentar
+            </button>
+          </div>
+        ) : users.length === 0 ? (
+          <div className="empty-container">
+            <i className="fas fa-user-slash"></i>
+            <h3>
+              No hay {selectedUserType === 'clients' ? 'clientes' : 'empleados'}{' '}
+              registrados
+            </h3>
+            <p>No se encontraron usuarios de este tipo en el sistema.</p>
+          </div>
+        ) : (
           <>
-            <button
-              className={`selector-btn ${selectedUserType === 'employees' ? 'active' : ''}`}
-              onClick={() => handleUserTypeChange('employees')}
-            >
-              <i className="fas fa-user-tie"></i> Empleados
-            </button>
-            <button
-              className="selector-btn create-employee-btn"
-              onClick={() => navigate('/create-employee')}
-              title="Crear nuevo empleado"
-            >
-              <i className="fas fa-user-plus"></i> Crear Empleado
-            </button>
+            {/* Lista de usuarios */}
+            <div className="users-list">
+              {users.map(userData => (
+                <div key={userData.id} className="user-card">
+                  <div className="user-info">
+                    <div className="user-avatar">
+                      {userData.profile_photo ? (
+                        <img
+                          src={
+                            userData.profile_photo.startsWith('http')
+                              ? userData.profile_photo
+                              : `https://verduleria-3dbt.onrender.com/api/v1/${userData.profile_photo}`
+                          }
+                          alt={`${userData.first_name} ${userData.last_name}`}
+                        />
+                      ) : (
+                        <img
+                          src="/imgs/fotoGenerica.png"
+                          alt={`${userData.first_name} ${userData.last_name}`}
+                        />
+                      )}
+                    </div>
+                    <div className="user-details">
+                      <h3 className="user-name">
+                        {userData.first_name} {userData.last_name}
+                      </h3>
+                      <p className="user-email">
+                        <i className="fas fa-envelope"></i> {userData.email}
+                      </p>
+                      <div className="user-meta">
+                        <span
+                          className={`user-type ${getUserTypeLabel(userData.user_type).toLowerCase()}`}
+                        >
+                          <i className="fas fa-tag"></i>{' '}
+                          {getUserTypeLabel(userData.user_type)}
+                        </span>
+                        <span
+                          className={`user-status ${userData.user_status === 1 ? 'active' : 'blocked'}`}
+                        >
+                          <i
+                            className={`fas ${userData.user_status === 1 ? 'fa-check-circle' : 'fa-ban'}`}
+                          ></i>{' '}
+                          {getUserStatusLabel(userData.user_status)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Acciones del usuario (solo para administradores) */}
+                  {user.userType === 3 && (
+                    <div className="user-actions">
+                      <button
+                        className={`action-btn ${userData.user_status === 1 ? 'block' : 'unblock'}`}
+                        onClick={() =>
+                          handleToggleUserStatus(
+                            userData.id,
+                            userData.user_status,
+                            `${userData.first_name} ${userData.last_name}`
+                          )
+                        }
+                        title={
+                          userData.user_status === 1
+                            ? 'Bloquear usuario'
+                            : 'Desbloquear usuario'
+                        }
+                      >
+                        <i
+                          className={`fas ${userData.user_status === 1 ? 'fa-ban' : 'fa-unlock'}`}
+                        ></i>{' '}
+                        {userData.user_status === 1
+                          ? 'Bloquear'
+                          : 'Desbloquear'}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Paginación */}
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button
+                  className="pagination-btn"
+                  onClick={() => setPage(page - 1)}
+                  disabled={page === 1}
+                >
+                  <i className="fas fa-chevron-left"></i> Anterior
+                </button>
+
+                <div className="pagination-info">
+                  <span>
+                    Página {page} de {totalPages}
+                  </span>
+                </div>
+
+                <button
+                  className="pagination-btn"
+                  onClick={() => setPage(page + 1)}
+                  disabled={page === totalPages}
+                >
+                  Siguiente <i className="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>
-
-      {/* Controles de paginación superior */}
-      <div className="users-controls">
-        <div className="pagination-info">
-          <span>Mostrando {users.length} usuarios</span>
-        </div>
-        <div className="limits-selector">
-          <label htmlFor="limits">Mostrar:</label>
-          <select
-            id="limits"
-            value={limits}
-            onChange={e => {
-              setLimits(parseInt(e.target.value))
-              setPage(1)
-            }}
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-          </select>
-          <span>por página</span>
-        </div>
-      </div>
-
-      {/* Contenido principal */}
-      {loading ? (
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p>Cargando usuarios...</p>
-        </div>
-      ) : error ? (
-        <div className="error-container">
-          <i className="fas fa-exclamation-triangle"></i>
-          <h3>Error al cargar usuarios</h3>
-          <p>{error}</p>
-          <button className="retry-btn" onClick={fetchUsers}>
-            <i className="fas fa-redo"></i> Reintentar
-          </button>
-        </div>
-      ) : users.length === 0 ? (
-        <div className="empty-container">
-          <i className="fas fa-user-slash"></i>
-          <h3>
-            No hay {selectedUserType === 'clients' ? 'clientes' : 'empleados'}{' '}
-            registrados
-          </h3>
-          <p>No se encontraron usuarios de este tipo en el sistema.</p>
-        </div>
-      ) : (
-        <>
-          {/* Lista de usuarios */}
-          <div className="users-list">
-            {users.map(userData => (
-              <div key={userData.id} className="user-card">
-                <div className="user-info">
-                  <div className="user-avatar">
-                    {userData.profile_photo ? (
-                      <img
-                        src={
-                          userData.profile_photo.startsWith('http')
-                            ? userData.profile_photo
-                            : `https://verduleria-3dbt.onrender.com/api/v1/${userData.profile_photo}`
-                        }
-                        alt={`${userData.first_name} ${userData.last_name}`}
-                      />
-                    ) : (
-                      <img
-                        src="/imgs/fotoGenerica.png"
-                        alt={`${userData.first_name} ${userData.last_name}`}
-                      />
-                    )}
-                  </div>
-                  <div className="user-details">
-                    <h3 className="user-name">
-                      {userData.first_name} {userData.last_name}
-                    </h3>
-                    <p className="user-email">
-                      <i className="fas fa-envelope"></i> {userData.email}
-                    </p>
-                    <div className="user-meta">
-                      <span
-                        className={`user-type ${getUserTypeLabel(userData.user_type).toLowerCase()}`}
-                      >
-                        <i className="fas fa-tag"></i>{' '}
-                        {getUserTypeLabel(userData.user_type)}
-                      </span>
-                      <span
-                        className={`user-status ${userData.user_status === 1 ? 'active' : 'blocked'}`}
-                      >
-                        <i
-                          className={`fas ${userData.user_status === 1 ? 'fa-check-circle' : 'fa-ban'}`}
-                        ></i>{' '}
-                        {getUserStatusLabel(userData.user_status)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Acciones del usuario (solo para administradores) */}
-                {user.userType === 3 && (
-                  <div className="user-actions">
-                    <button
-                      className={`action-btn ${userData.user_status === 1 ? 'block' : 'unblock'}`}
-                      onClick={() =>
-                        handleToggleUserStatus(
-                          userData.id,
-                          userData.user_status,
-                          `${userData.first_name} ${userData.last_name}`
-                        )
-                      }
-                      title={
-                        userData.user_status === 1
-                          ? 'Bloquear usuario'
-                          : 'Desbloquear usuario'
-                      }
-                    >
-                      <i
-                        className={`fas ${userData.user_status === 1 ? 'fa-ban' : 'fa-unlock'}`}
-                      ></i>{' '}
-                      {userData.user_status === 1 ? 'Bloquear' : 'Desbloquear'}
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Paginación */}
-          {totalPages > 1 && (
-            <div className="pagination">
-              <button
-                className="pagination-btn"
-                onClick={() => setPage(page - 1)}
-                disabled={page === 1}
-              >
-                <i className="fas fa-chevron-left"></i> Anterior
-              </button>
-
-              <div className="pagination-info">
-                <span>
-                  Página {page} de {totalPages}
-                </span>
-              </div>
-
-              <button
-                className="pagination-btn"
-                onClick={() => setPage(page + 1)}
-                disabled={page === totalPages}
-              >
-                Siguiente <i className="fas fa-chevron-right"></i>
-              </button>
-            </div>
-          )}
-        </>
-      )}
     </div>
   )
 }

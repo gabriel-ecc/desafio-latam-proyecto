@@ -170,123 +170,152 @@ export default function EditProduct() {
   }
 
   return (
-    <div className="edit-product-container">
-      <BackButton />
-      <h2>{isEditing ? 'Editar Producto' : 'Crear Producto'}</h2>
-      <form onSubmit={handleSubmit} noValidate>
-        <div className="form-group">
-          <label htmlFor="name">Nombre</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={product.name}
-            onChange={handleChange}
-          />
-          {errors.name && <p className="error-message">{errors.name}</p>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Descripción</label>
-          <textarea
-            id="description"
-            name="description"
-            value={product.description}
-            onChange={handleChange}
-          ></textarea>
-          {errors.description && (
-            <p className="error-message">{errors.description}</p>
-          )}
-        </div>
-        <div className="form-row">
+    <div className="edit-product-page">
+      <div className="edit-product-header">
+        <h2>{isEditing ? 'Editar Producto' : 'Crear Producto'}</h2>
+      </div>
+      <div className="edit-product-container">
+        <BackButton />
+        <form onSubmit={handleSubmit} noValidate>
           <div className="form-group">
-            <label htmlFor="price">Precio</label>
+            <label htmlFor="name">Nombre</label>
             <input
-              type="number"
-              id="price"
-              name="price"
-              value={product.price}
+              type="text"
+              id="name"
+              name="name"
+              value={product.name}
               onChange={handleChange}
-              min="0"
             />
-            {errors.price && <p className="error-message">{errors.price}</p>}
+            {errors.name && <p className="error-message">{errors.name}</p>}
           </div>
           <div className="form-group">
-            <label htmlFor="stock">Stock</label>
-            <input
-              type="number"
-              id="stock"
-              name="stock"
-              value={product.stock}
+            <label htmlFor="description">Descripción</label>
+            <textarea
+              id="description"
+              name="description"
+              value={product.description}
               onChange={handleChange}
-              min="0"
-            />
-            {errors.stock && <p className="error-message">{errors.stock}</p>}
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="category_id">Categoría de Producto</label>
-            <select
-              id="category_id"
-              name="category_id"
-              value={product.category_id}
-              onChange={handleChange}
-            >
-              <option value="">Seleccione una categoría</option>
-              {categories.map(cat => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-            {errors.category && (
-              <p className="error-message">{errors.category}</p>
+            ></textarea>
+            {errors.description && (
+              <p className="error-message">{errors.description}</p>
             )}
           </div>
-          <div className="form-group">
-            <label htmlFor="season_id">Categoría de Temporada</label>
-            <select
-              id="season_id"
-              name="season_id"
-              value={product.season_id}
-              onChange={handleChange}
-            >
-              <option value="">Seleccione una temporada</option>
-              {seasons.map(season => (
-                <option key={season.id} value={season.id}>
-                  {season.name}
-                </option>
-              ))}
-            </select>
-            {errors.season && <p className="error-message">{errors.season}</p>}
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="price">Precio</label>
+              <input
+                type="number"
+                id="price"
+                name="price"
+                value={product.price}
+                onChange={handleChange}
+                min="0"
+              />
+              {errors.price && <p className="error-message">{errors.price}</p>}
+            </div>
+            <div className="form-group">
+              <label htmlFor="stock">Stock</label>
+              <input
+                type="number"
+                id="stock"
+                name="stock"
+                value={product.stock}
+                onChange={handleChange}
+                min="0"
+              />
+              {errors.stock && <p className="error-message">{errors.stock}</p>}
+            </div>
           </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="img">Foto del Producto</label>
-          <input
-            type="file"
-            id="img"
-            name="img"
-            onChange={handleFileChange}
-            accept="image/*"
-          />
-          {imagePreview && (
-            <img
-              src={imagePreview}
-              alt="Previsualización"
-              className="image-preview"
-            />
-          )}
-          {errors.img && <p className="error-message">{errors.img}</p>}
-        </div>
-        <button type="submit" className="submit-btn" disabled={loading}>
-          {loading
-            ? 'Guardando...'
-            : isEditing
-              ? 'Actualizar Producto'
-              : 'Crear Producto'}
-        </button>
-      </form>
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="category_id">Categoría de Producto</label>
+              <select
+                id="category_id"
+                name="category_id"
+                value={product.category_id}
+                onChange={handleChange}
+              >
+                <option value="">Seleccione una categoría</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+              {errors.category && (
+                <p className="error-message">{errors.category}</p>
+              )}
+            </div>
+            <div className="form-group">
+              <label htmlFor="season_id">Categoría de Temporada</label>
+              <select
+                id="season_id"
+                name="season_id"
+                value={product.season_id}
+                onChange={handleChange}
+              >
+                <option value="">Seleccione una temporada</option>
+                {seasons.map(season => (
+                  <option key={season.id} value={season.id}>
+                    {season.name}
+                  </option>
+                ))}
+              </select>
+              {errors.season && (
+                <p className="error-message">{errors.season}</p>
+              )}
+            </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="img">Foto del Producto</label>
+            <div className="file-upload-container">
+              <input
+                type="file"
+                id="img"
+                name="img"
+                onChange={handleFileChange}
+                accept="image/*"
+                className="file-upload-input"
+              />
+              <label
+                htmlFor="img"
+                className={`file-upload-label ${imagePreview ? 'has-file' : ''}`}
+              >
+                <div className="file-upload-icon">
+                  {imagePreview ? '✅' : '📷'}
+                </div>
+                <div className="file-upload-text">
+                  <div className="file-upload-primary">
+                    {imagePreview ? 'Imagen seleccionada' : 'Elegir archivo'}
+                  </div>
+                  <div className="file-upload-secondary">
+                    {imagePreview
+                      ? 'Haz clic para cambiar'
+                      : 'PNG, JPG, WEBP hasta 5MB'}
+                  </div>
+                </div>
+              </label>
+            </div>
+            {imagePreview && (
+              <div className="image-preview-container">
+                <img
+                  src={imagePreview}
+                  alt="Previsualización"
+                  className="image-preview"
+                />
+              </div>
+            )}
+            {errors.img && <p className="error-message">{errors.img}</p>}
+          </div>
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading
+              ? 'Guardando...'
+              : isEditing
+                ? 'Actualizar Producto'
+                : 'Crear Producto'}
+          </button>
+        </form>
+      </div>
     </div>
   )
 }
