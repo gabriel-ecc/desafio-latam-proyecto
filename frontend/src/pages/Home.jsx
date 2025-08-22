@@ -205,15 +205,15 @@ export default function Home() {
       <div className="services-section">
         <div className="services-container">
           <div className="services-grid">
-            <div className="service-card featured">
-              <div className="service-icon">🚚</div>
-              <h3>Envío a Domicilio</h3>
-              <p>Entregamos tus productos frescos directamente en tu hogar</p>
-            </div>
             <div className="service-card">
               <div className="service-icon">🌱</div>
               <h3>Productos Frescos</h3>
               <p>Directo del campo a tu mesa con la máxima calidad</p>
+            </div>
+            <div className="service-card">
+              <div className="service-icon">🚚</div>
+              <h3>Envío a Domicilio</h3>
+              <p>Entregamos tus productos frescos directamente en tu hogar</p>
             </div>
             <div className="service-card">
               <div className="service-icon">⏰</div>
