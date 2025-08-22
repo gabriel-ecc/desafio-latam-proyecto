@@ -108,6 +108,8 @@ jobs:
         run: |
           npm install
           npm run build
+        env:
+          VITE_API_URL: ${{ secrets.AZURE_BACKEND_API_URL }}
 
       - name: 'Deploy Frontend to Azure Web App'
         uses: azure/webapps-deploy@v2
