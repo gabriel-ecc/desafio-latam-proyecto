@@ -14,7 +14,7 @@ export const favortiesHelper = async favList => {
       stock: item.stock,
       isFavorite: true,
       favoriteId: item.favoriteId,
-      img: `http://https://verduleria-3dbt.onrender.com/api/v1/uploads/${item.img}`
+      img: `https://verduleria-3dbt.onrender.com/api/v1/uploads/${item.img}`
     }
   })
   return resultado
