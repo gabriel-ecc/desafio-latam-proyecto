@@ -171,11 +171,9 @@
 .filters-container {
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.95),
-    rgba(248, 249, 250, 0.95)
+    var(--color-background-alt),
+    var(--color-surface-alt)
   );
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
   border: 2px solid var(--color-secondary);
   border-radius: var(--radius-xl);
   margin: 0 1rem 2.5rem 1rem;

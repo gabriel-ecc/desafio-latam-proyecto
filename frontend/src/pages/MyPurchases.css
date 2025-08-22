@@ -12,11 +12,9 @@
   box-sizing: border-box;
   overflow: hidden; /* Evitar scroll en el contenedor principal */
   margin-bottom: 2vh; /* Reducir espacio inferior */
-  background: rgba(255, 255, 255, 0.1);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  background: var(--color-background);
   border-radius: var(--radius-card);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--color-border-light);
 }
 
 .section_left,

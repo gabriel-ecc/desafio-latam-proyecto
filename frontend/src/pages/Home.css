@@ -159,11 +159,10 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  background: var(--color-white-translucent);
+  background: var(--color-surface);
   padding: 0.8rem 1.2rem;
   border-radius: 30px;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border-light);
 }
 
 .indicator {
@@ -407,9 +406,8 @@
   font-weight: var(--font-weight-bold);
   font-size: 0.9rem;
   color: var(--color-text-inverse);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  background: var(--color-primary);
 }
 
 /* Responsive para servicios */
