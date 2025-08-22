@@ -21,9 +21,6 @@ import YAML from 'yamljs'
 // Cargar archivo YAML
 const swaggerDocument = YAML.load('./docs/swagger.yml')
 
-// configuramos el puerto del servidor que va a escuchar
-const PORT = process.env.PORT || 3000
-
 // creamos la instancia del servidor/framework web express
 const app = express()
 
@@ -53,18 +50,12 @@ app.use('/api/v1', dashboardRoutes) // Ruta al dashboard
 const __dirname = path.resolve()
 app.use('/api/v1/uploads', express.static(path.join(__dirname, 'uploads')))
 
-// Connect to the database and then start the server
+// Connect to the database for a quick check
 pool.query('SELECT NOW()', (err, res) => {
   if (err) {
     console.error('Error al conectar a la DB:', err.message)
   } else {
     console.log(res.rows[0].now, 'Base de datos arriba:')
-    // Subimos el server SÓLO después de que exista coneccion a la BD
-    app.listen(PORT, () => {
-      console.log(
-        `[${new Date().toLocaleString()}] Servidor y Base de Datos corriendo en http://localhost:${PORT}`
-      )
-    })
   }
 })
 

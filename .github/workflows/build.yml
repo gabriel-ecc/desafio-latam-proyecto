@@ -115,12 +115,12 @@ jobs:
         run: npm install --production
         working-directory: ./backend
 
-      - name: 'Deploy Backend to Azure Web App'
-        uses: azure/webapps-deploy@v2
+      - name: 'Deploy Backend to Azure Function App'
+        uses: azure/functions-action@v1
         with:
           app-name: 'gatadecampoapi'
-          publish-profile: ${{ secrets.AZURE_BACKEND_WEBAPP_PUBLISH_PROFILE }}
           package: './backend'
+          publish-profile: ${{ secrets.AZURE_BACKEND_WEBAPP_PUBLISH_PROFILE }}
 
   deploy-frontend:
     needs: deploy-backend
