@@ -83,7 +83,6 @@
 
 .cta-button:hover {
   transform: translateY(-2px);
-  box-shadow: var(--box-shadow-xl);
 }
 
 /* Stats and Origin Section */
@@ -393,7 +392,6 @@
 
 .final-message-section .cta-button:hover {
   transform: translateY(-2px);
-  box-shadow: var(--box-shadow-xl);
 }
 
 /* Responsive Design */

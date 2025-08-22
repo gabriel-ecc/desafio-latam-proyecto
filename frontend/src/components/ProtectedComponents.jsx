@@ -5,6 +5,7 @@ import EditProduct from '../pages/EditProduct'
 import CreateEmployee from '../pages/CreateEmployee'
 import AdminPurchases from '../pages/AdminPurchases'
 import Dashboard from '../pages/Dashboard'
+import { useParams } from 'react-router-dom'
 
 // Permisos comunes
 const EMPLOYEE_ADMIN = [2, 3]
@@ -19,13 +20,26 @@ const withProtection =
     </ProtectedRoute>
   )
 
+// Componente especial para EditProduct que maneja permisos según si es crear o editar
+const ProtectedEditProductWithLogic = (props) => {
+  const { id } = useParams()
+  const isCreating = id === '0'
+  const allowedTypes = isCreating ? ADMIN_ONLY : EMPLOYEE_ADMIN
+  
+  return (
+    <ProtectedRoute allowedUserTypes={allowedTypes}>
+      <EditProduct {...props} />
+    </ProtectedRoute>
+  )
+}
+
 // Exportar componentes protegidos
 export const ProtectedUsers = withProtection(Users)
 export const ProtectedInventory = withProtection(Inventory)
-export const ProtectedEditProduct = withProtection(EditProduct)
+export const ProtectedEditProduct = ProtectedEditProductWithLogic
 export const ProtectedCreateEmployee = withProtection(
   CreateEmployee,
   ADMIN_ONLY
 )
 export const ProtectedAdminPurchases = withProtection(AdminPurchases)
-export const ProtectedDashboard = withProtection(Dashboard)
+export const ProtectedDashboard = withProtection(Dashboard, ADMIN_ONLY)

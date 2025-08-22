@@ -12,14 +12,8 @@ import Swal from 'sweetalert2'
 import BackButton from '../components/BackButton'
 
 const Cart = () => {
-  const {
-    cart,
-    setCart,
-    updateQuantity,
-    subtraction,
-    totalPrice,
-    addToCart
-  } = useContext(CartContext)
+  const { cart, setCart, updateQuantity, subtraction, totalPrice, addToCart } =
+    useContext(CartContext)
   const [selectedPayment, setSelectedPayment] = useState(null)
   const [paymentStep, setPaymentStep] = useState(false)
   const [showPaymentOptions, setShowPaymentOptions] = useState(false)
@@ -336,7 +330,7 @@ const Cart = () => {
           popup: 'receipt-popup',
           confirmButton: 'receipt-button'
         },
-        width: '450px'
+        width: '550px'
       })
       setCart([])
       navigate('/')

@@ -6,6 +6,7 @@ import './Card.css' // Se importa el CSS para la tarjeta de producto
 import FavoriteButton from './FavoriteButton'
 import { toast } from '../utils/swalHelper'
 import { CartContext } from '../context/CartContext'
+import { UserContext } from '../context/UserContext'
 
 const ProductCard = ({
   product,
@@ -19,6 +20,9 @@ const ProductCard = ({
   // Estado local para manejar la cantidad del producto
   const [quantity, setQuantity] = useState(0)
   const [imgError, setImgError] = useState(false)
+
+  // Obtener el usuario del contexto para verificar si está logueado
+  const { user } = useContext(UserContext)
 
   const handleIncrease = () => {
     setQuantity(prev => (prev + 1 > stock ? stock : prev + 1))
@@ -48,10 +52,13 @@ const ProductCard = ({
   return (
     <div className="product-card">
       <div className="image-container">
-        <FavoriteButton
-          isFavorite={isFavorite}
-          onClick={() => onToggleFavorite(id)}
-        />
+        {/* Solo mostrar el botón de favoritos si el usuario está logueado */}
+        {user && (
+          <FavoriteButton
+            isFavorite={isFavorite}
+            onClick={() => onToggleFavorite(id)}
+          />
+        )}
         <img
           // src={imgError ? '/imgs/placeholder.svg' : img}
           src={img}
@@ -75,7 +82,7 @@ const ProductCard = ({
         </h2>
         <span className="price">${price.toLocaleString('es-CL')}</span>
         <span className="stock">
-          Stock Disponible: {stock.toLocaleString('es-CL')}
+          📦Stock Disponible: {stock.toLocaleString('es-CL')}
         </span>
         <div className="product-actions">
           <div className="quantity-control">

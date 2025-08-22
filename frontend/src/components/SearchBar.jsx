@@ -26,7 +26,7 @@ const SearchBar = ({
           product.season.toLowerCase().startsWith(searchTerm.toLowerCase())
       )
       setFilteredProducts(filtered.slice(0, 8)) // Limitar a 8 resultados
-      setShowSuggestions(true)
+      setShowSuggestions(true) // Mostrar siempre que haya al menos 2 caracteres
       setHighlightedIndex(-1)
     } else {
       setFilteredProducts([])
@@ -131,7 +131,7 @@ const SearchBar = ({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={() => {
-            if (searchTerm.length >= 2 && filteredProducts.length > 0) {
+            if (searchTerm.length >= 2) {
               setShowSuggestions(true)
             }
           }}
@@ -144,46 +144,46 @@ const SearchBar = ({
         )}
       </div>
 
-      {showSuggestions && filteredProducts.length > 0 && (
+      {showSuggestions && (
         <div className="suggestions-dropdown">
-          {filteredProducts.map((product, index) => (
-            <div
-              key={product.id}
-              ref={el => (suggestionRefs.current[index] = el)}
-              className={`suggestion-item ${
-                index === highlightedIndex ? 'highlighted' : ''
-              }`}
-              onClick={() => handleProductSelect(product)}
-            >
-              <div className="suggestion-image">
-                <img
-                  src={product.img}
-                  alt={product.name}
-                  onError={e => {
-                    e.target.src = '/imgs/placeholder.svg'
-                  }}
-                />
-              </div>
-              <div className="suggestion-content">
-                <div className="suggestion-details">
-                  <div className="suggestion-name">{product.name}</div>
-                  <div className="suggestion-category">
-                    {product.category} • {product.season}
+          {filteredProducts.length > 0
+            ? filteredProducts.map((product, index) => (
+                <div
+                  key={product.id}
+                  ref={el => (suggestionRefs.current[index] = el)}
+                  className={`suggestion-item ${
+                    index === highlightedIndex ? 'highlighted' : ''
+                  }`}
+                  onClick={() => handleProductSelect(product)}
+                >
+                  <div className="suggestion-image">
+                    <img
+                      src={product.img}
+                      alt={product.name}
+                      onError={e => {
+                        e.target.src = '/imgs/placeholder.svg'
+                      }}
+                    />
+                  </div>
+                  <div className="suggestion-content">
+                    <div className="suggestion-details">
+                      <div className="suggestion-name">{product.name}</div>
+                      <div className="suggestion-category">
+                        {product.category} • {product.season}
+                      </div>
+                    </div>
+                    <div className="suggestion-price">
+                      ${product.price.toLocaleString('es-cl')}
+                    </div>
                   </div>
                 </div>
-                <div className="suggestion-price">
-                  ${product.price.toLocaleString('es-cl')}
+              ))
+            : searchTerm.length >= 2 && (
+                <div className="no-results">
+                  <i className="fa-solid fa-search"></i>
+                  <span>No se encontraron productos con "{searchTerm}"</span>
                 </div>
-              </div>
-            </div>
-          ))}
-
-          {searchTerm.length >= 2 && filteredProducts.length === 0 && (
-            <div className="no-results">
-              <i className="fa-solid fa-search"></i>
-              <span>No se encontraron productos</span>
-            </div>
-          )}
+              )}
         </div>
       )}
     </div>

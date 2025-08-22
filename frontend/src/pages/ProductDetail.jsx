@@ -105,14 +105,16 @@ const ProductDetail = () => {
     if (success) {
       toast({
         icon: 'success',
-        title: `Has agregado ${quantity} ${product.name}${quantity > 1 ? 's' : ''
-          } al carrito.`
+        title: `Has agregado ${quantity} ${product.name}${
+          quantity > 1 ? 's' : ''
+        } al carrito.`
       })
     } else {
       toast({
         icon: 'warning',
-        title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${product.name
-          }.`
+        title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${
+          product.name
+        }.`
       })
     }
   }
@@ -129,10 +131,24 @@ const ProductDetail = () => {
     )
   }
 
-  const handleRelatedAddToCart = productWithQuantity => {
+  const handleRelatedAddToCart = async productWithQuantity => {
     const { quantity, ...product } = productWithQuantity
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product)
+    if (quantity === 0) return
+    const success = await addToCart(product, quantity)
+    if (success) {
+      toast({
+        icon: 'success',
+        title: `Has agregado ${quantity} ${product.name}${
+          quantity > 1 ? 's' : ''
+        } al carrito.`
+      })
+    } else {
+      toast({
+        icon: 'warning',
+        title: `No se pudo agregar la cantidad deseada. Stock insuficiente para ${
+          product.name
+        }.`
+      })
     }
   }
 
