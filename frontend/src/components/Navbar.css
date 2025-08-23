@@ -307,16 +307,16 @@ body {
 /* Botón más pequeño en mobile */
 @media (max-width: 767px) {
   .auth-button {
-    padding: 10px 16px;
-    gap: 6px;
+    padding: 8px 14px; /* Actualizado para consistencia con la nueva reducción */
+    gap: 4px;
   }
 
   .auth-button p {
-    font-size: 0.85rem;
+    font-size: 0.7rem; /* Reducido ~30% de 0.85rem */
   }
 
   .auth-button i {
-    font-size: 0.85rem;
+    font-size: 0.7rem; /* Reducido ~30% de 0.85rem */
   }
 }
 .auth-button p {
@@ -404,6 +404,61 @@ body {
 }
 
 /* --- ESTILOS RESPONSIVE --- */
+
+/* Estilos para dispositivos pequeños (móviles) - Reducción del 30% */
+@media (max-width: 575px) {
+  /* Navbar más pequeño en móviles */
+  .navbar {
+    height: 70px; /* Reducido de 100px */
+    padding-right: 0 0.5rem; /* Reducido el padding */
+  }
+
+  /* Logo más pequeño */
+  .nav-logo img {
+    width: 51px; /* Reducido ~30% de 73px */
+    height: auto;
+  }
+
+  /* Imagen de perfil más pequeña */
+  .profile-btn img {
+    width: 42px; /* Reducido ~30% de 60px */
+    height: 42px;
+  }
+
+  /* Carrito más compacto */
+  .nav-cart {
+    padding: 10px 22px; /* Reducido ~30% de 14px 32px */
+    border-radius: 18px; /* Reducido proporcionalmente */
+  }
+
+  /* Botones de categorías más pequeños */
+  .categories-btn {
+    padding: 7px 11px; /* Reducido ~30% de 10px 16px */
+    border-radius: 18px; /* Reducido proporcionalmente */
+    font-size: 0.85rem; /* Reducido ~30% */
+  }
+
+  /* Espaciado general reducido */
+  .nav-right {
+    gap: 0.9rem; /* Reducido ~30% de 1.3rem */
+  }
+
+  .order {
+    padding: 0 calc(var(--spacing-md) * 0.7); /* Reducido ~30% */
+  }
+
+  /* Auth button más pequeño */
+  .auth-button {
+    padding: 8px 14px; /* Reducido ~30% de 12px 20px (ya había una regla, pero la mejoramos) */
+    gap: 4px; /* Reducido */
+  }
+
+  /* Header principal con menos padding */
+  .main-header {
+    padding: 0 calc(var(--spacing-lg) * 0.7); /* Reducido ~30% */
+  }
+}
+
 @media (min-width: 576px) {
   /* Estilos para tabletas en adelante */
   body {
