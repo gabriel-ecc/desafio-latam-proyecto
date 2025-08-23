@@ -14,7 +14,7 @@ export const favortiesHelper = async favList => {
       stock: item.stock,
       isFavorite: true,
       favoriteId: item.favoriteId,
-      img: `http://localhost:${port}/api/v1/uploads/${item.img}`
+      img: `${process.env.RENDER_EXTERNAL_URL}/api/v1/uploads/${item.img}`
     }
   })
   return resultado

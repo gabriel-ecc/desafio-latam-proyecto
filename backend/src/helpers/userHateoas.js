@@ -11,7 +11,7 @@ export const UserHATEOAS = async (entity, data, count) => {
       user_status: item.user_status,
       user_type: item.user_type,
       profile_photo: item.profile_photo,
-      href: `http://localhost:${port}/${entity}/${item.id}`
+      href: `${process.env.RENDER_EXTERNAL_URL}/${entity}/${item.id}`
     }
   })
 

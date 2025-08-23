@@ -68,7 +68,7 @@ export const getProduct = async (req, res) => {
       season: queryResult.season,
       seasonId: queryResult.season_id
     }
-    product.img = `http://localhost:${port}/api/v1/uploads/${product.img}`
+    product.img = `${process.env.RENDER_EXTERNAL_URL}/api/v1/uploads/${product.img}`
     res.status(200).json(product)
   } catch (error) {
     console.error(error)

@@ -15,10 +15,10 @@ export const productsHATEOAS = async (entity, data, count) => {
       price: item.price,
       stock: item.stock,
       status: item.status, // Agregar status para habilitar/deshabilitar
-      img: `http://localhost:${port}/api/v1/uploads/${item.img}`,
+      img: `${process.env.RENDER_EXTERNAL_URL}/api/v1/uploads/${item.img}`,
       category_id: item.category_id,
       season_id: item.season_id,
-      href: `http://localhost:${port}/api/v1/${entity}/${item.id}`
+      href: `${process.env.RENDER_EXTERNAL_URL}/api/v1/${entity}/${item.id}`
     }
   })
 
