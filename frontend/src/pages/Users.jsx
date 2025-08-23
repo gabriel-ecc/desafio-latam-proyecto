@@ -266,7 +266,7 @@ export default function Users() {
                           src={
                             userData.profile_photo.startsWith('http')
                               ? userData.profile_photo
-                              : `http://localhost:3000/api/v1/${userData.profile_photo}`
+                              : `${import.meta.env.VITE_API_URL}/api/v1/${userData.profile_photo}`
                           }
                           alt={`${userData.first_name} ${userData.last_name}`}
                         />
