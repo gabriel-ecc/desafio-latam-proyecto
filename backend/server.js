@@ -22,7 +22,7 @@ import YAML from 'yamljs'
 const swaggerDocument = YAML.load('../docs/swagger.yml')
 
 // configuramos el puerto del servidor que va a escuchar
-// const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000
 
 // creamos la instancia del servidor/framework web express
 const app = express()
