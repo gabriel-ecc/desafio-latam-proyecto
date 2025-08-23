@@ -11,20 +11,20 @@ export default defineConfig({
     proxy: {
       // Proxy para todas las rutas de la API que empiezan con /api/v1
       '/api/v1': {
-        target: `${import.meta.env.VITE_API_URL}`, // Apuntamos al backend
+        target: 'http://localhost:3000', // Apuntamos al backend
         changeOrigin: true, // Importante para que el backend vea el origen correcto
         secure: false, // No usamos HTTPS
         // No es necesario 'rewrite' aquí porque la ruta '/api/v1' es la misma en ambos
       },
       // Proxy para la documentación de Swagger UI
       '/api-docs': {
-        target: `${import.meta.env.VITE_API_URL}`, // Apuntamos al  backend donde se sirve Swagger
+        target: 'http://localhost:3000', // Apuntamos al  backend donde se sirve Swagger
         changeOrigin: true,
         secure: false,
       },
       // Proxy para las imágenes estáticas ( /uploads en el backend )
       '/api/v1/uploads': {
-        target: `${import.meta.env.VITE_API_URL}`, // Apuntamos al backend
+        target: 'http://localhost:3000', // Apuntamos al backend
         changeOrigin: true,
         secure: false,
       },
