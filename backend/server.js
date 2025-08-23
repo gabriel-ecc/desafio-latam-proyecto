@@ -62,7 +62,7 @@ pool.query('SELECT NOW()', (err, res) => {
     // Subimos el server SÓLO después de que exista coneccion a la BD
     app.listen(PORT, () => {
       console.log(
-        `[${new Date().toLocaleString()}] Servidor y Base de Datos corriendo en ${process.env.RENDER_EXTERNAL_URL}`
+        `[${new Date().toLocaleString()}] Servidor y Base de Datos corriendo en ${process.env.URL_BASE}`
       )
     })
   }

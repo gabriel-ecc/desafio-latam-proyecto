@@ -8,7 +8,7 @@ export const orderDetailsFormat = async data => {
       name: item.product_name,
       price: item.price,
       quantity: item.quantity,
-      img: `${process.env.RENDER_EXTERNAL_URL}/api/v1/uploads/${item.img}`
+      img: `${process.env.URL_BASE}/api/v1/uploads/${item.img}`
     }
   })
   return results
