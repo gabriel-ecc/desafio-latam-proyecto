@@ -9,7 +9,6 @@ const MyPurchases = () => {
   const [selectedPurchase, setSelectedPurchase] = useState(null)
   const [purchases, setPurchases] = useState([])
   const token = getToken()
-  const URLBASE = 'http://localhost:3000'
 
   useEffect(() => {
     document.body.classList.add('home-background')

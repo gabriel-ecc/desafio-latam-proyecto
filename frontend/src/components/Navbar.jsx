@@ -302,7 +302,7 @@ const Navbar = () => {
                       user?.profilePhoto
                         ? user.profilePhoto.startsWith('http')
                           ? user.profilePhoto
-                          : `http://localhost:3000/api/v1/${user.profilePhoto}`
+                          : `${import.meta.env.VITE_API_URL}/api/v1/${user.profilePhoto}`
                         : '/imgs/fotoGenerica.png'
                     }
                     alt="Foto de perfil"

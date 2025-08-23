@@ -365,7 +365,7 @@ export default function Inventory() {
                       src={
                         product.img.startsWith('http')
                           ? product.img
-                          : `http://localhost:3000/api/v1/uploads/${product.img}`
+                          : `${import.meta.env.VITE_API_URL}/api/v1/uploads/${product.img}`
                       }
                       alt={product.productname}
                       onError={e => {
