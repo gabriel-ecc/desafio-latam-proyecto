@@ -45,7 +45,7 @@
 .section_left {
   padding: var(--spacing-lg);
   text-align: center;
-  min-height: 300px;
+  min-height: 40vw;
   order: 1;
   background: rgba(255, 255, 255, 0.9);
   border-radius: var(--radius-lg);
@@ -61,7 +61,7 @@
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  min-height: 300px;
+  min-height: 40vw;
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.95) 0%,
@@ -81,8 +81,8 @@
   overflow-y: auto;
   flex-grow: 1;
   padding-right: var(--spacing-xs);
-  max-height: 40vh;
-  min-height: 200px;
+  max-height: 60vw;
+  min-height: 30vw;
 }
 
 .total_option {
@@ -251,7 +251,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   flex-wrap: wrap;
   /* Transiciones suaves para cambios de contenido */
   max-height: 0;
@@ -266,13 +266,13 @@
 
 /* Clase para cuando los métodos de pago están visibles en móvil */
 .kind_payment.visible {
-  max-height: 150px; /* Reducido de 200px a 150px */
+  max-height: 200px; /* Aumentado para acomodar las 3 opciones */
   opacity: 1;
   margin: var(--spacing-sm) 0;
 }
 
 .payment_option {
-  margin: var(--spacing-sm);
+  margin: var(--spacing-xs);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -283,10 +283,12 @@
     rgba(248, 249, 250, 0.6) 100%
   );
   border: 2px solid rgba(30, 124, 58, 0.2);
-  padding: var(--spacing-md);
+  padding: var(--spacing-sm);
   border-radius: var(--radius-lg);
   transition: all 0.3s ease;
   box-shadow: var(--box-shadow-sm);
+  min-width: 70px;
+  max-width: 90px;
 }
 
 .payment_option:hover {
@@ -307,7 +309,7 @@
   box-shadow: var(--box-shadow-lg);
 }
 .img_card {
-  width: 60px;
+  width: 50px; /* Reducido para móvil */
   height: auto;
   object-fit: contain;
   filter: saturate(120%);
@@ -319,12 +321,12 @@
 }
 
 .payment_title {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
   text-align: center;
-  margin: var(--spacing-sm) 0 0 0;
-  line-height: 1.2;
+  margin: var(--spacing-xs) 0 0 0;
+  line-height: 1.1;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
@@ -413,7 +415,7 @@
 .cash-payment-text {
   max-height: 0;
   opacity: 0;
-  overflow: hidden;
+  overflow: visible; /* Cambiamos de hidden a visible para evitar cortes */
   transition:
     max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.6s ease 0.2s,
@@ -422,7 +424,7 @@
 }
 
 .cash-payment-text.visible {
-  max-height: 220px; /* Reducido al quitar la sección del total */
+  max-height: 350px; /* Aumentamos la altura para mobile también */
   opacity: 1;
   margin: var(--spacing-md) 0;
 }
@@ -435,7 +437,7 @@
   padding: var(--spacing-lg);
   box-shadow: 0 4px 12px rgba(40, 167, 69, 0.1);
   animation: cashInfoSlideIn 0.5s ease-out;
-  min-height: 200px; /* Reducido al quitar la sección del total */
+  min-height: 300px; /* Aumentamos la altura mínima para mobile */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -529,7 +531,7 @@
 /* Responsivo para el diseño de efectivo */
 @media screen and (max-width: 767px) {
   .cash-payment-info {
-    min-height: 180px; /* Reducido para móvil */
+    min-height: 280px; /* Aumentamos la altura para móvil */
   }
 
   .cash-header {
@@ -564,7 +566,7 @@
     max-width: 800px;
     margin: 0 auto;
     gap: var(--spacing-lg);
-    min-height: auto;
+    min-height: 60vw;
   }
 
   .section_left {
@@ -592,7 +594,7 @@
 
   .products {
     padding-right: var(--spacing-md);
-    max-height: 40vh;
+    max-height: 50vw;
     border-radius: var(--radius-md);
   }
 
@@ -701,23 +703,23 @@
 
   /* Clase para cuando los métodos de pago están visibles en tablet */
   .kind_payment.visible {
-    max-height: 180px; /* Reducido de 250px a 180px */
+    max-height: 200px; /* Aumentado para acomodar las 3 opciones */
     opacity: 1;
-    margin: var(--spacing-lg) 0;
+    margin: var(--spacing-md) 0; /* Reducido de lg a md */
   }
 
   .payment_option {
-    padding: var(--spacing-md); /* Reducido de spacing-lg */
-    border-radius: var(--radius-lg);
+    padding: var(--spacing-xs); /* Padding reducido para desktop */
+    border-radius: var(--radius-md);
     transition: all 0.3s ease;
     background-color: var(--color-background-secondary);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end; /* Alinea el contenido hacia abajo */
-    min-height: 90px; /* Reducido de 120px a 90px */
-    width: 90px; /* Reducido de 100px a 90px */
-    margin: var(--spacing-xs); /* Reducido de spacing-sm */
+    min-height: 70px; /* Altura reducida para ahorrar espacio */
+    width: 80px; /* Ancho reducido */
+    margin: var(--spacing-xs); /* Margen reducido */
     cursor: pointer;
     border: 2px solid transparent; /* Borde transparente por defecto */
   }
@@ -734,20 +736,20 @@
   }
 
   .img_card {
-    width: 70px; /* Reducido de 90px */
+    width: 55px; /* Reducido para desktop compacto */
     height: auto;
-    max-height: 45px; /* Reducido de 60px */
+    max-height: 35px; /* Altura máxima reducida */
     object-fit: contain;
     transition: transform 0.2s ease;
-    margin-bottom: var(--spacing-xs); /* Reducido de spacing-sm */
+    margin-bottom: var(--spacing-xs); /* Margen reducido */
   }
 
   .payment_title {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs); /* Texto más pequeño para ahorrar espacio */
     font-weight: var(--font-weight-semibold);
     color: var(--color-text-primary);
     text-align: center;
-    margin: var(--spacing-xs) 0 0 0;
+    margin: var(--spacing-xs) 0 0 0; /* Margen reducido */
     line-height: 1.1;
   }
 
@@ -815,7 +817,7 @@
   .cash-payment-text {
     max-height: 0;
     opacity: 0;
-    overflow: hidden;
+    overflow: visible; /* Cambiamos de hidden a visible para tablet */
     margin: 0;
     transition:
       max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
@@ -824,14 +826,14 @@
   }
 
   .cash-payment-text.visible {
-    max-height: 240px; /* Reducido para tablet */
+    max-height: 350px; /* Aumentamos la altura para tablet también */
     opacity: 1;
     margin: var(--spacing-lg) 0;
   }
 
   /* Estilos específicos para efectivo en tablet */
   .cash-payment-info {
-    min-height: 220px; /* Reducido para tablet */
+    min-height: 300px; /* Aumentamos la altura para tablet */
   }
 
   .cash-header h4 {
@@ -889,35 +891,42 @@
   .big_container_cart {
     max-width: 1400px;
     margin: 0 auto;
-    height: 98vh;
+    min-height: 80vh; /* Aumentamos ligeramente la altura mínima */
+    max-height: none; /* Removemos la limitación de altura máxima */
+    height: auto; /* Altura automática para adaptarse al contenido */
     gap: var(--spacing-lg);
     grid-template-columns: 1.2fr 0.8fr;
     display: grid;
     grid-template-rows: 1fr;
     grid-template-areas: 'left right';
-    align-items: stretch;
-    padding: var(--spacing-xl);
+    align-items: stretch; /* Esto hace que ambas columnas tengan la misma altura */
+    padding: var(--spacing-lg);
     background: var(--color-background);
     border-radius: var(--radius-card);
     border: 1px solid var(--color-border-light);
+    overflow: visible; /* Cambiamos de hidden a visible */
   }
 
   .section_left {
     grid-area: left;
-    height: 100%;
+    height: 100%; /* Ocupa toda la altura disponible */
+    min-height: 75vh; /* Altura mínima para consistencia */
     background: var(--color-background-alt);
     border-radius: var(--radius-lg);
     border: 1px solid rgba(30, 124, 58, 0.1);
     box-shadow: var(--box-shadow-lg);
     overflow: hidden;
+    display: flex;
+    flex-direction: column; /* Para organizar el contenido verticalmente */
   }
 
   .section_right {
     grid-area: right;
-    position: sticky;
-    top: 90px;
-    align-self: start;
-    max-height: 80vh;
+    position: static; /* Cambiamos de sticky a static para que tenga la misma altura */
+    align-self: stretch; /* Se estira para ocupar toda la altura disponible */
+    min-height: 75vh; /* Misma altura mínima que la sección izquierda */
+    max-height: none; /* Removemos la limitación de altura máxima */
+    height: 100%; /* Ocupa toda la altura disponible */
     background: linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.95) 0%,
@@ -927,12 +936,20 @@
     box-shadow: var(--box-shadow-lg);
     border: 1px solid rgba(30, 124, 58, 0.1);
     transition: all 0.3s ease;
-    overflow-y: auto;
+    overflow-y: auto; /* Volvemos a auto para el scroll interno si es necesario */
+    overflow-x: hidden;
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column; /* Para organizar el contenido verticalmente */
   }
 
   .products {
-    max-height: 60vh; /* Más alto para aprovechar pantalla */
+    flex: 1; /* Ocupa el espacio disponible dentro de section_left */
+    max-height: none; /* Removemos limitación de altura */
+    min-height: 0; /* Permite que se ajuste al contenido */
     padding-right: var(--spacing-md);
+    overflow-y: auto;
+    overflow-x: hidden;
     /* Personalización cross-browser mínima: Firefox usará scroll por defecto */
   }
   .products::-webkit-scrollbar {
@@ -997,16 +1014,16 @@
   }
 
   .total_title {
-    font-size: 2.25rem; /* Más grande en desktop */
-    letter-spacing: 1px;
-    margin-bottom: var(--spacing-lg);
+    font-size: 2rem; /* Tamaño normal prominente */
+    letter-spacing: 0.5px;
+    margin-bottom: var(--spacing-md); /* Margen normal */
   }
 
   .subtotal {
     font-weight: var(--font-weight-bold);
   }
 
-  /* Caja total/resumen (si está presente dentro del panel derecho) */
+  /* Caja total/resumen (si está presente dentro del panel izquierdo) */
   .total_option {
     width: 100%;
     background: var(--color-background);
@@ -1014,16 +1031,20 @@
     border-radius: var(--radius-lg);
     box-shadow: var(--box-shadow-md);
     padding: var(--spacing-lg) var(--spacing-xl);
-    position: sticky;
-    top: 0; /* Se mantiene arriba dentro de la columna izquierda */
-    z-index: 5;
+    margin-top: auto; /* Empuja el elemento hacia abajo */
+    flex-shrink: 0; /* No se encoge */
   }
 
   .payment_container {
-    padding-top: var(--spacing-lg);
+    padding-top: var(--spacing-md); /* Aumentamos el padding superior */
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* Misma animación suave que efectivo */
     height: auto; /* Permite cambios dinámicos de altura */
-    overflow: hidden; /* Transiciones suaves para contenido que cambia */
+    overflow: visible; /* Visible para asegurar que todo se vea */
+    max-height: none; /* Removemos cualquier limitación de altura */
+    flex: 1; /* Ocupa el espacio disponible */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
 
   /* Transiciones específicas para los elementos que aparecen/desaparecen */
@@ -1040,9 +1061,9 @@
 
   /* Clase para cuando los métodos de pago están visibles */
   .kind_payment.visible {
-    max-height: 180px; /* Reducido de 250px a 180px */
+    max-height: 90px; /* Altura compacta para ahorrar espacio */
     opacity: 1;
-    margin: var(--spacing-lg) 0;
+    margin: var(--spacing-sm) 0; /* Margen reducido */
   }
 
   /* Transición para el texto de selección de método */
@@ -1067,7 +1088,7 @@
   .cash-payment-text {
     max-height: 0;
     opacity: 0;
-    overflow: hidden;
+    overflow: visible; /* Cambiamos de hidden a visible para desktop */
     margin: 0;
     transition:
       max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
@@ -1076,15 +1097,15 @@
   }
 
   .cash-payment-text.visible {
-    max-height: 260px; /* Reducido para desktop */
+    max-height: 450px; /* Aumentamos aún más la altura para asegurar que no se corte */
     opacity: 1;
-    margin: var(--spacing-lg) 0;
+    margin: var(--spacing-md) 0; /* Margen normal */
   }
 
   /* Estilos específicos para efectivo en desktop */
   .cash-payment-info {
-    padding: var(--spacing-xl);
-    min-height: 240px; /* Reducido para desktop */
+    padding: var(--spacing-md);
+    min-height: 250px; /* Aumentamos la altura mínima para acomodar todo el contenido */
   }
 
   .cash-header h4 {
@@ -1407,7 +1428,7 @@
 
   .credit-card-container.visible {
     margin: var(--spacing-lg) auto; /* Margen con centrado explícito */
-    max-height: 680px; /* Aumentado para acomodar el mensaje más grande en desktop */
+    max-height: 800px; /* Aumentado significativamente para acomodar todo el contenido */
     display: flex;
     justify-content: center; /* Mantiene el centrado con flexbox */
     width: 100%; /* Ocupa todo el ancho disponible */
@@ -1454,7 +1475,7 @@
   padding: 0;
   max-height: 0;
   opacity: 0;
-  overflow: hidden;
+  overflow: visible; /* Cambiado de hidden a visible para no cortar contenido */
   transition:
     max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.6s ease 0.2s,
@@ -1465,7 +1486,7 @@
 }
 
 .delivery-info-container.visible {
-  max-height: 280px; /* Aumentado para que el botón sea visible */
+  max-height: 500px; /* Aumentado significativamente para mobile */
   opacity: 1;
   margin: var(--spacing-md) auto;
 }
@@ -1508,7 +1529,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  padding: var(--spacing-sm) var(--spacing-xs);
+  padding: var(--spacing-md) var(--spacing-sm); /* Padding más generoso */
   background: var(--color-background-secondary);
   border-radius: var(--radius-lg);
   box-shadow: var(--box-shadow-md);
@@ -1554,7 +1575,8 @@
 .delivery-button-container {
   display: flex;
   justify-content: center;
-  margin-top: 0; /* Aumentado el margen superior */
+  margin-top: var(--spacing-lg); /* Margen superior más generoso */
+  padding: var(--spacing-md) 0; /* Padding adicional arriba y abajo */
 }
 
 .confirm-delivery-btn {
@@ -1562,7 +1584,7 @@
   color: white;
   border: none;
   border-radius: var(--radius-md);
-  padding: var(--spacing-xs) var(--spacing-xl);
+  padding: var(--spacing-md) var(--spacing-xl); /* Aumentamos el padding vertical */
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
   cursor: pointer;
@@ -1593,7 +1615,7 @@
 /* Responsive para datos de entrega */
 @media screen and (min-width: 768px) and (max-width: 1199px) {
   .delivery-info-container.visible {
-    max-height: 360px; /* Aumentado para tablet */
+    max-height: 450px; /* Aumentado para tablet */
     margin: var(--spacing-lg) auto;
   }
 
@@ -1620,28 +1642,32 @@
 
 @media screen and (min-width: 1200px) {
   .delivery-info-container.visible {
-    max-height: 340px; /* Aumentado para desktop */
-    margin: var(--spacing-lg) auto;
+    max-height: 500px; /* Aumentamos significativamente la altura para datos de entrega */
+    margin: var(--spacing-md) auto; /* Margen más generoso */
   }
 
   .delivery-instruction {
-    width: 50%;
+    font-size: var(--font-size-md); /* Tamaño de fuente normal */
+    padding: var(--spacing-md); /* Padding normal */
+    margin-bottom: var(--spacing-md); /* Margen normal */
   }
 
   .delivery-form {
-    padding: 0 2vw;
+    padding: var(--spacing-md) var(--spacing-sm); /* Padding más generoso */
+    gap: var(--spacing-md); /* Gap normal entre elementos */
   }
 
   .delivery-input {
-    min-height: 2em; /* Altura igual a 1.3 veces el tamaño de fuente */
-    font-size: var(--font-size-lg);
-    padding: 1px 8px; /* Padding mínimo para desktop */
-    height: 1em; /* Ligeramente más alto para desktop */
+    min-height: 2.5em; /* Altura más cómoda */
+    font-size: var(--font-size-md);
+    padding: var(--spacing-sm); /* Padding normal */
+    height: auto; /* Altura automática */
   }
 
   .confirm-delivery-btn {
-    padding: 0.6vw var(--spacing-2xl, 1rem);
-    font-size: var(--font-size-sm);
+    padding: var(--spacing-md) var(--spacing-xl); /* Padding más prominente */
+    font-size: var(--font-size-md); /* Tamaño de fuente normal */
+    margin-top: var(--spacing-md); /* Margen superior normal */
   }
 }
 
@@ -1943,7 +1969,7 @@
     flex-direction: column !important;
     gap: var(--spacing-lg) !important;
     padding: var(--spacing-md) !important;
-    min-height: 100vh !important;
+    min-height: 120vw !important;
   }
 
   .section_left {
@@ -1999,7 +2025,7 @@
 
   .products {
     padding-right: var(--spacing-md);
-    max-height: 40vh;
+    max-height: 50vw;
     border-radius: var(--radius-md);
   }
 
@@ -2018,7 +2044,7 @@
     flex-direction: column !important;
     gap: var(--spacing-lg) !important;
     padding: var(--spacing-md) !important;
-    min-height: 100vh !important;
+    min-height: 80vw !important;
   }
 
   .section_left {
