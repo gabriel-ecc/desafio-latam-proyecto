@@ -87,10 +87,6 @@ const AdminPurchases = () => {
         }
       )
 
-      console.log('Response data:', response.data) // Debug log
-      console.log('Products detail:', response.data.purchasesDetail) // Debug log
-      console.log('Purchase delivery_type from API:', purchase.delivery_type) // Debug log
-
       setSelectedPurchase({
         orderNumber: purchase.id,
         date: purchase.create_date,
@@ -259,10 +255,6 @@ const AdminPurchases = () => {
   }
 
   const getStatusOptions = (currentStatus, deliveryType) => {
-    console.log('getStatusOptions called with:', {
-      currentStatus,
-      deliveryType
-    }) // Debug log
 
     // Solo permitir cambiar a Finalizada o Cancelada
     const allStatuses = [
@@ -280,7 +272,6 @@ const AdminPurchases = () => {
       return status.value !== currentStatus
     })
 
-    console.log('Filtered options:', filteredOptions) // Debug log
     return filteredOptions
   }
 
@@ -504,13 +495,6 @@ const AdminPurchases = () => {
                         ? 'Retiro en tienda'
                         : 'Delivery'}
                     </p>
-                    {(() => {
-                      console.log(
-                        'Checking delivery type for address/recipient:',
-                        selectedPurchase.deliveryType
-                      ) // Debug log
-                      return null
-                    })()}
                     {selectedPurchase.deliveryType !== 2 &&
                       selectedPurchase.shippingAddress && (
                         <p>
@@ -530,10 +514,6 @@ const AdminPurchases = () => {
 
                 <div className="products_detail">
                   <h4>Productos:</h4>
-                  {console.log(
-                    'Rendering products:',
-                    selectedPurchase.products
-                  )}
                   {selectedPurchase.products.map(product => (
                     <div key={product.id} className="product_detail_item">
                       <div className="product_img_section">
@@ -590,10 +570,6 @@ const AdminPurchases = () => {
                   <h4>Cambiar Estado del Pedido:</h4>
                   <div className="status_buttons">
                     {(() => {
-                      console.log(
-                        'selectedPurchase before getStatusOptions:',
-                        selectedPurchase
-                      ) // Debug log
                       return getStatusOptions(
                         selectedPurchase.status,
                         selectedPurchase.deliveryType

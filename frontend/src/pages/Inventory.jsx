@@ -76,10 +76,6 @@ export default function Inventory() {
         params
       })
 
-      console.log('=== INVENTORY RESPONSE ===')
-      console.log('Full response data:', response.data)
-      console.log('Products array:', response.data.results)
-      console.log('First product:', response.data.results?.[0])
 
       setProducts(response.data.results)
       setTotalPages(Math.ceil(response.data.totalProducts / limits))
@@ -184,7 +180,6 @@ export default function Inventory() {
           { headers: { Authorization: `Bearer ${token}` } }
         )
 
-        console.log('Server response:', response.data)
 
         // ÚNICA actualización: usar exactamente el valor del servidor
         setProducts(prevProducts =>

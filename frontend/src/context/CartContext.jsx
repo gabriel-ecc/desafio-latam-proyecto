@@ -58,7 +58,6 @@ export function CartProvider({ children }) {
         console.error('Error guardando carrito temporal:', errorData)
         return
       }
-      console.log('Carrito temporal guardado en backend')
     } catch (error) {
       console.error('Error guardando carrito temporal:', error)
     }
