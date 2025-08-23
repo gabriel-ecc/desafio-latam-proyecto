@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   // interceptamos las peticiones a /api/v1/*, /api-docs/* y /api/v1/uploads/*
-  // y las re-enviamos al backend, en el puerto 3000
+  // y las re-enviamos al backend, en el puerto 3000 (solo en desarrollo)
   server: {
     port: 5173, // Puerto donde se ejecuta el frontend
     proxy: {
@@ -30,4 +30,19 @@ export default defineConfig({
       },
     },
   },
+  // Configuración para el build de producción
+  build: {
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          bootstrap: ['react-bootstrap', 'bootstrap'],
+          charts: ['chart.js', 'react-chartjs-2'],
+          sweetalert: ['sweetalert2', 'sweetalert2-react-content']
+        }
+      }
+    }
+  }
 })
