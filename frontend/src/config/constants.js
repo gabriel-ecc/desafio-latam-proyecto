@@ -1,7 +1,5 @@
-import { API_CONFIG } from './apiConfig.js'
-
-export const URLBASE = API_CONFIG.BASE_URL
-export const apiVersion = API_CONFIG.VERSION
+export const URLBASE = import.meta.env.VITE_API_URL;
+export const apiVersion = '/api/v1'
 
 export const ENDPOINT = {
   users: `${URLBASE}${apiVersion}/users`,
