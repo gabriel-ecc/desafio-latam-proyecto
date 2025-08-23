@@ -22,7 +22,7 @@ import YAML from 'yamljs'
 const swaggerDocument = YAML.load('../docs/swagger.yml')
 
 // configuramos el puerto del servidor que va a escuchar
-const PORT = process.env.PORT || 3000
+// const PORT = process.env.PORT || 3000
 
 // creamos la instancia del servidor/framework web express
 const app = express()
@@ -35,7 +35,13 @@ app.use(
 )
 
 // cargamos el middleware
-app.use(cors())
+// configuramos CORS para que acepte el nuevo dominio de Vercel
+const corsOptions = {
+  origin: 'https://desafio-latam-proyecto.vercel.app',
+  optionsSuccessStatus: 200 // para retrocompatibilidad con navegadores antiguos
+}
+// cargamos el middleware de CORS con las opciones
+app.use(cors(corsOptions))
 app.use(express.json())
 
 // disponibilizamos las apis
