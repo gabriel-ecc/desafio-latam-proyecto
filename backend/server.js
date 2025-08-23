@@ -36,12 +36,16 @@ app.use(
 
 // cargamos el middleware
 // configuramos CORS para que acepte el nuevo dominio de Vercel
+/* 
 const corsOptions = {
   origin: 'https://desafio-latam-proyecto.vercel.app',
   optionsSuccessStatus: 200 // para retrocompatibilidad con navegadores antiguos
 }
+*/
+
 // cargamos el middleware de CORS con las opciones
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
+app.use(cors())
 app.use(express.json())
 
 // disponibilizamos las apis
