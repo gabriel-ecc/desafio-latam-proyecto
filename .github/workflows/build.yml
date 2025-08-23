@@ -89,6 +89,13 @@ jobs:
             -Dsonar.javascript.lcov.reportPaths=./backend/coverage/lcov.info
           projectBaseDir: .
 
+  deploy-backend:
+    needs: Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
   deploy-frontend:
     needs: Analysis
     runs-on: ubuntu-latest
