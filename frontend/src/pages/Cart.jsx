@@ -10,13 +10,13 @@ import '../pages/Cart.css'
 import { toast } from '../utils/swalHelper'
 import Swal from 'sweetalert2'
 import BackButton from '../components/BackButton'
+import { runNetworkDiagnostics } from '../utils/networkHelper.js'
 
 const Cart = () => {
-  const { cart, setCart, updateQuantity, subtraction, totalPrice, addToCart } =
+  const { cart, setCart, updateQuantity, subtraction, totalPrice } =
     useContext(CartContext)
   const [selectedPayment, setSelectedPayment] = useState(null)
   const [paymentStep, setPaymentStep] = useState(false)
-  const [showPaymentOptions, setShowPaymentOptions] = useState(false)
   const navigate = useNavigate()
   const { user, token } = useContext(UserContext)
 
@@ -48,6 +48,44 @@ const Cart = () => {
     return () => {
       document.body.classList.remove('home-background')
     }
+  }, [])
+
+  // Debug effect para monitorear estados
+  useEffect(() => {
+    console.log('Payment states changed:', {
+      paymentStep,
+      selectedPayment,
+      deliveryConfirmed,
+      cartLength: cart.length
+    })
+  }, [paymentStep, selectedPayment, deliveryConfirmed, cart.length])
+
+  // Test de conectividad con el backend
+  useEffect(() => {
+    const testBackendConnection = async () => {
+      try {
+        console.log('Testing backend connection to:', ENDPOINT.products)
+        const response = await axios.get(ENDPOINT.products)
+        console.log('Backend connection successful:', response.status)
+      } catch (error) {
+        console.error('Backend connection failed:', error)
+        console.error('API URL:', ENDPOINT.products)
+        
+        // Ejecutar diagnóstico completo si hay errores
+        const diagnostics = await runNetworkDiagnostics()
+        console.log('Network diagnostics:', diagnostics)
+        
+        // Mostrar alerta de conectividad solo si es un error de red
+        if (error.code === 'NETWORK_ERROR' || !navigator.onLine) {
+          toast({
+            icon: 'error',
+            title: 'Problema de conectividad. Algunos botones pueden no funcionar.'
+          })
+        }
+      }
+    }
+    
+    testBackendConnection()
   }, [])
 
   {
@@ -89,6 +127,7 @@ const Cart = () => {
 
   const handlePayEfectivo = async () => {
     try {
+      console.log('Processing cash payment...')
       const payload = {
         user_id: user.id,
         order_status: 2,
@@ -103,18 +142,28 @@ const Cart = () => {
           unit_price: Math.round(item.price)
         }))
       }
+      
+      console.log('Cash payment payload:', payload)
+      
       const response = await axios.post(`${ENDPOINT.orders}`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       })
+      
+      console.log('Cash payment response:', response)
       setCart([])
       return response
     } catch (error) {
+      console.error('Cash payment error:', error)
+      if (error.response) {
+        console.error('Error response:', error.response.data)
+      }
       return error
     }
   }
 
   const handlePayCard = async () => {
     try {
+      console.log('Processing card payment...')
       const payload = {
         user_id: user.id,
         order_status: 3,
@@ -129,14 +178,21 @@ const Cart = () => {
           unit_price: Math.round(item.price)
         }))
       }
+      
+      console.log('Card payment payload:', payload)
 
       const response = await axios.post(`${ENDPOINT.orders}`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       })
+      
+      console.log('Card payment response:', response)
       setCart([])
       return response
     } catch (error) {
-      console.error('Error al pagar:', error)
+      console.error('Card payment error:', error)
+      if (error.response) {
+        console.error('Error response:', error.response.data)
+      }
       return error
     }
   }
@@ -163,7 +219,9 @@ const Cart = () => {
   }
 
   const handleContinue = () => {
+    console.log('handleContinue called - cart length:', cart.length)
     if (cart.length === 0) {
+      console.log('Cart is empty, showing warning')
       Swal.fire({
         title: '¡El Carrito está vacío!',
         icon: 'warning',
@@ -172,10 +230,12 @@ const Cart = () => {
       })
       return
     }
+    console.log('Setting paymentStep to true')
     setPaymentStep(true)
   }
 
   const handleBack = () => {
+    console.log('handleBack called - resetting payment states')
     setPaymentStep(false)
     setSelectedPayment(null)
     setDeliveryConfirmed(false)
@@ -215,7 +275,11 @@ const Cart = () => {
   }
 
   const handlePay = async () => {
+    console.log('handlePay called - selectedPayment:', selectedPayment)
+    console.log('paymentStep:', paymentStep)
+    
     if (!selectedPayment) {
+      console.log('No payment method selected')
       Swal.fire({
         icon: 'error',
         title: 'Selecciona un método de pago'
@@ -230,6 +294,7 @@ const Cart = () => {
         !expiracion.trim() ||
         !cvv.trim()
       ) {
+        console.log('Card fields incomplete')
         Swal.fire({
           icon: 'error',
           title: 'Campos incompletos',
@@ -242,6 +307,7 @@ const Cart = () => {
       const cvvOk = /^\d{3}$/.test(cvv)
 
       if (!expiryOk || !cvvOk) {
+        console.log('Card format invalid')
         Swal.fire({
           icon: 'error',
           title: 'Formato inválido',
@@ -256,12 +322,18 @@ const Cart = () => {
     }
     let errorMessage = ''
     try {
+      console.log('Processing payment...')
       const response =
         selectedPayment === 'efectivo'
           ? await handlePayEfectivo()
           : await handlePayCard()
+          
+      console.log('Payment response:', response)
+      
       if (!response.data) {
-        errorMessage = response.response.data.message
+        errorMessage = response.response?.data?.message || 'Error desconocido en el pago'
+        console.error('Payment failed:', errorMessage)
+        throw new Error(errorMessage)
       }
       const order_id = response.data.order_id
 
@@ -335,10 +407,11 @@ const Cart = () => {
       setCart([])
       navigate('/')
     } catch (error) {
+      console.error('Payment error:', error)
       Swal.fire({
         icon: 'error',
         title: 'Error al procesar el pago',
-        text: errorMessage
+        text: errorMessage || error.message || 'Error de conexión con el servidor'
       })
     }
   }
@@ -674,6 +747,20 @@ const Cart = () => {
               {' '}
               Pagar{' '}
             </Button>
+            {/* Botón temporal de diagnóstico para debuggear en producción */}
+            {import.meta.env.DEV && (
+              <Button
+                variant="warning"
+                onClick={async () => {
+                  const diagnostics = await runNetworkDiagnostics()
+                  console.log('Network diagnostics:', diagnostics)
+                  alert(`Diagnóstico de red:\n${JSON.stringify(diagnostics, null, 2)}`)
+                }}
+                size="sm"
+              >
+                🔍 Debug
+              </Button>
+            )}
           </div>
         </div>
       </main>

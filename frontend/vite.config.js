@@ -13,22 +13,22 @@ export default defineConfig({
       '/api/v1': {
         target: 'http://localhost:3000', // Apuntamos al backend
         changeOrigin: true, // Importante para que el backend vea el origen correcto
-        secure: false, // No usamos HTTPS
+        secure: false // No usamos HTTPS
         // No es necesario 'rewrite' aquí porque la ruta '/api/v1' es la misma en ambos
       },
       // Proxy para la documentación de Swagger UI
       '/api-docs': {
         target: 'http://localhost:3000', // Apuntamos al  backend donde se sirve Swagger
         changeOrigin: true,
-        secure: false,
+        secure: false
       },
       // Proxy para las imágenes estáticas ( /uploads en el backend )
       '/api/v1/uploads': {
         target: 'http://localhost:3000', // Apuntamos al backend
         changeOrigin: true,
-        secure: false,
-      },
-    },
+        secure: false
+      }
+    }
   },
   // Configuración para el build de producción
   build: {
