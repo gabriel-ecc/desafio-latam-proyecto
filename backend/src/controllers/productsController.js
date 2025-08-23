@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { productsHATEOAS } from '../helpers/productsHateoas.js'
 import {
   getProductsByPage,
@@ -68,7 +69,7 @@ export const getProduct = async (req, res) => {
       season: queryResult.season,
       seasonId: queryResult.season_id
     }
-    product.img = `https://verduleria-3dbt.onrender.com/api/v1/uploads/${product.img}`
+    product.img = `${process.env.RENDER_EXTERNAL_URL}/api/v1/uploads/${product.img}`
     res.status(200).json(product)
   } catch (error) {
     console.error(error)

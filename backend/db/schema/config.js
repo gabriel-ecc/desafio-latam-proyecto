@@ -3,10 +3,8 @@ import pg from 'pg'
 
 const { Pool } = pg
 
-const { DB_URL } = process.env
-
 const config = {
-  connectionString: DB_URL
+  connectionString: process.env.DB_URL
 }
 
 const pool = new Pool(config)

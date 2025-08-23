@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-// import 'dotenv/config'
+import 'dotenv/config'
 import pool from './db/schema/config.js'
 import path from 'path'
 
@@ -63,7 +63,7 @@ const startServer = async () => {
     // Subimos el server SÓLO después de que exista conexión a la DB
     app.listen(PORT, () => {
       console.log(
-        `[${new Date().toLocaleString()}] Servidor y Base de Datos corriendo en https://verduleria-3dbt.onrender.com`
+        `[${new Date().toLocaleString()}] Servidor y Base de Datos corriendo en ${process.env.RENDER_EXTERNAL_URL}`
       )
     })
   } catch (err) {

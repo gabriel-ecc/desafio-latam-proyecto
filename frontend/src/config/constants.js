@@ -1,5 +1,4 @@
-// export const URLBASE = 'http://localhost:3000'
-export const URLBASE = 'https://verduleria-3dbt.onrender.com'
+export const URLBASE = import.meta.env.VITE_API_URL;
 export const apiVersion = '/api/v1'
 
 export const ENDPOINT = {

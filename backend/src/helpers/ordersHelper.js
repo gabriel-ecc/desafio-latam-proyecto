@@ -1,4 +1,4 @@
-// import 'dotenv/config'
+import 'dotenv/config'
 // const port = process.env.port || 3000
 
 export const orderDetailsFormat = async data => {
@@ -8,7 +8,7 @@ export const orderDetailsFormat = async data => {
       name: item.product_name,
       price: item.price,
       quantity: item.quantity,
-      img: `https://verduleria-3dbt.onrender.com/api/v1/uploads/${item.img}`
+      img: `${process.env.RENDER_EXTERNAL_URL}/api/v1/uploads/${item.img}`
     }
   })
   return results

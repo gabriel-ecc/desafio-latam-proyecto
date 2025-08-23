@@ -1,4 +1,4 @@
-// import 'dotenv/config'
+import 'dotenv/config'
 // const port = process.env.port || 3000
 
 export const UserHATEOAS = async (entity, data, count) => {
@@ -11,7 +11,7 @@ export const UserHATEOAS = async (entity, data, count) => {
       user_status: item.user_status,
       user_type: item.user_type,
       profile_photo: item.profile_photo,
-      href: `https://verduleria-3dbt.onrender.com/${entity}/${item.id}`
+      href: `${process.env.RENDER_EXTERNAL_URL}/${entity}/${item.id}`
     }
   })
 
