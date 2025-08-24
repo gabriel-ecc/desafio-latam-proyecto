@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useProfile } from '../hooks/useProfile.js'
 import axios from 'axios'
 import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 import '../pages/Cart.css'
 import { toast } from '../utils/swalHelper'
 import Swal from 'sweetalert2'
@@ -17,6 +18,7 @@ const Cart = () => {
     useContext(CartContext)
   const [selectedPayment, setSelectedPayment] = useState(null)
   const [paymentStep, setPaymentStep] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   const navigate = useNavigate()
   const { user, token } = useContext(UserContext)
 
@@ -50,53 +52,6 @@ const Cart = () => {
     }
   }, [])
 
-  // Debug effect para monitorear estados
-  useEffect(() => {
-    console.log('Payment states changed:', {
-      paymentStep,
-      selectedPayment,
-      deliveryConfirmed,
-      cartLength: cart.length
-    })
-  }, [paymentStep, selectedPayment, deliveryConfirmed, cart.length])
-
-  // Test de conectividad con el backend
-  useEffect(() => {
-    const testBackendConnection = async () => {
-      try {
-        console.log('Testing backend connection to:', ENDPOINT.products)
-        const response = await axios.get(ENDPOINT.products)
-        console.log('Backend connection successful:', response.status)
-      } catch (error) {
-        console.error('Backend connection failed:', error)
-        console.error('API URL:', ENDPOINT.products)
-        
-        // Ejecutar diagnóstico completo si hay errores
-        const diagnostics = await runNetworkDiagnostics()
-        console.log('Network diagnostics:', diagnostics)
-        
-        // Mostrar alerta de conectividad solo si es un error de red
-        if (error.code === 'NETWORK_ERROR' || !navigator.onLine) {
-          toast({
-            icon: 'error',
-            title: 'Problema de conectividad. Algunos botones pueden no funcionar.'
-          })
-        }
-      }
-    }
-    
-    testBackendConnection()
-  }, [])
-
-  // Debug effect para monitorear estados
-useEffect(() => {
-  console.log('Payment states changed:', {
-    paymentStep,
-    selectedPayment,
-    deliveryConfirmed,
-    cartLength: cart.length
-  })
-}, [paymentStep, selectedPayment, deliveryConfirmed, cart.length])
 
 
   {
@@ -138,7 +93,7 @@ useEffect(() => {
 
   const handlePayEfectivo = async () => {
     try {
-      console.log('Processing cash payment...')
+      
       const payload = {
         user_id: user.id,
         order_status: 2,
@@ -146,21 +101,18 @@ useEffect(() => {
         delivery_type: 2,
         shipping_address: direccionEntrega || 'Calle Falsa 123, Santiago',
         recipient_name: nombreDestinatario || 'Juan Pérez',
-        total_amount: Math.round(totalPrice()),
+        total_amount: Math.round(totalPrice),
         items: cart.map(item => ({
           product_id: item.id,
           quantity: item.quantity,
           unit_price: Math.round(item.price)
         }))
       }
-      
-      console.log('Cash payment payload:', payload)
-      
+
       const response = await axios.post(`${ENDPOINT.orders}`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      
-      console.log('Cash payment response:', response)
+
       setCart([])
       return response
     } catch (error) {
@@ -174,8 +126,6 @@ useEffect(() => {
 
   const handlePayCard = async () => {
     try {
-      console.log('Processing card payment...')
-      console.log('💳 handlePayCard ejecutado')
       const payload = {
         user_id: user.id,
         order_status: 3,
@@ -183,21 +133,17 @@ useEffect(() => {
         delivery_type: 1,
         shipping_address: direccionEntrega,
         recipient_name: nombreDestinatario,
-        total_amount: Math.round(totalPrice()),
+        total_amount: Math.round(totalPrice),
         items: cart.map(item => ({
           product_id: item.id,
           quantity: item.quantity,
           unit_price: Math.round(item.price)
         }))
       }
-      console.log('📦 Card payment payload:', JSON.stringify(payload, null, 2))
-      console.log('Card payment payload:', payload)
-
       const response = await axios.post(`${ENDPOINT.orders}`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      
-      console.log('Card payment response:', response)
+
       setCart([])
       return response
     } catch (error) {
@@ -231,9 +177,7 @@ useEffect(() => {
   }
 
   const handleContinue = () => {
-    console.log('handleContinue called - cart length:', cart.length)
     if (cart.length === 0) {
-      console.log('Cart is empty, showing warning')
       Swal.fire({
         title: '¡El Carrito está vacío!',
         icon: 'warning',
@@ -242,12 +186,10 @@ useEffect(() => {
       })
       return
     }
-    console.log('Setting paymentStep to true')
     setPaymentStep(true)
   }
 
   const handleBack = () => {
-    console.log('handleBack called - resetting payment states')
     setPaymentStep(false)
     setSelectedPayment(null)
     setDeliveryConfirmed(false)
@@ -287,17 +229,7 @@ useEffect(() => {
   }
 
   const handlePay = async () => {
-  console.log('🟢 handlePay CLICK - selectedPayment:', selectedPayment)
-  console.log('🟢 paymentStep:', paymentStep)
-  console.log({
-  nombreTitular,
-  numeroTarjeta,
-  expiracion,
-  cvv
-})
-    
     if (!selectedPayment) {
-      console.log('No payment method selected')
       Swal.fire({
         icon: 'error',
         title: 'Selecciona un método de pago'
@@ -306,18 +238,12 @@ useEffect(() => {
     }
 
     if (selectedPayment === 'credito' || selectedPayment === 'debito') {
-      console.log('💳 Card payment flow iniciado')
-        console.log('nombreTitular:', nombreTitular)
-        console.log('numeroTarjeta:', numeroTarjeta)
-        console.log('expiracion:', expiracion)
-        console.log('cvv:', cvv)
       if (
         !nombreTitular.trim() ||
         !numeroTarjeta.trim() ||
         !expiracion.trim() ||
         !cvv.trim()
       ) {
-        console.log('Card fields incomplete')
         Swal.fire({
           icon: 'error',
           title: 'Campos incompletos',
@@ -330,7 +256,6 @@ useEffect(() => {
       const cvvOk = /^\d{3}$/.test(cvv)
 
       if (!expiryOk || !cvvOk) {
-        console.log('Card format invalid')
         Swal.fire({
           icon: 'error',
           title: 'Formato inválido',
@@ -344,17 +269,16 @@ useEffect(() => {
       /*Pago éxitoso*/
     }
     let errorMessage = ''
+    setIsProcessing(true)
     try {
-      console.log('Processing payment...')
       const response =
         selectedPayment === 'efectivo'
           ? await handlePayEfectivo()
           : await handlePayCard()
-          
-      console.log('Payment response:', response)
-      
+
       if (!response.data) {
-        errorMessage = response.response?.data?.message || 'Error desconocido en el pago'
+        errorMessage =
+          response.response?.data?.message || 'Error desconocido en el pago'
         console.error('Payment failed:', errorMessage)
         throw new Error(errorMessage)
       }
@@ -434,8 +358,11 @@ useEffect(() => {
       Swal.fire({
         icon: 'error',
         title: 'Error al procesar el pago',
-        text: errorMessage || error.message || 'Error de conexión con el servidor'
+        text:
+          errorMessage || error.message || 'Error de conexión con el servidor'
       })
+    } finally {
+      setIsProcessing(false)
     }
   }
 
@@ -575,7 +502,6 @@ useEffect(() => {
                 <button
                   key={method.id}
                   onClick={() => {
-                    console.log("Seleccionaste método de pago:", method.id)
                     setSelectedPayment(method.id)
                     setDeliveryConfirmed(false)
                   }}
@@ -758,7 +684,7 @@ useEffect(() => {
             <Button
               variant="danger"
               onClick={handleBack}
-              disabled={!paymentStep}
+              disabled={!paymentStep || isProcessing}
             >
               Volver
             </Button>
@@ -766,24 +692,26 @@ useEffect(() => {
               type="button"
               variant="success"
               onClick={handlePay}
-              disabled={!paymentStep || !selectedPayment}
+              disabled={!paymentStep || !selectedPayment || isProcessing}
             >
-              Pagar{' '}
+              {isProcessing
+                ? (
+                <>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />{' '}
+                  Procesando...
+                </>
+                  )
+                : (
+                    'Pagar'
+                  )}
             </Button>
             {/* Botón temporal de diagnóstico para debuggear en producción */}
-            {import.meta.env.DEV && (
-              <Button
-                variant="warning"
-                onClick={async () => {
-                  const diagnostics = await runNetworkDiagnostics()
-                  console.log('Network diagnostics:', diagnostics)
-                  alert(`Diagnóstico de red:\n${JSON.stringify(diagnostics, null, 2)}`)
-                }}
-                size="sm"
-              >
-                🔍 Debug
-              </Button>
-            )}
           </div>
         </div>
       </main>
