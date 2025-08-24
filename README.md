@@ -19,14 +19,14 @@ Este repositorio contiene el código fuente del "Proyecto Final Desafío Latam",
   - [3.4 Ejecución (servidores)](#34-ejecución-servidores)
   - [3.5 Login Usuarios de prueba (3)](#35-login-usuarios-de-prueba-3)
   - [3.6 Testing con Jest/supertest](#36-testing-con-jestsupertest)
-- [7. Documentacion API](#7-documentacion-api)
-  - [7.1 Swagger](#71-swagger)
-- [8. Tech Stack](#8-tech-stack)
-- [9. Dependencias](#9-dependencias)
-  - [9.1 Dependencias del Backend](#91-dependencias-del-backend)
-  - [9.2 Dependencias de Desarrollo del Backend](#92-dependencias-de-desarrollo-del-backend)
-  - [9.3 Dependencias del Frontend](#93-dependencias-del-frontend)
-  - [9.4 Dependencias de Desarrollo del Frontend](#94-dependencias-de-desarrollo-del-frontend)
+- [4. Documentacion API](#7-documentacion-api)
+  - [4.1 Swagger](#71-swagger)
+- [5. Tech Stack](#8-tech-stack)
+- [6. Dependencias](#9-dependencias)
+  - [6.1 Dependencias del Backend](#91-dependencias-del-backend)
+  - [6.2 Dependencias de Desarrollo del Backend](#92-dependencias-de-desarrollo-del-backend)
+  - [6.3 Dependencias del Frontend](#93-dependencias-del-frontend)
+  - [6.4 Dependencias de Desarrollo del Frontend](#94-dependencias-de-desarrollo-del-frontend)
 
 ---
 
