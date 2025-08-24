@@ -6,17 +6,19 @@ import { useNavigate } from 'react-router-dom'
 import { useProfile } from '../hooks/useProfile.js'
 import axios from 'axios'
 import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 import '../pages/Cart.css'
 import { toast } from '../utils/swalHelper'
 import Swal from 'sweetalert2'
 import BackButton from '../components/BackButton'
+import { runNetworkDiagnostics } from '../utils/networkHelper.js'
 
 const Cart = () => {
-  const { cart, setCart, updateQuantity, subtraction, totalPrice, addToCart } =
+  const { cart, setCart, updateQuantity, subtraction, totalPrice } =
     useContext(CartContext)
   const [selectedPayment, setSelectedPayment] = useState(null)
   const [paymentStep, setPaymentStep] = useState(false)
-  const [showPaymentOptions, setShowPaymentOptions] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   const navigate = useNavigate()
   const { user, token } = useContext(UserContext)
 
@@ -49,6 +51,8 @@ const Cart = () => {
       document.body.classList.remove('home-background')
     }
   }, [])
+
+
 
   {
     /* Conexión con el backend */
@@ -89,6 +93,7 @@ const Cart = () => {
 
   const handlePayEfectivo = async () => {
     try {
+      
       const payload = {
         user_id: user.id,
         order_status: 2,
@@ -103,12 +108,18 @@ const Cart = () => {
           unit_price: Math.round(item.price)
         }))
       }
+
       const response = await axios.post(`${ENDPOINT.orders}`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       })
+
       setCart([])
       return response
     } catch (error) {
+      console.error('Cash payment error:', error)
+      if (error.response) {
+        console.error('Error response:', error.response.data)
+      }
       return error
     }
   }
@@ -129,14 +140,17 @@ const Cart = () => {
           unit_price: Math.round(item.price)
         }))
       }
-
       const response = await axios.post(`${ENDPOINT.orders}`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       })
+
       setCart([])
       return response
     } catch (error) {
-      console.error('Error al pagar:', error)
+      console.error('Card payment error:', error)
+      if (error.response) {
+        console.error('Error response:', error.response.data)
+      }
       return error
     }
   }
@@ -255,13 +269,18 @@ const Cart = () => {
       /*Pago éxitoso*/
     }
     let errorMessage = ''
+    setIsProcessing(true)
     try {
       const response =
         selectedPayment === 'efectivo'
           ? await handlePayEfectivo()
           : await handlePayCard()
+
       if (!response.data) {
-        errorMessage = response.response.data.message
+        errorMessage =
+          response.response?.data?.message || 'Error desconocido en el pago'
+        console.error('Payment failed:', errorMessage)
+        throw new Error(errorMessage)
       }
       const order_id = response.data.order_id
 
@@ -335,11 +354,15 @@ const Cart = () => {
       setCart([])
       navigate('/')
     } catch (error) {
+      console.error('Payment error:', error)
       Swal.fire({
         icon: 'error',
         title: 'Error al procesar el pago',
-        text: errorMessage
+        text:
+          errorMessage || error.message || 'Error de conexión con el servidor'
       })
+    } finally {
+      setIsProcessing(false)
     }
   }
 
@@ -661,7 +684,7 @@ const Cart = () => {
             <Button
               variant="danger"
               onClick={handleBack}
-              disabled={!paymentStep}
+              disabled={!paymentStep || isProcessing}
             >
               Volver
             </Button>
@@ -669,11 +692,26 @@ const Cart = () => {
               type="button"
               variant="success"
               onClick={handlePay}
-              disabled={!paymentStep || !selectedPayment}
+              disabled={!paymentStep || !selectedPayment || isProcessing}
             >
-              {' '}
-              Pagar{' '}
+              {isProcessing
+                ? (
+                <>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />{' '}
+                  Procesando...
+                </>
+                  )
+                : (
+                    'Pagar'
+                  )}
             </Button>
+            {/* Botón temporal de diagnóstico para debuggear en producción */}
           </div>
         </div>
       </main>

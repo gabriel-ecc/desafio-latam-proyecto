@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   // interceptamos las peticiones a /api/v1/*, /api-docs/* y /api/v1/uploads/*
-  // y las re-enviamos al backend, en el puerto 3000
+  // y las re-enviamos al backend, en el puerto 3000 (solo en desarrollo)
   server: {
     port: 5173, // Puerto donde se ejecuta el frontend
     proxy: {
@@ -13,21 +13,36 @@ export default defineConfig({
       '/api/v1': {
         target: 'http://localhost:3000', // Apuntamos al backend
         changeOrigin: true, // Importante para que el backend vea el origen correcto
-        secure: false, // No usamos HTTPS
+        secure: false // No usamos HTTPS
         // No es necesario 'rewrite' aquí porque la ruta '/api/v1' es la misma en ambos
       },
       // Proxy para la documentación de Swagger UI
       '/api-docs': {
         target: 'http://localhost:3000', // Apuntamos al  backend donde se sirve Swagger
         changeOrigin: true,
-        secure: false,
+        secure: false
       },
       // Proxy para las imágenes estáticas ( /uploads en el backend )
       '/api/v1/uploads': {
         target: 'http://localhost:3000', // Apuntamos al backend
         changeOrigin: true,
-        secure: false,
-      },
-    },
+        secure: false
+      }
+    }
   },
+  // Configuración para el build de producción
+  build: {
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          bootstrap: ['react-bootstrap', 'bootstrap'],
+          charts: ['chart.js', 'react-chartjs-2'],
+          sweetalert: ['sweetalert2', 'sweetalert2-react-content']
+        }
+      }
+    }
+  }
 })

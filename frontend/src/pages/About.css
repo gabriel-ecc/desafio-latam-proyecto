@@ -107,6 +107,10 @@
   box-shadow: var(--box-shadow-lg);
 }
 
+.stat-item {
+  background-color: rgb(146, 149, 148);
+}
+
 .stat-item h3 {
   font-size: var(--font-size-display);
   font-weight: var(--font-weight-bold);

@@ -160,7 +160,7 @@ export default function Profile() {
       // Si la foto viene del servidor, construir la URL completa
       return editableProfile.profilePhoto.startsWith('http')
         ? editableProfile.profilePhoto
-        : `http://localhost:3000/api/v1/${editableProfile.profilePhoto}`
+        : `${import.meta.env.VITE_API_URL}/api/v1/${editableProfile.profilePhoto}`
     }
     return null
   }
@@ -229,7 +229,7 @@ export default function Profile() {
               ) : (
                 <div className="profile-photo-placeholder">
                   <img
-                    src="/public/imgs/fotoGenerica.png"
+                    src="/imgs/fotoGenerica.png"
                     alt="Foto de perfil"
                   />
                 </div>

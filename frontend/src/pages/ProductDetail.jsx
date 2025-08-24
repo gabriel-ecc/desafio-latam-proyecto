@@ -62,15 +62,9 @@ const ProductDetail = () => {
         data.results?.filter(relatedProduct => {
           const relatedProductId = String(relatedProduct.id)
           const shouldInclude = relatedProductId !== currentProductId
-          console.log(
-            `Producto actual: ${currentProductId}, Producto relacionado: ${relatedProductId}, Incluir: ${shouldInclude}`
-          )
           return shouldInclude
         }) || []
 
-      console.log(
-        `Total productos relacionados después del filtro: ${filteredProducts.length}`
-      )
       setRelatedProducts(filteredProducts.slice(0, 3)) // Mostrar solo 3 productos
     } catch (err) {
       console.error('Error al cargar productos relacionados:', err.message)
