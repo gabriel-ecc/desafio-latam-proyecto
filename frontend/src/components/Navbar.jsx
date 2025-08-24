@@ -158,6 +158,9 @@ const Navbar = () => {
             <li>
               <Link to="/nosotros">Nosotros</Link>
             </li>
+            <li>
+              <a href={`${import.meta.env.VITE_API_URL}/api-docs`} target="_blank" rel="noopener noreferrer">API DOCS</a>
+            </li>
           </ul>
           <div
             className={`dropdown nav-tablet-categories ${
