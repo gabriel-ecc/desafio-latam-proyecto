@@ -176,9 +176,11 @@
 
 .total_button {
   display: flex;
+  position: relative;
   gap: var(--spacing-md);
   justify-content: center;
   flex-wrap: wrap;
+  z-index: 10;
   margin-top: var(--spacing-sm);
 }
 
@@ -266,7 +268,7 @@
 
 /* Clase para cuando los métodos de pago están visibles en móvil */
 .kind_payment.visible {
-  max-height: 200px; /* Aumentado para acomodar las 3 opciones */
+  max-height: 230px; /* Aumentado para acomodar las 3 opciones */
   opacity: 1;
   margin: var(--spacing-sm) 0;
 }
@@ -899,7 +901,7 @@
     display: grid;
     grid-template-rows: 1fr;
     grid-template-areas: 'left right';
-    align-items: stretch; /* Esto hace que ambas columnas tengan la misma altura */
+    align-items: start; /* Esto hace que ambas columnas tengan la misma altura */
     padding: var(--spacing-lg);
     background: var(--color-background);
     border-radius: var(--radius-card);
@@ -1235,19 +1237,25 @@
   letter-spacing: 0.3px;
 }
 
-.card_form_overlay {
+/*.card_form_overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  z-index: var(--z-index-docked);
+  height: auto;
+  pointer-events: none; 
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: var(--spacing-md); /* Reducido de var(--spacing-lg) */
+  padding: var(--spacing-md); /* Reducido de var(--spacing-lg) 
   box-sizing: border-box;
 }
+.card_form_overlay input,
+.card_form_overlay select,
+.card_form_overlay textarea {
+  pointer-events: auto; /* campos siguen funcionando 
+}*/
 
 .card-number-section {
   position: absolute;
@@ -1368,9 +1376,9 @@
     width: 50%;
   }
 
-  .card_form_overlay {
-    padding: var(--spacing-md); /* Mismo padding que desktop */
-  }
+  /* {
+    padding: var(--spacing-md); /* Mismo padding que desktop
+  }*/
 
   .card-number-input {
     font-size: var(--font-size-xl); /* Mismo tamaño que desktop */
@@ -1642,7 +1650,7 @@
 
 @media screen and (min-width: 1200px) {
   .delivery-info-container.visible {
-    max-height: 500px; /* Aumentamos significativamente la altura para datos de entrega */
+    max-height: 600px; /* Aumentamos significativamente la altura para datos de entrega */
     margin: var(--spacing-md) auto; /* Margen más generoso */
   }
 
@@ -2006,6 +2014,7 @@
     flex-direction: column !important;
     visibility: visible !important;
     opacity: 1 !important;
+    overflow: visible;
   }
 
   .section_right h2 {
@@ -2016,6 +2025,7 @@
     margin-bottom: var(--spacing-md) !important;
     font-size: var(--font-size-xl) !important;
     font-weight: var(--font-weight-bold) !important;
+    overflow: visible;
   }
 
   .section_left h2 {

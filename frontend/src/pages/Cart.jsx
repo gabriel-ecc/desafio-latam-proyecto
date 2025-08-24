@@ -88,6 +88,17 @@ const Cart = () => {
     testBackendConnection()
   }, [])
 
+  // Debug effect para monitorear estados
+useEffect(() => {
+  console.log('Payment states changed:', {
+    paymentStep,
+    selectedPayment,
+    deliveryConfirmed,
+    cartLength: cart.length
+  })
+}, [paymentStep, selectedPayment, deliveryConfirmed, cart.length])
+
+
   {
     /* Conexión con el backend */
   }
@@ -135,7 +146,7 @@ const Cart = () => {
         delivery_type: 2,
         shipping_address: direccionEntrega || 'Calle Falsa 123, Santiago',
         recipient_name: nombreDestinatario || 'Juan Pérez',
-        total_amount: Math.round(totalPrice),
+        total_amount: Math.round(totalPrice()),
         items: cart.map(item => ({
           product_id: item.id,
           quantity: item.quantity,
@@ -164,6 +175,7 @@ const Cart = () => {
   const handlePayCard = async () => {
     try {
       console.log('Processing card payment...')
+      console.log('💳 handlePayCard ejecutado')
       const payload = {
         user_id: user.id,
         order_status: 3,
@@ -171,14 +183,14 @@ const Cart = () => {
         delivery_type: 1,
         shipping_address: direccionEntrega,
         recipient_name: nombreDestinatario,
-        total_amount: Math.round(totalPrice),
+        total_amount: Math.round(totalPrice()),
         items: cart.map(item => ({
           product_id: item.id,
           quantity: item.quantity,
           unit_price: Math.round(item.price)
         }))
       }
-      
+      console.log('📦 Card payment payload:', JSON.stringify(payload, null, 2))
       console.log('Card payment payload:', payload)
 
       const response = await axios.post(`${ENDPOINT.orders}`, payload, {
@@ -275,8 +287,14 @@ const Cart = () => {
   }
 
   const handlePay = async () => {
-    console.log('handlePay called - selectedPayment:', selectedPayment)
-    console.log('paymentStep:', paymentStep)
+  console.log('🟢 handlePay CLICK - selectedPayment:', selectedPayment)
+  console.log('🟢 paymentStep:', paymentStep)
+  console.log({
+  nombreTitular,
+  numeroTarjeta,
+  expiracion,
+  cvv
+})
     
     if (!selectedPayment) {
       console.log('No payment method selected')
@@ -288,6 +306,11 @@ const Cart = () => {
     }
 
     if (selectedPayment === 'credito' || selectedPayment === 'debito') {
+      console.log('💳 Card payment flow iniciado')
+        console.log('nombreTitular:', nombreTitular)
+        console.log('numeroTarjeta:', numeroTarjeta)
+        console.log('expiracion:', expiracion)
+        console.log('cvv:', cvv)
       if (
         !nombreTitular.trim() ||
         !numeroTarjeta.trim() ||
@@ -552,6 +575,7 @@ const Cart = () => {
                 <button
                   key={method.id}
                   onClick={() => {
+                    console.log("Seleccionaste método de pago:", method.id)
                     setSelectedPayment(method.id)
                     setDeliveryConfirmed(false)
                   }}
@@ -744,7 +768,6 @@ const Cart = () => {
               onClick={handlePay}
               disabled={!paymentStep || !selectedPayment}
             >
-              {' '}
               Pagar{' '}
             </Button>
             {/* Botón temporal de diagnóstico para debuggear en producción */}
