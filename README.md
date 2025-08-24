@@ -101,13 +101,15 @@ npm install
 Se debe crear un archivo de varibles de entorno **.env** en la raiz del directorio **./backend/**, se sugiere la siguiente estructura:
 
 ```
-DB_HOST=localhost
-DB_USER=dbuser
-DB_PASSWORD=dbpassword
-DB_DATABASE=verduleria
-DB_PORT=5432
+DB_URL=postgresql://<user>:<password>@<server>:<port>/<database-name>
 
 JWT_SECRET=test
+
+URL_BASE=http://localhost:3000
+```
+También crear un archivo de varibles de entorno **.env** en la raiz del directorio **./frontend/**, se sugiere la siguiente estructura:
+```
+VITE_API_URL=http://localhost:3000
 ```
 
 ## 3.4 Ejecución (servidores)
@@ -165,9 +167,9 @@ Clave: 123456
 npm run test:coverage
 ```
 
-# 7. Documentacion API
+# 4. Documentacion API
 
-## 7.1 Swagger
+## 4.1 Swagger
 
 ### Proxy (Frontend)
 
@@ -181,13 +183,13 @@ http://localhost:5173/api-docs/
 http://localhost:3000/api-docs/
 ```
 
-# 8. Tech Stack
+# 5. Tech Stack
 
 Node.js, React.js, Javascript, Jest, Babel
 
-# 9. Dependencias
+# 6. Dependencias
 
-## 9.1 Dependencias del Backend
+## 6.1 Dependencias del Backend
 
 | Paquete            | Versión | Descripción Breve                                      |
 | ------------------ | ------- | ------------------------------------------------------ |
@@ -203,13 +205,13 @@ Node.js, React.js, Javascript, Jest, Babel
 | swagger-ui-express | ^5.0.1  | Servidor Swagger UI para Express                       |
 | yamljs             | ^0.3.0  | Carga archivos YAML como objetos JavaScript            |
 
-## 9.2 Dependencias de Desarrollo del Backend
+## 6.2 Dependencias de Desarrollo del Backend
 
 | Paquete  | Versión | Descripción breve                                               |
 | -------- | ------- | --------------------------------------------------------------- |
 | standard | ^17.1.2 | Estilo de código JavaScript (linting) basado en reglas estándar |
 
-## 9.3 Dependencias del Frontend
+## 6.3 Dependencias del Frontend
 
 | Paquete                           | Versión  | Descripción breve                           |
 | --------------------------------- | -------- | ------------------------------------------- |
@@ -226,7 +228,7 @@ Node.js, React.js, Javascript, Jest, Babel
 | sweetalert2                       | ^11.22.0 | Ventanas modales modernas y personalizables |
 | sweetalert2-react-content         | ^5.1.0   | Integración de SweetAlert2 con React        |
 
-## 9.4 Dependencias de Desarrollo del Frontend
+## 6.4 Dependencias de Desarrollo del Frontend
 
 | Paquete                     | Versión | Descripción breve                                  |
 | --------------------------- | ------- | -------------------------------------------------- |
