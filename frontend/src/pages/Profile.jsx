@@ -8,7 +8,7 @@ import {
   faUser,
   faEnvelope,
   faPhone,
-  faCamera,
+  faCamera
 } from '@fortawesome/free-solid-svg-icons'
 import Swal from 'sweetalert2'
 import BackButton from '../components/BackButton'
@@ -25,7 +25,7 @@ export default function Profile() {
     phone: '',
     profilePhoto: '',
     userType: '',
-    userStatus: '',
+    userStatus: ''
   })
   const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -46,15 +46,15 @@ export default function Profile() {
     }
   }, [profile])
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target
-    setEditableProfile((prev) => ({
+    setEditableProfile(prev => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }))
   }
 
-  const handleFileChange = (e) => {
+  const handleFileChange = e => {
     const file = e.target.files[0]
     if (file) {
       // Validar tipo de archivo
@@ -64,7 +64,7 @@ export default function Profile() {
           text: 'Por favor selecciona solo archivos de imagen',
           icon: 'error',
           confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#dc3545',
+          confirmButtonColor: '#dc3545'
         })
         return
       }
@@ -76,7 +76,7 @@ export default function Profile() {
           text: 'La imagen debe ser menor a 5MB',
           icon: 'error',
           confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#dc3545',
+          confirmButtonColor: '#dc3545'
         })
         return
       }
@@ -85,7 +85,7 @@ export default function Profile() {
 
       // Crear preview
       const reader = new FileReader()
-      reader.onload = (e) => {
+      reader.onload = e => {
         setPreviewUrl(e.target.result)
       }
       reader.readAsDataURL(file)
@@ -99,7 +99,7 @@ export default function Profile() {
       const updateData = {
         firstName: editableProfile.firstName,
         lastName: editableProfile.lastName,
-        phone: editableProfile.phone,
+        phone: editableProfile.phone
       }
 
       // Agregar foto si se seleccionó una nueva
@@ -125,7 +125,7 @@ export default function Profile() {
         text: 'Tus datos han sido guardados correctamente',
         icon: 'success',
         confirmButtonText: 'Continuar',
-        confirmButtonColor: '#28a745',
+        confirmButtonColor: '#28a745'
       }).then(() => {
         // Recargar la página para asegurar que todo se actualice
         window.location.reload()
@@ -137,7 +137,7 @@ export default function Profile() {
         text: error.message || 'Error al actualizar el perfil',
         icon: 'error',
         confirmButtonText: 'Intentar de nuevo',
-        confirmButtonColor: '#dc3545',
+        confirmButtonColor: '#dc3545'
       })
     } finally {
       setIsSaving(false)
@@ -165,18 +165,20 @@ export default function Profile() {
     return null
   }
 
-  const getUserTypeLabel = (userType) => {
+  const getUserTypeLabel = userType => {
     switch (userType) {
       case 1:
         return 'Cliente'
       case 2:
+        return 'Empleado'
+      case 3:
         return 'Administrador'
       default:
         return 'Usuario'
     }
   }
 
-  const getUserStatusLabel = (userStatus) => {
+  const getUserStatusLabel = userStatus => {
     return userStatus === 1 ? 'Activo' : 'Inactivo'
   }
 
@@ -228,10 +230,7 @@ export default function Profile() {
                 />
               ) : (
                 <div className="profile-photo-placeholder">
-                  <img
-                    src="/imgs/fotoGenerica.png"
-                    alt="Foto de perfil"
-                  />
+                  <img src="/imgs/fotoGenerica.png" alt="Foto de perfil" />
                 </div>
               )}
             </div>
@@ -283,7 +282,7 @@ export default function Profile() {
         {/* Contenido principal con formularios */}
         <div className="profile-content">
           {/* Formulario de perfil */}
-          <form className="profile-form" onSubmit={(e) => e.preventDefault()}>
+          <form className="profile-form" onSubmit={e => e.preventDefault()}>
             {/* Información personal */}
             <div className="form-section">
               <h3 className="section-title">Información Personal</h3>
